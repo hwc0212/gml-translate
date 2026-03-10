@@ -1,0 +1,40 @@
+# WordPress
+*.log
+.htaccess
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build
+build/
+dist/
+
+# Temporary
+*.tmp
+*.bak
+*.swp
+*~
+
+# Cache
+.cache/
+*.cache
+
+# Environment
+.env
+.env.local
+
+# Composer
+vendor/
+composer.lock

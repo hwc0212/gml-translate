@@ -1,0 +1,173 @@
+/* GML Language Switcher - Frontend Styles */
+
+.gml-language-switcher {
+    display: inline-block;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
+    position: relative;
+}
+
+/* ── Flag images ─────────────────────────────────────────── */
+.gml-flag-img {
+    display: inline-block;
+    vertical-align: middle;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* Rectangle (default) */
+.gml-flag-rectangle {
+    width: 24px;
+    height: 16px;
+    border-radius: 2px;
+}
+
+/* Square */
+.gml-flag-square {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+}
+
+/* Circle */
+.gml-flag-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+/* Emoji fallback */
+.gml-flag-emoji {
+    font-size: 18px;
+    line-height: 1;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* ── Dropdown style ──────────────────────────────────────── */
+.gml-style-dropdown .gml-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Borderless trigger button — plain text with flag, Weglot-style */
+.gml-style-dropdown .gml-dropdown-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 2px;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    color: inherit;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+}
+
+.gml-style-dropdown .gml-dropdown-btn:hover,
+.gml-style-dropdown .gml-dropdown.open .gml-dropdown-btn {
+    opacity: 0.75;
+}
+
+.gml-style-dropdown .gml-dropdown-arrow {
+    font-size: 10px;
+    color: currentColor;
+    opacity: 0.6;
+    margin-left: 2px;
+    transition: transform 0.2s;
+}
+
+.gml-style-dropdown .gml-dropdown.open .gml-dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.gml-style-dropdown .gml-lang-label {
+    flex: 1;
+    text-align: left;
+}
+
+/* Dropdown panel */
+.gml-style-dropdown .gml-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 160px;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.gml-style-dropdown .gml-dropdown.open .gml-dropdown-menu {
+    display: block;
+}
+
+/* Items with bottom-border dividers */
+.gml-style-dropdown .gml-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    color: #333;
+    text-decoration: none;
+    white-space: nowrap;
+    font-size: 15px;
+    transition: background 0.15s;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.gml-style-dropdown .gml-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.gml-style-dropdown .gml-dropdown-item:hover {
+    background: #f7f7f7;
+    color: #333;
+}
+
+.gml-style-dropdown .gml-dropdown-item.gml-active {
+    background: #f0f0f0;
+    font-weight: 600;
+}
+
+/* ── Button/link style ───────────────────────────────────── */
+.gml-style-buttons .gml-language-buttons {
+    display: inline-flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.gml-style-buttons .gml-lang-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background: #fff;
+    color: #555;
+    text-decoration: none;
+    font-size: 13px;
+    transition: border-color 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+
+.gml-style-buttons .gml-lang-button:hover {
+    border-color: #0073aa;
+    color: #0073aa;
+}
+
+.gml-style-buttons .gml-lang-button.gml-active {
+    background: #0073aa;
+    border-color: #0073aa;
+    color: #fff;
+    font-weight: 600;
+}

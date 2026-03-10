@@ -1,0 +1,70 @@
+# Gemini Dynamic Translate
+# Copyright (C) 2024
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Gemini Dynamic Translate 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-02-09 12:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: admin/class-admin-settings.php
+msgid "Gemini Translate"
+msgstr ""
+
+msgid "Welcome to Gemini Dynamic Translate!"
+msgstr ""
+
+msgid "This plugin is currently in development. Phase 1 (Project Initialization) is complete."
+msgstr ""
+
+msgid "Next steps:"
+msgstr ""
+
+msgid "Phase 2: Page Interception Mechanism"
+msgstr ""
+
+msgid "Phase 3: Gemini API Integration"
+msgstr ""
+
+msgid "Phase 4: SEO Router & Language Switcher"
+msgstr ""
+
+msgid "Phase 5: Component-Level Caching"
+msgstr ""
+
+msgid "Phase 6: Translation Plan System"
+msgstr ""
+
+msgid "Phase 7: Admin Interface"
+msgstr ""
+
+msgid "Phase 8: Async Queue"
+msgstr ""
+
+msgid "Phase 9: Testing & Optimization"
+msgstr ""
+
+msgid "Plugin Information"
+msgstr ""
+
+msgid "Version:"
+msgstr ""
+
+msgid "Database Version:"
+msgstr ""
+
+msgid "Cache Directory:"
+msgstr ""
+
+msgid "Writable"
+msgstr ""
+
+msgid "Not writable"
+msgstr ""
