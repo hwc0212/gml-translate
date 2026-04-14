@@ -3,7 +3,7 @@
 AI-powered dynamic translation plugin using Google Gemini API with Weglot-style architecture and native i18n hybrid mode.
 
 **作者**: huwencai.com  
-**版本**: 2.8.2  
+**版本**: 2.9.0  
 
 **许可**: GPL v2 or later
 
@@ -27,6 +27,11 @@ AI-powered dynamic translation plugin using Google Gemini API with Weglot-style 
 ---
 
 ## 🎯 核心特性
+
+### 多引擎翻译支持（v2.9.0 新增）
+- **Google Gemini**: 默认翻译引擎，使用 Gemini 2.0 Flash 模型
+- **DeepSeek**: 可选翻译引擎，使用 OpenAI 兼容 API，支持自定义模型和 API 端点
+- **一键切换**: 管理后台下拉选择，API Key 独立存储，切换不丢失配置
 
 ### 混合型拦截机制（创新架构）
 - **第一层**: WordPress 核心 UI 使用原生 .mo 语言包（节省 Token）
@@ -335,5 +340,5 @@ define('DISABLE_WP_CRON', true);
 GPL v2 or later
 
 **作者**: huwencai.com  
-**版本**: 2.8.2  
-**最后更新**: 2026-03-09
+**版本**: 2.9.0  
+**最后更新**: 2026-03-10

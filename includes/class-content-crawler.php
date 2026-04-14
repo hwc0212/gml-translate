@@ -194,6 +194,17 @@ class GML_Content_Crawler {
 
         // Update offset
         update_option( 'gml_crawl_offset', $offset + count( $posts ) );
+
+        // Trigger queue processor immediately so translations start without
+        // waiting for the next WP Cron tick (which may be delayed in some
+        // hosting environments).
+        if ( class_exists( 'GML_Queue_Processor' ) ) {
+            try {
+                ( new GML_Queue_Processor() )->process_batch();
+            } catch ( \Throwable $e ) {
+                error_log( 'GML Crawler: Queue processor error: ' . $e->getMessage() );
+            }
+        }
     }
 
     /**

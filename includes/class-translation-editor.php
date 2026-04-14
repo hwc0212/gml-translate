@@ -207,6 +207,29 @@ class GML_Translation_Editor {
 
         if ( $action === 'start' ) {
             GML_Content_Crawler::start_crawl();
+
+            // Enable the translation process so Queue Processor picks up
+            // the items that the crawler queues, and per-language status shows "Running".
+            update_option( 'gml_translation_enabled', true );
+            update_option( 'gml_translation_paused', false );
+
+            // Un-pause all languages
+            $langs = get_option( 'gml_languages', [] );
+            foreach ( $langs as &$l ) {
+                $l['paused'] = false;
+            }
+            update_option( 'gml_languages', $langs );
+
+            // Run the first crawl batch synchronously so the queue has data
+            // immediately — don't wait for WP Cron to fire.
+            $crawler = new GML_Content_Crawler();
+            $crawler->crawl_batch();
+
+            // Ensure queue processor cron is scheduled
+            if ( ! wp_next_scheduled( GML_Queue_Processor::CRON_HOOK ) ) {
+                wp_schedule_single_event( time(), GML_Queue_Processor::CRON_HOOK );
+            }
+
             wp_send_json_success( [ 'message' => __( 'Content crawl started.', 'gml-translate' ) ] );
         } elseif ( $action === 'stop' ) {
             GML_Content_Crawler::stop_crawl();
@@ -224,6 +247,19 @@ class GML_Translation_Editor {
         if ( ! current_user_can( 'manage_options' ) ) {
             wp_send_json_error( 'Unauthorized' );
         }
+
+        // Piggyback: trigger queue processor on each status poll so translations
+        // progress even if WP Cron is delayed or not firing reliably.
+        if ( get_option( 'gml_translation_enabled', false ) && ! get_option( 'gml_translation_paused', false ) ) {
+            if ( class_exists( 'GML_Queue_Processor' ) ) {
+                try {
+                    ( new GML_Queue_Processor() )->process_batch();
+                } catch ( \Throwable $e ) {
+                    // Silently ignore — this is a best-effort trigger
+                }
+            }
+        }
+
         wp_send_json_success( GML_Content_Crawler::get_status() );
     }
 }

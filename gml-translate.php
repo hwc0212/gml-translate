@@ -3,7 +3,7 @@
  * Plugin Name: GML - Gemini Dynamic Translate
  * Plugin URI: https://huwencai.com/gml-translate
  * Description: AI-powered dynamic translation using Google Gemini API with Weglot-style architecture and native i18n hybrid mode
- * Version: 2.8.2
+ * Version: 2.9.0
  * Author: huwencai.com
  * Author URI: https://huwencai.com
  * License: GPL v2 or later
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('GML_VERSION', '2.8.2');
+define('GML_VERSION', '2.9.0');
 define('GML_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GML_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GML_PLUGIN_FILE', __FILE__);
@@ -134,6 +134,9 @@ class GML_Translate {
             new GML_Admin_Settings();
             new GML_Translation_Editor();
         }
+
+        // Nav menu switcher — needed in admin (meta box) and frontend (rendering)
+        new GML_Nav_Menu_Switcher();
         
         // Only initialize frontend components if plugin is configured
         if (!$this->is_configured()) {
@@ -178,8 +181,11 @@ class GML_Translate {
      * Check if plugin is configured
      */
     private function is_configured() {
-        $api_key = get_option('gml_api_key_encrypted');
-        return !empty($api_key);
+        $engine = get_option('gml_translation_engine', 'gemini');
+        if ($engine === 'deepseek') {
+            return !empty(get_option('gml_deepseek_api_key_encrypted'));
+        }
+        return !empty(get_option('gml_api_key_encrypted'));
     }
 
     /**
@@ -198,11 +204,13 @@ class GML_Translate {
      * Admin notice for configuration
      */
     public function admin_notice_configure() {
+        $engine = get_option('gml_translation_engine', 'gemini');
+        $engine_label = $engine === 'deepseek' ? 'DeepSeek' : 'Gemini';
         ?>
         <div class="notice notice-warning">
             <p>
                 <strong><?php _e('GML Translate:', 'gml-translate'); ?></strong>
-                <?php _e('Please configure your Gemini API key to start translating.', 'gml-translate'); ?>
+                <?php printf(__('Please configure your %s API key to start translating.', 'gml-translate'), $engine_label); ?>
                 <a href="<?php echo admin_url('admin.php?page=gml-translate'); ?>">
                     <?php _e('Configure Now', 'gml-translate'); ?>
                 </a>

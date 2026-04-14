@@ -2,6 +2,34 @@
 
 All notable changes to GML - Gemini Dynamic Translate will be documented in this file.
 
+## [2.9.0] - 2026-03-10
+
+### Added
+- 🤖 **DeepSeek 翻译引擎支持** — 新增 DeepSeek 作为可选翻译引擎，与 Google Gemini 并列：
+  - 管理后台 Settings 页面新增「Translation Engine」下拉选择器，可在 Google Gemini 和 DeepSeek 之间切换
+  - DeepSeek 使用 OpenAI 兼容的 API 格式（`/v1/chat/completions`），支持 `Authorization: Bearer` 认证
+  - 支持自定义 DeepSeek 模型（默认 `deepseek-chat`，可选 `deepseek-reasoner` 等）
+  - 支持自定义 API Base URL（适用于代理/私有部署端点）
+  - API Key 独立存储和加密（`gml_deepseek_api_key_encrypted`），切换引擎不会丢失另一个引擎的 Key
+  - 保存设置时自动验证 API Key 有效性（发送测试翻译请求）
+  - 所有翻译功能（单条翻译、批量翻译、SEO 翻译）均支持 DeepSeek 引擎
+  - 引擎切换后，已有的翻译缓存不受影响，新翻译使用新引擎
+
+---
+
+## [2.8.3] - 2026-03-10
+
+### Added
+- ✨ **导航菜单语言切换器** — 在 外观 → 菜单 页面新增"GML Language Switcher"面板，可以像添加页面/分类一样将语言切换器拖拽到任意菜单位置，支持作为子菜单项
+
+### Fixed
+- 🐛 **语言切换器在导航菜单中对齐异常** — 当自动位置设为"菜单后"或"菜单前"时，语言切换器浮动到右上角，未与菜单项内联对齐
+  - `<li>` 添加 WordPress 标准 `menu-item` class，继承主题导航菜单的布局和间距
+  - 菜单内渲染时添加 `gml-in-menu` class，继承菜单的 `font-family`、`font-size`、`color`，不再覆盖主题样式
+  - 下拉菜单面板改为右对齐（`right: 0`），避免溢出导航栏
+
+---
+
 ## [2.8.2] - 2026-03-09
 
 ### Changed

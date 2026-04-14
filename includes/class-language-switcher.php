@@ -101,7 +101,7 @@ class GML_Language_Switcher {
         if ( ! $this->should_inject_into_menu( $args ) ) {
             return $items;
         }
-        return '<li class="gml-menu-item">' . $this->render() . '</li>' . $items;
+        return '<li class="menu-item gml-menu-item">' . $this->render(['menu_context' => true]) . '</li>' . $items;
     }
 
     /**
@@ -112,7 +112,7 @@ class GML_Language_Switcher {
         if ( ! $this->should_inject_into_menu( $args ) ) {
             return $items;
         }
-        return $items . '<li class="gml-menu-item">' . $this->render() . '</li>';
+        return $items . '<li class="menu-item gml-menu-item">' . $this->render(['menu_context' => true]) . '</li>';
     }
 
     /**
@@ -420,8 +420,13 @@ class GML_Language_Switcher {
             'ne' => ['name' => 'Nepali',       'native' => 'नेपाली',            'code_upper' => 'NE'],
         ];
 
+        $menu_context = ! empty( $args['menu_context'] );
+
         ob_start();
         $wrapper_class = 'gml-language-switcher ' . ($is_dropdown ? 'gml-style-dropdown' : 'gml-style-buttons');
+        if ( $menu_context ) {
+            $wrapper_class .= ' gml-in-menu';
+        }
         ?>
         <div class="<?php echo esc_attr($wrapper_class); ?>" translate="no">
         <?php if ($is_dropdown): ?>
