@@ -80,7 +80,8 @@ class GML_Sitemap {
             is_plugin_active( 'wordpress-seo-premium/wp-seo-premium.php' ) ||
             is_plugin_active( 'seo-by-rank-math/rank-math.php' ) ||
             is_plugin_active( 'seo-by-rank-math-pro/rank-math-pro.php' ) ||
-            is_plugin_active( 'autodescription/autodescription.php' )
+            is_plugin_active( 'autodescription/autodescription.php' ) ||
+            is_plugin_active( 'gml-seo/gml-seo.php' )
         );
     }
 
