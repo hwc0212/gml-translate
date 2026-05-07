@@ -2,6 +2,19 @@
 
 All notable changes to GML - Gemini Dynamic Translate will be documented in this file.
 
+## [2.10.0] - 2026-04-16
+
+### Fixed / Improved
+- 🎨 **语言切换器样式自适应** — 放到任何位置（header / footer / nav / sidebar / widget / menu）都能自动匹配周围的字体、字号、颜色、行高、字距、text-transform、decoration，再也没有"外挂"式的突兀感
+  - CSS 改为纯继承：默认 `font: inherit; color: inherit; line-height: inherit`
+  - 引入 CSS 自定义属性：`--gml-gap`、`--gml-hover-opacity`、`--gml-panel-bg`、`--gml-panel-fg`、`--gml-panel-border`、`--gml-panel-radius` 等，主题或用户可轻松覆盖而无需和 specificity 打架
+  - JS `syncSwitcherToContext()` 能力扩展：不再局限于 `<ul>/<ol>` 里的 `<li>`，还支持 `<header>`、`<footer>`、`<nav>`、`<aside>`、`.widget`、`.site-header`、`.site-footer` 等语义容器
+  - 找到参考链接后，完整复制 computed styles（9 个类型属性）+ 镜像参考 `<li>` 的 padding/margin + 镜像参考 `<a>` 的 padding 到触发按钮，保证点击面积和视觉完全一致
+  - 成功同步后给切换器加 `.gml-style-synced` class，方便进一步细调
+- 🔀 **菜单切换器去重** — 新增 `GML_Nav_Menu_Switcher::$rendered_in_menu` 静态标志
+  - 当 Appearance → Menus 里添加了语言切换器菜单项时，自动抑制 `menu_before`/`menu_after` 位置的二次注入
+  - 避免用户同时配置两种机制时在同一菜单里出现重复切换器
+
 ## [2.9.0] - 2026-03-10
 
 ### Added

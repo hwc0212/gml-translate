@@ -96,8 +96,13 @@ class GML_Language_Switcher {
     /**
      * Prepend switcher to nav menu.
      * Only injects once — into the first non-footer nav menu on the page.
+     * Skipped entirely if a nav-menu-item switcher is already present
+     * (dedup: GML_Nav_Menu_Switcher::$rendered_in_menu).
      */
     public function prepend_to_menu($items, $args) {
+        if ( class_exists( 'GML_Nav_Menu_Switcher' ) && GML_Nav_Menu_Switcher::$rendered_in_menu ) {
+            return $items;
+        }
         if ( ! $this->should_inject_into_menu( $args ) ) {
             return $items;
         }
@@ -107,8 +112,12 @@ class GML_Language_Switcher {
     /**
      * Append switcher to nav menu.
      * Only injects once — into the first non-footer nav menu on the page.
+     * Skipped entirely if a nav-menu-item switcher is already present.
      */
     public function append_to_menu($items, $args) {
+        if ( class_exists( 'GML_Nav_Menu_Switcher' ) && GML_Nav_Menu_Switcher::$rendered_in_menu ) {
+            return $items;
+        }
         if ( ! $this->should_inject_into_menu( $args ) ) {
             return $items;
         }
