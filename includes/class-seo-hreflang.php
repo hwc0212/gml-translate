@@ -24,6 +24,12 @@ class GML_SEO_Hreflang {
         $this->provider               = $provider ?: new GML_Translation_Provider();
         $this->external_seo_authority = $this->has_external_seo_authority();
 
+		// GML SEO consumes this plugin's read-only TranslationProvider data and
+		// remains the sole owner of canonical, hreflang, OG locale, and sitemap.
+		if ( defined( 'GML_SEO_VER' ) ) {
+			return;
+		}
+
         add_action( 'wp_head', [ $this, 'inject_multilingual_meta' ], 1 );
         add_filter( 'language_attributes', [ $this->provider, 'filter_language_attributes' ], 10, 2 );
 

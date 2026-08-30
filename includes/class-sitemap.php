@@ -36,6 +36,12 @@ class GML_Sitemap {
         $this->source_lang = $this->provider->get_source_language();
         $this->languages   = $this->get_enabled_languages();
 
+		// GML SEO reads alternate URLs from TranslationProvider and owns the
+		// final sitemap. Do not register competing sitemap hooks in dual mode.
+		if ( defined( 'GML_SEO_VER' ) ) {
+			return;
+		}
+
         if ( empty( $this->languages ) ) {
             return;
         }
