@@ -109,7 +109,7 @@ class GML_Gettext_Filter {
             return;
         }
 
-        if ( ! get_option( 'gml_translation_enabled', false ) ) {
+        if ( ! GML_Translation_State::multilingual_enabled() ) {
             return;
         }
 
@@ -200,7 +200,7 @@ class GML_Gettext_Filter {
         $this->miss_cache[ $trimmed ] = true;
 
         // Queue for async translation if it looks like real translatable content.
-        if ( ! isset( $this->pending[ $hash ] ) && $this->is_translatable( $trimmed ) ) {
+        if ( GML_Translation_State::ai_available() && ! isset( $this->pending[ $hash ] ) && $this->is_translatable( $trimmed ) ) {
             $this->pending[ $hash ] = [
                 'text'         => $trimmed,
                 'context_type' => 'text',
@@ -258,7 +258,7 @@ class GML_Gettext_Filter {
      * Runs on shutdown so it doesn't slow down page rendering.
      */
     public function flush_pending() {
-        if ( $this->flushed || empty( $this->pending ) ) {
+        if ( $this->flushed || empty( $this->pending ) || ! GML_Translation_State::ai_available() ) {
             return;
         }
         $this->flushed = true;
@@ -279,7 +279,7 @@ class GML_Gettext_Filter {
                 "SELECT source_hash FROM $queue_table
                  WHERE source_hash IN ($placeholders)
                    AND source_lang = %s AND target_lang = %s
-                   AND status IN ('pending','processing','completed')",
+                   AND status IN ('pending','processing','completed','failed')",
                 $params
             ) );
             foreach ( $rows as $row ) {

@@ -100,7 +100,7 @@ class GML_Translator {
         }
 
         // ── 3. Queue uncached texts for async translation ────────────────────
-        if ( ! empty( $uncached ) ) {
+        if ( ! empty( $uncached ) && GML_Translation_State::ai_available() ) {
             $queue_table     = $wpdb->prefix . $this->queue_table;
             $uncached_hashes = array_keys( $uncached );
             $already_queued  = [];
@@ -113,7 +113,7 @@ class GML_Translator {
                      FROM $queue_table
                      WHERE source_hash IN ($placeholders)
                        AND source_lang = %s AND target_lang = %s
-                       AND status IN ('pending','processing','completed')",
+                       AND status IN ('pending','processing','completed','failed')",
                     $params
                 ) );
                 foreach ( $rows as $row ) {
@@ -301,4 +301,3 @@ class GML_Translator {
         return 3;
     }
 }
-

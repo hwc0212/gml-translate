@@ -109,6 +109,7 @@ class GML_Installer {
         $wp_locale   = get_locale();
         $source_lang = substr( $wp_locale, 0, 2 ) ?: 'en';
 
+        $legacy_enabled = (bool) get_option( 'gml_translation_enabled', false );
         $defaults = [
             'gml_source_lang'        => $source_lang,
             'gml_languages'          => [],
@@ -123,6 +124,8 @@ class GML_Installer {
             'gml_switcher_use_fullname' => true,
             'gml_switcher_position'    => 'none',
             'gml_translation_enabled'  => false,
+            'gml_multilingual_enabled' => $legacy_enabled,
+            'gml_ai_translation_enabled' => $legacy_enabled,
             'gml_translation_paused'   => false,
             'gml_auto_detect_language' => false,
             'gml_exclusion_rules'      => [],

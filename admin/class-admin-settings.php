@@ -184,6 +184,8 @@ class GML_Admin_Settings {
         $current_engine     = get_option('gml_translation_engine', 'gemini');
         $api_key_set        = !empty(get_option('gml_api_key_encrypted'));
         $deepseek_key_set   = !empty(get_option('gml_deepseek_api_key_encrypted'));
+        $multilingual_on    = GML_Translation_State::multilingual_enabled();
+        $ai_translation_on  = GML_Translation_State::ai_translation_enabled();
         $wp_locale          = get_locale();
         $default_lang       = substr($wp_locale, 0, 2);
         $source_lang        = get_option('gml_source_lang', $default_lang);
@@ -197,6 +199,26 @@ class GML_Admin_Settings {
 
             <h2><?php _e('Main Configuration', 'gml-translate'); ?></h2>
             <table class="form-table">
+                <tr>
+                    <th><label for="gml_multilingual_enabled"><?php _e('Multilingual Site', 'gml-translate'); ?></label></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" id="gml_multilingual_enabled" name="gml_multilingual_enabled" value="1" <?php checked( $multilingual_on ); ?> />
+                            <?php _e('Enable multilingual URLs and saved translations', 'gml-translate'); ?>
+                        </label>
+                        <p class="description"><?php _e('Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key.', 'gml-translate'); ?></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="gml_ai_translation_enabled"><?php _e('AI Translation', 'gml-translate'); ?></label></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" id="gml_ai_translation_enabled" name="gml_ai_translation_enabled" value="1" <?php checked( $ai_translation_on ); ?> />
+                            <?php _e('Allow the queue and crawler to generate new translations', 'gml-translate'); ?>
+                        </label>
+                        <p class="description"><?php _e('Requires a valid key for the selected provider. Turning this off never removes or hides saved translations.', 'gml-translate'); ?></p>
+                    </td>
+                </tr>
                 <tr>
                     <th><label for="gml_translation_engine"><?php _e('Translation Engine', 'gml-translate'); ?></label></th>
                     <td>
@@ -689,11 +711,14 @@ class GML_Admin_Settings {
         // Handle global start/pause
         if (isset($_POST['gml_global_action']) && check_admin_referer('gml_translation_action', 'gml_translation_nonce')) {
             if ($_POST['gml_global_action'] === 'start_all') {
-                $this->start_translation_process();
-                $langs = get_option('gml_languages', []);
-                foreach ($langs as &$l) { $l['paused'] = false; }
-                update_option('gml_languages', $langs);
-                echo '<div class="notice notice-success is-dismissible"><p>' . __('All translations started.', 'gml-translate') . '</p></div>';
+                if ( $this->start_translation_process() ) {
+                    $langs = get_option('gml_languages', []);
+                    foreach ($langs as &$l) { $l['paused'] = false; }
+                    update_option('gml_languages', $langs);
+                    echo '<div class="notice notice-success is-dismissible"><p>' . __('All translations started.', 'gml-translate') . '</p></div>';
+                } else {
+                    echo '<div class="notice notice-error is-dismissible"><p>' . __('Enable the multilingual site and AI Translation with a valid API key first.', 'gml-translate') . '</p></div>';
+                }
             } elseif ($_POST['gml_global_action'] === 'pause_all') {
                 $this->pause_translation_process();
                 $langs = get_option('gml_languages', []);
@@ -712,10 +737,13 @@ class GML_Admin_Settings {
             }
             update_option('gml_languages', $langs);
             if ($_POST['gml_lang_action'] === 'start_lang') {
-                update_option('gml_translation_enabled', true);
-                update_option('gml_translation_paused', false);
-                wp_schedule_single_event(time(), GML_Queue_Processor::CRON_HOOK);
-                echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(__('Translation started for %s.', 'gml-translate'), esc_html($target)) . '</p></div>';
+                if ( GML_Translation_State::multilingual_enabled() && GML_Translation_State::ai_available() ) {
+                    update_option('gml_translation_paused', false);
+                    wp_schedule_single_event(time(), GML_Queue_Processor::CRON_HOOK);
+                    echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(__('Translation started for %s.', 'gml-translate'), esc_html($target)) . '</p></div>';
+                } else {
+                    echo '<div class="notice notice-error is-dismissible"><p>' . __('Enable the multilingual site and AI Translation with a valid API key first.', 'gml-translate') . '</p></div>';
+                }
             } else {
                 echo '<div class="notice notice-warning is-dismissible"><p>' . sprintf(__('Translation paused for %s.', 'gml-translate'), esc_html($target)) . '</p></div>';
             }
@@ -760,7 +788,7 @@ class GML_Admin_Settings {
         $wp_locale           = get_locale();
         $source_lang         = get_option('gml_source_lang', substr($wp_locale, 0, 2));
         $is_paused           = get_option('gml_translation_paused', false);
-        $is_enabled          = get_option('gml_translation_enabled', false);
+        $is_enabled          = GML_Translation_State::multilingual_enabled() && GML_Translation_State::ai_available();
         $available_languages = $this->get_available_languages();
         $source_country      = self::get_country_from_locale($source_lang, $wp_locale);
         $source_native       = $available_languages[$source_lang]['native'] ?? strtoupper($source_lang);
@@ -1411,12 +1439,12 @@ class GML_Admin_Settings {
     }
 
     private function start_translation_process() {
-        update_option('gml_translation_enabled', true);
-        update_option('gml_translation_paused', false);
-        if (class_exists('GML_Queue_Processor')) {
-            (new GML_Queue_Processor())->process_batch();
+        if ( ! GML_Translation_State::multilingual_enabled() || ! GML_Translation_State::ai_available() ) {
+            return false;
         }
+        update_option('gml_translation_paused', false);
         wp_schedule_single_event(time(), GML_Queue_Processor::CRON_HOOK);
+        return true;
     }
 
     private function pause_translation_process() {
@@ -1424,6 +1452,9 @@ class GML_Admin_Settings {
     }
 
     private function save_settings() {
+        $was_multilingual = GML_Translation_State::multilingual_enabled();
+        $was_ai_enabled   = GML_Translation_State::ai_translation_enabled();
+
         // Save engine selection
         $engine = sanitize_text_field($_POST['gml_translation_engine'] ?? 'gemini');
         update_option('gml_translation_engine', $engine);
@@ -1484,6 +1515,28 @@ class GML_Admin_Settings {
         }
 
         update_option('gml_source_lang', sanitize_text_field($_POST['gml_source_lang'] ?? 'en'));
+        $multilingual = ! empty( $_POST['gml_multilingual_enabled'] );
+        $ai_requested = ! empty( $_POST['gml_ai_translation_enabled'] );
+        $changed      = GML_Translation_State::set_multilingual_enabled( $multilingual );
+        $ai_enabled   = $ai_requested && GML_Translation_State::has_api_key();
+        GML_Translation_State::set_ai_translation_enabled( $ai_enabled );
+
+        if ( $ai_requested && ! $ai_enabled ) {
+            add_settings_error( 'gml_messages', 'gml_ai_key_required', __( 'AI Translation was not enabled because the selected provider does not have a valid saved API key.', 'gml-translate' ), 'error' );
+        }
+
+        if ( ! $multilingual || ! $ai_enabled ) {
+            update_option( 'gml_translation_paused', true, false );
+            GML_Content_Crawler::stop_crawl();
+            GML_Queue_Processor::unschedule_cron();
+        } elseif ( ! $was_multilingual || ! $was_ai_enabled ) {
+            update_option( 'gml_translation_paused', false, false );
+            wp_schedule_single_event( time(), GML_Queue_Processor::CRON_HOOK );
+        }
+
+        if ( $changed ) {
+            update_option( 'gml_translation_flush_rewrite_rules', 1, false );
+        }
         if (!$api_key_updated) {
             add_settings_error('gml_messages', 'gml_settings_saved', __('Settings saved successfully!', 'gml-translate'), 'success');
         }

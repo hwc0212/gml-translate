@@ -24,6 +24,9 @@ define('GML_VERSION', '2.10.0');
 define('GML_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GML_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GML_PLUGIN_FILE', __FILE__);
+if ( ! defined( 'GML_TRANSLATION_HOST' ) ) {
+    define( 'GML_TRANSLATION_HOST', 'standalone' );
+}
 
 /**
  * Main GML plugin class
@@ -75,6 +78,7 @@ class GML_Translate {
         
         // Initialize components
         add_action('plugins_loaded', [$this, 'init_components'], 20);
+        add_action('init', [$this, 'maybe_flush_rewrite_rules'], 999);
     }
     
     /**
@@ -122,7 +126,7 @@ class GML_Translate {
         // Language Switcher) to avoid unnecessary work and reduce the surface area
         // that triggers third-party plugin hooks (e.g. Elementor Pro Notes module).
         if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
-            if ( $this->is_configured() ) {
+            if ( GML_Translation_State::work_enabled() ) {
                 new GML_Queue_Processor();
                 new GML_Content_Crawler();
             }
@@ -135,17 +139,16 @@ class GML_Translate {
             new GML_Translation_Editor();
         }
 
-        // Nav menu switcher — needed in admin (meta box) and frontend (rendering)
-        new GML_Nav_Menu_Switcher();
-        
-        // Only initialize frontend components if plugin is configured
-        if (!$this->is_configured()) {
-            // Show admin notice
+        // Multilingual routing and existing translations do not depend on AI.
+        if ( ! GML_Translation_State::multilingual_enabled() ) {
             if (is_admin()) {
                 add_action('admin_notices', [$this, 'admin_notice_configure']);
             }
             return;
         }
+
+        // Nav menu switcher — needed in admin (meta box) and frontend (rendering)
+        new GML_Nav_Menu_Switcher();
         
         // Initialize output buffer (hybrid interceptor)
         new GML_Output_Buffer();
@@ -161,12 +164,6 @@ class GML_Translate {
         // Initialize SEO hreflang
         new GML_SEO_Hreflang();
         
-        // Initialize queue processor
-        new GML_Queue_Processor();
-        
-        // Initialize content crawler (auto-translate without page visits)
-        new GML_Content_Crawler();
-        
         // Initialize language switcher
         new GML_Language_Switcher();
 
@@ -175,17 +172,20 @@ class GML_Translate {
 
         // Initialize multilingual sitemap
         new GML_Sitemap();
+
+        // AI workers are optional. Existing translations remain available when
+        // credentials are removed, quota is exhausted, or AI is switched off.
+        if ( GML_Translation_State::work_enabled() ) {
+            new GML_Queue_Processor();
+            new GML_Content_Crawler();
+        }
     }
     
     /**
      * Check if plugin is configured
      */
     private function is_configured() {
-        $engine = get_option('gml_translation_engine', 'gemini');
-        if ($engine === 'deepseek') {
-            return !empty(get_option('gml_deepseek_api_key_encrypted'));
-        }
-        return !empty(get_option('gml_api_key_encrypted'));
+        return GML_Translation_State::ai_available();
     }
 
     /**
@@ -199,18 +199,23 @@ class GML_Translate {
             GML_Installer::activate();
         }
     }
+
+    public function maybe_flush_rewrite_rules() {
+        if ( get_option( 'gml_translation_flush_rewrite_rules', false ) ) {
+            delete_option( 'gml_translation_flush_rewrite_rules' );
+            flush_rewrite_rules( false );
+        }
+    }
     
     /**
      * Admin notice for configuration
      */
     public function admin_notice_configure() {
-        $engine = get_option('gml_translation_engine', 'gemini');
-        $engine_label = $engine === 'deepseek' ? 'DeepSeek' : 'Gemini';
         ?>
         <div class="notice notice-warning">
             <p>
                 <strong><?php _e('GML Translate:', 'gml-translate'); ?></strong>
-                <?php printf(__('Please configure your %s API key to start translating.', 'gml-translate'), $engine_label); ?>
+                <?php _e('Enable the multilingual site after choosing your languages. An AI API key is only required to generate new translations.', 'gml-translate'); ?>
                 <a href="<?php echo admin_url('admin.php?page=gml-translate'); ?>">
                     <?php _e('Configure Now', 'gml-translate'); ?>
                 </a>

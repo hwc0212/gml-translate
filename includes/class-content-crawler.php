@@ -34,7 +34,7 @@ class GML_Content_Crawler {
      * Re-schedule the crawl cron if it was lost during a plugin update.
      */
     public function maybe_resume_crawl() {
-        if ( ! get_option( 'gml_crawl_running', false ) ) {
+        if ( ! get_option( 'gml_crawl_running', false ) || ! GML_Translation_State::work_enabled() ) {
             return;
         }
         if ( ! wp_next_scheduled( self::CRON_HOOK ) ) {
@@ -56,6 +56,9 @@ class GML_Content_Crawler {
      * Start a full-site crawl for all configured languages.
      */
     public static function start_crawl() {
+        if ( ! GML_Translation_State::multilingual_enabled() || ! GML_Translation_State::ai_available() ) {
+            return false;
+        }
         // Reset crawl progress
         delete_option( 'gml_crawl_offset' );
         // Cache total count so get_status() doesn't recount every time
@@ -68,6 +71,7 @@ class GML_Content_Crawler {
         }
         // Also trigger immediately
         wp_schedule_single_event( time(), self::CRON_HOOK );
+        return true;
     }
 
     /**
@@ -123,6 +127,9 @@ class GML_Content_Crawler {
      * then parse it and feed it to the translator (which queues untranslated strings).
      */
     public function crawl_batch() {
+        if ( ! GML_Translation_State::work_enabled() ) {
+            return;
+        }
         if ( ! get_option( 'gml_crawl_running', false ) ) {
             return;
         }

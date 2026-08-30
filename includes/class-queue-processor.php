@@ -109,7 +109,8 @@ class GML_Queue_Processor {
         if (get_option('gml_translation_paused', false)) {
             return;
         }
-        if (!get_option('gml_translation_enabled', false)) {
+        if ( ! GML_Translation_State::work_enabled() ) {
+            self::unschedule_cron();
             return;
         }
 

@@ -560,12 +560,8 @@ class GML_Output_Buffer {
         if ( in_array( $pagenow, [ 'wp-login.php', 'wp-register.php' ], true ) ) {
             return true;
         }
-        // No API key
-        if ( empty( get_option( 'gml_api_key_encrypted' ) ) ) {
-            return true;
-        }
-        // Translation not yet started by admin
-        if ( ! get_option( 'gml_translation_enabled', false ) ) {
+        // Serving existing translations is independent from AI credentials.
+        if ( ! GML_Translation_State::multilingual_enabled() ) {
             return true;
         }
         // Page builder editor modes — never translate inside live editors
