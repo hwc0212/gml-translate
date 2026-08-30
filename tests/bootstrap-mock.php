@@ -12,11 +12,15 @@ final class GML_Translate_Test_State {
 	public static $options = [];
 	public static $actions = [];
 	public static $home_url = 'https://example.com';
+	public static $http_requests = [];
+	public static $http_responses = [];
 
 	public static function reset() {
 		self::$options = [];
 		self::$actions = [];
 		self::$home_url = 'https://example.com';
+		self::$http_requests = [];
+		self::$http_responses = [];
 	}
 }
 
@@ -29,6 +33,13 @@ function update_option( $key, $value, $autoload = null ) {
 	GML_Translate_Test_State::$options[ $key ] = $value;
 	return true;
 }
+function add_option( $key, $value, $deprecated = '', $autoload = 'yes' ) {
+	if ( array_key_exists( $key, GML_Translate_Test_State::$options ) ) {
+		return false;
+	}
+	GML_Translate_Test_State::$options[ $key ] = $value;
+	return true;
+}
 function delete_option( $key ) {
 	unset( GML_Translate_Test_State::$options[ $key ] );
 	return true;
@@ -38,6 +49,13 @@ function add_action( $hook, $callback, $priority = 10, $accepted_args = 1 ) {
 }
 function add_filter( $hook, $callback, $priority = 10, $accepted_args = 1 ) {
 	add_action( $hook, $callback, $priority, $accepted_args );
+}
+function apply_filters( $hook, $value ) {
+	$args = array_slice( func_get_args(), 2 );
+	foreach ( GML_Translate_Test_State::$actions[ $hook ] ?? [] as $callback ) {
+		$value = call_user_func_array( $callback, array_merge( [ $value ], $args ) );
+	}
+	return $value;
 }
 function remove_action( $hook, $callback, $priority = 10 ) {
 	if ( empty( GML_Translate_Test_State::$actions[ $hook ] ) ) return false;
@@ -63,14 +81,58 @@ function home_url( $path = '' ) {
 	return $path === '' ? $base : $base . '/' . ltrim( $path, '/' );
 }
 function wp_parse_url( $url, $component = -1 ) { return parse_url( $url, $component ); }
+function untrailingslashit( $value ) { return rtrim( (string) $value, '/\\' ); }
 function wp_unslash( $value ) { return $value; }
 function wp_strip_all_tags( $value ) { return strip_tags( (string) $value ); }
+function wp_json_encode( $value, $flags = 0, $depth = 512 ) { return json_encode( $value, $flags, $depth ); }
 function get_locale() { return 'en_US'; }
+function get_bloginfo( $show = '' ) { return $show === 'name' ? 'Example Site' : ''; }
+function wp_salt( $scheme = 'auth' ) { return 'test-salt-' . $scheme; }
 function is_admin() { return false; }
+function is_user_logged_in() { return false; }
 function sanitize_key( $key ) { return preg_replace( '/[^a-z0-9_\-]/', '', strtolower( (string) $key ) ); }
+function sanitize_text_field( $value ) { return trim( wp_strip_all_tags( (string) $value ) ); }
+function esc_url_raw( $url ) { return (string) $url; }
 function wp_cache_get( $key, $group = '' ) { return false; }
 function wp_cache_set( $key, $value, $group = '', $expire = 0 ) { return true; }
 function wp_cache_delete( $key, $group = '' ) { return true; }
+
+if ( ! class_exists( 'WP_Error' ) ) {
+	class WP_Error {
+		private $code;
+		private $message;
+
+		public function __construct( $code = '', $message = '' ) {
+			$this->code = (string) $code;
+			$this->message = (string) $message;
+		}
+
+		public function get_error_code() { return $this->code; }
+		public function get_error_message() { return $this->message; }
+	}
+}
+function is_wp_error( $value ) { return $value instanceof WP_Error; }
+function wp_safe_remote_post( $url, $args = [] ) {
+	GML_Translate_Test_State::$http_requests[] = [ 'url' => $url, 'args' => $args ];
+	if ( GML_Translate_Test_State::$http_responses ) {
+		return array_shift( GML_Translate_Test_State::$http_responses );
+	}
+	return [ 'response' => [ 'code' => 200 ], 'headers' => [], 'body' => '{}' ];
+}
+function wp_safe_remote_get( $url, $args = [] ) {
+	GML_Translate_Test_State::$http_requests[] = [ 'url' => $url, 'args' => $args ];
+	if ( GML_Translate_Test_State::$http_responses ) {
+		return array_shift( GML_Translate_Test_State::$http_responses );
+	}
+	return [ 'response' => [ 'code' => 200 ], 'headers' => [ 'content-type' => 'text/html' ], 'body' => '<!doctype html><html><body>' . str_repeat( 'content ', 20 ) . '</body></html>' ];
+}
+function wp_remote_retrieve_response_code( $response ) {
+	return (int) ( $response['response']['code'] ?? 0 );
+}
+function wp_remote_retrieve_body( $response ) { return (string) ( $response['body'] ?? '' ); }
+function wp_remote_retrieve_header( $response, $name ) {
+	return $response['headers'][ strtolower( (string) $name ) ] ?? '';
+}
 
 function gml_test_assert( $condition, $label ) {
 	if ( ! $condition ) {

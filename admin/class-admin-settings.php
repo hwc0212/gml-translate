@@ -174,6 +174,16 @@ class GML_Admin_Settings {
             settings_errors('gml_messages');
         }
 
+        if (isset($_POST['gml_test_connection']) && check_admin_referer('gml_test_connection', 'gml_test_connection_nonce')) {
+            $test = ( new GML_Gemini_API() )->test_connection();
+            if ( ! empty( $test['valid'] ) ) {
+                GML_Queue_Processor::clear_circuit_breaker();
+                echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( $test['message'] ) . ' ' . esc_html__( 'The safety pause was cleared; translation remains paused until you resume it manually.', 'gml-translate' ) . '</p></div>';
+            } else {
+                echo '<div class="notice notice-error is-dismissible"><p>' . esc_html( $test['message'] ?? __( 'The saved AI connection could not be verified.', 'gml-translate' ) ) . '</p></div>';
+            }
+        }
+
         // Handle advanced settings save
         if (isset($_POST['gml_save_advanced']) && check_admin_referer('gml_advanced_settings', 'gml_advanced_nonce')) {
             update_option('gml_auto_detect_language', isset($_POST['gml_auto_detect_language']));
@@ -232,7 +242,7 @@ class GML_Admin_Settings {
                 <tr class="gml-engine-gemini" <?php echo $current_engine !== 'gemini' ? 'style="display:none;"' : ''; ?>>
                     <th><label for="gml_api_key"><?php _e('Gemini API Key', 'gml-translate'); ?></label></th>
                     <td>
-                        <input type="text" id="gml_api_key" name="gml_api_key" class="regular-text"
+                        <input type="password" id="gml_api_key" name="gml_api_key" class="regular-text" autocomplete="new-password"
                                value="<?php echo $api_key_set ? str_repeat('*', 32) : ''; ?>"
                                placeholder="<?php echo $api_key_set ? '' : 'AIza...'; ?>" />
                         <?php if ($api_key_set): ?>
@@ -248,7 +258,7 @@ class GML_Admin_Settings {
                 <tr class="gml-engine-deepseek" <?php echo $current_engine !== 'deepseek' ? 'style="display:none;"' : ''; ?>>
                     <th><label for="gml_deepseek_api_key"><?php _e('DeepSeek API Key', 'gml-translate'); ?></label></th>
                     <td>
-                        <input type="text" id="gml_deepseek_api_key" name="gml_deepseek_api_key" class="regular-text"
+                        <input type="password" id="gml_deepseek_api_key" name="gml_deepseek_api_key" class="regular-text" autocomplete="new-password"
                                value="<?php echo $deepseek_key_set ? str_repeat('*', 32) : ''; ?>"
                                placeholder="<?php echo $deepseek_key_set ? '' : 'sk-...'; ?>" />
                         <?php if ($deepseek_key_set): ?>
@@ -276,7 +286,7 @@ class GML_Admin_Settings {
                         <input type="text" id="gml_deepseek_api_base" name="gml_deepseek_api_base" class="regular-text"
                                value="<?php echo esc_attr(get_option('gml_deepseek_api_base', '')); ?>"
                                placeholder="https://api.deepseek.com/v1" />
-                        <p class="description"><?php _e('Optional. Leave empty to use the default DeepSeek API endpoint. Useful for custom/proxy endpoints.', 'gml-translate'); ?></p>
+                        <p class="description"><?php _e('Optional. For security, only the official api.deepseek.com HTTPS host is accepted; leave empty to use the default endpoint.', 'gml-translate'); ?></p>
                     </td>
                 </tr>
                 <tr>
@@ -375,6 +385,15 @@ class GML_Admin_Settings {
             </table>
             <?php submit_button(__('Save Changes', 'gml-translate')); ?>
         </form>
+
+        <?php if ( GML_Translation_State::has_api_key() ) : ?>
+            <form method="post" action="" style="margin-top:-54px;margin-left:150px;padding-bottom:20px;">
+                <?php wp_nonce_field('gml_test_connection', 'gml_test_connection_nonce'); ?>
+                <button type="submit" name="gml_test_connection" value="1" class="button button-secondary">
+                    <?php _e('Test Saved AI Connection', 'gml-translate'); ?>
+                </button>
+            </form>
+        <?php endif; ?>
 
         <?php if (!empty($languages)): ?>
         <hr style="margin:30px 0;">
@@ -710,19 +729,26 @@ class GML_Admin_Settings {
 
         // Handle global start/pause
         if (isset($_POST['gml_global_action']) && check_admin_referer('gml_translation_action', 'gml_translation_nonce')) {
-            if ($_POST['gml_global_action'] === 'start_all') {
+            if ($_POST['gml_global_action'] === 'start_all' && ( ! GML_Translation_State::multilingual_enabled() || ! GML_Translation_State::ai_available() ) ) {
+                echo '<div class="notice notice-error is-dismissible"><p>' . __('Enable the multilingual site and AI Translation with a valid API key first.', 'gml-translate') . '</p></div>';
+            } elseif (
+                $_POST['gml_global_action'] === 'start_all' &&
+                ( GML_Queue_Processor::circuit_is_open() || GML_Queue_Processor::maybe_open_for_existing_failures() )
+            ) {
+                echo '<div class="notice notice-error is-dismissible"><p>' . __('Translation remains safety-paused. Test the saved AI connection, then retry one language sample before resuming.', 'gml-translate') . '</p></div>';
+            } elseif ($_POST['gml_global_action'] === 'start_all') {
                 if ( $this->start_translation_process() ) {
                     $langs = get_option('gml_languages', []);
                     foreach ($langs as &$l) { $l['paused'] = false; }
+                    unset( $l );
                     update_option('gml_languages', $langs);
                     echo '<div class="notice notice-success is-dismissible"><p>' . __('All translations started.', 'gml-translate') . '</p></div>';
-                } else {
-                    echo '<div class="notice notice-error is-dismissible"><p>' . __('Enable the multilingual site and AI Translation with a valid API key first.', 'gml-translate') . '</p></div>';
                 }
             } elseif ($_POST['gml_global_action'] === 'pause_all') {
                 $this->pause_translation_process();
                 $langs = get_option('gml_languages', []);
                 foreach ($langs as &$l) { $l['paused'] = true; }
+                unset( $l );
                 update_option('gml_languages', $langs);
                 echo '<div class="notice notice-warning is-dismissible"><p>' . __('All translations paused.', 'gml-translate') . '</p></div>';
             }
@@ -730,21 +756,31 @@ class GML_Admin_Settings {
 
         // Handle per-language start/pause
         if (isset($_POST['gml_lang_action'], $_POST['gml_lang_code']) && check_admin_referer('gml_translation_action', 'gml_translation_nonce')) {
-            $target = sanitize_text_field($_POST['gml_lang_code']);
-            $langs  = get_option('gml_languages', []);
-            foreach ($langs as &$l) {
-                if ($l['code'] === $target) { $l['paused'] = ($_POST['gml_lang_action'] === 'pause_lang'); break; }
-            }
-            update_option('gml_languages', $langs);
-            if ($_POST['gml_lang_action'] === 'start_lang') {
-                if ( GML_Translation_State::multilingual_enabled() && GML_Translation_State::ai_available() ) {
-                    update_option('gml_translation_paused', false);
-                    wp_schedule_single_event(time(), GML_Queue_Processor::CRON_HOOK);
-                    echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(__('Translation started for %s.', 'gml-translate'), esc_html($target)) . '</p></div>';
-                } else {
-                    echo '<div class="notice notice-error is-dismissible"><p>' . __('Enable the multilingual site and AI Translation with a valid API key first.', 'gml-translate') . '</p></div>';
+            $target = sanitize_key($_POST['gml_lang_code']);
+            if ($_POST['gml_lang_action'] === 'start_lang' && ( ! GML_Translation_State::multilingual_enabled() || ! GML_Translation_State::ai_available() ) ) {
+                echo '<div class="notice notice-error is-dismissible"><p>' . __('Enable the multilingual site and AI Translation with a valid API key first.', 'gml-translate') . '</p></div>';
+            } elseif (
+                $_POST['gml_lang_action'] === 'start_lang' &&
+                ( GML_Queue_Processor::circuit_is_open() || GML_Queue_Processor::maybe_open_for_existing_failures() )
+            ) {
+                echo '<div class="notice notice-error is-dismissible"><p>' . __('Translation remains safety-paused. Test the saved AI connection before retrying a limited sample.', 'gml-translate') . '</p></div>';
+            } elseif ($_POST['gml_lang_action'] === 'start_lang') {
+                $langs = get_option('gml_languages', []);
+                foreach ($langs as &$l) {
+                    if ($l['code'] === $target) { $l['paused'] = false; break; }
                 }
+                unset( $l );
+                update_option('gml_languages', $langs);
+                update_option('gml_translation_paused', false);
+                wp_schedule_single_event(time(), GML_Queue_Processor::CRON_HOOK);
+                echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(__('Translation started for %s.', 'gml-translate'), esc_html($target)) . '</p></div>';
             } else {
+                $langs = get_option('gml_languages', []);
+                foreach ($langs as &$l) {
+                    if ($l['code'] === $target) { $l['paused'] = true; break; }
+                }
+                unset( $l );
+                update_option('gml_languages', $langs);
                 echo '<div class="notice notice-warning is-dismissible"><p>' . sprintf(__('Translation paused for %s.', 'gml-translate'), esc_html($target)) . '</p></div>';
             }
         }
@@ -752,33 +788,32 @@ class GML_Admin_Settings {
         // Handle cache actions
         if (isset($_POST['gml_cache_action']) && check_admin_referer('gml_cache_action', 'gml_cache_nonce')) {
             $cache_action = sanitize_text_field($_POST['gml_cache_action']);
-            $lang_code    = sanitize_text_field($_POST['lang_code'] ?? '');
+            $lang_code    = sanitize_key($_POST['lang_code'] ?? '');
             if ($cache_action === 'clear_all_cache') {
+                $configured_languages = (array) get_option( 'gml_languages', [] );
                 $wpdb->query("TRUNCATE TABLE {$wpdb->prefix}gml_index");
                 $wpdb->query("TRUNCATE TABLE {$wpdb->prefix}gml_queue");
-                // Also clear page-level HTML caches and dictionary caches
-                $wpdb->query(
-                    "DELETE FROM {$wpdb->options}
-                     WHERE option_name LIKE '_transient_gml_page_%'
-                        OR option_name LIKE '_transient_timeout_gml_page_%'"
-                );
-                wp_cache_flush();
+                foreach ( $configured_languages as $configured_language ) {
+                    if ( ! empty( $configured_language['code'] ) ) {
+                        GML_Translator::invalidate_cache( get_option('gml_source_lang', 'en'), $configured_language['code'] );
+                    }
+                }
+                GML_Page_Cache::invalidate();
+                GML_Queue_Processor::clear_readiness_cache();
                 update_option('gml_cache_cleared_v244', true); // mark stale cache as cleared
                 echo '<div class="notice notice-success is-dismissible"><p>' . __('All translation cache cleared.', 'gml-translate') . '</p></div>';
             } elseif ($lang_code) {
                 if ($cache_action === 'clear_lang_cache') {
                     $wpdb->delete($wpdb->prefix . 'gml_index', ['target_lang' => $lang_code]);
                     $wpdb->delete($wpdb->prefix . 'gml_queue', ['target_lang' => $lang_code]);
-                    // Clear page caches and dictionary cache for this language
-                    $wpdb->query(
-                        "DELETE FROM {$wpdb->options}
-                         WHERE option_name LIKE '_transient_gml_page_%'
-                            OR option_name LIKE '_transient_timeout_gml_page_%'"
-                    );
                     GML_Translator::invalidate_cache( get_option('gml_source_lang', 'en'), $lang_code );
+                    GML_Page_Cache::invalidate();
+                    GML_Queue_Processor::clear_readiness_cache( $lang_code );
                     echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(__('Cache cleared for %s.', 'gml-translate'), esc_html($lang_code)) . '</p></div>';
                 } elseif ($cache_action === 'clear_lang_queue') {
                     $wpdb->delete($wpdb->prefix . 'gml_queue', ['target_lang' => $lang_code, 'status' => 'pending']);
+                    GML_Page_Cache::invalidate();
+                    GML_Queue_Processor::clear_readiness_cache( $lang_code );
                     echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(__('Pending queue cleared for %s.', 'gml-translate'), esc_html($lang_code)) . '</p></div>';
                 }
             }
@@ -787,13 +822,20 @@ class GML_Admin_Settings {
         $languages           = get_option('gml_languages', []);
         $wp_locale           = get_locale();
         $source_lang         = get_option('gml_source_lang', substr($wp_locale, 0, 2));
+        if ( class_exists( 'GML_Language_Utils' ) ) {
+            $source_lang = GML_Language_Utils::normalize_code( $source_lang ) ?: substr($wp_locale, 0, 2);
+        }
         $is_paused           = get_option('gml_translation_paused', false);
-        $is_enabled          = GML_Translation_State::multilingual_enabled() && GML_Translation_State::ai_available();
+        $ai_translation_on   = GML_Translation_State::ai_available();
+        $is_enabled          = GML_Translation_State::multilingual_enabled() && $ai_translation_on;
         $available_languages = $this->get_available_languages();
         $source_country      = self::get_country_from_locale($source_lang, $wp_locale);
         $source_native       = $available_languages[$source_lang]['native'] ?? strtoupper($source_lang);
         $queue_pending       = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}gml_queue WHERE status='pending'");
         $total_failed        = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}gml_queue WHERE status='failed'");
+        $circuit             = GML_Queue_Processor::get_circuit_breaker();
+        $safety_paused       = ! empty( $circuit );
+        $failure_summary     = $total_failed > 0 ? GML_Queue_Processor::get_failure_summary( '', 3 ) : [];
 
         // Crawl status
         $crawl_status = GML_Content_Crawler::get_status();
@@ -817,7 +859,7 @@ class GML_Admin_Settings {
                     <?php if ($is_enabled && !$is_paused): ?>
                         <button type="submit" name="gml_global_action" value="pause_all" class="button button-secondary">⏸ <?php _e('Pause All', 'gml-translate'); ?></button>
                     <?php else: ?>
-                        <button type="submit" name="gml_global_action" value="start_all" class="button button-primary">▶ <?php _e('Translate All', 'gml-translate'); ?></button>
+                        <button type="submit" name="gml_global_action" value="start_all" class="button button-primary" <?php disabled( ! $ai_translation_on || $safety_paused ); ?>>▶ <?php _e('Translate All', 'gml-translate'); ?></button>
                     <?php endif; ?>
                 </form>
 
@@ -852,21 +894,41 @@ class GML_Admin_Settings {
                 <?php if ($crawl_status['running']): ?>
                     <button type="button" id="gml-crawl-stop" class="button button-secondary" style="color:#d63638;border-color:#d63638;">⏹ <?php _e('Stop Crawl', 'gml-translate'); ?></button>
                 <?php else: ?>
-                    <button type="button" id="gml-crawl-start" class="button button-primary">🚀 <?php _e('Start Auto-Translate', 'gml-translate'); ?></button>
+                    <button type="button" id="gml-crawl-start" class="button button-primary" <?php disabled( ! $ai_translation_on || $safety_paused ); ?>>🚀 <?php _e('Start Auto-Translate', 'gml-translate'); ?></button>
                 <?php endif; ?>
             </div>
         </div>
 
+        <?php if (!$ai_translation_on): ?>
+            <div class="notice notice-warning inline"><p><?php _e('AI Translation is currently unavailable, so no new translation jobs will run. Existing multilingual URLs and saved translations remain available while the multilingual site is enabled.', 'gml-translate'); ?></p></div>
+        <?php endif; ?>
+
+        <?php if ($safety_paused): ?>
+            <div class="notice notice-error inline" style="margin:0 0 20px;"><p>
+                <strong><?php _e('Translation safety pause is active.', 'gml-translate'); ?></strong>
+                <?php echo esc_html( $circuit['message'] ?? __( 'The AI provider, model, or failed queue must be verified before more API calls are made.', 'gml-translate' ) ); ?>
+                <?php if ( ! empty( $circuit['engine'] ) || ! empty( $circuit['model'] ) ) : ?>
+                    <br><?php printf( esc_html__( 'Saved provider: %1$s; model: %2$s.', 'gml-translate' ), esc_html( strtoupper( $circuit['engine'] ?? '' ) ), esc_html( $circuit['model'] ?? '' ) ); ?>
+                <?php endif; ?>
+                <br><a href="<?php echo esc_url( admin_url( 'admin.php?page=gml-translate&tab=settings' ) ); ?>"><?php _e('Test the saved AI connection', 'gml-translate'); ?></a>.
+                <?php _e('A successful test clears the breaker but does not resume the queue automatically.', 'gml-translate'); ?>
+            </p></div>
+        <?php endif; ?>
+
         <?php if ($total_failed > 0): ?>
         <!-- Failed Items Banner -->
-        <div style="background:#fef3cd;border:1px solid #ffc107;border-radius:4px;padding:12px 20px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;">
+        <div style="background:#fef3cd;border:1px solid #ffc107;border-radius:4px;padding:12px 20px;margin-bottom:20px;">
             <div>
                 <strong style="color:#856404;">⚠ <?php echo $total_failed; ?> <?php _e('failed translations', 'gml-translate'); ?></strong>
-                <span style="color:#856404;font-size:13px;margin-left:8px;"><?php _e('These items failed after 3 attempts. You can retry them.', 'gml-translate'); ?></span>
+                <span style="color:#856404;font-size:13px;margin-left:8px;"><?php _e('Retry All is disabled to protect API quota. After a successful connection test, retry one language in samples of at most 25.', 'gml-translate'); ?></span>
             </div>
-            <button type="button" id="gml-retry-all-failed" class="button button-secondary" style="color:#856404;border-color:#856404;">
-                🔄 <?php _e('Retry All Failed', 'gml-translate'); ?>
-            </button>
+            <?php if ( ! empty( $failure_summary ) ) : ?>
+                <ul style="margin:8px 0 0 18px;color:#6c5400;">
+                    <?php foreach ( $failure_summary as $failure ) : ?>
+                        <li><?php echo esc_html( number_format_i18n( (int) $failure->item_count ) . ' × ' . ( $failure->error_message ?: __( 'Unknown error', 'gml-translate' ) ) ); ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
         </div>
         <?php endif; ?>
 
@@ -958,7 +1020,7 @@ class GML_Admin_Settings {
                                 <?php if ($lang_running): ?>
                                     <button type="submit" name="gml_lang_action" value="pause_lang" class="button button-small" title="<?php esc_attr_e('Pause', 'gml-translate'); ?>">⏸</button>
                                 <?php else: ?>
-                                    <button type="submit" name="gml_lang_action" value="start_lang" class="button button-small button-primary" title="<?php esc_attr_e('Start', 'gml-translate'); ?>">▶</button>
+                                    <button type="submit" name="gml_lang_action" value="start_lang" class="button button-small button-primary" title="<?php esc_attr_e('Start', 'gml-translate'); ?>" <?php disabled( ! $ai_translation_on || $safety_paused ); ?>>▶</button>
                                 <?php endif; ?>
                             </form>
                             <div style="position:relative;">
@@ -1071,22 +1133,20 @@ class GML_Admin_Settings {
                     e.preventDefault();
                     e.stopPropagation();
                     var lang = btn.dataset.lang;
+                    if (!window.confirm('<?php echo esc_js( __( 'Retry at most 25 failed items for this language? Watch the result before retrying another sample.', 'gml-translate' ) ); ?>')) {
+                        return;
+                    }
                     btn.style.opacity = '0.5';
                     jQuery.post(gmlEditor.ajaxUrl, {action:'gml_retry_failed', lang:lang, nonce:gmlEditor.nonce}, function(r) {
-                        if (r.success) location.reload();
+                        if (r.success) {
+                            location.reload();
+                        } else {
+                            alert((r.data && r.data.message) ? r.data.message : r.data || '<?php echo esc_js( __( 'The retry sample could not start.', 'gml-translate' ) ); ?>');
+                            btn.style.opacity = '1';
+                        }
                     });
                 });
             });
-            var retryAll = document.getElementById('gml-retry-all-failed');
-            if (retryAll) {
-                retryAll.addEventListener('click', function() {
-                    retryAll.disabled = true;
-                    retryAll.textContent = '<?php _e('Retrying...', 'gml-translate'); ?>';
-                    jQuery.post(gmlEditor.ajaxUrl, {action:'gml_retry_failed', lang:'', nonce:gmlEditor.nonce}, function(r) {
-                        if (r.success) location.reload();
-                    });
-                });
-            }
         })();
         </script>
 
@@ -1439,7 +1499,12 @@ class GML_Admin_Settings {
     }
 
     private function start_translation_process() {
-        if ( ! GML_Translation_State::multilingual_enabled() || ! GML_Translation_State::ai_available() ) {
+        if (
+            ! GML_Translation_State::multilingual_enabled() ||
+            ! GML_Translation_State::ai_available() ||
+            GML_Queue_Processor::circuit_is_open() ||
+            GML_Queue_Processor::maybe_open_for_existing_failures()
+        ) {
             return false;
         }
         update_option('gml_translation_paused', false);
@@ -1467,9 +1532,13 @@ class GML_Admin_Settings {
             if (!empty($model)) {
                 update_option('gml_deepseek_model', $model);
             }
-            $api_base = esc_url_raw(trim($_POST['gml_deepseek_api_base'] ?? ''));
-            if (!empty($api_base)) {
-                update_option('gml_deepseek_api_base', $api_base);
+            $submitted_api_base = trim( (string) ( $_POST['gml_deepseek_api_base'] ?? '' ) );
+            $api_base = GML_Gemini_API::secure_base_url( $submitted_api_base, GML_Gemini_API::DEEPSEEK_API_BASE );
+            if ( $submitted_api_base !== '' && untrailingslashit( $submitted_api_base ) === $api_base ) {
+                update_option('gml_deepseek_api_base', $api_base, false);
+            } elseif ( $submitted_api_base !== '' ) {
+                add_settings_error('gml_messages', 'gml_api_base_invalid', __('The DeepSeek API URL was rejected. Only the official HTTPS host is allowed; the default endpoint will be used.', 'gml-translate'), 'error');
+                delete_option('gml_deepseek_api_base');
             } else {
                 delete_option('gml_deepseek_api_base');
             }
@@ -1480,15 +1549,18 @@ class GML_Admin_Settings {
                     if (class_exists('GML_Gemini_API')) {
                         $test = GML_Gemini_API::test_api_key($api_key, 'deepseek');
                         if ($test['valid']) {
-                            GML_Gemini_API::save_api_key($api_key, 'deepseek');
-                            $api_key_updated = true;
-                            add_settings_error('gml_messages', 'gml_api_key_valid', __('DeepSeek API Key saved and verified!', 'gml-translate') . ' ' . $test['message'], 'success');
+                            if ( GML_Gemini_API::save_api_key($api_key, 'deepseek') ) {
+                                GML_Queue_Processor::clear_circuit_breaker();
+                                $api_key_updated = true;
+                                add_settings_error('gml_messages', 'gml_api_key_valid', __('DeepSeek API Key saved and verified!', 'gml-translate') . ' ' . $test['message'], 'success');
+                            } else {
+                                add_settings_error('gml_messages', 'gml_api_key_storage_failed', __('The API key was valid but could not be encrypted and saved. OpenSSL is required; the existing key was not changed.', 'gml-translate'), 'error');
+                            }
                         } else {
                             add_settings_error('gml_messages', 'gml_api_key_invalid', __('DeepSeek API Key validation failed:', 'gml-translate') . ' ' . $test['message'], 'error');
                         }
                     } else {
-                        update_option('gml_deepseek_api_key_encrypted', $api_key);
-                        $api_key_updated = true;
+                        add_settings_error('gml_messages', 'gml_api_client_unavailable', __('The AI client is unavailable, so the API key was not saved.', 'gml-translate'), 'error');
                     }
                 }
             }
@@ -1500,15 +1572,18 @@ class GML_Admin_Settings {
                     if (class_exists('GML_Gemini_API')) {
                         $test = GML_Gemini_API::test_api_key($api_key, 'gemini');
                         if ($test['valid']) {
-                            GML_Gemini_API::save_api_key($api_key, 'gemini');
-                            $api_key_updated = true;
-                            add_settings_error('gml_messages', 'gml_api_key_valid', __('API Key saved and verified!', 'gml-translate') . ' ' . $test['message'], 'success');
+                            if ( GML_Gemini_API::save_api_key($api_key, 'gemini') ) {
+                                GML_Queue_Processor::clear_circuit_breaker();
+                                $api_key_updated = true;
+                                add_settings_error('gml_messages', 'gml_api_key_valid', __('API Key saved and verified!', 'gml-translate') . ' ' . $test['message'], 'success');
+                            } else {
+                                add_settings_error('gml_messages', 'gml_api_key_storage_failed', __('The API key was valid but could not be encrypted and saved. OpenSSL is required; the existing key was not changed.', 'gml-translate'), 'error');
+                            }
                         } else {
                             add_settings_error('gml_messages', 'gml_api_key_invalid', __('API Key validation failed:', 'gml-translate') . ' ' . $test['message'], 'error');
                         }
                     } else {
-                        update_option('gml_api_key_encrypted', $api_key);
-                        $api_key_updated = true;
+                        add_settings_error('gml_messages', 'gml_api_client_unavailable', __('The AI client is unavailable, so the API key was not saved.', 'gml-translate'), 'error');
                     }
                 }
             }

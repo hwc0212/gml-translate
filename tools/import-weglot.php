@@ -289,10 +289,12 @@ fclose( $handle );
 $cache_key = "gml_dict_{$source_lang}_{$target_lang}";
 wp_cache_delete( $cache_key, 'gml_translate' );
 
-// Clear page-level HTML caches
-$wpdb->query(
-    "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_gml_page_%' OR option_name LIKE '_transient_timeout_gml_page_%'"
-);
+// Generation invalidation also clears Redis/Memcached-backed transients.
+if ( class_exists( 'GML_Page_Cache' ) ) {
+    GML_Page_Cache::invalidate();
+} else {
+    update_option( 'gml_page_cache_generation', max( 1, (int) get_option( 'gml_page_cache_generation', 1 ) ) + 1, false );
+}
 
 // ── Report ───────────────────────────────────────────────────────────────────
 echo "\n=== Import Complete ===\n";

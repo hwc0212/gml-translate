@@ -139,6 +139,10 @@ class GML_Translate {
             new GML_Translation_Editor();
         }
 
+        // Keep generation-based invalidation active while multilingual output
+        // is disabled so stale Redis/transient HTML cannot return on re-enable.
+        new GML_Page_Cache();
+
         // Multilingual routing and existing translations do not depend on AI.
         if ( ! GML_Translation_State::multilingual_enabled() ) {
             if (is_admin()) {
