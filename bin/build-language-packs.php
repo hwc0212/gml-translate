@@ -137,7 +137,7 @@ function write_pot( $file, array $strings ) {
     foreach ( $strings as $string ) {
         $output .= 'msgid "' . po_escape( $string ) . '"' . "\nmsgstr \"\"\n\n";
     }
-    file_put_contents( $file, $output );
+    file_put_contents( $file, rtrim( $output ) . "\n" );
 }
 
 function write_po( $file, $locale, array $strings, array $map ) {
@@ -146,7 +146,7 @@ function write_po( $file, $locale, array $strings, array $map ) {
         $output .= 'msgid "' . po_escape( $string ) . '"' . "\n";
         $output .= 'msgstr "' . po_escape( $map[ $string ] ?? $string ) . '"' . "\n\n";
     }
-    file_put_contents( $file, $output );
+    file_put_contents( $file, rtrim( $output ) . "\n" );
 }
 
 function po_header( $locale ) {

@@ -39,4 +39,3 @@ bash tests/run-all.sh
 
 Review the lock and generated diff together. A product release must never update
 only one vendored copy.
-

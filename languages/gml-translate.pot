@@ -753,4 +753,3 @@ msgstr ""
 
 msgid "🎉 Detected Weglot configuration! Automatically imported source language and %d destination language(s). Please verify the settings below."
 msgstr ""
-

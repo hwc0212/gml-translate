@@ -35,6 +35,6 @@
 
 ## 验证
 
-- Shared Core：`0.4.2`，锁定 commit `85c952135ac0`。
+- Shared Core：`0.4.2`，锁定 commit `5a86160b5886`。
 - 已通过全部 PHP 语法、JavaScript 语法、Core lock 和 GML Translate 集成测试。
 - Release ZIP 包含全部运行代码，不要求额外安装 GML SEO 或 Translation Core。
