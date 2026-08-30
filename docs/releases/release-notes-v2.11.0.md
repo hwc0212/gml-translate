@@ -23,6 +23,7 @@
 - 当前页只查询实际 source hash，不再把整种语言字典载入内存。
 - Redis/Memcached 使用 generation 失效，不执行全局 cache flush。
 - Provider batch、Prompt、输出、规则和 Worker 均有明确上限。
+- 术语表、排除规则、selector 和保护词等可能增长的数组不再进入 WordPress 全局 autoload；旧站点会执行一次版本化迁移。
 
 ## 升级与恢复
 
@@ -34,6 +35,6 @@
 
 ## 验证
 
-- Shared Core：`0.4.1`，锁定 commit `9e8696048fb2`。
+- Shared Core：`0.4.2`，锁定 commit `85c952135ac0`。
 - 已通过全部 PHP 语法、JavaScript 语法、Core lock 和 GML Translate 集成测试。
 - Release ZIP 包含全部运行代码，不要求额外安装 GML SEO 或 Translation Core。

@@ -1319,7 +1319,7 @@ class GML_Admin_Settings {
         // Also handle protected terms save
         if (isset($_POST['gml_save_protected']) && check_admin_referer('gml_protected_terms', 'gml_protected_nonce')) {
             $terms = array_filter(array_map('trim', explode("\n", $_POST['gml_protected_terms'] ?? '')));
-            update_option('gml_protected_terms', $terms);
+            update_option('gml_protected_terms', $terms, false);
             echo '<div class="notice notice-success"><p>' . __('Protected terms saved!', 'gml-translate') . '</p></div>';
         }
 

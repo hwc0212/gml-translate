@@ -21,6 +21,7 @@ All notable changes to GML Translate will be documented in this file.
 
 - Limited each worker run, provider batch, prompt, translation output, glossary, exclusion rules, and crawler concurrency.
 - Replaced whole-language dictionary loading with current-page hash lookups and added Redis/Memcached-safe generation invalidation without global cache flushes.
+- Moved potentially large glossary, exclusion, selector, and protected-term options out of WordPress autoload, including a versioned migration for existing sites.
 
 ### Tests
 
