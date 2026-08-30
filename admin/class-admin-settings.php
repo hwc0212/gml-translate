@@ -11,7 +11,7 @@ class GML_Admin_Settings {
 
     public function __construct() {
         add_action('admin_menu',             [$this, 'add_menu']);
-        add_action('admin_init',             [$this, 'register_settings']);
+        GML_Admin_Settings_Registration::register_hooks();
         add_action('admin_enqueue_scripts',  [$this, 'enqueue_admin_assets']);
     }
 
@@ -27,16 +27,6 @@ class GML_Admin_Settings {
             'dashicons-translation',
             80
         );
-    }
-
-    public function register_settings() {
-        register_setting('gml_settings', 'gml_api_key_encrypted');
-        register_setting('gml_settings', 'gml_api_endpoint');
-        register_setting('gml_settings', 'gml_source_lang');
-        register_setting('gml_settings', 'gml_enabled_languages');
-        register_setting('gml_settings', 'gml_industry');
-        register_setting('gml_settings', 'gml_tone');
-        register_setting('gml_settings', 'gml_protected_terms');
     }
 
     public function enqueue_admin_assets($hook) {
