@@ -86,7 +86,7 @@ class GML_Translate {
      */
     public function activate() {
         // Create database tables
-        require_once GML_PLUGIN_DIR . 'includes/class-installer.php';
+        require_once GML_PLUGIN_DIR . 'includes/vendor/gml-translation-core/src/class-installer.php';
         GML_Installer::activate();
         
         // Flush rewrite rules
@@ -161,8 +161,10 @@ class GML_Translate {
         // Initialize SEO router
         new GML_SEO_Router();
         
-        // Initialize SEO hreflang
-        new GML_SEO_Hreflang();
+        // Translation Core supplies language relationships; the standalone
+        // adapter owns the minimum multilingual SEO markup.
+        $translation_provider = new GML_Translation_Provider();
+        new GML_SEO_Hreflang( $translation_provider );
         
         // Initialize language switcher
         new GML_Language_Switcher();
@@ -171,7 +173,7 @@ class GML_Translate {
         new GML_Language_Detector();
 
         // Initialize multilingual sitemap
-        new GML_Sitemap();
+        new GML_Sitemap( $translation_provider );
 
         // AI workers are optional. Existing translations remain available when
         // credentials are removed, quota is exhausted, or AI is switched off.
@@ -195,7 +197,7 @@ class GML_Translate {
     private function maybe_upgrade_db() {
         $current = get_option( 'gml_db_version', '0' );
         if ( version_compare( $current, GML_Installer::DB_VERSION, '<' ) ) {
-            require_once GML_PLUGIN_DIR . 'includes/class-installer.php';
+            require_once GML_PLUGIN_DIR . 'includes/vendor/gml-translation-core/src/class-installer.php';
             GML_Installer::activate();
         }
     }

@@ -41,6 +41,7 @@ class GML_Autoloader {
         
         // Possible directories
         $directories = [
+            GML_PLUGIN_DIR . 'includes/vendor/gml-translation-core/src/',
             GML_PLUGIN_DIR . 'includes/',
             GML_PLUGIN_DIR . 'admin/',
         ];

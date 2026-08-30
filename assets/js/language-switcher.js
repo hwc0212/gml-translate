@@ -231,12 +231,20 @@
         var sourceLang  = gmlData.sourceLang;
         var languages   = gmlData.languages;
         var homeUrl     = gmlData.homeUrl;
+        var homePath    = (gmlData.homePath || '').replace(/\/$/, '');
 
         if (!currentLang || currentLang === sourceLang) return;
         if (languages.indexOf(currentLang) === -1) return;
 
         var prefix = '/' + currentLang + '/';
         var homeOrigin = homeUrl.replace(/\/$/, '');
+
+        function stripHomePath(path) {
+            if (homePath && (path === homePath || path.indexOf(homePath + '/') === 0)) {
+                path = path.slice(homePath.length) || '/';
+            }
+            return path.charAt(0) === '/' ? path : '/' + path;
+        }
 
         function shouldRewrite(href) {
             if (!href) return false;
@@ -253,6 +261,8 @@
                 path = '/' + href;
             }
 
+            path = stripHomePath(path);
+
             if (/^\/(wp-admin|wp-login\.php)/i.test(path)) return false;
             var langPattern = new RegExp('^/(' + languages.join('|') + ')(/|$)');
             if (langPattern.test(path)) return false;
@@ -263,11 +273,11 @@
         function rewriteHref(href) {
             if (/^https?:\/\//i.test(href)) {
                 var path = href.slice(homeOrigin.length) || '/';
-                if (path.charAt(0) !== '/') path = '/' + path;
+                path = stripHomePath(path);
                 return homeOrigin + prefix + path.replace(/^\//, '');
             }
-            var p = href.charAt(0) === '/' ? href : '/' + href;
-            return prefix + p.replace(/^\//, '');
+            var p = stripHomePath(href.charAt(0) === '/' ? href : '/' + href);
+            return homePath + prefix + p.replace(/^\//, '');
         }
 
         function rewriteLinks(root) {

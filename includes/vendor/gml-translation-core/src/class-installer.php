@@ -2,7 +2,7 @@
 /**
  * GML Installer — Database setup and default options
  *
- * @package GML_Translate
+ * @package GML_Translation_Core
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

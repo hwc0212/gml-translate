@@ -48,7 +48,9 @@ class GML_SEO_Router {
             return;
         }
 
-        $pattern = implode( '|', array_map( 'preg_quote', $this->languages ) );
+        $pattern = class_exists( 'GML_Language_Utils' )
+            ? GML_Language_Utils::language_pattern( $this->languages )
+            : implode( '|', array_map( 'preg_quote', $this->languages ) );
 
         // /ru/some/path/ → WordPress receives gml_lang=ru, gml_path=some/path/
         add_rewrite_rule(
@@ -91,7 +93,9 @@ class GML_SEO_Router {
             return $query_vars;
         }
 
-        $lang = $query_vars['gml_lang'];
+        $lang = class_exists( 'GML_Language_Utils' )
+            ? GML_Language_Utils::normalize_code( $query_vars['gml_lang'] )
+            : $query_vars['gml_lang'];
         if ( ! in_array( $lang, $this->languages, true ) ) {
             return $query_vars;
         }
@@ -198,11 +202,11 @@ class GML_SEO_Router {
      */
     public function prevent_canonical_redirect( $redirect_url, $requested_url = '' ) {
         $path = strtok( $_SERVER['REQUEST_URI'] ?? '/', '?' );
-        if ( ! empty( $this->languages ) ) {
-            $pat = implode( '|', array_map( 'preg_quote', $this->languages ) );
-            if ( preg_match( '#^/(' . $pat . ')(/|$)#', $path ) ) {
-                return false; // suppress redirect
-            }
+        $lang = class_exists( 'GML_URL_Helper' )
+            ? GML_URL_Helper::detect_language( $path, $this->languages )
+            : GML_Language_Utils::detect_prefix_from_path( $path, true );
+        if ( $lang ) {
+            return false;
         }
         return $redirect_url;
     }
@@ -226,28 +230,39 @@ class GML_SEO_Router {
 
         // Detect current language from request URI
         $request_path = strtok( $_SERVER['REQUEST_URI'] ?? '/', '?' );
-        $pat = implode( '|', array_map( 'preg_quote', $this->languages ) );
-        if ( ! preg_match( '#^/(' . $pat . ')(/|$)#', $request_path, $m ) ) {
+        $pat = class_exists( 'GML_Language_Utils' )
+            ? GML_Language_Utils::language_pattern( $this->languages )
+            : implode( '|', array_map( 'preg_quote', $this->languages ) );
+        $current_lang = class_exists( 'GML_URL_Helper' )
+            ? GML_URL_Helper::detect_language( $request_path, $this->languages )
+            : null;
+        if ( ! $current_lang && preg_match( '#^/(' . $pat . ')(/|$)#', $request_path, $m ) ) {
+            $current_lang = $m[1];
+        }
+        if ( ! $current_lang ) {
             return $location; // not on a translated page
         }
 
-        $current_lang = $m[1];
-        $home_origin  = rtrim( home_url(), '/' );
-
         // Parse the redirect location
         $redirect_path = null;
-        if ( preg_match( '#^https?://#i', $location ) ) {
-            // Absolute URL — must be same origin
-            if ( stripos( $location, $home_origin ) !== 0 ) {
-                return $location; // external redirect
+        $is_absolute = preg_match( '#^https?://#i', $location ) || strpos( $location, '//' ) === 0;
+        if ( $is_absolute ) {
+            $redirect_path = class_exists( 'GML_URL_Helper' )
+                ? GML_URL_Helper::internal_absolute_path( $location )
+                : null;
+            if ( $redirect_path === null ) {
+                return $location;
             }
-            $redirect_path = substr( $location, strlen( $home_origin ) ) ?: '/';
         } elseif ( isset( $location[0] ) && $location[0] === '/' ) {
             $redirect_path = $location;
         }
 
         if ( $redirect_path === null ) {
             return $location;
+        }
+
+        if ( class_exists( 'GML_URL_Helper' ) ) {
+            $redirect_path = GML_URL_Helper::strip_home_path( $redirect_path );
         }
 
         // Skip admin/login/API/static resource paths
@@ -261,17 +276,18 @@ class GML_SEO_Router {
         }
 
         // Skip if redirect already has a language prefix
-        if ( preg_match( '#^/(' . $pat . ')(/|$)#', $redirect_path ) ) {
+        if ( ( class_exists( 'GML_URL_Helper' ) && GML_URL_Helper::detect_language( $redirect_path, $this->languages ) )
+            || preg_match( '#^/(' . $pat . ')(/|$)#', $redirect_path ) ) {
             return $location;
         }
 
         // Add language prefix
         $new_path = '/' . $current_lang . '/' . ltrim( $redirect_path, '/' );
 
-        if ( preg_match( '#^https?://#i', $location ) ) {
-            return $home_origin . $new_path;
+        if ( $is_absolute ) {
+            return home_url( $new_path );
         }
-        return $new_path;
+        return class_exists( 'GML_URL_Helper' ) ? GML_URL_Helper::to_root_relative_path( $new_path ) : $new_path;
     }
 
     // ── Language URL helpers ──────────────────────────────────────────────────
@@ -281,25 +297,28 @@ class GML_SEO_Router {
      */
     public static function get_language_urls() {
         $source_lang = get_option( 'gml_source_lang', 'en' );
+        if ( class_exists( 'GML_Language_Utils' ) ) {
+            $source_lang = GML_Language_Utils::normalize_code( $source_lang ) ?: 'en';
+        }
 
         $request_uri = $_SERVER['REQUEST_URI'] ?? '/';
         $path        = strtok( $request_uri, '?' );
         $path        = rtrim( $path, '/' ) . '/';
 
-        // Strip any existing language prefix
         $all_langs = self::get_all_language_codes();
-        if ( ! empty( $all_langs ) ) {
-            $pat  = implode( '|', array_map( 'preg_quote', $all_langs ) );
-            $path = preg_replace( '#^/(' . $pat . ')(/|$)#', '/', $path );
-        }
+        $path      = class_exists( 'GML_URL_Helper' )
+            ? GML_URL_Helper::strip_language_prefix( $path, $all_langs )
+            : GML_Language_Utils::strip_prefix_from_path( $path, false );
 
-        $path = '/' . ltrim( $path, '/' );
-
-        $urls = [ $source_lang => home_url( $path ) ];
+        $urls = [ $source_lang => class_exists( 'GML_URL_Helper' )
+            ? GML_URL_Helper::get_language_url( $path, $source_lang, $source_lang, $all_langs )
+            : home_url( $path ) ];
 
         foreach ( get_option( 'gml_languages', [] ) as $lang ) {
             if ( ( $lang['enabled'] ?? true ) && $lang['code'] !== $source_lang ) {
-                $urls[ $lang['code'] ] = home_url( '/' . $lang['code'] . $path );
+                $urls[ $lang['code'] ] = class_exists( 'GML_URL_Helper' )
+                    ? GML_URL_Helper::get_language_url( $path, $lang['code'], $source_lang, $all_langs )
+                    : home_url( '/' . $lang['code'] . $path );
             }
         }
 
@@ -309,6 +328,9 @@ class GML_SEO_Router {
     // ── Internal helpers ──────────────────────────────────────────────────────
 
     private function get_enabled_languages() {
+        if ( class_exists( 'GML_Language_Utils' ) ) {
+            return GML_Language_Utils::enabled_target_codes();
+        }
         $codes = [];
         foreach ( get_option( 'gml_languages', [] ) as $lang ) {
             if ( $lang['enabled'] ?? true ) {
@@ -319,6 +341,9 @@ class GML_SEO_Router {
     }
 
     private static function get_all_language_codes() {
+        if ( class_exists( 'GML_Language_Utils' ) ) {
+            return GML_Language_Utils::configured_codes( true, false );
+        }
         $source = get_option( 'gml_source_lang', 'en' );
         $codes  = [ $source ];
         foreach ( get_option( 'gml_languages', [] ) as $lang ) {

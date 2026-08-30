@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../bootstrap-mock.php';
-require_once __DIR__ . '/../../includes/class-html-parser.php';
+require_once __DIR__ . '/../../includes/vendor/gml-translation-core/src/class-html-parser.php';
 
 GML_Translate_Test_State::$options['gml_protected_terms'] = [ 'GML', 'WordPress' ];
 $parser = new GML_HTML_Parser();

@@ -19,6 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GML_Sitemap {
 
+    /** @var GML_Translation_Provider_Interface */
+    private $provider;
+
     /** @var string Source language code */
     private $source_lang;
 
@@ -28,8 +31,9 @@ class GML_Sitemap {
     /** @var bool Whether an SEO plugin sitemap was detected */
     private $seo_plugin_detected = false;
 
-    public function __construct() {
-        $this->source_lang = get_option( 'gml_source_lang', 'en' );
+    public function __construct( GML_Translation_Provider_Interface $provider = null ) {
+        $this->provider    = $provider ?: new GML_Translation_Provider();
+        $this->source_lang = $this->provider->get_source_language();
         $this->languages   = $this->get_enabled_languages();
 
         if ( empty( $this->languages ) ) {
@@ -240,39 +244,13 @@ class GML_Sitemap {
      */
     private function build_hreflang_xml( $loc ) {
         $loc = html_entity_decode( $loc, ENT_QUOTES, 'UTF-8' );
-
-        // Extract path from URL
-        $parsed = wp_parse_url( $loc );
-        $path   = $parsed['path'] ?? '/';
-
-        // Skip if this URL already has a language prefix (avoid double-prefixing)
-        foreach ( $this->languages as $lang ) {
-            if ( strpos( $path, '/' . $lang['code'] . '/' ) === 0 ) {
-                return '';
-            }
-        }
-
-        $home = home_url();
         $xml  = "\n";
 
-        // Source language (x-default)
-        $xml .= sprintf(
-            '<xhtml:link rel="alternate" hreflang="%s" href="%s" />' . "\n",
-            esc_attr( $this->source_lang ),
-            esc_url( $loc )
-        );
-        $xml .= sprintf(
-            '<xhtml:link rel="alternate" hreflang="x-default" href="%s" />' . "\n",
-            esc_url( $loc )
-        );
-
-        // Target languages
-        foreach ( $this->languages as $lang ) {
-            $lang_url = rtrim( $home, '/' ) . '/' . $lang['code'] . $path;
+        foreach ( $this->provider->get_alternate_urls( $loc ) as $hreflang => $url ) {
             $xml .= sprintf(
                 '<xhtml:link rel="alternate" hreflang="%s" href="%s" />' . "\n",
-                esc_attr( $lang['code'] ),
-                esc_url( $lang_url )
+                esc_attr( $hreflang ),
+                esc_url( $url )
             );
         }
 
@@ -370,20 +348,15 @@ class GML_Sitemap {
 
         foreach ( $posts as $post ) {
             $permalink = get_permalink( $post );
-            $path      = wp_parse_url( $permalink, PHP_URL_PATH ) ?: '/';
             $modified  = get_post_modified_time( 'c', true, $post );
 
             $xml .= '  <url>' . "\n";
             $xml .= '    <loc>' . esc_url( $permalink ) . '</loc>' . "\n";
             $xml .= '    <lastmod>' . $modified . '</lastmod>' . "\n";
 
-            // Source language + x-default
-            $xml .= '    <xhtml:link rel="alternate" hreflang="' . esc_attr( $this->source_lang ) . '" href="' . esc_url( $permalink ) . '" />' . "\n";
-            foreach ( $this->languages as $lang ) {
-                $lang_url = home_url( '/' . $lang['code'] . $path );
-                $xml .= '    <xhtml:link rel="alternate" hreflang="' . esc_attr( $lang['code'] ) . '" href="' . esc_url( $lang_url ) . '" />' . "\n";
+            foreach ( $this->provider->get_alternate_urls( $permalink ) as $hreflang => $url ) {
+                $xml .= '    <xhtml:link rel="alternate" hreflang="' . esc_attr( $hreflang ) . '" href="' . esc_url( $url ) . '" />' . "\n";
             }
-            $xml .= '    <xhtml:link rel="alternate" hreflang="x-default" href="' . esc_url( $permalink ) . '" />' . "\n";
 
             $xml .= '  </url>' . "\n";
         }
@@ -394,9 +367,9 @@ class GML_Sitemap {
 
     private function get_enabled_languages() {
         $langs = [];
-        foreach ( get_option( 'gml_languages', [] ) as $lang ) {
-            if ( $lang['enabled'] ?? true ) {
-                $langs[] = $lang;
+        foreach ( $this->provider->get_languages() as $code ) {
+            if ( $code !== $this->source_lang && $this->provider->get_translation_status( 0, $code ) === 'complete' ) {
+                $langs[] = [ 'code' => $code, 'enabled' => true ];
             }
         }
         return $langs;

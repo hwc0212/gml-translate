@@ -4,6 +4,8 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+php "$ROOT/bin/translation-core.php" verify
+
 find "$ROOT" -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 
 for test_file in "$ROOT"/tests/integration/*.php; do

@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../bootstrap-mock.php';
-require_once __DIR__ . '/../../includes/class-installer.php';
+require_once __DIR__ . '/../../includes/vendor/gml-translation-core/src/class-installer.php';
 
-$source = file_get_contents( __DIR__ . '/../../includes/class-installer.php' );
+$source = file_get_contents( __DIR__ . '/../../includes/vendor/gml-translation-core/src/class-installer.php' );
 gml_test_assert( GML_Installer::DB_VERSION === '2.4.0', 'pins the reviewed database version' );
 gml_test_assert( strpos( $source, 'gml_index' ) !== false, 'installer owns the translation index' );
 gml_test_assert( strpos( $source, 'gml_queue' ) !== false, 'installer owns the translation queue' );

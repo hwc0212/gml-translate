@@ -1,6 +1,8 @@
 <?php
 /**
  * Translation feature state shared by the standalone and bundled adapters.
+ *
+ * Vendored from GML Translation Core. Do not add product UI here.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

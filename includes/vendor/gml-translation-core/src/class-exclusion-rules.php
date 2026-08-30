@@ -1,6 +1,6 @@
 <?php
 /**
- * GML Exclusion Rules — Flexible translation exclusion by URL, CSS selector, or content
+ * GML Exclusion Rules — Flexible translation exclusion by URL, CSS selector, or content.
  *
  * Allows admins to define rules that prevent specific pages or elements
  * from being translated. Similar to Weglot's exclusion rules feature.

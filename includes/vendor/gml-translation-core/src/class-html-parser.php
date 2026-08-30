@@ -6,7 +6,7 @@
  * to rebuild the page (it truncates on some libxml versions).
  * Instead we return a replacement map and apply it to the original HTML string.
  *
- * @package GML_Translate
+ * @package GML_Translation_Core
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -53,10 +53,10 @@ class GML_HTML_Parser {
      * Apply translations to the original HTML string.
      * $parsed['replacements'] = [ original_text => translated_text ]
      *
-     * IMPORTANT: Before doing str_replace we tokenise all URL-bearing attributes
-     * (href, src, srcset, action, data-src, data-href, poster, formaction, etc.)
-     * so that str_replace never touches URL values — even if a word in the URL
-     * happens to match a translatable text node.
+     * IMPORTANT: Before replacing visible text, we precisely translate the
+     * allowlisted human-readable attributes and then tokenise every complete
+     * HTML tag. URLs, code, CSS, SVG, attributes, and tag names are therefore
+     * invisible to the broad text replacement pass.
      *
      * This is the fix for: /ru/product/portable-childrens-Имя-hanging-buckle/
      * and for broken image src / srcset after translation.
@@ -69,38 +69,11 @@ class GML_HTML_Parser {
             return $html;
         }
 
-        // ── Step 1: tokenise all attribute values that must not be translated ───
+        // ── Step 1: protect non-visible blocks and all markup ────────────────
         //
         // Strategy: tokenise FIRST, translate SECOND, restore THIRD.
-        // Any attribute value that is tokenised is completely invisible to
-        // str_replace — even if its content happens to match a translatable string.
-        //
-        // Categories protected (in execution order):
-        //
-        // BLOCK-LEVEL (run first to prevent attribute patterns matching inside):
-        // L) HTML comments <!-- ... -->
-        // G) <svg>...</svg> blocks
-        // K) <code>...</code> blocks
-        // O) <script>...</script> blocks
-        // P) <style>...</style> blocks
-        // Q) <pre>...</pre> blocks
-        // R) <noscript>...</noscript> blocks
-        // S) <textarea>...</textarea> blocks
-        // T) <iframe>...</iframe> blocks
-        //
-        // ATTRIBUTE-LEVEL:
-        // A) Standard URL attributes: href, src, srcset, action, poster,
-        //    formaction, and common data-src / data-lazy / data-bg variants.
-        // B) style="..." — CSS values, background-image URLs, etc.
-        // C) content="..." on <meta> tags — technical values only.
-        // D) data-* attributes with JSON/URLs/image paths.
-        // E) value="..." on <input>/<button> — form values.
-        // F) ALL remaining data-* attributes.
-        // H) class="..." — CSS class names.
-        // I) id="..." — element IDs.
-        // J) on*="..." — inline event handlers.
-        // M) ARIA state/property attributes + other technical HTML attributes
-        //    (aria-expanded, aria-hidden, role, tabindex, hidden, type, etc.)
+        // Anything tokenised is invisible to str_replace, even when it contains
+        // the same word as a translated visible text node.
 
         $url_tokens    = [];
         $token_counter = 0;
@@ -112,12 +85,7 @@ class GML_HTML_Parser {
             return $token;
         };
 
-        // ── Block-level protection (must run FIRST) ──────────────────────────
-        // These protect entire blocks of HTML that should never be touched.
-        // They must run before attribute-level patterns (A-J) because those
-        // patterns would match syntax inside comments/SVG/code and corrupt
-        // the block structure. E.g. <!-- data-section="header_html" --> would
-        // have its data-* matched by Category F, breaking the comment.
+        // ── Block-level protection (must run first) ──────────────────────────
 
         // L) HTML comments <!-- ... --> — may contain conditional comments,
         //    IE hacks, builder markers, or attribute-like syntax that must
@@ -223,146 +191,18 @@ class GML_HTML_Parser {
             $html
         );
 
-        // ── Attribute-level protection ───────────────────────────────────────
-
-        // A) Standard URL attributes (single-line values are fine with /s flag)
-        $url_attrs = 'href|src|srcset|action|poster|formaction'
-                   . '|data\-src|data\-href|data\-bg|data\-lazy|data\-original'
-                   . '|data\-url|data\-link|data\-image|data\-thumb|data\-full'
-                   . '|data\-large_image|data\-zoom\-image';
-        $html = preg_replace_callback(
-            '/\b(' . $url_attrs . ')\s*=\s*(["\'])(.*?)\2/si',
-            $tokenise,
-            $html
-        );
-
-        // B) style="..." — tokenise entire attribute value
-        $html = preg_replace_callback(
-            '/\bstyle\s*=\s*(["\'])(.*?)\1/si',
-            $tokenise,
-            $html
-        );
-
-        // C) content="..." on <meta> tags — protect URL/technical values only.
-        //    og:title, og:description, twitter:title etc. ARE translated (their
-        //    text is already in the replacements map from parse()).
-        //    We only tokenise content values that look like URLs, file paths,
-        //    or technical directives (robots, viewport, charset, etc.) —
-        //    i.e. values that should NEVER be translated.
-        $html = preg_replace_callback(
-            '/<meta\b([^>]*)\bcontent\s*=\s*(["\'])(.*?)\2([^>]*>)/si',
-            function( $m ) use ( &$url_tokens, &$token_counter ) {
-                $content = $m[3];
-                // Only tokenise if the content looks like a URL, file path,
-                // or a known technical meta value (not human-readable text).
-                $is_technical = (
-                    preg_match( '#^https?://#i', $content )           // absolute URL
-                    || preg_match( '#^/#', $content )                  // root-relative path
-                    || preg_match( '/\.(jpg|jpeg|png|webp|gif|svg|mp4)(\?|$)/i', $content ) // image path
-                    || preg_match( '/^(noindex|nofollow|index|follow|noarchive|max-image-preview|max-snippet)/i', $content ) // robots
-                    || preg_match( '/^width=device-width/i', $content ) // viewport
-                    || preg_match( '/^[a-zA-Z0-9+\/=]{20,}$/', $content ) // base64 / token
-                    || preg_match( '/^\d+$/', $content )               // pure number
-                );
-                if ( ! $is_technical ) {
-                    return $m[0]; // leave translatable meta content alone
-                }
-                $token = '<!--GMLURL_' . $token_counter . '_' . md5( $m[0] ) . '-->';
-                $url_tokens[ $token ] = $m[0];
-                $token_counter++;
-                return $token;
-            },
-            $html
-        );
-
-        // D) data-* attributes containing JSON / URLs / image paths.
-        //    Match any data-* whose value contains a URL-like pattern.
-        //    Using a possessive-style pattern to avoid catastrophic backtracking.
-        $html = preg_replace_callback(
-            '/\bdata-[a-z][a-z0-9_-]*\s*=\s*(["\'])([^"\']*(?:https?:|\.jpg|\.jpeg|\.png|\.webp|\.gif|\.svg|\.mp4|\.webm|"url"|\\\\u)[^"\']*)\1/si',
-            $tokenise,
-            $html
-        );
-
-        // E) value="..." on non-text <input> elements and <button> elements.
-        //    Protects nonces, IDs, submit values, hidden field values.
-        //    We do NOT protect <input type="text|search|email|tel|url|password">
-        //    because those are user-facing labels handled elsewhere.
-        $html = preg_replace_callback(
-            '/(<(?:input|button)\b[^>]*)\bvalue\s*=\s*(["\'])(.*?)\2/si',
-            function( $m ) use ( &$url_tokens, &$token_counter ) {
-                // Check if this is a text-type input — if so, leave it alone
-                if ( preg_match( '/\btype\s*=\s*["\'](?:text|search|email|tel|url|password)["\']/i', $m[1] ) ) {
-                    return $m[0]; // don't tokenise
-                }
-                $token = '<!--GMLURL_' . $token_counter . '_' . md5( $m[0] ) . '-->';
-                $url_tokens[ $token ] = $m[0];
-                $token_counter++;
-                return $token;
-            },
-            $html
-        );
-
-        // F) ALL data-* attributes — tokenise every data-* value regardless of
-        //    content. Page builders (Oxygen, Elementor, Bricks, etc.) store JS
-        //    config, action names, state flags, and selectors in data-* attrs.
-        //    If str_replace hits e.g. data-action="close" → data-action="schließen",
-        //    the JS breaks and hidden elements become visible.
-        //    Category D above already caught URL/JSON data-* attrs; this pass
-        //    catches ALL remaining data-* attrs that D missed.
-        $html = preg_replace_callback(
-            '/\bdata-[a-z][a-z0-9_-]*\s*=\s*(["\'])(.*?)\1/si',
-            $tokenise,
-            $html
-        );
-
-        // H) class="..." — CSS class names must never be translated. Page builders
-        //    use semantic class names like "close", "hidden", "active", "open",
-        //    "menu-item", "button-text" etc. If a class name matches translatable
-        //    text, str_replace would break CSS selectors and JS querySelector calls.
-        $html = preg_replace_callback(
-            '/\bclass\s*=\s*(["\'])(.*?)\1/si',
-            $tokenise,
-            $html
-        );
-
-        // I) id="..." — element IDs are used by JS (getElementById, querySelector)
-        //    and CSS. Must never be translated.
-        $html = preg_replace_callback(
-            '/\bid\s*=\s*(["\'])(.*?)\1/si',
-            $tokenise,
-            $html
-        );
-
-        // J) on*="..." event handler attributes — inline JS code that must not
-        //    be translated. Covers onclick, onchange, onsubmit, onload, etc.
-        $html = preg_replace_callback(
-            '/\bon[a-z]+\s*=\s*(["\'])(.*?)\1/si',
-            $tokenise,
-            $html
-        );
-
-        // M) ARIA state/property attributes and other technical HTML attributes.
-        //    Accordion/toggle/tab components use aria-expanded="false",
-        //    aria-hidden="true", aria-selected, aria-controls, role, tabindex
-        //    etc. to track open/closed state. If str_replace changes "false"
-        //    or "true" (or any value inside these attrs), the JS state machine
-        //    breaks and all panels expand or collapse incorrectly.
-        //    We protect ALL aria-* EXCEPT aria-label and aria-description
-        //    (those contain human-readable text and are in $text_attrs for
-        //    translation via walk()).
-        //    Also protects: role, tabindex, hidden, type, name, for, method,
-        //    enctype, target, rel, media, sizes, loading, decoding, dir, lang,
-        //    translate, slot, is, part, contenteditable, draggable, spellcheck,
-        //    autocomplete, autofocus, disabled, readonly, required, checked,
-        //    selected, multiple, colspan, rowspan, scope, headers, wrap, width,
-        //    height, min, max, step, pattern, maxlength, minlength, accept,
-        //    crossorigin, integrity, referrerpolicy, fetchpriority, nonce.
-        $html = preg_replace_callback(
-            '/\b(?:aria-(?!label\b|description\b)[a-z][a-z0-9-]*|role|tabindex|hidden|type|name|for|method|enctype|target|rel|media|sizes|loading|decoding|dir|lang|translate|slot|is|part|contenteditable|draggable|spellcheck|autocomplete|autofocus|disabled|readonly|required|checked|selected|multiple|colspan|rowspan|scope|headers|wrap|width|height|min|max|step|pattern|maxlength|minlength|accept|crossorigin|integrity|referrerpolicy|fetchpriority|nonce)\s*=\s*(["\'])(.*?)\1/si',
-            $tokenise,
-            $html
-        );
+        // Translate only explicitly human-readable values inside tags, then
+        // hide every remaining tag from the global visible-text replacement.
+        // This closes the last broad str_replace gap: a visible word such as
+        // "div", "main", or "form" must never rewrite an HTML tag name or an
+        // unlisted technical attribute that happens to contain the same text.
+        $html = $this->translate_allowed_tag_attributes( $html, $replacements );
+        $html = $this->map_html_tags( $html, function( $tag ) use ( $tokenise ) {
+            if ( strpos( $tag, '<!--GMLURL_' ) === 0 || strpos( $tag, '<!--GML_NOTRANSLATE_' ) === 0 ) {
+                return $tag;
+            }
+            return $tokenise( [ $tag ] );
+        } );
 
         // Longest originals first to avoid partial-match collisions
         uksort( $replacements, function( $a, $b ) {
@@ -393,7 +233,10 @@ class GML_HTML_Parser {
             $translated = preg_replace( '/^\*{1,2}[^*]+:\*{1,2}\s*/', '', $translated );
             $translated = preg_replace( '/\*{1,2}([^*]+)\*{1,2}/', '$1', $translated );
             $translated = preg_replace( '/__([^_]+)__/', '$1', $translated );
-            $translated = trim( $translated );
+            // Translation records represent text nodes, never markup. Strip
+            // any legacy/manual HTML and encode the final value before it is
+            // inserted back into the raw document.
+            $translated = html_entity_decode( wp_strip_all_tags( trim( $translated ) ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 
             // ── Preserve leading/trailing decorative symbols ──────────────────
             // Gemini often strips decorative Unicode symbols (✔, ✓, ★, ●, ▶, →,
@@ -417,22 +260,22 @@ class GML_HTML_Parser {
                 }
             }
 
+            $safe_translated = htmlspecialchars( $translated, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
             // Pass 1: direct UTF-8 match
-            $html = str_replace( $original, $translated, $html );
+            $html = str_replace( $original, $safe_translated, $html );
 
             // Pass 2: htmlspecialchars-encoded match (covers &amp; &lt; &gt; &quot; &#039;)
             $enc_orig  = htmlspecialchars( $original,   ENT_QUOTES | ENT_HTML5, 'UTF-8' );
-            $enc_trans = htmlspecialchars( $translated,  ENT_QUOTES | ENT_HTML5, 'UTF-8' );
             if ( $enc_orig !== $original ) {
-                $html = str_replace( $enc_orig, $enc_trans, $html );
+                $html = str_replace( $enc_orig, $safe_translated, $html );
             }
 
             // Pass 3: HTML entity-encoded variants for smart quotes, ellipsis, dashes etc.
             // Only run if the original contains any of the mapped characters.
             $entity_orig = strtr( $original, $entity_map );
             if ( $entity_orig !== $original ) {
-                $entity_trans = strtr( $translated, $entity_map );
-                $html = str_replace( $entity_orig, $entity_trans, $html );
+                $html = str_replace( $entity_orig, $safe_translated, $html );
             }
         }
 
@@ -460,7 +303,7 @@ class GML_HTML_Parser {
                     $translated_title = preg_replace( '/^\*{1,2}[^*]+:\*{1,2}\s*/', '', $translated_title );
                     $translated_title = preg_replace( '/\*{1,2}([^*]+)\*{1,2}/', '$1', $translated_title );
                     $translated_title = preg_replace( '/__([^_]+)__/', '$1', $translated_title );
-                    $translated_title = trim( $translated_title );
+                    $translated_title = html_entity_decode( wp_strip_all_tags( trim( $translated_title ) ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 
                     // Safety: strip "Description: ..." suffix that Gemini sometimes
                     // appends when it merges title and description translations.
@@ -471,7 +314,11 @@ class GML_HTML_Parser {
 
                     // Replace the inner text within the <title> tag.
                     // Use $title_inner (raw HTML form) as the search string.
-                    $title_html = str_replace( $title_inner, $translated_title, $title_html );
+                    $title_html = str_replace(
+                        $title_inner,
+                        htmlspecialchars( $translated_title, ENT_QUOTES | ENT_HTML5, 'UTF-8' ),
+                        $title_html
+                    );
                 }
 
                 // Update the token's restoration value with the translated title
@@ -491,6 +338,120 @@ class GML_HTML_Parser {
         return $html;
     }
 
+    /**
+     * Translate the small allowlist of human-readable HTML attributes before
+     * all markup is tokenised. Everything else inside a tag remains byte-for-
+     * byte unchanged.
+     */
+    private function translate_allowed_tag_attributes( $html, array $replacements ) {
+        return $this->map_html_tags(
+            (string) $html,
+            function( $tag ) use ( $replacements ) {
+                if ( ! preg_match( '/^<[a-zA-Z]/', $tag ) ) {
+                    return $tag;
+                }
+                $tag = preg_replace_callback(
+                    '/(\b(?:alt|placeholder|aria-label|aria-description)\s*=\s*)(["\'])(.*?)\2/si',
+                    function( $attribute ) use ( $replacements ) {
+                        return $attribute[1] . $attribute[2]
+                            . $this->translated_attribute_value( $attribute[3], $replacements )
+                            . $attribute[2];
+                    },
+                    $tag
+                );
+
+                if ( strtolower( substr( $tag, 0, 5 ) ) !== '<meta' ) {
+                    return $tag;
+                }
+                if ( ! preg_match( '/\b(?:name|property)\s*=\s*(["\'])(.*?)\1/i', $tag, $key_match ) ) {
+                    return $tag;
+                }
+                $key = strtolower( html_entity_decode( $key_match[2], ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+                if ( ! in_array( $key, $this->seo_meta_names, true ) ) {
+                    return $tag;
+                }
+
+                return preg_replace_callback(
+                    '/(\bcontent\s*=\s*)(["\'])(.*?)\2/si',
+                    function( $attribute ) use ( $replacements ) {
+                        return $attribute[1] . $attribute[2]
+                            . $this->translated_attribute_value( $attribute[3], $replacements )
+                            . $attribute[2];
+                    },
+                    $tag,
+                    1
+                );
+            }
+        );
+    }
+
+    /**
+     * Transform complete HTML tags while respecting quoted > characters used
+     * by page-builder JSON and inline configuration attributes.
+     */
+    private function map_html_tags( $html, callable $callback ) {
+        $html   = (string) $html;
+        $length = strlen( $html );
+        $offset = 0;
+        $result = '';
+
+        while ( $offset < $length ) {
+            $start = strpos( $html, '<', $offset );
+            if ( $start === false ) {
+                $result .= substr( $html, $offset );
+                break;
+            }
+            $result .= substr( $html, $offset, $start - $offset );
+
+            $quote = '';
+            $end   = $start + 1;
+            for ( ; $end < $length; $end++ ) {
+                $char = $html[ $end ];
+                if ( $quote !== '' ) {
+                    if ( $char === $quote && ( $end === 0 || $html[ $end - 1 ] !== '\\' ) ) {
+                        $quote = '';
+                    }
+                    continue;
+                }
+                if ( $char === '"' || $char === "'" ) {
+                    $quote = $char;
+                    continue;
+                }
+                if ( $char === '>' ) {
+                    break;
+                }
+            }
+
+            if ( $end >= $length ) {
+                $result .= substr( $html, $start );
+                break;
+            }
+
+            $tag = substr( $html, $start, $end - $start + 1 );
+            $result .= call_user_func( $callback, $tag );
+            $offset = $end + 1;
+        }
+
+        return $result;
+    }
+
+    private function translated_attribute_value( $raw, array $replacements ) {
+        $decoded = html_entity_decode( (string) $raw, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+        $key = array_key_exists( $raw, $replacements )
+            ? $raw
+            : ( array_key_exists( $decoded, $replacements ) ? $decoded : null );
+        if ( $key === null || trim( (string) $replacements[ $key ] ) === '' ) {
+            return $raw;
+        }
+
+        $translated = wp_strip_all_tags( (string) $replacements[ $key ] );
+        $translated = preg_replace( '/^\*{1,2}[^*]+:\*{1,2}\s*/', '', $translated );
+        $translated = preg_replace( '/\*{1,2}([^*]+)\*{1,2}/', '$1', $translated );
+        $translated = preg_replace( '/__([^_]+)__/', '$1', $translated );
+        $translated = html_entity_decode( trim( $translated ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+        return htmlspecialchars( $translated, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+    }
+
     public function verify_brand_protection( $original, $translated ) {
         $orig_lower  = mb_strtolower( $original );
         $trans_lower = mb_strtolower( $translated );
@@ -498,7 +459,7 @@ class GML_HTML_Parser {
             $term_lower = mb_strtolower( $term );
             if ( mb_strpos( $orig_lower, $term_lower ) === false ) continue;
             if ( mb_strpos( $trans_lower, $term_lower ) === false ) {
-                error_log( 'GML: Brand term "' . $term . '" missing from translation' );
+                error_log( 'GML: A protected brand term is missing from a translation result.' );
                 return false;
             }
         }

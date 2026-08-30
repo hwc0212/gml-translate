@@ -196,6 +196,10 @@ class GML_Language_Switcher {
         $languages_raw = get_option('gml_languages', []);
         $lang_codes    = array_values(array_filter(array_column($languages_raw, 'code')));
         $source_lang   = get_option('gml_source_lang', substr(get_locale(), 0, 2));
+        if ( class_exists( 'GML_Language_Utils' ) ) {
+            $lang_codes  = array_values( array_filter( array_map( [ 'GML_Language_Utils', 'normalize_code' ], $lang_codes ) ) );
+            $source_lang = GML_Language_Utils::normalize_code( $source_lang ) ?: substr(get_locale(), 0, 2);
+        }
         // Include source lang so the regex covers all known prefixes
         $all_codes     = array_unique(array_merge([$source_lang], $lang_codes));
 
@@ -204,6 +208,7 @@ class GML_Language_Switcher {
             'sourceLang'  => $source_lang,
             'languages'   => $all_codes,
             'homeUrl'     => home_url('/'),
+            'homePath'    => class_exists( 'GML_URL_Helper' ) ? GML_URL_Helper::get_home_path() : '',
         ]);
     }
     
@@ -319,6 +324,9 @@ class GML_Language_Switcher {
         // Get source language
         $wp_locale   = get_locale();
         $source_lang = get_option('gml_source_lang', substr($wp_locale, 0, 2));
+        if ( class_exists( 'GML_Language_Utils' ) ) {
+            $source_lang = GML_Language_Utils::normalize_code( $source_lang ) ?: substr($wp_locale, 0, 2);
+        }
 
         // Derive source country from actual WordPress locale (e.g. en_US → us, en_GB → gb)
         $source_country = GML_Admin_Settings::get_country_from_locale($source_lang, $wp_locale);
@@ -330,10 +338,12 @@ class GML_Language_Switcher {
         $all_languages = [$source_lang];
         foreach ($languages as $lang) {
             if ($lang['enabled'] ?? true) {
-                $all_languages[] = $lang['code'];
+                $all_languages[] = class_exists( 'GML_Language_Utils' )
+                    ? GML_Language_Utils::normalize_code( $lang['code'] )
+                    : $lang['code'];
             }
         }
-        $all_languages = array_unique($all_languages);
+        $all_languages = array_values( array_filter( array_unique($all_languages) ) );
 
         // Build country map: lang_code => ISO country code
         // Source language uses locale-derived country; targets use stored country field
@@ -496,7 +506,12 @@ class GML_Language_Switcher {
     private function get_current_language() {
         $request_uri = $_SERVER['REQUEST_URI'] ?? '';
         $path = strtok( $request_uri, '?' );
-        if ( preg_match( '#^/([a-z]{2})(/|$)#', $path, $matches ) ) {
+        if ( class_exists( 'GML_Language_Utils' ) ) {
+            $lang = GML_Language_Utils::detect_prefix_from_path( $path, true );
+            if ( $lang ) {
+                return $lang;
+            }
+        } elseif ( preg_match( '#^/([a-z]{2})(/|$)#', $path, $matches ) ) {
             $lang = $matches[1];
             // Validate against enabled languages to avoid showing unknown codes
             $configured = get_option( 'gml_languages', [] );
@@ -507,7 +522,8 @@ class GML_Language_Switcher {
             }
         }
         $wp_locale = get_locale();
-        return get_option( 'gml_source_lang', substr( $wp_locale, 0, 2 ) );
+        $source = get_option( 'gml_source_lang', substr( $wp_locale, 0, 2 ) );
+        return class_exists( 'GML_Language_Utils' ) ? ( GML_Language_Utils::normalize_code( $source ) ?: substr( $wp_locale, 0, 2 ) ) : $source;
     }
     
     /**

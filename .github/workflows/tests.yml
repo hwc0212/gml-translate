@@ -16,6 +16,15 @@ jobs:
         php: ['7.4', '8.3']
     steps:
       - uses: actions/checkout@v4
+      - id: core-lock
+        shell: bash
+        run: |
+          echo "commit=$(php bin/translation-core.php ref)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: hwc0212/gml-translation-core
+          ref: ${{ steps.core-lock.outputs.commit }}
+          path: .ci/gml-translation-core
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
@@ -24,4 +33,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - run: php bin/translation-core.php verify --source=.ci/gml-translation-core
       - run: bash tests/run-all.sh

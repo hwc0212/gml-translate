@@ -9,7 +9,7 @@
  * These rules are injected into the Gemini API prompt to ensure
  * consistent translations across the entire site.
  *
- * @package GML_Translate
+ * @package GML_Translation_Core
  * @since 2.8.0
  */
 

@@ -335,6 +335,14 @@ define('DISABLE_WP_CRON', true);
 
 ---
 
+## Translation Core 开发
+
+本插件与 GML SEO 的多语言模块共用构建期 Translation Core。发布 ZIP 已包含
+全部运行文件，站长无需安装额外依赖。维护与校验流程见
+[docs/TRANSLATION-CORE.md](docs/TRANSLATION-CORE.md)。
+
+---
+
 ## 📄 许可证
 
 GPL v2 or later

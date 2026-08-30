@@ -38,3 +38,8 @@ dist/
 # Composer
 vendor/
 composer.lock
+
+# Build-time Translation Core is committed so release/source ZIPs are complete.
+!includes/vendor/
+!includes/vendor/gml-translation-core/
+!includes/vendor/gml-translation-core/**

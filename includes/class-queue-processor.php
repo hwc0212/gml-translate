@@ -275,6 +275,7 @@ class GML_Queue_Processor {
                  WHERE option_name LIKE '_transient_gml_page_%'
                     OR option_name LIKE '_transient_timeout_gml_page_%'"
             );
+            self::clear_readiness_cache();
         }
     }
     
@@ -362,7 +363,22 @@ class GML_Queue_Processor {
              SET status = 'pending', attempts = 0, error_message = NULL
              WHERE status = 'failed'"
         );
-        
+        self::clear_readiness_cache();
         return $updated;
+    }
+
+    /**
+     * Compatibility adapter for Core readiness consumers.
+     */
+    public static function language_is_index_ready( $lang ) {
+        return class_exists( 'GML_Translation_Readiness' )
+            && GML_Translation_Readiness::language_is_index_ready( $lang );
+    }
+
+    public static function clear_readiness_cache( $lang = '' ) {
+        unset( $lang );
+        if ( class_exists( 'GML_Translation_Readiness' ) ) {
+            GML_Translation_Readiness::clear_cache();
+        }
     }
 }
