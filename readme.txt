@@ -1,0 +1,79 @@
+=== GML Translate ===
+Contributors: huwencai
+Tags: translate, multilingual, ai, hreflang, language switcher
+Requires at least: 6.0
+Tested up to: 7.1
+Requires PHP: 7.4
+Stable tag: 2.11.0
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+AI multilingual translation for WordPress with stable language URLs, editable translations, glossary, queue controls, hreflang, and sitemap integration.
+
+== Description ==
+
+GML Translate is a standalone multilingual plugin focused on stable WordPress language routing and maintainable AI-assisted translation.
+
+Multilingual Site and AI Translation are separate states. Removing a provider key, exhausting quota, pausing the queue, or disabling AI Translation only stops new AI work. Existing translated pages, saved translations, language URLs, switchers, manual translations, hreflang, and sitemap variants remain available.
+
+= Features =
+
+* Language-prefixed WordPress routes and subdirectory-safe URL handling.
+* Google Gemini and DeepSeek translation providers.
+* Bounded, resumable queue with locks, failure states, circuit breaking, and per-language manual recovery.
+* Translation memory, current-page lookups, manual translation editor, glossary, protected terms, and exclusion rules.
+* Content crawler that runs only in admin/WP-Cron and uses signed same-site requests.
+* Menu, shortcode, widget, and automatic language switcher positions.
+* Browser-language detection.
+* Translated metadata, self-referencing canonical behavior, hreflang, and multilingual sitemap relationships.
+* Redis/Memcached-safe cache generation invalidation without whole-site cache flushes.
+
+= Relationship with GML AI SEO =
+
+If you only need multilingual translation, use GML Translate.
+
+If you want the complete GML SEO suite with technical SEO, search data and AI SEO workflow, use GML SEO.
+
+GML SEO already includes multilingual translation, so installing both is normally unnecessary.
+
+When both are active, GML Translate keeps the multilingual runtime until an administrator confirms handover, while GML SEO owns final canonical, meta, Open Graph, Schema, hreflang, and sitemap output. Existing data is never silently deleted.
+
+== Installation ==
+
+1. Upload and activate GML Translate.
+2. Select source and destination languages.
+3. Enable Multilingual Site and verify language routes before using AI.
+4. Save a Gemini or DeepSeek key, then enable AI Translation if new translations are needed.
+5. Translate one language and a small page sample first.
+6. Review glossary, links, layout, forms, canonical, hreflang, and sitemap before crawling the full site.
+
+== Frequently Asked Questions ==
+
+= Do translated pages disappear when the API key is removed? =
+
+No. Existing multilingual output remains available. Only new AI translation work stops.
+
+= Does the frontend call Gemini or DeepSeek? =
+
+No. Ordinary frontend requests only perform routing, cache and translation lookups, lightweight rendering, and minimum multilingual SEO output.
+
+= Can I edit AI translations? =
+
+Yes. Manual translations are stored separately and take priority over normal automatic work.
+
+= Is GML Translate a complete SEO plugin? =
+
+No. It provides only the minimum multilingual SEO output. Use GML AI SEO or another single SEO authority for complete SEO management.
+
+== Changelog ==
+
+= 2.11.0 =
+
+* Renamed the public product to GML Translate while preserving its folder, text domain, options, tables, and URLs.
+* Adopted a locked, build-time vendored shared Translation Core with no runtime dependency.
+* Separated multilingual availability from AI translation.
+* Added safe dual-plugin behavior and deferred final SEO output to GML AI SEO when both are active.
+* Centralized secure provider transport, bounded queue/crawler work, current-page lookups, and Redis-safe invalidation.
+* Expanded regression coverage for state, routes, subdirectories, output ownership, transport, queue/cache, parser, crawler, installer, rules, and admin registration.
+
+See CHANGELOG.md and GitHub Releases for complete release history.

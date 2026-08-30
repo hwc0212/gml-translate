@@ -1,352 +1,202 @@
-# GML - Gemini Dynamic Translate for WordPress
+# GML Translate
 
-AI-powered dynamic translation plugin using Google Gemini API with Weglot-style architecture and native i18n hybrid mode.
+**AI Multilingual Translation for WordPress**
 
-**作者**: huwencai.com  
-**版本**: 2.9.0  
+GML Translate 是独立的 WordPress AI 多语言插件，专注解决一件事：以可控成本建立稳定、可维护、可人工修订的多语言网站。
 
-**许可**: GPL v2 or later
+它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。这些属于 GML AI SEO。
 
----
+## 产品定位
 
-## 📋 目录
+GML Translate 提供：
 
-- [核心特性](#-核心特性)
-- [系统要求](#-系统要求)
-- [快速开始](#-快速开始)
-- [语言切换器](#-语言切换器)
-- [翻译管理](#-翻译管理)
-- [排除规则](#-排除规则)
-- [术语表](#-术语表)
-- [核心架构](#-核心架构)
-- [性能指标](#-性能指标)
-- [高级配置](#-高级配置)
-- [故障排除](#-故障排除)
-- [开发者指南](#-开发者指南)
+- 多语言 URL 与 WordPress 路由。
+- AI 翻译队列、翻译记忆与页面缓存。
+- 术语表、保护词、排除规则和人工翻译编辑。
+- 语言切换器与浏览器语言检测。
+- hreflang、alternate URL、SEO Meta 翻译与多语言 sitemap 的最低必要 SEO 支持。
 
----
+插件可独立安装。Release ZIP 包含全部运行代码，不要求 Composer、npm、Git submodule、第三个 Core 插件或 GML AI SEO。
 
-## 🎯 核心特性
+后台默认源语言为英文，遵循 WordPress `gml-translate` text domain。发行包包含简体中文、繁体中文、德语、法语、西班牙语、葡萄牙语、日语、韩语、俄语和阿拉伯语 starter packs；尚未翻译的字符串安全回退到英文。
 
-### 多引擎翻译支持（v2.9.0 新增）
-- **Google Gemini**: 默认翻译引擎，使用 Gemini 2.0 Flash 模型
-- **DeepSeek**: 可选翻译引擎，使用 OpenAI 兼容 API，支持自定义模型和 API 端点
-- **一键切换**: 管理后台下拉选择，API Key 独立存储，切换不丢失配置
+## 为什么存在
 
-### 混合型拦截机制（创新架构）
-- **第一层**: WordPress 核心 UI 使用原生 .mo 语言包（节省 Token）
-- **第二层**: 自定义内容使用 Gemini AI 翻译（高质量）
+普通自动翻译工具常见的问题是 URL 不稳定、翻译无法修改、队列失败后反复扣费、页面更新后缓存不刷新，以及 canonical、hreflang 和 sitemap 互相冲突。GML Translate 把这些问题拆成可观察、可暂停、可恢复的工作流。
 
-### 全站自动翻译（v2.7.0 新增）
-- **内容爬虫**: 自动发现所有已发布的页面、文章、产品，无需手动访问即可完成全站翻译
-- **优先级机制**: 被访问的页面优先翻译，爬虫作为补充确保未访问页面也能被翻译
-- **进度追踪**: 实时显示爬取进度，支持随时启停
+核心原则：
 
-### 翻译内容管理（v2.7.0 新增）
-- **可视化编辑器**: 类似 Weglot 的翻译管理界面，浏览、搜索、编辑所有翻译
-- **手动修改**: 手动编辑的翻译标记为 `manual`，不会被自动翻译覆盖
-- **筛选功能**: 按 All / Auto / Manual 筛选翻译内容
+- 多语言站点与 AI 翻译是两个状态。
+- AI 只负责产生新译文，不能决定已翻译页面是否继续存在。
+- API Key 删除、额度不足或 Provider 故障时，已有语言 URL 和译文仍应正常访问。
+- 普通前台请求不调用 AI，也不执行全站扫描。
+- 队列恢复必须小批量、人工确认、可暂停。
 
-### 失败重试（v2.7.0 新增）
-- 翻译失败的条目可一键重试（单语言或全部）
-- 失败数量在管理面板清晰显示
+## 适用对象
 
-### 浏览器语言自动检测（v2.8.0 新增）
-- **智能重定向**: 首次访问首页时自动检测浏览器语言偏好，重定向到匹配的语言版本
-- **Cookie 记忆**: 通过 cookie 记住用户选择，回访不重复重定向
-- **SEO 安全**: 自动跳过搜索引擎爬虫，不影响 SEO 索引
-- **可选功能**: 管理后台一键开关
+- 只需要 WordPress 多语言与 AI 翻译，不需要完整 SEO Suite 的网站。
+- 需要固定 `/de/`、`/fr/`、`/es/` 等语言路径的企业站和内容站。
+- 需要术语一致、品牌词保护和人工修订的外贸网站。
+- 需要从自动翻译逐步过渡到人工审核内容的团队。
 
-### 翻译排除规则（v2.8.0 新增）
-- **URL 排除**: 精确匹配、前缀匹配、包含匹配、正则匹配
-- **CSS 选择器排除**: 按 class 或 ID 排除特定元素
-- **可视化管理**: 管理后台 Exclusion Rules 标签页
+## 主要功能
 
-### 术语表 / 翻译规则（v2.8.0 新增）
-- **固定翻译**: "Always translate X as Y" 规则，确保术语翻译一致
-- **按语言设置**: 不同语言可以有不同的翻译规则
-- **AI 集成**: 规则注入到 Gemini API prompt 中
+- Multilingual Site：语言路由、切换器、已有译文、hreflang 和 sitemap。
+- AI Translation：新翻译、Crawler、Queue 与 AI 重翻译。
+- Translation Queue：有界批次、锁、熔断、失败状态、单语言人工恢复。
+- Translation Memory：相同原文复用译文，人工译文优先。
+- Translation Editor：搜索、筛选、编辑和删除单条译文。
+- Glossary：指定术语译法和永不翻译的品牌/型号。
+- Exclusions：按 URL、CSS selector 和规则跳过页面或元素。
+- Content Crawler：在后台/WP-Cron 中发现已发布内容与模板文本。
+- Language Switcher：菜单、短代码、Widget 与自动位置。
+- Browser Language Detection：只在受控条件下建议或跳转到可用语言。
+- Multilingual SEO：translated title/meta、canonical、hreflang、alternate URL 和 sitemap。
 
-### 多语言 XML Sitemap（v2.8.0 新增）
-- **自动生成**: `/gml-sitemap.xml` 包含所有语言版本的 hreflang 标注
-- **按类型分组**: 页面、文章、产品各自独立的子站点地图
-- **robots.txt 集成**: 自动添加 sitemap 链接
+## 支持的 AI Provider
 
-### 全局哈希去重
-- 基于 MD5 的自动去重
-- 页头/页脚相同文本只翻译一次
-- 缓存命中率 >95%
+独立版当前支持：
 
-### SEO 优化
-- SEO 友好的 URL 结构（/en/, /ja/ 等）
-- 自动注入 hreflang 标签
-- Canonical URL 支持
-- 针对 SEO Meta 使用专门 Prompt
+- Google Gemini
+- DeepSeek
 
-### 品牌词保护
-- 自动识别品牌词（GML, WordPress 等）
-- 翻译时保持品牌词不变
-- 三重验证机制
+Provider 层统一处理：
 
-### 异步队列处理
-- WP Cron 自动处理
-- 批量翻译（30条/批次，按语言+类型分组单次 API 调用）
-- 优先级系统（SEO > 属性 > 短文本 > 长文本）
-- 错误重试机制（最多 3 次）
+- API Key 加密保存。
+- 精确官方 HTTPS host 白名单。
+- 不在 URL、HTML、REST、日志或错误信息中暴露 Key。
+- 不跟随重定向，限制请求与响应大小。
+- 最多一次受控重试、失败分类和熔断。
 
-### 语言切换器
-- 4种显示样式（dropdown, links, flags, buttons）
-- Shortcode / Widget / PHP 函数支持
-- 自定义 CSS
+切换 Provider 不会删除已有译文。SEO Prompt 与 Translation Prompt 分离；GML Translate 只维护翻译 Prompt。
 
----
+## 快速开始
 
-## 📋 系统要求
+1. 安装并启用 `gml-translate-x.x.x.zip`。
+2. 在 Settings 选择源语言和目标语言。
+3. 开启 Multilingual Site，先验证每个语言首页、页面、产品和分类 URL。
+4. 需要新翻译时，保存 Gemini 或 DeepSeek Key，再开启 AI Translation。
+5. 先选择一个目标语言和少量页面试译，检查品牌词、链接、布局、表单和 SEO Meta。
+6. 填写 Glossary 与 Exclusions，再启动全站 Crawler。
+7. 在 Translations 中观察 pending、processing、failed 和完成度；不要在大量失败时“全部重试”。
+8. 完成后检查 canonical、hreflang、语言回链和 sitemap，再决定是否允许搜索引擎索引。
 
-- WordPress 6.0+
-- PHP 7.4+
-- MySQL 5.7+ / MariaDB 10.3+
-- Google Gemini API Key
+## 语言与路由
 
----
+语言 URL 使用站点相对路径工具生成，兼容根目录和 WordPress 子目录安装。例如站点位于 `/staging/` 时：
 
-## 🚀 快速开始
-
-### 1. 安装插件
-
-上传 ZIP 文件到 WordPress 后台（插件 → 安装插件 → 上传插件），或通过 FTP 上传到 `wp-content/plugins/` 目录。
-
-### 2. 激活并配置
-
-1. 激活插件
-2. 进入 WordPress 后台 → GML Translate
-3. 输入 Gemini API Key（获取地址: https://makersuite.google.com/app/apikey）
-4. 选择源语言和目标语言
-5. 保存设置
-
-### 3. 添加语言切换器
-
-```
-[gml_language_switcher style="dropdown"]
+```text
+正确：https://example.com/staging/de/about/
+错误：https://example.com/staging/de/staging/about/
 ```
 
-### 4. 开始翻译
+每次在 WPvivid 或其他子目录测试站启用多语言后，应固定验证：
 
-**方式 A: 自动翻译全站（推荐）**
+1. `/子目录/de/页面/` 返回 200。
+2. 语言切换器只包含一次站点子目录。
+3. canonical、hreflang 和 sitemap URL 只包含一次子目录。
+4. 内部链接和重定向不会跳回源语言或重复前缀。
+5. 推送主站后 URL 中不残留 staging 目录。
 
-进入 GML Translate → Translations 标签页，点击「🚀 Start Auto-Translate」，插件会自动爬取所有内容并加入翻译队列。
+修改语言后，插件只标记 rewrite rules 在安全时机刷新，不在每个前台请求执行昂贵刷新。
 
-**方式 B: 按需翻译**
+## 翻译工作流
 
-访问带语言前缀的 URL（如 `https://yoursite.com/en/about/`），页面内容会自动加入翻译队列，1-2 分钟后刷新即可看到翻译。
+Multilingual Site Enabled 控制：
 
-### 5. 管理翻译
+- 语言 URL、Router、Switcher。
+- 已保存译文的读取与页面显示。
+- hreflang 与 sitemap language variants。
+- 翻译缓存读取。
 
-在 Translations 标签页，点击每个语言旁的 ✏️ 按钮，可以浏览、搜索和手动编辑翻译内容。
+AI Translation Enabled 控制：
 
----
+- 产生新 AI 译文。
+- Crawler 翻译、Queue 处理和 AI 重翻译。
 
-## 🎨 语言切换器
+没有 Key 或 AI Translation 关闭时，只停止新 AI 工作。人工译文、翻译记忆和已存在的语言页面不会失效。
 
-### 显示样式
+队列采用有界恢复：Provider 异常、账号额度或模型错误会打开熔断并暂停。修复 Key/模型后，先测试连接，再对一个语言重试最多 25 条；连接成功不会自动恢复数万条队列。
 
-| 样式 | Shortcode | 说明 |
-|------|-----------|------|
-| Dropdown | `[gml_language_switcher style="dropdown"]` | 紧凑，适合移动端 |
-| Links | `[gml_language_switcher style="links"]` | 清晰易读 |
-| Flags | `[gml_language_switcher style="flags"]` | 视觉直观 |
-| Buttons | `[gml_language_switcher style="buttons"]` | 现代美观 |
+## 术语表
 
-### 自定义选项
+Glossary 用于指定产品、行业和品牌术语：
 
-```
-[gml_language_switcher style="dropdown" show_flags="yes" show_names="yes"]
-```
+- “Always translate X as Y” 可按目标语言设置固定译法。
+- Protected Terms 保留品牌、型号、认证和专有名词。
+- 规则数量、单项长度、Prompt 长度和正则回溯均有限制，避免管理员输入拖慢后台或 Provider 请求。
 
----
+先完善术语表再大批量翻译，可以减少重复重翻译和 API 成本。
 
-## ✏️ 翻译管理
+## 翻译编辑器
 
-### Translations 标签页功能
+Translation Editor 支持：
 
-- **全局控制**: Start All / Pause All 控制所有语言的翻译
-- **单语言控制**: 每个语言可独立启停
-- **自动翻译**: 🚀 Start Auto-Translate 爬取全站内容
-- **失败重试**: 🔄 Retry Failed 重试失败的翻译
-- **缓存管理**: 清除待处理队列 / 清除所有翻译
+- 按原文或译文搜索。
+- 按语言、自动/人工状态筛选。
+- 编辑单条译文并标记为 manual。
+- 删除错误译文，让指定内容重新进入受控流程。
 
-### 翻译编辑器
+人工译文优先，不应被普通自动任务覆盖。保存后只失效相关语言与对象的缓存，不清空全站 Redis/Memcached。
 
-点击每个语言旁的 ✏️ 按钮打开编辑器：
+## SEO 兼容
 
-- **浏览**: 分页显示所有翻译（每页20条）
-- **搜索**: 按原文或译文搜索
-- **筛选**: All / Auto / Manual
-- **编辑**: 点击 Edit 修改译文，保存后标记为 Manual（不会被自动翻译覆盖）
-- **删除**: 删除单条翻译（下次访问页面时会重新加入队列）
+独立运行时，GML Translate 提供多语言网站最低限度 SEO：
 
----
+- 正确语言 URL 与自引用 canonical。
+- 源语言、目标语言和 `x-default` hreflang。
+- translated title、description 与社交 Meta。
+- 多语言 sitemap 或对现有 sitemap 的语言关系集成。
+- 未完成到可索引标准的语言页面默认 noindex，不进入 hreflang/sitemap。
 
-## 🚫 排除规则
+它不是完整 SEO 插件。Titles & Meta 策略、通用 Schema、重定向、404、GSC 和性能优化应由 GML AI SEO 或其他单一 SEO authority 负责。
 
-### Exclusion Rules 标签页
+当 GML AI SEO 与 GML Translate 同时启用时：
 
-在管理后台 GML Translate → Exclusion Rules 中管理翻译排除规则：
+- GML Translate 暂时保留路由、切换器、译文渲染和已有翻译。
+- GML AI SEO 负责最终 canonical、meta、Open Graph、Schema、hreflang 和 sitemap。
+- 不输出重复 canonical、hreflang、sitemap、router 或 switcher。
+- 管理员在 GML AI SEO 中确认接管后，独立插件才会被停用；数据不会删除。
 
-| 规则类型 | 示例 | 说明 |
-|----------|------|------|
-| URL is exactly | `/checkout/` | 精确匹配，排除结账页 |
-| URL starts with | `/my-account/` | 前缀匹配，排除所有账户页 |
-| URL contains | `cart` | 包含匹配，排除含 "cart" 的 URL |
-| URL matches regex | `/^\/api\//` | 正则匹配 |
-| CSS selector | `.no-translate` | 排除带此 class 的元素 |
-| CSS selector | `#legal-notice` | 排除此 ID 的元素 |
+## 性能与安全
 
-每条规则可独立启用/禁用，支持添加备注。
+- 普通前台只做路由、当前页面译文 lookup、缓存读取与轻量渲染。
+- AI、Crawler 和 Queue 只在后台、WP-Cron 或管理员触发的异步任务中运行。
+- 当前页面只查询页面上实际出现的 source hashes，不预加载整个语言字典。
+- 页面缓存区分登录、WooCommerce/session、密码、nonce/CAPTCHA、private/no-store 和追踪参数。
+- 内容、菜单、term、主题或译文更新时使用 generation 失效，兼容 Redis/Memcached，不执行全局 cache flush。
+- Crawler 只请求同一 scheme、host、port 和 WordPress 安装路径，使用签名请求、不跟随重定向，并限制响应大小。
 
----
+API Key 使用 OpenSSL 加密。OpenSSL 不可用时，插件拒绝保存新的明文 Key，并保留原有安全值。
 
-## 📖 术语表
+## 限制
 
-### Glossary 标签页
+- 动态 JavaScript 应用、会员区、结账、账户、个性化价格和复杂表单默认不适合共享 HTML 缓存，应通过排除规则处理。
+- 页面构建器、缓存/CDN 和非标准 Nginx rewrite 仍需逐站测试。
+- 自动翻译不能保证产品参数、法律、医疗、认证和商业承诺准确，发布前必须人工审核。
+- 低流量站点的 WP-Cron 可能运行不及时，建议配置服务器 Cron。
+- 完成度不足的语言不应直接上线索引。
 
-管理翻译术语规则，确保特定术语在所有页面中翻译一致：
+## 与 GML AI SEO 的关系
 
-**Protected Terms（永不翻译）**: 品牌名、产品名等永远保持原文不翻译。
+> If you only need multilingual translation, use GML Translate.
+>
+> If you want the complete GML SEO suite with technical SEO, search data and AI SEO workflow, use GML SEO.
+>
+> GML SEO already includes multilingual translation, so installing both is normally unnecessary.
 
-**Glossary Rules（固定翻译）**: 指定特定术语必须翻译为指定译文。
+简而言之：只做多语言用 GML Translate；需要完整 SEO、搜索/广告/询盘数据和 AI SEO 工作流用 GML AI SEO。GML AI SEO 已内置翻译能力，通常不需要同时安装两个插件。
 
-| 源术语 | 翻译为 | 语言 |
-|--------|--------|------|
-| Add to Cart | Agregar al carrito | Spanish |
-| Free Shipping | 包邮 | Chinese |
-| Contact Us | お問い合わせ | Japanese |
+## Changelog 与开发
 
-规则会注入到 AI 翻译的 prompt 中，确保 Gemini 遵循。修改规则后建议清除受影响语言的翻译缓存。
+- [完整版本记录](CHANGELOG.md)
+- [共享 Translation Core 说明](docs/TRANSLATION-CORE.md)
+- 测试：`bash tests/run-all.sh`
+- 验证 vendored Core：`php bin/translation-core.php verify`
+- 更新 vendored Core：`php bin/translation-core.php sync /path/to/gml-translation-core`
 
----
+共享 Core 只在开发/构建阶段同步。两个产品锁定同一 Core commit，CI 会阻止发布包发生漂移。
 
-## 🗺️ 多语言 Sitemap
+## License
 
-插件自动生成多语言 XML 站点地图：
-
-- **索引**: `https://yoursite.com/gml-sitemap.xml`
-- **子地图**: `https://yoursite.com/gml-sitemap-page.xml`、`gml-sitemap-post.xml`、`gml-sitemap-product.xml`
-
-每个 URL 包含所有语言版本的 hreflang 标注，帮助搜索引擎理解多语言页面关系。自动添加到 `robots.txt`。
-
----
-
-## 🏗️ 核心架构
-
-### 数据流
-
-```
-用户请求 → Output Buffer 拦截 → HTML Parser 提取文本
-  → Translator 查缓存 → 命中：直接替换 / 未命中：加入队列
-  → Queue Processor (WP Cron) 批量调用 Gemini API → 保存到索引
-```
-
-### 核心组件
-
-```
-GML_Translate (主类)
-  ├── GML_Output_Buffer      (前端 HTML 拦截与翻译)
-  ├── GML_HTML_Parser         (HTML 解析与重建)
-  ├── GML_Translator          (翻译引擎，哈希去重)
-  ├── GML_Gemini_API          (Gemini API 集成)
-  ├── GML_Queue_Processor     (异步队列处理)
-  ├── GML_Content_Crawler     (全站内容爬虫)
-  ├── GML_Translation_Editor  (翻译编辑器 AJAX)
-  ├── GML_Language_Detector   (浏览器语言检测) ← v2.8.0
-  ├── GML_Exclusion_Rules     (翻译排除规则) ← v2.8.0
-  ├── GML_Glossary            (术语表/翻译规则) ← v2.8.0
-  ├── GML_Sitemap             (多语言 XML Sitemap) ← v2.8.0
-  ├── GML_SEO_Router          (URL 路由)
-  ├── GML_SEO_Hreflang        (hreflang 标签)
-  └── GML_Language_Switcher   (语言切换器)
-```
-
-### 数据库表
-
-| 表名 | 用途 |
-|------|------|
-| `wp_gml_index` | 翻译记忆库（source_hash → translated_text） |
-| `wp_gml_queue` | 异步翻译队列（pending/processing/completed/failed） |
-
----
-
-## 📊 性能指标
-
-| 指标 | 数值 | 说明 |
-|------|------|------|
-| 缓存命中率 | >95% | 第二次访问直接读缓存 |
-| 页面加载增加 | <200ms | 输出缓冲处理时间 |
-| API Token 节省 | ~90% | 批量翻译 + 哈希去重 + 缓存 |
-| 队列处理 | 30 条/批次 | 按语言+类型分组，单次 API 调用 |
-
----
-
-## 🔧 高级配置
-
-### 自定义排除选择器
-
-```php
-add_filter('gml_exclude_selectors', function($selectors) {
-    $selectors[] = '.my-custom-class';
-    return $selectors;
-});
-```
-
-### 自定义品牌词保护
-
-```php
-add_filter('gml_protected_terms', function($terms) {
-    $terms[] = 'MyBrand';
-    return $terms;
-});
-```
-
-### 系统 Cron（低流量网站推荐）
-
-```php
-// wp-config.php
-define('DISABLE_WP_CRON', true);
-```
-
-```bash
-# 服务器 crontab
-* * * * * wget -q -O - https://yoursite.com/wp-cron.php?doing_wp_cron >/dev/null 2>&1
-```
-
----
-
-## 🐛 故障排除
-
-| 问题 | 解决方案 |
-|------|----------|
-| 翻译不生效 | 检查 API Key、语言是否启用、URL 是否含语言前缀，等待 1-2 分钟 |
-| 队列不处理 | 检查 WP Cron 是否运行，低流量网站建议配置系统 Cron |
-| 页面布局错乱 | 清除浏览器/WordPress 缓存，检查主题兼容性 |
-| 翻译失败 | 在 Translations 标签页点击 Retry Failed 重试 |
-| 自动翻译遗漏 | 使用 🚀 Start Auto-Translate 爬取全站内容 |
-
-详细日志查看: `wp-content/debug.log`
-
----
-
-## Translation Core 开发
-
-本插件与 GML SEO 的多语言模块共用构建期 Translation Core。发布 ZIP 已包含
-全部运行文件，站长无需安装额外依赖。维护与校验流程见
-[docs/TRANSLATION-CORE.md](docs/TRANSLATION-CORE.md)。
-
----
-
-## 📄 许可证
-
-GPL v2 or later
-
-**作者**: huwencai.com  
-**版本**: 2.9.0  
-**最后更新**: 2026-03-10
+GPL v2 or later.

@@ -1,174 +1,66 @@
-# GML 安装指南
+# GML Translate 安装指南
 
-GML - Gemini Dynamic Translate 插件的安装和配置指南。
+## 安装
 
----
+1. 在 GitHub Release 下载 `gml-translate-2.11.0.zip`。
+2. 进入 WordPress 后台“插件 -> 安装插件 -> 上传插件”。
+3. 上传 ZIP、安装并启用。
+4. 也可以把 ZIP 中的 `gml-translate/` 目录上传到 `wp-content/plugins/`。
 
-## 📦 安装方法
+Release ZIP 的第一层必须是 `gml-translate/`，不能再套一层父目录。
 
-### 方法 1: WordPress 后台上传（推荐）
+## 初始配置
 
-1. 下载插件 ZIP 文件（`gml-translate-v2.8.0.zip`）
-2. 登录 WordPress 后台
-3. 进入 **插件 → 安装插件 → 上传插件**
-4. 选择 ZIP 文件，点击 **"现在安装"**
-5. 安装完成后点击 **"激活插件"**
+1. 进入 `GML Translate -> Settings`。
+2. 选择源语言和目标语言。
+3. 先开启 Multilingual Site，保存后检查一个目标语言 URL。
+4. 只有需要产生新译文时，才配置 Gemini 或 DeepSeek API Key 并开启 AI Translation。
+5. 在 Language Switcher 中选择菜单、Widget、短代码或自动位置。
+6. 先翻译一个语言和少量页面，检查术语、链接、布局、表单与 SEO Meta。
+7. 完善 Glossary 和 Exclusions 后，再启动全站 Crawler。
 
-### 方法 2: FTP 上传
+Multilingual Site 与 AI Translation 是两个独立状态。删除 Key、额度不足或关闭 AI Translation，只停止新 AI 翻译，不会让已有语言 URL 和译文失效。
 
-1. 解压 ZIP 文件
-2. 上传 `gml-translate` 文件夹到 `wp-content/plugins/`
-3. 在 WordPress 后台 → 插件 → 激活
+## 验证
 
----
+至少检查：
 
-## ⚙️ 初始配置
+- 语言首页、文章、页面、产品和分类返回 200。
+- URL 只包含一次语言前缀和 WordPress 子目录。
+- 切换器能从每种语言返回其他语言对应页面。
+- canonical 自引用，hreflang 与回链一致。
+- 未完成语言 noindex，且不进入 hreflang/sitemap。
+- 登录与未登录前台的菜单、表单、购物车和页面构建器组件正常。
 
-### 步骤 1: 获取 Gemini API Key
+## 翻译失败
 
-1. 访问 https://makersuite.google.com/app/apikey
-2. 登录 Google 账号，点击 "Create API Key"
-3. 复制生成的 API Key
+大量 failed 时不要批量重试：
 
-### 步骤 2: 配置插件
+1. 保持 Queue 暂停。
+2. 检查 Provider、Model、Key、额度和账号状态。
+3. 执行连接测试；成功只清除熔断，不自动恢复队列。
+4. 选择一个语言，重试最多 25 条样本。
+5. 样本通过后再逐步恢复。
 
-1. 进入 WordPress 后台 → **GML Translate** → **Settings** 标签页
-2. 粘贴 API Key
-3. 选择源语言（网站原始语言）
-4. 添加目标语言（要翻译成的语言）
-5. 点击 **"保存设置"**
+## WP-Cron
 
-### 步骤 3: 添加语言切换器
+低流量网站可在 `wp-config.php` 禁用访客触发 Cron：
 
-在页面/文章中添加 Shortcode：
-```
-[gml_language_switcher style="dropdown"]
-```
-
-或在主题中使用 PHP：
 ```php
-<?php
-if (function_exists('gml_language_switcher')) {
-    gml_language_switcher(['style' => 'flags']);
-}
-?>
+define( 'DISABLE_WP_CRON', true );
 ```
 
-### 步骤 4: 启动翻译
+然后由服务器每分钟请求一次：
 
-进入 **GML Translate → Translations** 标签页：
-
-- 点击 **▶ Translate All** 启动翻译队列
-- 点击 **🚀 Start Auto-Translate** 自动爬取全站内容（无需手动访问每个页面）
-
-### 步骤 5: 管理翻译
-
-- 点击每个语言旁的 **✏️** 按钮，打开翻译编辑器
-- 可以浏览、搜索、手动编辑翻译内容
-- 手动修改的翻译不会被自动翻译覆盖
-
----
-
-## 🔍 验证安装
-
-### 检查数据库表
-
-在 phpMyAdmin 中确认以下表已创建：
-- `wp_gml_index` — 翻译索引
-- `wp_gml_queue` — 翻译队列
-
-### 检查 WP Cron
-
-安装 "WP Crontrol" 插件（可选），确认以下事件已注册：
-- `gml_process_queue` — 每分钟（翻译队列处理）
-- `gml_crawl_content` — 每2分钟（内容爬虫，仅在启动自动翻译后出现）
-
-### 测试翻译
-
-访问 `https://yoursite.com/en/`（或其他语言前缀），页面内容应开始翻译。
-
----
-
-## 🚨 常见问题
-
-### 安装失败: "No valid plugins were found"
-
-ZIP 包目录结构不正确。确保 ZIP 根目录直接是 `gml-translate/` 文件夹（不能有额外的父目录）。
-
-### 激活失败
-
-- 检查 PHP 版本 ≥ 7.4
-- 检查 WordPress 版本 ≥ 6.0
-- 查看 `wp-content/debug.log`
-
-### API Key 无效
-
-- 确保 API Key 没有多余空格
-- 确认 API Key 已启用且配额未用完
-- 重新从 Google AI Studio 获取
-
-### 翻译不生效
-
-1. 确认 URL 包含语言前缀（如 `/en/`）
-2. 等待 1-2 分钟让队列处理
-3. 清除浏览器缓存
-4. 在 Translations 标签页检查队列状态
-
-### 翻译失败（failed）
-
-在 Translations 标签页点击 **🔄 Retry Failed** 重试。常见原因：
-- API 配额用完
-- 网络超时
-- 文本过长
-
-### WP Cron 不运行（低流量网站）
-
-在 `wp-config.php` 中添加：
-```php
-define('DISABLE_WP_CRON', true);
-```
-
-在服务器 crontab 中添加：
 ```bash
-* * * * * wget -q -O - https://yoursite.com/wp-cron.php?doing_wp_cron >/dev/null 2>&1
+* * * * * wget -q -O - https://example.com/wp-cron.php?doing_wp_cron >/dev/null 2>&1
 ```
 
----
+不要把 API Key 放入 Cron URL、命令行参数或日志。
 
-## 🔧 升级说明
+## 升级与回滚
 
-### 从 v2.7.x 升级到 v2.8.0
-
-1. 在 WordPress 后台停用旧版插件
-2. 删除旧版插件
-3. 上传并安装 `gml-translate-v2.8.0.zip`
-4. 激活插件
-
-升级不会丢失已有的翻译数据（存储在数据库中）。
-
-### v2.8.0 新功能
-
-- **浏览器语言自动检测**: 首次访问自动重定向到匹配的语言版本
-- **翻译排除规则**: 按 URL 或 CSS 选择器排除特定页面/元素
-- **术语表**: "Always translate X as Y" 规则，确保翻译一致性
-- **多语言 XML Sitemap**: 自动生成包含 hreflang 的站点地图
-
-### 从 v2.6.x 升级到 v2.7.0
-
-1. 在 WordPress 后台停用旧版插件
-2. 删除旧版插件
-3. 上传并安装 `gml-translate-v2.7.0.zip`
-4. 激活插件
-
-升级不会丢失已有的翻译数据（存储在数据库中）。
-
-### v2.7.0 新功能
-
-- **自动翻译全站**: 无需访问每个页面，一键爬取全站内容
-- **翻译编辑器**: 浏览、搜索、手动编辑翻译（类似 Weglot）
-- **失败重试**: 一键重试失败的翻译
-
----
-
-**版本**: 2.8.0  
-**最后更新**: 2026-03-08
+- 升级前备份数据库和 `wp-content`。
+- 插件升级保留 `gml_*` option、数据库表、语言 URL、翻译记忆和人工译文。
+- 若同时安装 GML AI SEO，先阅读 GML SEO 的显式接管说明；插件不会自动停用或删除 GML Translate。
+- 回滚代码前应同时核对数据库 migration 兼容性，优先恢复整站备份或 staging 快照。

@@ -1,6 +1,30 @@
 # Changelog
 
-All notable changes to GML - Gemini Dynamic Translate will be documented in this file.
+All notable changes to GML Translate will be documented in this file.
+
+## [2.11.0] - 2026-08-30
+
+### Architecture
+
+- Renamed the public product to GML Translate: AI Multilingual Translation for WordPress. The plugin folder, text domain, option keys, database tables, and translated URL structure remain unchanged for compatibility.
+- Adopted the same version-locked, build-time vendored Translation Core used by GML SEO. The release ZIP remains independently installable and has no Composer, npm, submodule, or third-plugin runtime dependency.
+- Separated Multilingual Site from AI Translation. Disabling AI or removing a provider key only stops new AI work; existing translated pages, language URLs, switchers, manual translations, hreflang, and sitemap variants remain available.
+- When GML SEO is active, standalone GML Translate keeps the multilingual runtime until an administrator confirms handover, while deferring canonical, hreflang, and sitemap output to GML SEO to prevent duplicates.
+- Extracted WordPress Settings API registration from the large admin renderer as the first incremental admin refactor.
+
+### Security
+
+- Restricted provider credentials to encrypted storage and exact official HTTPS hosts, removed keys from URLs, disabled redirects, redacted errors, and bounded provider payloads.
+- Added signed same-site crawler requests, strict subdirectory checks, response limits, queue locks, failure circuit breaking, and bounded manual recovery.
+
+### Performance
+
+- Limited each worker run, provider batch, prompt, translation output, glossary, exclusion rules, and crawler concurrency.
+- Replaced whole-language dictionary loading with current-page hash lookups and added Redis/Memcached-safe generation invalidation without global cache flushes.
+
+### Tests
+
+- Added locked-core verification and regression coverage for API-key removal, multilingual routes, subdirectory canonical/hreflang/sitemap behavior, parser safety, crawler safety, queue/cache safety, installer indexes, rule limits, dual-plugin output, and settings registration.
 
 ## [2.10.0] - 2026-04-16
 

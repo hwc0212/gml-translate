@@ -1,0 +1,756 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: GML Translate 2.11.0\n"
+"Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
+"POT-Creation-Date: 2026-08-30 00:00+0000\n"
+"PO-Revision-Date: 2026-08-30 00:00+0000\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: GML Translate language pack builder\n"
+
+msgid "A successful test clears the breaker but does not resume the queue automatically."
+msgstr ""
+
+msgid "ACTIONS"
+msgstr ""
+
+msgid "AI Translation"
+msgstr ""
+
+msgid "AI Translation is currently unavailable, so no new translation jobs will run. Existing multilingual URLs and saved translations remain available while the multilingual site is enabled."
+msgstr ""
+
+msgid "AI Translation was not enabled because the selected provider does not have a valid saved API key."
+msgstr ""
+
+msgid "API Base URL"
+msgstr ""
+
+msgid "API Key is configured"
+msgstr ""
+
+msgid "API Key saved and verified!"
+msgstr ""
+
+msgid "API Key validation failed:"
+msgstr ""
+
+msgid "API Status:"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Active Languages:"
+msgstr ""
+
+msgid "Add Rule"
+msgstr ""
+
+msgid "Add a language →"
+msgstr ""
+
+msgid "Add language switcher to your site using shortcode:"
+msgstr ""
+
+msgid "Add languages in the Settings tab first."
+msgstr ""
+
+msgid "Add to Menu"
+msgstr ""
+
+msgid "Advanced Settings"
+msgstr ""
+
+msgid "Advanced settings saved!"
+msgstr ""
+
+msgid "After Menu"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "All Languages"
+msgstr ""
+
+msgid "All translation cache cleared."
+msgstr ""
+
+msgid "All translations paused."
+msgstr ""
+
+msgid "All translations started."
+msgstr ""
+
+msgid "Allow the queue and crawler to generate new translations"
+msgstr ""
+
+msgid "Appearance → Widgets"
+msgstr ""
+
+msgid "Auto"
+msgstr ""
+
+msgid "Auto-Detect Language"
+msgstr ""
+
+msgid "Auto-Translate All Content"
+msgstr ""
+
+msgid "Automatic Position"
+msgstr ""
+
+msgid "Automatically redirect first-time visitors to their preferred language based on browser settings."
+msgstr ""
+
+msgid "Basic Usage"
+msgstr ""
+
+msgid "Before Menu"
+msgstr ""
+
+msgid "Button Preview"
+msgstr ""
+
+msgid "CSS selector"
+msgstr ""
+
+msgid "Cache Directory"
+msgstr ""
+
+msgid "Cache cleared for %s."
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Choose the AI engine for translation."
+msgstr ""
+
+msgid "Circle"
+msgstr ""
+
+msgid "Clear ALL translation cache? This cannot be undone."
+msgstr ""
+
+msgid "Clear All Cache"
+msgstr ""
+
+msgid "Clear All Translations"
+msgstr ""
+
+msgid "Clear Pending Queue"
+msgstr ""
+
+msgid "Code"
+msgstr ""
+
+msgid "Configure Now"
+msgstr ""
+
+msgid "Configured"
+msgstr ""
+
+msgid "Crawl all published pages, posts, and products to queue their content for translation — no page visits required."
+msgstr ""
+
+msgid "Custom CSS for the language switcher."
+msgstr ""
+
+msgid "Database Tables"
+msgstr ""
+
+msgid "DeepSeek API Key"
+msgstr ""
+
+msgid "DeepSeek API Key saved and verified!"
+msgstr ""
+
+msgid "DeepSeek API Key validation failed:"
+msgstr ""
+
+msgid "DeepSeek Model"
+msgstr ""
+
+msgid "Default: deepseek-chat. You can also use deepseek-reasoner."
+msgstr ""
+
+msgid "Define how specific terms should always be translated. These rules are injected into the AI prompt to ensure consistent translations."
+msgstr ""
+
+msgid "Define rules to exclude specific pages or elements from translation. Similar to Weglot's exclusion feature."
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete all translations for this language?"
+msgstr ""
+
+msgid "Delete this translation?"
+msgstr ""
+
+msgid "Destination Languages"
+msgstr ""
+
+msgid "Display language switcher"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Emoji (Recommended)"
+msgstr ""
+
+msgid "Enable multilingual URLs and saved translations"
+msgstr ""
+
+msgid "Enable the multilingual site after choosing your languages. An AI API key is only required to generate new translations."
+msgstr ""
+
+msgid "Enable the multilingual site and AI Translation with a valid API key first."
+msgstr ""
+
+msgid "Enter your API Key above and save settings"
+msgstr ""
+
+msgid "Example URL"
+msgstr ""
+
+msgid "Examples"
+msgstr ""
+
+msgid "Exclude all account pages"
+msgstr ""
+
+msgid "Exclude any URL with \"cart\""
+msgstr ""
+
+msgid "Exclude element with this ID"
+msgstr ""
+
+msgid "Exclude elements with this class"
+msgstr ""
+
+msgid "Exclude the checkout page"
+msgstr ""
+
+msgid "Exclusion Rules"
+msgstr ""
+
+msgid "Exclusion rules saved!"
+msgstr ""
+
+msgid "FROM / TO"
+msgstr ""
+
+msgid "Footer"
+msgstr ""
+
+msgid "Footer - Center"
+msgstr ""
+
+msgid "Footer - Left"
+msgstr ""
+
+msgid "Footer - Right"
+msgstr ""
+
+msgid "Full name instead of language code"
+msgstr ""
+
+msgid "GML Language Switcher"
+msgstr ""
+
+msgid "GML Switcher"
+msgstr ""
+
+msgid "GML Translate"
+msgstr ""
+
+msgid "GML Translate:"
+msgstr ""
+
+msgid "Gemini API Key"
+msgstr ""
+
+msgid "Get your Gemini API Key from"
+msgstr ""
+
+msgid "Get your key from"
+msgstr ""
+
+msgid "Glossary"
+msgstr ""
+
+msgid "Glossary Rules (Always Translate X as Y)"
+msgstr ""
+
+msgid "Glossary rules are injected into the AI translation prompt. The AI is instructed to always translate the source term using the specified translation."
+msgstr ""
+
+msgid "Glossary rules saved!"
+msgstr ""
+
+msgid "Go to"
+msgstr ""
+
+msgid "Header"
+msgstr ""
+
+msgid "Header - Center"
+msgstr ""
+
+msgid "Header - Left"
+msgstr ""
+
+msgid "Header - Right"
+msgstr ""
+
+msgid "How It Works"
+msgstr ""
+
+msgid "Idle"
+msgstr ""
+
+msgid "Industry-specific terminology that generic AI might translate incorrectly"
+msgstr ""
+
+msgid "Is Dropdown"
+msgstr ""
+
+msgid "Is Fullname"
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "Language Button Design"
+msgstr ""
+
+msgid "Language Switcher"
+msgstr ""
+
+msgid "Language Switcher Shortcodes"
+msgstr ""
+
+msgid "Language URLs"
+msgstr ""
+
+msgid "Language added successfully!"
+msgstr ""
+
+msgid "Language order saved!"
+msgstr ""
+
+msgid "Language removed successfully!"
+msgstr ""
+
+msgid "Language switcher settings saved!"
+msgstr ""
+
+msgid "Languages to translate into."
+msgstr ""
+
+msgid "Live preview — updates automatically"
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+msgid "Main Configuration"
+msgstr ""
+
+msgid "Manage Translations"
+msgstr ""
+
+msgid "Manual"
+msgstr ""
+
+msgid "Multilingual Site"
+msgstr ""
+
+msgid "Navigation"
+msgstr ""
+
+msgid "Next →"
+msgstr ""
+
+msgid "No API key provided"
+msgstr ""
+
+msgid "No languages configured yet."
+msgstr ""
+
+msgid "No translations found."
+msgstr ""
+
+msgid "None (Use shortcode/widget/function)"
+msgstr ""
+
+msgid "Not configured"
+msgstr ""
+
+msgid "Not writable"
+msgstr ""
+
+msgid "Note"
+msgstr ""
+
+msgid "Note: After adding glossary rules, clear the translation cache for affected languages to re-translate with the new rules."
+msgstr ""
+
+msgid "On"
+msgstr ""
+
+msgid "Only redirects on the homepage. Returning visitors keep their chosen language via cookie. Bots/crawlers are never redirected."
+msgstr ""
+
+msgid "Optional note"
+msgstr ""
+
+msgid "Optional. For security, only the official api.deepseek.com HTTPS host is accepted; leave empty to use the default endpoint."
+msgstr ""
+
+msgid "Original Language"
+msgstr ""
+
+msgid "Override CSS"
+msgstr ""
+
+msgid "PHP Function"
+msgstr ""
+
+msgid "PHP Version"
+msgstr ""
+
+msgid "PROGRESS"
+msgstr ""
+
+msgid "Page %1$s of %2$s (%3$s total)"
+msgstr ""
+
+msgid "Pause"
+msgstr ""
+
+msgid "Pause All"
+msgstr ""
+
+msgid "Paused"
+msgstr ""
+
+msgid "Pending queue cleared for %s."
+msgstr ""
+
+msgid "Plugin Version"
+msgstr ""
+
+msgid "Plugin Version:"
+msgstr ""
+
+msgid "Product names that should have specific translations per market"
+msgstr ""
+
+msgid "Protected Terms (Never Translate)"
+msgstr ""
+
+msgid "Protected terms saved!"
+msgstr ""
+
+msgid "Quick Start Guide"
+msgstr ""
+
+msgid "Rectangle"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Remove this language?"
+msgstr ""
+
+msgid "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
+msgstr ""
+
+msgid "Retry All is disabled to protect API quota. After a successful connection test, retry one language in samples of at most 25."
+msgstr ""
+
+msgid "Retry Failed"
+msgstr ""
+
+msgid "Retry at most 25 failed items for this language? Watch the result before retrying another sample."
+msgstr ""
+
+msgid "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
+msgstr ""
+
+msgid "Running"
+msgstr ""
+
+msgid "STATUS"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Save Advanced Settings"
+msgstr ""
+
+msgid "Save Changes"
+msgstr ""
+
+msgid "Save Exclusion Rules"
+msgstr ""
+
+msgid "Save Glossary Rules"
+msgstr ""
+
+msgid "Save Order"
+msgstr ""
+
+msgid "Save Protected Terms"
+msgstr ""
+
+msgid "Saved provider: %1$s; model: %2$s."
+msgstr ""
+
+msgid "Search translations..."
+msgstr ""
+
+msgid "Select source language and target languages"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Settings saved successfully!"
+msgstr ""
+
+msgid "Shortcode"
+msgstr ""
+
+msgid "Show Flags"
+msgstr ""
+
+msgid "Show Names"
+msgstr ""
+
+msgid "Show as a dropdown menu"
+msgstr ""
+
+msgid "Show flag icons"
+msgstr ""
+
+msgid "Show language names"
+msgstr ""
+
+msgid "Sorry, you are not allowed to access this page."
+msgstr ""
+
+msgid "Source Term"
+msgstr ""
+
+msgid "Source Text"
+msgstr ""
+
+msgid "Square"
+msgstr ""
+
+msgid "Start"
+msgstr ""
+
+msgid "Start Auto-Translate"
+msgstr ""
+
+msgid "Starting..."
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Stop Crawl"
+msgstr ""
+
+msgid "Style:"
+msgstr ""
+
+msgid "System Information"
+msgstr ""
+
+msgid "System Status"
+msgstr ""
+
+msgid "TRANSLATED"
+msgstr ""
+
+msgid "Test Saved AI Connection"
+msgstr ""
+
+msgid "Test the saved AI connection"
+msgstr ""
+
+msgid "The AI client is unavailable, so the API key was not saved."
+msgstr ""
+
+msgid "The AI provider, model, or failed queue must be verified before more API calls are made."
+msgstr ""
+
+msgid "The API key was valid but could not be encrypted and saved. OpenSSL is required; the existing key was not changed."
+msgstr ""
+
+msgid "The DeepSeek API URL was rejected. Only the official HTTPS host is allowed; the default endpoint will be used."
+msgstr ""
+
+msgid "The current language of your website."
+msgstr ""
+
+msgid "The retry sample could not start."
+msgstr ""
+
+msgid "The safety pause was cleared; translation remains paused until you resume it manually."
+msgstr ""
+
+msgid "The saved AI connection could not be verified."
+msgstr ""
+
+msgid "The tone/style for translations (e.g. \"professional and friendly\", \"casual\", \"formal\")."
+msgstr ""
+
+msgid "These terms will never be translated. One per line. Brand names, product names, etc."
+msgstr ""
+
+msgid "This is useful for:"
+msgstr ""
+
+msgid "Title:"
+msgstr ""
+
+msgid "Translate All"
+msgstr ""
+
+msgid "Translate As"
+msgstr ""
+
+msgid "Translation"
+msgstr ""
+
+msgid "Translation Engine"
+msgstr ""
+
+msgid "Translation Engine:"
+msgstr ""
+
+msgid "Translation Exclusion Rules"
+msgstr ""
+
+msgid "Translation Tone"
+msgstr ""
+
+msgid "Translation paused for %s."
+msgstr ""
+
+msgid "Translation remains safety-paused. Test the saved AI connection before retrying a limited sample."
+msgstr ""
+
+msgid "Translation remains safety-paused. Test the saved AI connection, then retry one language sample before resuming."
+msgstr ""
+
+msgid "Translation safety pause is active."
+msgstr ""
+
+msgid "Translation saved."
+msgstr ""
+
+msgid "Translation started for %s."
+msgstr ""
+
+msgid "Translations"
+msgstr ""
+
+msgid "Translations by Languages"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Type of Flags"
+msgstr ""
+
+msgid "Type to search languages…"
+msgstr ""
+
+msgid "UI labels that need consistent translation across the site"
+msgstr ""
+
+msgid "URL contains"
+msgstr ""
+
+msgid "URL is exactly"
+msgstr ""
+
+msgid "URL matches regex"
+msgstr ""
+
+msgid "URL starts with"
+msgstr ""
+
+msgid "Unknown error"
+msgstr ""
+
+msgid "Usage Methods"
+msgstr ""
+
+msgid "Value"
+msgstr ""
+
+msgid "Visit your site with language prefix, e.g.:"
+msgstr ""
+
+msgid "WORDS"
+msgstr ""
+
+msgid "Widget"
+msgstr ""
+
+msgid "With Flags"
+msgstr ""
+
+msgid "With Name"
+msgstr ""
+
+msgid "With Options"
+msgstr ""
+
+msgid "With Style"
+msgstr ""
+
+msgid "WordPress Version"
+msgstr ""
+
+msgid "Writable"
+msgstr ""
+
+msgid "and add the \"GML Language Switcher\" widget."
+msgstr ""
+
+msgid "failed"
+msgstr ""
+
+msgid "failed translations"
+msgstr ""
+
+msgid "pending"
+msgstr ""
+
+msgid "tables exist"
+msgstr ""
+
+msgid "← Previous"
+msgstr ""
+
+msgid "🎉 Detected Weglot configuration! Automatically imported source language and %d destination language(s). Please verify the settings below."
+msgstr ""
+
