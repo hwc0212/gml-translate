@@ -3,7 +3,7 @@
  * Plugin Name: GML Translate
  * Plugin URI: https://huwencai.com/gml-translate
  * Description: AI multilingual translation for WordPress with stable language URLs, editable translations, glossary, queue controls, hreflang, and sitemap integration.
- * Version: 2.11.1-rc.1
+ * Version: 2.11.1-rc.2
  * Author: huwencai.com
  * Author URI: https://huwencai.com
  * License: GPL v2 or later
@@ -19,8 +19,20 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// WordPress activation can include this file after the embedded host is loaded.
+if ( defined( 'GML_TRANSLATION_HOST' ) && GML_TRANSLATION_HOST !== 'standalone' ) {
+    register_activation_hook( __FILE__, static function() {
+        wp_die(
+            esc_html__( 'GML SEO is already providing multilingual translation. Use its Translation page, or deactivate GML SEO before activating GML Translate. Existing translation data has not been deleted.', 'gml-translate' ),
+            esc_html__( 'Translation activation blocked', 'gml-translate' ),
+            [ 'back_link' => true, 'response' => 409 ]
+        );
+    } );
+    return;
+}
+
 // Define plugin constants
-define('GML_VERSION', '2.11.1-rc.1');
+define('GML_VERSION', '2.11.1-rc.2');
 define('GML_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GML_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GML_PLUGIN_FILE', __FILE__);
@@ -124,13 +136,15 @@ class GML_Translate {
         // Only a permitted admin request may perform bounded database setup.
         GML_Installer::register_hooks();
 
-        // Cron context — only the queue processor is needed.
+        // Cron context: only explicitly enabled background workers are needed.
         // Skip all frontend components (Output Buffer, SEO Router, SEO Hreflang,
         // Language Switcher) to avoid unnecessary work and reduce the surface area
         // that triggers third-party plugin hooks (e.g. Elementor Pro Notes module).
         if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
             if ( GML_Translation_State::work_enabled() ) {
                 new GML_Queue_Processor();
+            }
+            if ( GML_Translation_State::multilingual_enabled() && GML_Translation_State::ai_available() && get_option( 'gml_crawl_running', false ) ) {
                 new GML_Content_Crawler();
             }
             return;
@@ -186,6 +200,8 @@ class GML_Translate {
         // credentials are removed, quota is exhausted, or AI is switched off.
         if ( GML_Translation_State::work_enabled() ) {
             new GML_Queue_Processor();
+        }
+        if ( GML_Translation_State::ai_available() && get_option( 'gml_crawl_running', false ) ) {
             new GML_Content_Crawler();
         }
     }

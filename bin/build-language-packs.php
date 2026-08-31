@@ -81,6 +81,67 @@ $translations = [
     ] ),
 ];
 
+$controls_zh = [
+    'Translation activation blocked' => '已阻止重复激活翻译模块',
+    'GML SEO is already providing multilingual translation. Use its Translation page, or deactivate GML SEO before activating GML Translate. Existing translation data has not been deleted.' => 'GML SEO 已在提供多语言翻译。请使用其 Translation 页面，或先停用 GML SEO，再启用 GML Translate。现有翻译数据未被删除。',
+    'Paused' => '已暂停',
+    'Translations' => '译文管理',
+    'Language Switcher' => '语言切换器',
+    'Exclusion Rules' => '排除规则',
+    'Glossary' => '术语表',
+    'FROM / TO' => '源语言 / 目标语言',
+    'TRANSLATED' => '已翻译',
+    'PROGRESS' => '进度',
+    'STATUS' => '状态',
+    'ACTIONS' => '操作',
+    'pending' => '待处理',
+    'failed' => '失败',
+    'Start' => '开始',
+    'Pause' => '暂停',
+    'Manage Translations' => '管理译文',
+    'Translation Queue' => '翻译队列',
+    'Content Scan' => '内容扫描',
+    'Start Translation' => '开始翻译',
+    'Pause Translation' => '暂停翻译',
+    'Scan Website Content' => '扫描网站内容',
+    'Stop Scan' => '停止扫描',
+    'Refresh Page Cache' => '刷新页面缓存',
+    'Queue Status' => '队列状态',
+    'Pending Segments' => '待处理文本段',
+    'Failed Segments' => '失败文本段',
+    'Last Worker Activity' => '最近任务活动时间',
+    'Not recorded yet' => '尚无记录',
+    'AI unavailable' => 'AI 不可用',
+    'Safety paused' => '安全暂停',
+    'Pausing after current batch' => '当前批次结束后暂停',
+    'Processing batch' => '正在处理批次',
+    'Idle' => '空闲',
+    'Scheduled' => '已排程',
+    'Not scheduled' => '未排程',
+    'Schedule overdue' => '排程逾期',
+    'Scanning' => '正在扫描',
+    'Blocked' => '已阻止',
+    'Completed' => '已完成',
+    'Stopped' => '已停止',
+    'Delete Saved Translations' => '删除已保存的译文',
+    'Deleting a saved translation cannot be undone. Review individual records before deleting.' => '删除已保存的译文无法撤销。请先逐条检查，再确认删除。',
+    'Review %s translations' => '检查 %s 译文',
+    'Page cache refreshed. Saved translations and queue items were preserved.' => '页面缓存已刷新，已保存的译文和队列任务均已保留。',
+    'Translation controls updated.' => '翻译控制状态已更新。',
+    'Request failed. Refresh the status before retrying.' => '请求失败。请先刷新状态再重试。',
+    'This cache action is no longer available. No translations or queue items were deleted.' => '此缓存操作已停用。未删除任何译文或队列任务。',
+    'WordPress could not schedule translation. Pause settings were kept.' => 'WordPress 无法排程翻译任务，已保留原暂停设置。',
+    'A limited translation sample is still running.' => '小批量翻译测试仍在进行中。',
+    'Choose a configured language.' => '请选择已配置的语言。',
+    'Enable the multilingual site and configure AI Translation first.' => '请先启用多语言站点并配置 AI 翻译。',
+    'Translation is safety-paused. Test the saved AI connection and retry a limited language sample first.' => '翻译处于安全暂停。请先测试已保存的 AI 连接，再重试一个语言的小批量样本。',
+    'Content scan scheduled. Translation settings were kept.' => '内容扫描已排程，原有翻译设置保持不变。',
+    'SEGMENTS' => '文本段',
+];
+$translations['zh_CN'] = array_replace( $translations['zh_CN'], $controls_zh );
+$strings = array_values( array_unique( array_merge( $strings, array_keys( $controls_zh ) ) ) );
+sort( $strings, SORT_STRING );
+
 write_pot( $dir . '/gml-translate.pot', $strings );
 foreach ( $translations as $locale => $map ) {
     write_po( $dir . '/gml-translate-' . $locale . '.po', $locale, $strings, $map );
@@ -116,10 +177,10 @@ function extract_i18n_strings( $root ) {
 
 function header_text( $locale ) {
     return implode( "\n", [
-        'Project-Id-Version: GML Translate 2.11.0',
+        'Project-Id-Version: GML Translate 2.11.1-rc.2',
         'Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues',
-        'POT-Creation-Date: 2026-08-30 00:00+0000',
-        'PO-Revision-Date: 2026-08-30 00:00+0000',
+        'POT-Creation-Date: 2026-08-31 00:00+0000',
+        'PO-Revision-Date: 2026-08-31 00:00+0000',
         'Language: ' . $locale,
         'MIME-Version: 1.0',
         'Content-Type: text/plain; charset=UTF-8',

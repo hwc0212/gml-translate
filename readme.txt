@@ -4,7 +4,7 @@ Tags: translate, multilingual, ai, hreflang, language switcher
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.11.1-rc.1
+Stable tag: 2.11.1-rc.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,12 @@ Yes. Manual translations are stored separately and take priority over normal aut
 No. It provides only the minimum multilingual SEO output. Use GML AI SEO or another single SEO authority for complete SEO management.
 
 == Changelog ==
+
+= 2.11.1-rc.2 =
+* Separate content discovery from AI processing and report scheduled versus active batches accurately.
+* Refresh rendered-page cache without deleting translation memory, manual edits or queued work.
+* Preserve technical dimensions, operators and SKU symbols in translated text, titles, metadata and alt text.
+* Release candidate only. Missing site translations still require bounded validation and completion.
 
 = 2.11.1-rc.1 =
 * Release candidate for staging verification, not a production-verified stable release.

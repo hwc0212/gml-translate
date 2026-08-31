@@ -18,6 +18,54 @@
 
     var i18n = gmlEditor.i18n;
 
+    function scanError(message) {
+        $('#gml-scan-error').prop('hidden', false).find('p').text(message);
+    }
+    function updateWorkStatus() {
+        if (document.hidden || $('#gml-editor-modal').is(':visible') || !$('#gml-scan-state').length) return;
+        return $.ajax({
+            url: gmlEditor.ajaxUrl, method: 'POST', timeout: 15000,
+            data: {action: 'gml_crawl_status', nonce: gmlEditor.nonce}
+        }).done(function(response) {
+            if (!response.success) return;
+            var data = response.data;
+            var labels = window.gmlTranslationStates || {};
+            $('#gml-scan-state').text(labels[data.state] || data.state);
+            $('#gml-crawl-bar').val(data.percent);
+            $('#gml-crawl-text').text(data.processed + ' / ' + data.total);
+            $('#gml-crawl-start').prop('hidden', !!data.running);
+            $('#gml-crawl-stop').prop('hidden', !data.running);
+            if (data.queue) {
+                $('#gml-queue-state').text(labels[data.queue.state] || data.queue.state);
+                $('#gml-queue-last').text(data.queue.last_activity_label);
+            }
+        });
+    }
+    $(document).on('click', '#gml-crawl-start, #gml-crawl-stop', function() {
+        var button = $(this);
+        var action = this.id === 'gml-crawl-start' ? 'start' : 'stop';
+        button.prop('disabled', true);
+        $('#gml-scan-error').prop('hidden', true);
+        $.ajax({
+            url: gmlEditor.ajaxUrl, method: 'POST', timeout: 15000,
+            data: {action: 'gml_crawl_action', crawl_action: action, nonce: gmlEditor.nonce}
+        }).done(function(response) {
+            if (!response.success) {
+                var error = response.data;
+                scanError(typeof error === 'string' ? error : (error && error.message) || i18n.scanFailed);
+                return;
+            }
+            updateWorkStatus();
+        }).fail(function() {
+            scanError(i18n.scanFailed);
+        }).always(function() {
+            button.prop('disabled', false);
+        });
+    });
+    if ($('#gml-scan-state').length) {
+        setInterval(updateWorkStatus, 15000);
+    }
+
     // Open editor modal
     $(document).on('click', '.gml-open-editor', function() {
         state.lang = $(this).data('lang');

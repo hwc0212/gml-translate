@@ -1,14 +1,17 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.0\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.2\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
-"POT-Creation-Date: 2026-08-30 00:00+0000\n"
-"PO-Revision-Date: 2026-08-30 00:00+0000\n"
+"POT-Creation-Date: 2026-08-31 00:00+0000\n"
+"PO-Revision-Date: 2026-08-31 00:00+0000\n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: GML Translate language pack builder\n"
+
+msgid "A limited translation sample is still running."
+msgstr "A limited translation sample is still running."
 
 msgid "A successful test clears the breaker but does not resume the queue automatically."
 msgstr "A successful test clears the breaker but does not resume the queue automatically."
@@ -24,6 +27,9 @@ msgstr "AI Translation is currently unavailable, so no new translation jobs will
 
 msgid "AI Translation was not enabled because the selected provider does not have a valid saved API key."
 msgstr "AI Translation was not enabled because the selected provider does not have a valid saved API key."
+
+msgid "AI unavailable"
+msgstr "AI unavailable"
 
 msgid "API Base URL"
 msgstr "API Base URL"
@@ -76,15 +82,6 @@ msgstr "All"
 msgid "All Languages"
 msgstr "Все языки"
 
-msgid "All translation cache cleared."
-msgstr "All translation cache cleared."
-
-msgid "All translations paused."
-msgstr "All translations paused."
-
-msgid "All translations started."
-msgstr "All translations started."
-
 msgid "Allow the queue and crawler to generate new translations"
 msgstr "Allow the queue and crawler to generate new translations"
 
@@ -96,9 +93,6 @@ msgstr "Auto"
 
 msgid "Auto-Detect Language"
 msgstr "Auto-Detect Language"
-
-msgid "Auto-Translate All Content"
-msgstr "Auto-Translate All Content"
 
 msgid "Automatic Position"
 msgstr "Automatic Position"
@@ -112,6 +106,9 @@ msgstr "Basic Usage"
 msgid "Before Menu"
 msgstr "Before Menu"
 
+msgid "Blocked"
+msgstr "Blocked"
+
 msgid "Button Preview"
 msgstr "Button Preview"
 
@@ -121,11 +118,11 @@ msgstr "CSS selector"
 msgid "Cache Directory"
 msgstr "Cache Directory"
 
-msgid "Cache cleared for %s."
-msgstr "Cache cleared for %s."
-
 msgid "Cancel"
 msgstr "Отмена"
+
+msgid "Choose a configured language."
+msgstr "Choose a configured language."
 
 msgid "Choose the AI engine for translation."
 msgstr "Choose the AI engine for translation."
@@ -133,20 +130,11 @@ msgstr "Choose the AI engine for translation."
 msgid "Circle"
 msgstr "Circle"
 
-msgid "Clear ALL translation cache? This cannot be undone."
-msgstr "Clear ALL translation cache? This cannot be undone."
-
-msgid "Clear All Cache"
-msgstr "Clear All Cache"
-
-msgid "Clear All Translations"
-msgstr "Clear All Translations"
-
-msgid "Clear Pending Queue"
-msgstr "Clear Pending Queue"
-
 msgid "Code"
 msgstr "Code"
+
+msgid "Completed"
+msgstr "Завершено"
 
 msgid "Configure Now"
 msgstr "Configure Now"
@@ -154,8 +142,11 @@ msgstr "Configure Now"
 msgid "Configured"
 msgstr "Configured"
 
-msgid "Crawl all published pages, posts, and products to queue their content for translation — no page visits required."
-msgstr "Crawl all published pages, posts, and products to queue their content for translation — no page visits required."
+msgid "Content Scan"
+msgstr "Content Scan"
+
+msgid "Content scan scheduled. Translation settings were kept."
+msgstr "Content scan scheduled. Translation settings were kept."
 
 msgid "Custom CSS for the language switcher."
 msgstr "Custom CSS for the language switcher."
@@ -187,11 +178,14 @@ msgstr "Define rules to exclude specific pages or elements from translation. Sim
 msgid "Delete"
 msgstr "Удалить"
 
-msgid "Delete all translations for this language?"
-msgstr "Delete all translations for this language?"
+msgid "Delete Saved Translations"
+msgstr "Delete Saved Translations"
 
 msgid "Delete this translation?"
 msgstr "Delete this translation?"
+
+msgid "Deleting a saved translation cannot be undone. Review individual records before deleting."
+msgstr "Deleting a saved translation cannot be undone. Review individual records before deleting."
 
 msgid "Destination Languages"
 msgstr "Целевые языки"
@@ -211,8 +205,8 @@ msgstr "Enable multilingual URLs and saved translations"
 msgid "Enable the multilingual site after choosing your languages. An AI API key is only required to generate new translations."
 msgstr "Enable the multilingual site after choosing your languages. An AI API key is only required to generate new translations."
 
-msgid "Enable the multilingual site and AI Translation with a valid API key first."
-msgstr "Enable the multilingual site and AI Translation with a valid API key first."
+msgid "Enable the multilingual site and configure AI Translation first."
+msgstr "Enable the multilingual site and configure AI Translation first."
 
 msgid "Enter your API Key above and save settings"
 msgstr "Enter your API Key above and save settings"
@@ -247,6 +241,9 @@ msgstr "Exclusion rules saved!"
 msgid "FROM / TO"
 msgstr "FROM / TO"
 
+msgid "Failed Segments"
+msgstr "Failed Segments"
+
 msgid "Footer"
 msgstr "Footer"
 
@@ -264,6 +261,9 @@ msgstr "Full name instead of language code"
 
 msgid "GML Language Switcher"
 msgstr "GML Language Switcher"
+
+msgid "GML SEO is already providing multilingual translation. Use its Translation page, or deactivate GML SEO before activating GML Translate. Existing translation data has not been deleted."
+msgstr "GML SEO is already providing multilingual translation. Use its Translation page, or deactivate GML SEO before activating GML Translate. Existing translation data has not been deleted."
 
 msgid "GML Switcher"
 msgstr "GML Switcher"
@@ -355,6 +355,9 @@ msgstr "Language switcher settings saved!"
 msgid "Languages to translate into."
 msgstr "Languages to translate into."
 
+msgid "Last Worker Activity"
+msgstr "Last Worker Activity"
+
 msgid "Live preview — updates automatically"
 msgstr "Live preview — updates automatically"
 
@@ -393,6 +396,12 @@ msgstr "None (Use shortcode/widget/function)"
 
 msgid "Not configured"
 msgstr "Not configured"
+
+msgid "Not recorded yet"
+msgstr "Not recorded yet"
+
+msgid "Not scheduled"
+msgstr "Not scheduled"
 
 msgid "Not writable"
 msgstr "Not writable"
@@ -433,23 +442,32 @@ msgstr "PROGRESS"
 msgid "Page %1$s of %2$s (%3$s total)"
 msgstr "Page %1$s of %2$s (%3$s total)"
 
+msgid "Page cache refreshed. Saved translations and queue items were preserved."
+msgstr "Page cache refreshed. Saved translations and queue items were preserved."
+
 msgid "Pause"
 msgstr "Pause"
 
-msgid "Pause All"
-msgstr "Pause All"
+msgid "Pause Translation"
+msgstr "Pause Translation"
 
 msgid "Paused"
 msgstr "Приостановлено"
 
-msgid "Pending queue cleared for %s."
-msgstr "Pending queue cleared for %s."
+msgid "Pausing after current batch"
+msgstr "Pausing after current batch"
+
+msgid "Pending Segments"
+msgstr "Pending Segments"
 
 msgid "Plugin Version"
 msgstr "Plugin Version"
 
 msgid "Plugin Version:"
 msgstr "Plugin Version:"
+
+msgid "Processing batch"
+msgstr "Processing batch"
 
 msgid "Product names that should have specific translations per market"
 msgstr "Product names that should have specific translations per market"
@@ -460,11 +478,17 @@ msgstr "Protected Terms (Never Translate)"
 msgid "Protected terms saved!"
 msgstr "Protected terms saved!"
 
+msgid "Queue Status"
+msgstr "Queue Status"
+
 msgid "Quick Start Guide"
 msgstr "Quick Start Guide"
 
 msgid "Rectangle"
 msgstr "Rectangle"
+
+msgid "Refresh Page Cache"
+msgstr "Refresh Page Cache"
 
 msgid "Remove"
 msgstr "Remove"
@@ -472,26 +496,32 @@ msgstr "Remove"
 msgid "Remove this language?"
 msgstr "Remove this language?"
 
+msgid "Request failed. Refresh the status before retrying."
+msgstr "Request failed. Refresh the status before retrying."
+
 msgid "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
 msgstr "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
 
 msgid "Retry All is disabled to protect API quota. After a successful connection test, retry one language in samples of at most 25."
 msgstr "Retry All is disabled to protect API quota. After a successful connection test, retry one language in samples of at most 25."
 
-msgid "Retry Failed"
-msgstr "Retry Failed"
-
 msgid "Retry at most 25 failed items for this language? Watch the result before retrying another sample."
 msgstr "Retry at most 25 failed items for this language? Watch the result before retrying another sample."
+
+msgid "Review %s translations"
+msgstr "Review %s translations"
 
 msgid "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
 msgstr "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
 
-msgid "Running"
-msgstr "Выполняется"
+msgid "SEGMENTS"
+msgstr "SEGMENTS"
 
 msgid "STATUS"
 msgstr "STATUS"
+
+msgid "Safety paused"
+msgstr "Safety paused"
 
 msgid "Save"
 msgstr "Сохранить"
@@ -516,6 +546,18 @@ msgstr "Save Protected Terms"
 
 msgid "Saved provider: %1$s; model: %2$s."
 msgstr "Saved provider: %1$s; model: %2$s."
+
+msgid "Scan Website Content"
+msgstr "Scan Website Content"
+
+msgid "Scanning"
+msgstr "Scanning"
+
+msgid "Schedule overdue"
+msgstr "Schedule overdue"
+
+msgid "Scheduled"
+msgstr "Scheduled"
 
 msgid "Search translations..."
 msgstr "Поиск переводов..."
@@ -562,17 +604,17 @@ msgstr "Square"
 msgid "Start"
 msgstr "Start"
 
-msgid "Start Auto-Translate"
-msgstr "Запустить автоперевод"
-
-msgid "Starting..."
-msgstr "Starting..."
+msgid "Start Translation"
+msgstr "Start Translation"
 
 msgid "Status"
 msgstr "Статус"
 
-msgid "Stop Crawl"
-msgstr "Stop Crawl"
+msgid "Stop Scan"
+msgstr "Stop Scan"
+
+msgid "Stopped"
+msgstr "Stopped"
 
 msgid "Style:"
 msgstr "Style:"
@@ -622,14 +664,14 @@ msgstr "The tone/style for translations (e.g. \"professional and friendly\", \"c
 msgid "These terms will never be translated. One per line. Brand names, product names, etc."
 msgstr "These terms will never be translated. One per line. Brand names, product names, etc."
 
+msgid "This cache action is no longer available. No translations or queue items were deleted."
+msgstr "This cache action is no longer available. No translations or queue items were deleted."
+
 msgid "This is useful for:"
 msgstr "This is useful for:"
 
 msgid "Title:"
 msgstr "Title:"
-
-msgid "Translate All"
-msgstr "Translate All"
 
 msgid "Translate As"
 msgstr "Translate As"
@@ -646,17 +688,20 @@ msgstr "Translation Engine:"
 msgid "Translation Exclusion Rules"
 msgstr "Translation Exclusion Rules"
 
+msgid "Translation Queue"
+msgstr "Translation Queue"
+
 msgid "Translation Tone"
 msgstr "Translation Tone"
 
-msgid "Translation paused for %s."
-msgstr "Translation paused for %s."
+msgid "Translation activation blocked"
+msgstr "Translation activation blocked"
 
-msgid "Translation remains safety-paused. Test the saved AI connection before retrying a limited sample."
-msgstr "Translation remains safety-paused. Test the saved AI connection before retrying a limited sample."
+msgid "Translation controls updated."
+msgstr "Translation controls updated."
 
-msgid "Translation remains safety-paused. Test the saved AI connection, then retry one language sample before resuming."
-msgstr "Translation remains safety-paused. Test the saved AI connection, then retry one language sample before resuming."
+msgid "Translation is safety-paused. Test the saved AI connection and retry a limited language sample first."
+msgstr "Translation is safety-paused. Test the saved AI connection and retry a limited language sample first."
 
 msgid "Translation safety pause is active."
 msgstr "Translation safety pause is active."
@@ -664,14 +709,8 @@ msgstr "Translation safety pause is active."
 msgid "Translation saved."
 msgstr "Перевод сохранён."
 
-msgid "Translation started for %s."
-msgstr "Translation started for %s."
-
 msgid "Translations"
 msgstr "Переводы"
-
-msgid "Translations by Languages"
-msgstr "Translations by Languages"
 
 msgid "Type"
 msgstr "Type"
@@ -709,9 +748,6 @@ msgstr "Value"
 msgid "Visit your site with language prefix, e.g.:"
 msgstr "Visit your site with language prefix, e.g.:"
 
-msgid "WORDS"
-msgstr "WORDS"
-
 msgid "Widget"
 msgstr "Widget"
 
@@ -729,6 +765,9 @@ msgstr "With Style"
 
 msgid "WordPress Version"
 msgstr "WordPress Version"
+
+msgid "WordPress could not schedule translation. Pause settings were kept."
+msgstr "WordPress could not schedule translation. Pause settings were kept."
 
 msgid "Writable"
 msgstr "Writable"

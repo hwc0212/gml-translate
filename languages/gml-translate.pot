@@ -1,14 +1,17 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.0\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.2\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
-"POT-Creation-Date: 2026-08-30 00:00+0000\n"
-"PO-Revision-Date: 2026-08-30 00:00+0000\n"
+"POT-Creation-Date: 2026-08-31 00:00+0000\n"
+"PO-Revision-Date: 2026-08-31 00:00+0000\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: GML Translate language pack builder\n"
+
+msgid "A limited translation sample is still running."
+msgstr ""
 
 msgid "A successful test clears the breaker but does not resume the queue automatically."
 msgstr ""
@@ -23,6 +26,9 @@ msgid "AI Translation is currently unavailable, so no new translation jobs will 
 msgstr ""
 
 msgid "AI Translation was not enabled because the selected provider does not have a valid saved API key."
+msgstr ""
+
+msgid "AI unavailable"
 msgstr ""
 
 msgid "API Base URL"
@@ -76,15 +82,6 @@ msgstr ""
 msgid "All Languages"
 msgstr ""
 
-msgid "All translation cache cleared."
-msgstr ""
-
-msgid "All translations paused."
-msgstr ""
-
-msgid "All translations started."
-msgstr ""
-
 msgid "Allow the queue and crawler to generate new translations"
 msgstr ""
 
@@ -95,9 +92,6 @@ msgid "Auto"
 msgstr ""
 
 msgid "Auto-Detect Language"
-msgstr ""
-
-msgid "Auto-Translate All Content"
 msgstr ""
 
 msgid "Automatic Position"
@@ -112,6 +106,9 @@ msgstr ""
 msgid "Before Menu"
 msgstr ""
 
+msgid "Blocked"
+msgstr ""
+
 msgid "Button Preview"
 msgstr ""
 
@@ -121,10 +118,10 @@ msgstr ""
 msgid "Cache Directory"
 msgstr ""
 
-msgid "Cache cleared for %s."
+msgid "Cancel"
 msgstr ""
 
-msgid "Cancel"
+msgid "Choose a configured language."
 msgstr ""
 
 msgid "Choose the AI engine for translation."
@@ -133,19 +130,10 @@ msgstr ""
 msgid "Circle"
 msgstr ""
 
-msgid "Clear ALL translation cache? This cannot be undone."
-msgstr ""
-
-msgid "Clear All Cache"
-msgstr ""
-
-msgid "Clear All Translations"
-msgstr ""
-
-msgid "Clear Pending Queue"
-msgstr ""
-
 msgid "Code"
+msgstr ""
+
+msgid "Completed"
 msgstr ""
 
 msgid "Configure Now"
@@ -154,7 +142,10 @@ msgstr ""
 msgid "Configured"
 msgstr ""
 
-msgid "Crawl all published pages, posts, and products to queue their content for translation — no page visits required."
+msgid "Content Scan"
+msgstr ""
+
+msgid "Content scan scheduled. Translation settings were kept."
 msgstr ""
 
 msgid "Custom CSS for the language switcher."
@@ -187,10 +178,13 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-msgid "Delete all translations for this language?"
+msgid "Delete Saved Translations"
 msgstr ""
 
 msgid "Delete this translation?"
+msgstr ""
+
+msgid "Deleting a saved translation cannot be undone. Review individual records before deleting."
 msgstr ""
 
 msgid "Destination Languages"
@@ -211,7 +205,7 @@ msgstr ""
 msgid "Enable the multilingual site after choosing your languages. An AI API key is only required to generate new translations."
 msgstr ""
 
-msgid "Enable the multilingual site and AI Translation with a valid API key first."
+msgid "Enable the multilingual site and configure AI Translation first."
 msgstr ""
 
 msgid "Enter your API Key above and save settings"
@@ -247,6 +241,9 @@ msgstr ""
 msgid "FROM / TO"
 msgstr ""
 
+msgid "Failed Segments"
+msgstr ""
+
 msgid "Footer"
 msgstr ""
 
@@ -263,6 +260,9 @@ msgid "Full name instead of language code"
 msgstr ""
 
 msgid "GML Language Switcher"
+msgstr ""
+
+msgid "GML SEO is already providing multilingual translation. Use its Translation page, or deactivate GML SEO before activating GML Translate. Existing translation data has not been deleted."
 msgstr ""
 
 msgid "GML Switcher"
@@ -355,6 +355,9 @@ msgstr ""
 msgid "Languages to translate into."
 msgstr ""
 
+msgid "Last Worker Activity"
+msgstr ""
+
 msgid "Live preview — updates automatically"
 msgstr ""
 
@@ -392,6 +395,12 @@ msgid "None (Use shortcode/widget/function)"
 msgstr ""
 
 msgid "Not configured"
+msgstr ""
+
+msgid "Not recorded yet"
+msgstr ""
+
+msgid "Not scheduled"
 msgstr ""
 
 msgid "Not writable"
@@ -433,22 +442,31 @@ msgstr ""
 msgid "Page %1$s of %2$s (%3$s total)"
 msgstr ""
 
+msgid "Page cache refreshed. Saved translations and queue items were preserved."
+msgstr ""
+
 msgid "Pause"
 msgstr ""
 
-msgid "Pause All"
+msgid "Pause Translation"
 msgstr ""
 
 msgid "Paused"
 msgstr ""
 
-msgid "Pending queue cleared for %s."
+msgid "Pausing after current batch"
+msgstr ""
+
+msgid "Pending Segments"
 msgstr ""
 
 msgid "Plugin Version"
 msgstr ""
 
 msgid "Plugin Version:"
+msgstr ""
+
+msgid "Processing batch"
 msgstr ""
 
 msgid "Product names that should have specific translations per market"
@@ -460,10 +478,16 @@ msgstr ""
 msgid "Protected terms saved!"
 msgstr ""
 
+msgid "Queue Status"
+msgstr ""
+
 msgid "Quick Start Guide"
 msgstr ""
 
 msgid "Rectangle"
+msgstr ""
+
+msgid "Refresh Page Cache"
 msgstr ""
 
 msgid "Remove"
@@ -472,25 +496,31 @@ msgstr ""
 msgid "Remove this language?"
 msgstr ""
 
+msgid "Request failed. Refresh the status before retrying."
+msgstr ""
+
 msgid "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
 msgstr ""
 
 msgid "Retry All is disabled to protect API quota. After a successful connection test, retry one language in samples of at most 25."
 msgstr ""
 
-msgid "Retry Failed"
+msgid "Retry at most 25 failed items for this language? Watch the result before retrying another sample."
 msgstr ""
 
-msgid "Retry at most 25 failed items for this language? Watch the result before retrying another sample."
+msgid "Review %s translations"
 msgstr ""
 
 msgid "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
 msgstr ""
 
-msgid "Running"
+msgid "SEGMENTS"
 msgstr ""
 
 msgid "STATUS"
+msgstr ""
+
+msgid "Safety paused"
 msgstr ""
 
 msgid "Save"
@@ -515,6 +545,18 @@ msgid "Save Protected Terms"
 msgstr ""
 
 msgid "Saved provider: %1$s; model: %2$s."
+msgstr ""
+
+msgid "Scan Website Content"
+msgstr ""
+
+msgid "Scanning"
+msgstr ""
+
+msgid "Schedule overdue"
+msgstr ""
+
+msgid "Scheduled"
 msgstr ""
 
 msgid "Search translations..."
@@ -562,16 +604,16 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
-msgid "Start Auto-Translate"
-msgstr ""
-
-msgid "Starting..."
+msgid "Start Translation"
 msgstr ""
 
 msgid "Status"
 msgstr ""
 
-msgid "Stop Crawl"
+msgid "Stop Scan"
+msgstr ""
+
+msgid "Stopped"
 msgstr ""
 
 msgid "Style:"
@@ -622,13 +664,13 @@ msgstr ""
 msgid "These terms will never be translated. One per line. Brand names, product names, etc."
 msgstr ""
 
+msgid "This cache action is no longer available. No translations or queue items were deleted."
+msgstr ""
+
 msgid "This is useful for:"
 msgstr ""
 
 msgid "Title:"
-msgstr ""
-
-msgid "Translate All"
 msgstr ""
 
 msgid "Translate As"
@@ -646,16 +688,19 @@ msgstr ""
 msgid "Translation Exclusion Rules"
 msgstr ""
 
+msgid "Translation Queue"
+msgstr ""
+
 msgid "Translation Tone"
 msgstr ""
 
-msgid "Translation paused for %s."
+msgid "Translation activation blocked"
 msgstr ""
 
-msgid "Translation remains safety-paused. Test the saved AI connection before retrying a limited sample."
+msgid "Translation controls updated."
 msgstr ""
 
-msgid "Translation remains safety-paused. Test the saved AI connection, then retry one language sample before resuming."
+msgid "Translation is safety-paused. Test the saved AI connection and retry a limited language sample first."
 msgstr ""
 
 msgid "Translation safety pause is active."
@@ -664,13 +709,7 @@ msgstr ""
 msgid "Translation saved."
 msgstr ""
 
-msgid "Translation started for %s."
-msgstr ""
-
 msgid "Translations"
-msgstr ""
-
-msgid "Translations by Languages"
 msgstr ""
 
 msgid "Type"
@@ -709,9 +748,6 @@ msgstr ""
 msgid "Visit your site with language prefix, e.g.:"
 msgstr ""
 
-msgid "WORDS"
-msgstr ""
-
 msgid "Widget"
 msgstr ""
 
@@ -728,6 +764,9 @@ msgid "With Style"
 msgstr ""
 
 msgid "WordPress Version"
+msgstr ""
+
+msgid "WordPress could not schedule translation. Pause settings were kept."
 msgstr ""
 
 msgid "Writable"

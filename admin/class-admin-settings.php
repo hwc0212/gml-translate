@@ -46,6 +46,7 @@ class GML_Admin_Settings {
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce'   => wp_create_nonce('gml_editor_nonce'),
                 'i18n'    => [
+                    'scanFailed'     => __('Request failed. Refresh the status before retrying.', 'gml-translate'),
                     'save'           => __('Save', 'gml-translate'),
                     'cancel'         => __('Cancel', 'gml-translate'),
                     'edit'           => __('Edit', 'gml-translate'),
@@ -717,96 +718,14 @@ class GML_Admin_Settings {
     private function render_translations_tab() {
         global $wpdb;
 
-        // Handle global start/pause
-        if (isset($_POST['gml_global_action']) && check_admin_referer('gml_translation_action', 'gml_translation_nonce')) {
-            if ($_POST['gml_global_action'] === 'start_all' && ( ! GML_Translation_State::multilingual_enabled() || ! GML_Translation_State::ai_available() ) ) {
-                echo '<div class="notice notice-error is-dismissible"><p>' . __('Enable the multilingual site and AI Translation with a valid API key first.', 'gml-translate') . '</p></div>';
-            } elseif (
-                $_POST['gml_global_action'] === 'start_all' &&
-                ( GML_Queue_Processor::circuit_is_open() || GML_Queue_Processor::maybe_open_for_existing_failures() )
-            ) {
-                echo '<div class="notice notice-error is-dismissible"><p>' . __('Translation remains safety-paused. Test the saved AI connection, then retry one language sample before resuming.', 'gml-translate') . '</p></div>';
-            } elseif ($_POST['gml_global_action'] === 'start_all') {
-                if ( $this->start_translation_process() ) {
-                    $langs = get_option('gml_languages', []);
-                    foreach ($langs as &$l) { $l['paused'] = false; }
-                    unset( $l );
-                    update_option('gml_languages', $langs);
-                    echo '<div class="notice notice-success is-dismissible"><p>' . __('All translations started.', 'gml-translate') . '</p></div>';
-                }
-            } elseif ($_POST['gml_global_action'] === 'pause_all') {
-                $this->pause_translation_process();
-                $langs = get_option('gml_languages', []);
-                foreach ($langs as &$l) { $l['paused'] = true; }
-                unset( $l );
-                update_option('gml_languages', $langs);
-                echo '<div class="notice notice-warning is-dismissible"><p>' . __('All translations paused.', 'gml-translate') . '</p></div>';
-            }
-        }
-
-        // Handle per-language start/pause
-        if (isset($_POST['gml_lang_action'], $_POST['gml_lang_code']) && check_admin_referer('gml_translation_action', 'gml_translation_nonce')) {
-            $target = sanitize_key($_POST['gml_lang_code']);
-            if ($_POST['gml_lang_action'] === 'start_lang' && ( ! GML_Translation_State::multilingual_enabled() || ! GML_Translation_State::ai_available() ) ) {
-                echo '<div class="notice notice-error is-dismissible"><p>' . __('Enable the multilingual site and AI Translation with a valid API key first.', 'gml-translate') . '</p></div>';
-            } elseif (
-                $_POST['gml_lang_action'] === 'start_lang' &&
-                ( GML_Queue_Processor::circuit_is_open() || GML_Queue_Processor::maybe_open_for_existing_failures() )
-            ) {
-                echo '<div class="notice notice-error is-dismissible"><p>' . __('Translation remains safety-paused. Test the saved AI connection before retrying a limited sample.', 'gml-translate') . '</p></div>';
-            } elseif ($_POST['gml_lang_action'] === 'start_lang') {
-                $langs = get_option('gml_languages', []);
-                foreach ($langs as &$l) {
-                    if ($l['code'] === $target) { $l['paused'] = false; break; }
-                }
-                unset( $l );
-                update_option('gml_languages', $langs);
-                update_option('gml_translation_paused', false);
-                wp_schedule_single_event(time(), GML_Queue_Processor::CRON_HOOK);
-                echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(__('Translation started for %s.', 'gml-translate'), esc_html($target)) . '</p></div>';
-            } else {
-                $langs = get_option('gml_languages', []);
-                foreach ($langs as &$l) {
-                    if ($l['code'] === $target) { $l['paused'] = true; break; }
-                }
-                unset( $l );
-                update_option('gml_languages', $langs);
-                echo '<div class="notice notice-warning is-dismissible"><p>' . sprintf(__('Translation paused for %s.', 'gml-translate'), esc_html($target)) . '</p></div>';
-            }
-        }
-
-        // Handle cache actions
-        if (isset($_POST['gml_cache_action']) && check_admin_referer('gml_cache_action', 'gml_cache_nonce')) {
-            $cache_action = sanitize_text_field($_POST['gml_cache_action']);
-            $lang_code    = sanitize_key($_POST['lang_code'] ?? '');
-            if ($cache_action === 'clear_all_cache') {
-                $configured_languages = (array) get_option( 'gml_languages', [] );
-                $wpdb->query("TRUNCATE TABLE {$wpdb->prefix}gml_index");
-                $wpdb->query("TRUNCATE TABLE {$wpdb->prefix}gml_queue");
-                foreach ( $configured_languages as $configured_language ) {
-                    if ( ! empty( $configured_language['code'] ) ) {
-                        GML_Translator::invalidate_cache( get_option('gml_source_lang', 'en'), $configured_language['code'] );
-                    }
-                }
-                GML_Page_Cache::invalidate();
-                GML_Queue_Processor::clear_readiness_cache();
-                update_option('gml_cache_cleared_v244', true); // mark stale cache as cleared
-                echo '<div class="notice notice-success is-dismissible"><p>' . __('All translation cache cleared.', 'gml-translate') . '</p></div>';
-            } elseif ($lang_code) {
-                if ($cache_action === 'clear_lang_cache') {
-                    $wpdb->delete($wpdb->prefix . 'gml_index', ['target_lang' => $lang_code]);
-                    $wpdb->delete($wpdb->prefix . 'gml_queue', ['target_lang' => $lang_code]);
-                    GML_Translator::invalidate_cache( get_option('gml_source_lang', 'en'), $lang_code );
-                    GML_Page_Cache::invalidate();
-                    GML_Queue_Processor::clear_readiness_cache( $lang_code );
-                    echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(__('Cache cleared for %s.', 'gml-translate'), esc_html($lang_code)) . '</p></div>';
-                } elseif ($cache_action === 'clear_lang_queue') {
-                    $wpdb->delete($wpdb->prefix . 'gml_queue', ['target_lang' => $lang_code, 'status' => 'pending']);
-                    GML_Page_Cache::invalidate();
-                    GML_Queue_Processor::clear_readiness_cache( $lang_code );
-                    echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(__('Pending queue cleared for %s.', 'gml-translate'), esc_html($lang_code)) . '</p></div>';
-                }
-            }
+        $action_result = GML_Translation_Controls::handle_request( wp_unslash( $_POST ) );
+        if ( is_wp_error( $action_result ) ) {
+            echo '<div class="notice notice-error"><p>' . esc_html( __( $action_result->get_error_message(), 'gml-translate' ) ) . '</p></div>';
+        } elseif ( $action_result === true ) {
+            $message = isset( $_POST['gml_cache_action'] )
+                ? __( 'Page cache refreshed. Saved translations and queue items were preserved.', 'gml-translate' )
+                : __( 'Translation controls updated.', 'gml-translate' );
+            echo '<div class="notice notice-success"><p>' . esc_html( $message ) . '</p></div>';
         }
 
         $languages           = get_option('gml_languages', []);
@@ -821,73 +740,102 @@ class GML_Admin_Settings {
         $available_languages = $this->get_available_languages();
         $source_country      = self::get_country_from_locale($source_lang, $wp_locale);
         $source_native       = $available_languages[$source_lang]['native'] ?? strtoupper($source_lang);
-        $queue_pending       = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}gml_queue WHERE status='pending'");
+        $queue_pending       = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}gml_queue WHERE status IN ('pending','processing')");
         $total_failed        = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}gml_queue WHERE status='failed'");
         $circuit             = GML_Queue_Processor::get_circuit_breaker();
         $safety_paused       = ! empty( $circuit );
         $failure_summary     = $total_failed > 0 ? GML_Queue_Processor::get_failure_summary( '', 3 ) : [];
 
-        // Crawl status
+        $state_labels = [
+            'unavailable' => __( 'AI unavailable', 'gml-translate' ),
+            'safety_paused' => __( 'Safety paused', 'gml-translate' ),
+            'paused' => __( 'Paused', 'gml-translate' ),
+            'pausing' => __( 'Pausing after current batch', 'gml-translate' ),
+            'processing' => __( 'Processing batch', 'gml-translate' ),
+            'idle' => __( 'Idle', 'gml-translate' ),
+            'scheduled' => __( 'Scheduled', 'gml-translate' ),
+            'not_scheduled' => __( 'Not scheduled', 'gml-translate' ),
+            'overdue' => __( 'Schedule overdue', 'gml-translate' ),
+            'scanning' => __( 'Scanning', 'gml-translate' ),
+            'blocked' => __( 'Blocked', 'gml-translate' ),
+            'completed' => __( 'Completed', 'gml-translate' ),
+            'stopped' => __( 'Stopped', 'gml-translate' ),
+        ];
+        $queue_status = GML_Translation_Controls::queue_status( '', $queue_pending );
         $crawl_status = GML_Content_Crawler::get_status();
-
-        // ── Top bar ──────────────────────────────────────────────────────────
+        $sample_running = (bool) get_option( GML_Queue_Processor::SAMPLE_OPTION, [] );
+        $can_start = $is_enabled && ! $safety_paused && ! $sample_running && ! empty( $languages );
         ?>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-            <h2 style="margin:0;"><?php _e('Translations by Languages', 'gml-translate'); ?></h2>
-            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                <?php if ($is_enabled && !$is_paused): ?>
-                    <span style="color:#00a32a;font-size:13px;">● <?php _e('Running', 'gml-translate'); ?></span>
-                <?php else: ?>
-                    <span style="color:#888;font-size:13px;">⏸ <?php _e('Paused', 'gml-translate'); ?></span>
-                <?php endif; ?>
-                <?php if ($queue_pending > 0): ?>
-                    <span style="font-size:12px;color:#666;"><?php echo $queue_pending; ?> <?php _e('pending', 'gml-translate'); ?></span>
-                <?php endif; ?>
-
-                <form method="post" style="margin:0;display:inline-flex;gap:6px;">
-                    <?php wp_nonce_field('gml_translation_action', 'gml_translation_nonce'); ?>
-                    <?php if ($is_enabled && !$is_paused): ?>
-                        <button type="submit" name="gml_global_action" value="pause_all" class="button button-secondary">⏸ <?php _e('Pause All', 'gml-translate'); ?></button>
+        <style>
+        .gml-translation-toolbar,.gml-translation-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+        .gml-translation-toolbar{justify-content:space-between;margin:16px 0}
+        .gml-translation-toolbar h2{margin:0}
+        .gml-translation-actions form{margin:0}
+        .gml-translation-actions .dashicons,.gml-content-scan .dashicons{vertical-align:middle;margin-right:4px}
+        .gml-translation-summary{display:flex;gap:24px;flex-wrap:wrap;padding:12px 0;border-top:1px solid #dcdcde}
+        .gml-translation-summary dl{margin:0;min-width:140px}
+        .gml-translation-summary dt{color:#50575e;font-size:12px}
+        .gml-translation-summary dd{margin:4px 0 0;font-weight:600}
+        .gml-content-scan{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;padding:16px 0;margin-bottom:20px;border-top:1px solid #dcdcde;border-bottom:1px solid #dcdcde}
+        .gml-content-scan h3{margin:0 0 6px}
+        .gml-scan-progress{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+        .gml-scan-progress progress{width:220px;max-width:100%;height:10px}
+        .gml-translation-table{max-width:100%;overflow-x:auto;background:#fff;border:1px solid #dcdcde}
+        .gml-translation-table table{min-width:1100px}
+        .gml-translation-table td:first-child>div{flex-wrap:wrap}
+        .gml-translation-table tr{display:table-row}
+        .gml-translation-table th,.gml-translation-table td{display:table-cell}
+        .gml-content-scan button[hidden]{display:none!important}
+        .gml-translation-table .button{min-width:34px;height:32px;padding:0 5px}
+        .gml-translation-table .dashicons{line-height:30px}
+        .gml-translation-danger{margin:24px 0;padding-top:16px;border-top:1px solid #d63638}
+        .gml-translation-danger h3{color:#b32d2e}
+        .gml-translation-danger .gml-danger-actions{display:flex;gap:8px;flex-wrap:wrap}
+        </style>
+        <div class="gml-translation-toolbar">
+            <h2><?php esc_html_e( 'Translation Queue', 'gml-translate' ); ?></h2>
+            <div class="gml-translation-actions">
+                <form method="post">
+                    <?php wp_nonce_field( 'gml_translation_action', 'gml_translation_nonce' ); ?>
+                    <?php if ( $is_enabled && ! $is_paused ): ?>
+                        <button type="submit" name="gml_global_action" value="pause_all" class="button">
+                            <span class="dashicons dashicons-controls-pause" aria-hidden="true"></span><?php esc_html_e( 'Pause Translation', 'gml-translate' ); ?>
+                        </button>
                     <?php else: ?>
-                        <button type="submit" name="gml_global_action" value="start_all" class="button button-primary" <?php disabled( ! $ai_translation_on || $safety_paused ); ?>>▶ <?php _e('Translate All', 'gml-translate'); ?></button>
+                        <button type="submit" name="gml_global_action" value="start_all" class="button button-primary" <?php disabled( ! $can_start ); ?>>
+                            <span class="dashicons dashicons-controls-play" aria-hidden="true"></span><?php esc_html_e( 'Start Translation', 'gml-translate' ); ?>
+                        </button>
                     <?php endif; ?>
                 </form>
-
-                <form method="post" style="margin:0;" onsubmit="return confirm('<?php esc_attr_e('Clear ALL translation cache? This cannot be undone.', 'gml-translate'); ?>')">
-                    <?php wp_nonce_field('gml_cache_action', 'gml_cache_nonce'); ?>
-                    <button type="submit" name="gml_cache_action" value="clear_all_cache" class="button button-secondary" style="color:#d63638;border-color:#d63638;">
-                        🗑 <?php _e('Clear All Cache', 'gml-translate'); ?>
+                <form method="post">
+                    <?php wp_nonce_field( 'gml_cache_action', 'gml_cache_nonce' ); ?>
+                    <button type="submit" name="gml_cache_action" value="refresh_page_cache" class="button">
+                        <span class="dashicons dashicons-update" aria-hidden="true"></span><?php esc_html_e( 'Refresh Page Cache', 'gml-translate' ); ?>
                     </button>
                 </form>
             </div>
         </div>
-
-        <!-- Auto-Crawl Section -->
-        <div style="background:#fff;border:1px solid #ddd;border-radius:4px;padding:16px 20px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;">
+        <div class="gml-translation-summary" aria-live="polite">
+            <dl><dt><?php esc_html_e( 'Queue Status', 'gml-translate' ); ?></dt><dd id="gml-queue-state"><?php echo esc_html( $state_labels[$queue_status['state']] ); ?></dd></dl>
+            <dl><dt><?php esc_html_e( 'Pending Segments', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $queue_pending ) ); ?></dd></dl>
+            <dl><dt><?php esc_html_e( 'Failed Segments', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $total_failed ) ); ?></dd></dl>
+            <dl><dt><?php esc_html_e( 'Last Worker Activity', 'gml-translate' ); ?></dt><dd id="gml-queue-last"><?php echo esc_html( $queue_status['last_activity'] ? wp_date( 'Y-m-d H:i:s', $queue_status['last_activity'] ) : __( 'Not recorded yet', 'gml-translate' ) ); ?></dd></dl>
+        </div>
+        <div class="gml-content-scan">
             <div>
-                <strong style="font-size:14px;">🔄 <?php _e('Auto-Translate All Content', 'gml-translate'); ?></strong>
-                <p style="margin:4px 0 0;color:#666;font-size:13px;">
-                    <?php _e('Crawl all published pages, posts, and products to queue their content for translation — no page visits required.', 'gml-translate'); ?>
-                </p>
-                <?php if ($crawl_status['running']): ?>
-                    <div style="margin-top:8px;display:flex;align-items:center;gap:10px;">
-                        <div style="flex:1;max-width:300px;height:6px;background:#e0e0e0;border-radius:3px;overflow:hidden;">
-                            <div id="gml-crawl-bar" style="width:<?php echo $crawl_status['percent']; ?>%;height:100%;background:#2271b1;transition:width .3s;"></div>
-                        </div>
-                        <span id="gml-crawl-text" style="font-size:12px;color:#666;">
-                            <?php echo $crawl_status['processed']; ?> / <?php echo $crawl_status['total']; ?> (<?php echo $crawl_status['percent']; ?>%)
-                        </span>
-                    </div>
-                <?php endif; ?>
+                <h3><?php esc_html_e( 'Content Scan', 'gml-translate' ); ?></h3>
+                <span id="gml-scan-state"><?php echo esc_html( $state_labels[$crawl_status['state']] ); ?></span>
+                <div class="gml-scan-progress">
+                    <progress id="gml-crawl-bar" max="100" value="<?php echo esc_attr( $crawl_status['percent'] ); ?>"></progress>
+                    <span id="gml-crawl-text"><?php echo esc_html( $crawl_status['processed'] . ' / ' . $crawl_status['total'] ); ?></span>
+                </div>
             </div>
-            <div style="display:flex;gap:8px;">
-                <?php if ($crawl_status['running']): ?>
-                    <button type="button" id="gml-crawl-stop" class="button button-secondary" style="color:#d63638;border-color:#d63638;">⏹ <?php _e('Stop Crawl', 'gml-translate'); ?></button>
-                <?php else: ?>
-                    <button type="button" id="gml-crawl-start" class="button button-primary" <?php disabled( ! $ai_translation_on || $safety_paused ); ?>>🚀 <?php _e('Start Auto-Translate', 'gml-translate'); ?></button>
-                <?php endif; ?>
+            <div>
+                <button type="button" id="gml-crawl-stop" class="button" <?php echo ! $crawl_status['running'] ? 'hidden' : ''; ?>><span class="dashicons dashicons-controls-stop" aria-hidden="true"></span><?php esc_html_e( 'Stop Scan', 'gml-translate' ); ?></button>
+                <button type="button" id="gml-crawl-start" class="button" <?php echo $crawl_status['running'] ? 'hidden' : ''; ?> <?php disabled( ! $can_start ); ?>><span class="dashicons dashicons-search" aria-hidden="true"></span><?php esc_html_e( 'Scan Website Content', 'gml-translate' ); ?></button>
             </div>
         </div>
+        <div id="gml-scan-error" class="notice notice-error inline" hidden role="alert"><p></p></div>
 
         <?php if (!$ai_translation_on): ?>
             <div class="notice notice-warning inline"><p><?php _e('AI Translation is currently unavailable, so no new translation jobs will run. Existing multilingual URLs and saved translations remain available while the multilingual site is enabled.', 'gml-translate'); ?></p></div>
@@ -929,12 +877,12 @@ class GML_Admin_Settings {
             </p></div>
         <?php else: ?>
 
-        <div style="background:#fff;border:1px solid #ddd;border-radius:4px;overflow:visible;">
+        <div class="gml-translation-table">
             <table class="wp-list-table widefat fixed" style="border:none;margin:0;">
                 <thead>
                     <tr style="background:#f9f9f9;">
                         <th style="padding:14px 20px;border-bottom:1px solid #ddd;width:22%;"><?php _e('FROM / TO', 'gml-translate'); ?></th>
-                        <th style="padding:14px 20px;border-bottom:1px solid #ddd;width:12%;text-align:center;"><?php _e('WORDS', 'gml-translate'); ?></th>
+                        <th style="padding:14px 20px;border-bottom:1px solid #ddd;width:12%;text-align:center;"><?php esc_html_e('SEGMENTS', 'gml-translate'); ?></th>
                         <th style="padding:14px 20px;border-bottom:1px solid #ddd;width:12%;text-align:center;"><?php _e('TRANSLATED', 'gml-translate'); ?></th>
                         <th style="padding:14px 20px;border-bottom:1px solid #ddd;width:16%;text-align:center;"><?php _e('PROGRESS', 'gml-translate'); ?></th>
                         <th style="padding:14px 20px;border-bottom:1px solid #ddd;width:12%;text-align:center;"><?php _e('STATUS', 'gml-translate'); ?></th>
@@ -991,55 +939,23 @@ class GML_Admin_Settings {
                         </div>
                     </td>
                     <td style="padding:16px 20px;text-align:center;">
-                        <?php if ($lang_running): ?>
-                            <span style="display:inline-block;padding:3px 10px;background:#e6f4ea;color:#00a32a;border-radius:12px;font-size:12px;font-weight:600;">● <?php _e('Running', 'gml-translate'); ?></span>
-                        <?php elseif ($lang_paused): ?>
-                            <span style="display:inline-block;padding:3px 10px;background:#fef3cd;color:#856404;border-radius:12px;font-size:12px;font-weight:600;">⏸ <?php _e('Paused', 'gml-translate'); ?></span>
-                        <?php else: ?>
-                            <span style="display:inline-block;padding:3px 10px;background:#f0f0f0;color:#666;border-radius:12px;font-size:12px;">— <?php _e('Idle', 'gml-translate'); ?></span>
-                        <?php endif; ?>
+                        <?php $language_status = GML_Translation_Controls::queue_status( $lang_code, $pending_count ); ?>
+                        <span><?php echo esc_html( $state_labels[$language_status['state']] ); ?></span>
                     </td>
                     <td style="padding:16px 20px;text-align:right;">
                         <div style="display:inline-flex;gap:6px;align-items:center;position:relative;">
                             <!-- Manage Translations button -->
-                            <button type="button" class="button button-small gml-open-editor" data-lang="<?php echo esc_attr($lang_code); ?>" data-lang-name="<?php echo esc_attr($lang_name); ?>" title="<?php esc_attr_e('Manage Translations', 'gml-translate'); ?>">✏️</button>
+                            <button type="button" class="button button-small gml-open-editor" data-lang="<?php echo esc_attr($lang_code); ?>" data-lang-name="<?php echo esc_attr($lang_name); ?>" title="<?php esc_attr_e('Manage Translations', 'gml-translate'); ?>" aria-label="<?php esc_attr_e('Manage Translations', 'gml-translate'); ?>"><span class="dashicons dashicons-edit" aria-hidden="true"></span></button>
 
                             <form method="post" style="margin:0;">
                                 <?php wp_nonce_field('gml_translation_action', 'gml_translation_nonce'); ?>
                                 <input type="hidden" name="gml_lang_code" value="<?php echo esc_attr($lang_code); ?>">
                                 <?php if ($lang_running): ?>
-                                    <button type="submit" name="gml_lang_action" value="pause_lang" class="button button-small" title="<?php esc_attr_e('Pause', 'gml-translate'); ?>">⏸</button>
+                                    <button type="submit" name="gml_lang_action" value="pause_lang" class="button button-small" title="<?php esc_attr_e('Pause', 'gml-translate'); ?>" aria-label="<?php esc_attr_e('Pause', 'gml-translate'); ?>"><span class="dashicons dashicons-controls-pause" aria-hidden="true"></span></button>
                                 <?php else: ?>
-                                    <button type="submit" name="gml_lang_action" value="start_lang" class="button button-small button-primary" title="<?php esc_attr_e('Start', 'gml-translate'); ?>" <?php disabled( ! $ai_translation_on || $safety_paused ); ?>>▶</button>
+                                    <button type="submit" name="gml_lang_action" value="start_lang" class="button button-small button-primary" title="<?php esc_attr_e('Start', 'gml-translate'); ?>" aria-label="<?php esc_attr_e('Start', 'gml-translate'); ?>" <?php disabled( ! $can_start ); ?>><span class="dashicons dashicons-controls-play" aria-hidden="true"></span></button>
                                 <?php endif; ?>
                             </form>
-                            <div style="position:relative;">
-                                <button type="button" class="button button-small gml-cache-toggle">🗑 ▾</button>
-                                <div class="gml-cache-menu" style="display:none;position:absolute;right:0;top:calc(100% + 4px);background:#fff;border:1px solid #ddd;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,.12);min-width:200px;z-index:9999;">
-                                    <form method="post">
-                                        <?php wp_nonce_field('gml_cache_action', 'gml_cache_nonce'); ?>
-                                        <input type="hidden" name="lang_code" value="<?php echo esc_attr($lang_code); ?>">
-                                        <?php if ($failed_count > 0): ?>
-                                        <button type="button" class="button-link gml-retry-lang" data-lang="<?php echo esc_attr($lang_code); ?>"
-                                            style="display:block;width:100%;text-align:left;padding:10px 14px;border:none;background:none;cursor:pointer;font-size:13px;color:#856404;border-bottom:1px solid #f0f0f0;"
-                                            onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='none'">
-                                            🔄 <?php _e('Retry Failed', 'gml-translate'); ?> (<?php echo $failed_count; ?>)
-                                        </button>
-                                        <?php endif; ?>
-                                        <button type="submit" name="gml_cache_action" value="clear_lang_queue"
-                                            class="button-link" style="display:block;width:100%;text-align:left;padding:10px 14px;border:none;background:none;cursor:pointer;font-size:13px;border-bottom:1px solid #f0f0f0;"
-                                            onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='none'">
-                                            <?php _e('Clear Pending Queue', 'gml-translate'); ?>
-                                        </button>
-                                        <button type="submit" name="gml_cache_action" value="clear_lang_cache"
-                                            class="button-link" style="display:block;width:100%;text-align:left;padding:10px 14px;border:none;background:none;cursor:pointer;font-size:13px;color:#d63638;"
-                                            onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='none'"
-                                            onclick="return confirm('<?php esc_attr_e('Delete all translations for this language?', 'gml-translate'); ?>')">
-                                            <?php _e('Clear All Translations', 'gml-translate'); ?>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
                         </div>
                     </td>
                 </tr>
@@ -1049,73 +965,8 @@ class GML_Admin_Settings {
         </div>
 
         <script>
+        window.gmlTranslationStates = <?php echo wp_json_encode( $state_labels ); ?>;
         (function(){
-            // Cache menu toggle
-            document.querySelectorAll('.gml-cache-toggle').forEach(function(btn) {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    var menu = btn.nextElementSibling;
-                    var isOpen = menu.style.display === 'block';
-                    document.querySelectorAll('.gml-cache-menu').forEach(function(m){ m.style.display='none'; });
-                    if (!isOpen) menu.style.display = 'block';
-                });
-            });
-            document.addEventListener('click', function(){
-                document.querySelectorAll('.gml-cache-menu').forEach(function(m){ m.style.display='none'; });
-            });
-
-            // Crawl buttons
-            var crawlStart = document.getElementById('gml-crawl-start');
-            var crawlStop  = document.getElementById('gml-crawl-stop');
-            if (crawlStart) {
-                crawlStart.addEventListener('click', function() {
-                    crawlStart.disabled = true;
-                    crawlStart.textContent = '<?php _e('Starting...', 'gml-translate'); ?>';
-                    jQuery.post(gmlEditor.ajaxUrl, {action:'gml_crawl_action', crawl_action:'start', nonce:gmlEditor.nonce}, function(r) {
-                        location.reload();
-                    });
-                });
-            }
-            if (crawlStop) {
-                crawlStop.addEventListener('click', function() {
-                    crawlStop.disabled = true;
-                    jQuery.post(gmlEditor.ajaxUrl, {action:'gml_crawl_action', crawl_action:'stop', nonce:gmlEditor.nonce}, function(r) {
-                        location.reload();
-                    });
-                });
-            }
-
-            // Auto-refresh crawl progress + language stats
-            <?php if ($crawl_status['running']): ?>
-            (function() {
-                var lastReload = Date.now();
-                setInterval(function() {
-                    jQuery.post(gmlEditor.ajaxUrl, {action:'gml_crawl_status', nonce:gmlEditor.nonce}, function(r) {
-                        if (r.success) {
-                            var d = r.data;
-                            var bar = document.getElementById('gml-crawl-bar');
-                            var txt = document.getElementById('gml-crawl-text');
-                            if (bar) bar.style.width = d.percent + '%';
-                            if (txt) txt.textContent = d.processed + ' / ' + d.total + ' (' + d.percent + '%)';
-                            // Reload page every 15s to refresh language stats, or when crawl finishes
-                            if (!d.running || (Date.now() - lastReload > 15000)) {
-                                location.reload();
-                            }
-                        }
-                    });
-                }, 5000);
-            })();
-            <?php elseif ($is_enabled && !$is_paused && $queue_pending > 0): ?>
-            // Translation running without crawl — refresh stats periodically
-            (function() {
-                setInterval(function() {
-                    // Trigger process_batch via crawl_status endpoint (piggyback)
-                    jQuery.post(gmlEditor.ajaxUrl, {action:'gml_crawl_status', nonce:gmlEditor.nonce}, function() {
-                        location.reload();
-                    });
-                }, 15000);
-            })();
-            <?php endif; ?>
 
             // Retry failed buttons
             document.querySelectorAll('.gml-retry-lang').forEach(function(btn) {
@@ -1165,6 +1016,15 @@ class GML_Admin_Settings {
                 </div>
             </div>
         </div>
+        <section class="gml-translation-danger">
+            <h3><?php esc_html_e( 'Delete Saved Translations', 'gml-translate' ); ?></h3>
+            <p><?php esc_html_e( 'Deleting a saved translation cannot be undone. Review individual records before deleting.', 'gml-translate' ); ?></p>
+            <div class="gml-danger-actions">
+                <?php foreach ( $languages as $language ): ?>
+                    <button type="button" class="button gml-open-editor" data-lang="<?php echo esc_attr( $language['code'] ); ?>" data-lang-name="<?php echo esc_attr( $language['native_name'] ?? $language['code'] ); ?>"><?php echo esc_html( sprintf( __( 'Review %s translations', 'gml-translate' ), $language['native_name'] ?? $language['code'] ) ); ?></button>
+                <?php endforeach; ?>
+            </div>
+        </section>
 
         <?php endif; ?>
         <?php
@@ -1489,21 +1349,11 @@ class GML_Admin_Settings {
     }
 
     private function start_translation_process() {
-        if (
-            ! GML_Translation_State::multilingual_enabled() ||
-            ! GML_Translation_State::ai_available() ||
-            GML_Queue_Processor::circuit_is_open() ||
-            GML_Queue_Processor::maybe_open_for_existing_failures()
-        ) {
-            return false;
-        }
-        update_option('gml_translation_paused', false);
-        wp_schedule_single_event(time(), GML_Queue_Processor::CRON_HOOK);
-        return true;
+        return GML_Translation_Controls::start() === true;
     }
 
     private function pause_translation_process() {
-        update_option('gml_translation_paused', true);
+        GML_Translation_Controls::pause();
     }
 
     private function save_settings() {
