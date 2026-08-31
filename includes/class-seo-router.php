@@ -20,6 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+require_once __DIR__ . '/vendor/gml-translation-core/src/class-translation-rewrite.php';
+
 class GML_SEO_Router {
 
     /** @var string[] Enabled target language codes */
@@ -44,27 +46,7 @@ class GML_SEO_Router {
     // ── Rewrite rules ─────────────────────────────────────────────────────────
 
     public function add_rewrite_rules() {
-        if ( empty( $this->languages ) ) {
-            return;
-        }
-
-        $pattern = class_exists( 'GML_Language_Utils' )
-            ? GML_Language_Utils::language_pattern( $this->languages )
-            : implode( '|', array_map( 'preg_quote', $this->languages ) );
-
-        // /ru/some/path/ → WordPress receives gml_lang=ru, gml_path=some/path/
-        add_rewrite_rule(
-            "^({$pattern})/(.+?)/?$",
-            'index.php?gml_lang=$matches[1]&gml_path=$matches[2]',
-            'top'
-        );
-
-        // /ru/ (language homepage)
-        add_rewrite_rule(
-            "^({$pattern})/?$",
-            'index.php?gml_lang=$matches[1]',
-            'top'
-        );
+        GML_Translation_Rewrite::register();
     }
 
     public function add_query_vars( $vars ) {

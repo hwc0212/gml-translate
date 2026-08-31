@@ -3,7 +3,7 @@
  * Plugin Name: GML Translate
  * Plugin URI: https://huwencai.com/gml-translate
  * Description: AI multilingual translation for WordPress with stable language URLs, editable translations, glossary, queue controls, hreflang, and sitemap integration.
- * Version: 2.11.1-rc.3
+ * Version: 2.11.1-rc.4
  * Author: huwencai.com
  * Author URI: https://huwencai.com
  * License: GPL v2 or later
@@ -32,7 +32,7 @@ if ( defined( 'GML_TRANSLATION_HOST' ) && GML_TRANSLATION_HOST !== 'standalone' 
 }
 
 // Define plugin constants
-define('GML_VERSION', '2.11.1-rc.3');
+define('GML_VERSION', '2.11.1-rc.4');
 define('GML_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GML_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GML_PLUGIN_FILE', __FILE__);
@@ -90,7 +90,7 @@ class GML_Translate {
         
         // Initialize components
         add_action('plugins_loaded', [$this, 'init_components'], 20);
-        add_action('init', [$this, 'maybe_flush_rewrite_rules'], 999);
+        add_action('admin_init', [$this, 'maybe_flush_rewrite_rules']);
     }
     
     /**
@@ -104,7 +104,8 @@ class GML_Translate {
             wp_die( esc_html( $result->get_error_message() ), '', [ 'back_link' => true ] );
         }
         
-        // Flush rewrite rules
+        // Activation can run after init, so register before persisting routes.
+        GML_Translation_Rewrite::register();
         flush_rewrite_rules();
     }
     
@@ -214,10 +215,7 @@ class GML_Translate {
     }
 
     public function maybe_flush_rewrite_rules() {
-        if ( get_option( 'gml_translation_flush_rewrite_rules', false ) ) {
-            delete_option( 'gml_translation_flush_rewrite_rules' );
-            flush_rewrite_rules( false );
-        }
+        GML_Translation_Rewrite::maybe_repair();
     }
     
     /**

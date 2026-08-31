@@ -187,7 +187,7 @@ function extract_i18n_strings( $root ) {
 
 function header_text( $locale ) {
     return implode( "\n", [
-        'Project-Id-Version: GML Translate 2.11.1-rc.3',
+        'Project-Id-Version: GML Translate 2.11.1-rc.4',
         'Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues',
         'POT-Creation-Date: 2026-08-31 00:00+0000',
         'PO-Revision-Date: 2026-08-31 00:00+0000',
