@@ -454,6 +454,12 @@ msgstr "Page cache refreshed. Saved translations and queue items were preserved.
 msgid "Pause"
 msgstr "Pause"
 
+msgid "Pause All"
+msgstr "Pause All"
+
+msgid "Pause Sample"
+msgstr "Pause Sample"
+
 msgid "Pause Translation"
 msgstr "Pause Translation"
 
@@ -531,6 +537,12 @@ msgstr "STATUS"
 
 msgid "Safety paused"
 msgstr "Safety paused"
+
+msgid "Sample paused"
+msgstr "Sample paused"
+
+msgid "Sample scheduled"
+msgstr "Sample scheduled"
 
 msgid "Save"
 msgstr "저장"
@@ -618,6 +630,12 @@ msgstr "Square"
 
 msgid "Start"
 msgstr "Start"
+
+msgid "Start All Pending"
+msgstr "Start All Pending"
+
+msgid "Start Pending for This Language"
+msgstr "Start Pending for This Language"
 
 msgid "Start Translation"
 msgstr "Start Translation"

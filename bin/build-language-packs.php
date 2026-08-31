@@ -82,6 +82,12 @@ $translations = [
 ];
 
 $controls_zh = [
+    'Start All Pending' => '启动全部待翻译任务',
+    'Pause All' => '暂停全部',
+    'Start Pending for This Language' => '启动该语言的待翻译任务',
+    'Pause Sample' => '暂停小样本',
+    'Sample paused' => '小样本已暂停',
+    'Sample scheduled' => '小样本已排程',
     'The saved API key cannot be decrypted on this site. Re-enter and save the key. No API request was sent; existing translations are unaffected.' => '此站点无法解密已保存的 API Key。请重新输入并保存。本次未发送 API 请求，已有译文不受影响。',
     'This test does not start or resume translation.' => '本次测试不会启动或恢复翻译。',
     'Tested saved configuration: %1$s / %2$s. Key contents are never displayed.' => '本次测试使用已保存配置：%1$s / %2$s。不会显示密钥内容。',

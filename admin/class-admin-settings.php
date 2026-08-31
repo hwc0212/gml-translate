@@ -767,7 +767,8 @@ class GML_Admin_Settings {
         $crawl_status = GML_Content_Crawler::get_status();
         $sample = GML_Translation_Controls::sample_status();
         $sample_running = $sample['active'];
-        $can_start = $is_enabled && ! $safety_paused && ! $sample_running && ! empty( $languages );
+        $normal_languages = GML_Translation_Queue_Scope::normal_languages();
+        $can_start = $is_enabled && ! $safety_paused && ! empty( GML_Translation_Queue_Scope::enabled_languages() );
         $can_resume_sample = $is_enabled && ! $safety_paused && $sample['valid'];
         ?>
         <style>
@@ -801,19 +802,12 @@ class GML_Admin_Settings {
             <div class="gml-translation-actions">
                 <form method="post">
                     <?php wp_nonce_field( 'gml_translation_action', 'gml_translation_nonce' ); ?>
-                    <?php if ( $is_enabled && ! $is_paused && ( ! $sample_running || ( ! $sample['paused'] && $queue_status['next_run'] ) ) ): ?>
-                        <button type="submit" name="gml_global_action" value="pause_all" class="button">
-                            <span class="dashicons dashicons-controls-pause" aria-hidden="true"></span><?php esc_html_e( 'Pause Translation', 'gml-translate' ); ?>
-                        </button>
-                    <?php elseif ( $sample_running ): ?>
-                        <button type="submit" name="gml_global_action" value="resume_sample" class="button button-primary" <?php disabled( ! $can_resume_sample ); ?>>
-                            <span class="dashicons dashicons-controls-play" aria-hidden="true"></span><?php echo esc_html( $sample['remaining'] ? __( 'Resume Sample', 'gml-translate' ) : __( 'Finish Sample', 'gml-translate' ) ); ?>
-                        </button>
-                    <?php else: ?>
                         <button type="submit" name="gml_global_action" value="start_all" class="button button-primary" <?php disabled( ! $can_start ); ?>>
-                            <span class="dashicons dashicons-controls-play" aria-hidden="true"></span><?php esc_html_e( 'Start Translation', 'gml-translate' ); ?>
+                            <span class="dashicons dashicons-controls-play" aria-hidden="true"></span><?php esc_html_e( 'Start All Pending', 'gml-translate' ); ?>
                         </button>
-                    <?php endif; ?>
+                        <button type="submit" name="gml_global_action" value="pause_all" class="button" <?php disabled( $is_paused ); ?>>
+                            <span class="dashicons dashicons-controls-pause" aria-hidden="true"></span><?php esc_html_e( 'Pause All', 'gml-translate' ); ?>
+                        </button>
                 </form>
                 <form method="post">
                     <?php wp_nonce_field( 'gml_cache_action', 'gml_cache_nonce' ); ?>
@@ -848,9 +842,18 @@ class GML_Admin_Settings {
         <?php if ( $sample_running ): ?>
             <div class="notice notice-info inline"><p>
                 <strong><?php printf( esc_html__( 'Limited sample: %1$s, %2$d of %3$d items remaining.', 'gml-translate' ), esc_html( strtoupper( $sample['language'] ) ), (int) $sample['remaining'], (int) $sample['total'] ); ?></strong>
-                <?php esc_html_e( 'Other queue items and content scanning are on hold. The queue pauses automatically when this sample finishes.', 'gml-translate' ); ?>
+                <span><?php echo esc_html( $sample['paused'] ? __( 'Sample paused', 'gml-translate' ) : __( 'Sample scheduled', 'gml-translate' ) ); ?></span>
                 <?php if ( ! $sample['valid'] ): ?><br><?php esc_html_e( 'No valid limited sample is available for an enabled language.', 'gml-translate' ); ?><?php endif; ?>
-            </p></div>
+            </p>
+                <form method="post" class="gml-translation-actions" style="margin-bottom:12px">
+                    <?php wp_nonce_field( 'gml_translation_action', 'gml_translation_nonce' ); ?>
+                    <?php if ( ! $sample['paused'] && $sample['remaining'] ): ?>
+                    <button type="submit" name="gml_global_action" value="pause_sample" class="button"><span class="dashicons dashicons-controls-pause" aria-hidden="true"></span><?php esc_html_e( 'Pause Sample', 'gml-translate' ); ?></button>
+                    <?php else: ?>
+                    <button type="submit" name="gml_global_action" value="resume_sample" class="button" <?php disabled( ! $can_resume_sample ); ?>><span class="dashicons dashicons-controls-play" aria-hidden="true"></span><?php echo esc_html( $sample['remaining'] ? __( 'Resume Sample', 'gml-translate' ) : __( 'Finish Sample', 'gml-translate' ) ); ?></button>
+                    <?php endif; ?>
+                </form>
+            </div>
         <?php endif; ?>
 
         <?php if (!$ai_translation_on): ?>
@@ -911,7 +914,7 @@ class GML_Admin_Settings {
                     $lang_name    = $lang['native_name'] ?? strtoupper($lang_code);
                     $lang_country = $lang['country'] ?? ($available_languages[$lang_code]['country'] ?? $lang_code);
                     $lang_paused  = $lang['paused'] ?? false;
-                    $lang_running = $is_enabled && !$is_paused && !$lang_paused;
+                    $lang_running = $is_enabled && ! $is_paused && in_array( $lang_code, $normal_languages, true );
 
                     $translated_words = (int) $wpdb->get_var($wpdb->prepare(
                         "SELECT COUNT(*) FROM {$wpdb->prefix}gml_index WHERE target_lang=%s AND status IN ('auto','manual')", $lang_code
@@ -969,11 +972,7 @@ class GML_Admin_Settings {
                                 <?php if ($lang_running): ?>
                                     <button type="submit" name="gml_lang_action" value="pause_lang" class="button button-small" title="<?php esc_attr_e('Pause', 'gml-translate'); ?>" aria-label="<?php esc_attr_e('Pause', 'gml-translate'); ?>"><span class="dashicons dashicons-controls-pause" aria-hidden="true"></span></button>
                                 <?php else: ?>
-                                    <?php if ( $sample_running && $sample['language'] === $lang_code ): ?>
-                                    <button type="submit" name="gml_global_action" value="resume_sample" class="button button-small button-primary" title="<?php esc_attr_e('Resume Sample', 'gml-translate'); ?>" aria-label="<?php esc_attr_e('Resume Sample', 'gml-translate'); ?>" <?php disabled( ! $can_resume_sample ); ?>><span class="dashicons dashicons-controls-play" aria-hidden="true"></span></button>
-                                    <?php else: ?>
-                                    <button type="submit" name="gml_lang_action" value="start_lang" class="button button-small button-primary" title="<?php esc_attr_e('Start', 'gml-translate'); ?>" aria-label="<?php esc_attr_e('Start', 'gml-translate'); ?>" <?php disabled( ! $can_start ); ?>><span class="dashicons dashicons-controls-play" aria-hidden="true"></span></button>
-                                    <?php endif; ?>
+                                    <button type="submit" name="gml_lang_action" value="start_lang" class="button button-small button-primary" title="<?php esc_attr_e('Start Pending for This Language', 'gml-translate'); ?>" aria-label="<?php esc_attr_e('Start Pending for This Language', 'gml-translate'); ?>" <?php disabled( ! $can_start || isset( $lang['enabled'] ) && ! $lang['enabled'] ); ?>><span class="dashicons dashicons-controls-play" aria-hidden="true"></span></button>
                                 <?php endif; ?>
                             </form>
                         </div>

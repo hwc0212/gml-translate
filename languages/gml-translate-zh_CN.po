@@ -454,6 +454,12 @@ msgstr "页面缓存已刷新，已保存的译文和队列任务均已保留。
 msgid "Pause"
 msgstr "暂停"
 
+msgid "Pause All"
+msgstr "暂停全部"
+
+msgid "Pause Sample"
+msgstr "暂停小样本"
+
 msgid "Pause Translation"
 msgstr "暂停翻译"
 
@@ -531,6 +537,12 @@ msgstr "状态"
 
 msgid "Safety paused"
 msgstr "安全暂停"
+
+msgid "Sample paused"
+msgstr "小样本已暂停"
+
+msgid "Sample scheduled"
+msgstr "小样本已排程"
 
 msgid "Save"
 msgstr "保存"
@@ -618,6 +630,12 @@ msgstr "Square"
 
 msgid "Start"
 msgstr "开始"
+
+msgid "Start All Pending"
+msgstr "启动全部待翻译任务"
+
+msgid "Start Pending for This Language"
+msgstr "启动该语言的待翻译任务"
 
 msgid "Start Translation"
 msgstr "开始翻译"

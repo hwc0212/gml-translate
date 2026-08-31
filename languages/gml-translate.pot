@@ -454,6 +454,12 @@ msgstr ""
 msgid "Pause"
 msgstr ""
 
+msgid "Pause All"
+msgstr ""
+
+msgid "Pause Sample"
+msgstr ""
+
 msgid "Pause Translation"
 msgstr ""
 
@@ -530,6 +536,12 @@ msgid "STATUS"
 msgstr ""
 
 msgid "Safety paused"
+msgstr ""
+
+msgid "Sample paused"
+msgstr ""
+
+msgid "Sample scheduled"
 msgstr ""
 
 msgid "Save"
@@ -617,6 +629,12 @@ msgid "Square"
 msgstr ""
 
 msgid "Start"
+msgstr ""
+
+msgid "Start All Pending"
+msgstr ""
+
+msgid "Start Pending for This Language"
 msgstr ""
 
 msgid "Start Translation"

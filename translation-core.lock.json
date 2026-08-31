@@ -1,10 +1,10 @@
 {
     "schemaVersion": 1,
     "package": "gml-translation-core",
-    "version": "0.4.7",
+    "version": "0.4.8",
     "source": {
         "repository": "https://github.com/hwc0212/gml-translation-core",
-        "commit": "e45c73e5a397695441db074662bdc94b05f5e1ca"
+        "commit": "90dea6ed76cf12a664a79074ee9546bdfaf3e992"
     },
     "vendorRoot": "includes/vendor/gml-translation-core",
     "files": {
@@ -17,12 +17,13 @@
         "src/class-output-buffer.php": "f81fab9df598b7ee7b8cd4f9b4468344513f595c684b10d8716a50143aff1c6d",
         "src/class-page-cache.php": "9e4f950501e1ed5e7c59c2f484956dc8e4403bb97f49975fdda0ca7c6d687c1d",
         "src/class-translation-ai-client.php": "30b7512f7c05a07eb84fc6e76eb03cecaf829ac8c6b4a4d735a9b3753cfe3485",
-        "src/class-translation-content-crawler.php": "13607703e7da7676e92d3c30e669ab2a9ec0b2e3d5b7f198d01e4d4b20de91c2",
-        "src/class-translation-controls.php": "3f55245b4f2c03cd04ac81d08a6e4b0144c2a46f028cceca019705b56169d0e4",
+        "src/class-translation-content-crawler.php": "49fc768a2c23e23a0f4c4456de1a3c7e0658039aea1070cc34bcda69cdd47f18",
+        "src/class-translation-controls.php": "68ee56ffd8d9297d56db11502c8d39ff36eba7becec760104e9384d67e041811",
         "src/class-translation-credentials.php": "209f642c8e163736201f1814c52287880dfd24f0b962a2c8ad72dad7db3b184b",
         "src/class-translation-editor.php": "3a6a6ba7738c662bfeb8c10a4ad809b7069e2857e3038e0f3a7d60317328c933",
         "src/class-translation-provider.php": "778ff40cd6b35ff205d868b7ef5f3e84bf99e426ece5518524719c6a6c4c2082",
-        "src/class-translation-queue-processor.php": "7a16d2869f7bac4d33ca3c15f696316b2334e248c75f95ce6c3eb9581861bbea",
+        "src/class-translation-queue-processor.php": "efc18756b941bd039bc1ebc25910ff0e8ec9dddfcf0162d39af6664f96c53929",
+        "src/class-translation-queue-scope.php": "9b4dca47c395a62f9829a0cb599a50269441b94037fa8bae9a5562aaa247cddf",
         "src/class-translation-readiness.php": "98abe443e6caf41b1d432ecf15dd2fcf41592f7984230f30941004e6eb0ea96d",
         "src/class-translation-rewrite.php": "d35b71411c0556065f2f7b36a64a860911e55c5c0ec1f66731233441fafb7773",
         "src/class-translation-state.php": "3c98754b8f52f061933aec6387982f46c8ba5d5c524ed7ef59e6246852d7851f",
