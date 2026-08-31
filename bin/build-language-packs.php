@@ -138,6 +138,13 @@ $controls_zh = [
     'Review %s translations' => '检查 %s 译文',
     'Page cache refreshed. Saved translations and queue items were preserved.' => '页面缓存已刷新，已保存的译文和队列任务均已保留。',
     'Translation controls updated.' => '翻译控制状态已更新。',
+    'Resume Sample' => '继续小样本',
+    'A limited translation sample is active. Resume that sample before starting other work.' => '已有受限翻译样本，请先继续并完成该样本，再启动其他任务。',
+    'Finish Sample' => '结束小样本',
+    'Limited sample: %1$s, %2$d of %3$d items remaining.' => '受限小样本：%1$s，共 %3$d 条，剩余 %2$d 条。',
+    'Other queue items and content scanning are on hold. The queue pauses automatically when this sample finishes.' => '其他队列任务和内容扫描保持暂停。该小样本完成后，队列会自动暂停。',
+    'No valid limited sample is available for an enabled language.' => '已启用的语言中没有有效的受限小样本。',
+    'The current translation batch is still finishing. Try again after it stops.' => '当前翻译批次尚未结束，请在该批次停止后再继续。',
     'Request failed. Refresh the status before retrying.' => '请求失败。请先刷新状态再重试。',
     'This cache action is no longer available. No translations or queue items were deleted.' => '此缓存操作已停用。未删除任何译文或队列任务。',
     'WordPress could not schedule translation. Pause settings were kept.' => 'WordPress 无法排程翻译任务，已保留原暂停设置。',
@@ -187,7 +194,7 @@ function extract_i18n_strings( $root ) {
 
 function header_text( $locale ) {
     return implode( "\n", [
-        'Project-Id-Version: GML Translate 2.11.1-rc.4',
+        'Project-Id-Version: GML Translate 2.11.1-rc.5',
         'Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues',
         'POT-Creation-Date: 2026-08-31 00:00+0000',
         'PO-Revision-Date: 2026-08-31 00:00+0000',

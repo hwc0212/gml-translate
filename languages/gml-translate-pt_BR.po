@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.4\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.5\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
 "POT-Creation-Date: 2026-08-31 00:00+0000\n"
 "PO-Revision-Date: 2026-08-31 00:00+0000\n"
@@ -9,6 +9,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: GML Translate language pack builder\n"
+
+msgid "A limited translation sample is active. Resume that sample before starting other work."
+msgstr "A limited translation sample is active. Resume that sample before starting other work."
 
 msgid "A limited translation sample is still running."
 msgstr "A limited translation sample is still running."
@@ -235,6 +238,9 @@ msgstr "FROM / TO"
 msgid "Failed Segments"
 msgstr "Failed Segments"
 
+msgid "Finish Sample"
+msgstr "Finish Sample"
+
 msgid "Footer"
 msgstr "Footer"
 
@@ -349,6 +355,9 @@ msgstr "Languages to translate into."
 msgid "Last Worker Activity"
 msgstr "Last Worker Activity"
 
+msgid "Limited sample: %1$s, %2$d of %3$d items remaining."
+msgstr "Limited sample: %1$s, %2$d of %3$d items remaining."
+
 msgid "Live preview — updates automatically"
 msgstr "Live preview — updates automatically"
 
@@ -381,6 +390,9 @@ msgstr "No languages configured yet."
 
 msgid "No translations found."
 msgstr "Nenhuma tradução encontrada."
+
+msgid "No valid limited sample is available for an enabled language."
+msgstr "No valid limited sample is available for an enabled language."
 
 msgid "None (Use shortcode/widget/function)"
 msgstr "None (Use shortcode/widget/function)"
@@ -417,6 +429,9 @@ msgstr "Optional. For security, only the official api.deepseek.com HTTPS host is
 
 msgid "Original Language"
 msgstr "Idioma de origem"
+
+msgid "Other queue items and content scanning are on hold. The queue pauses automatically when this sample finishes."
+msgstr "Other queue items and content scanning are on hold. The queue pauses automatically when this sample finishes."
 
 msgid "Override CSS"
 msgstr "Override CSS"
@@ -492,6 +507,9 @@ msgstr "Request failed. Refresh the status before retrying."
 
 msgid "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
 msgstr "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
+
+msgid "Resume Sample"
+msgstr "Resume Sample"
 
 msgid "Retry All is disabled to protect API quota. After a successful connection test, retry one language in samples of at most 25."
 msgstr "Retry All is disabled to protect API quota. After a successful connection test, retry one language in samples of at most 25."
@@ -645,6 +663,9 @@ msgstr "The DeepSeek API URL was rejected. Only the official HTTPS host is allow
 
 msgid "The current language of your website."
 msgstr "The current language of your website."
+
+msgid "The current translation batch is still finishing. Try again after it stops."
+msgstr "The current translation batch is still finishing. Try again after it stops."
 
 msgid "The retry sample could not start."
 msgstr "The retry sample could not start."

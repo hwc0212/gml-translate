@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.4\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.5\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
 "POT-Creation-Date: 2026-08-31 00:00+0000\n"
 "PO-Revision-Date: 2026-08-31 00:00+0000\n"
@@ -9,6 +9,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: GML Translate language pack builder\n"
+
+msgid "A limited translation sample is active. Resume that sample before starting other work."
+msgstr ""
 
 msgid "A limited translation sample is still running."
 msgstr ""
@@ -235,6 +238,9 @@ msgstr ""
 msgid "Failed Segments"
 msgstr ""
 
+msgid "Finish Sample"
+msgstr ""
+
 msgid "Footer"
 msgstr ""
 
@@ -349,6 +355,9 @@ msgstr ""
 msgid "Last Worker Activity"
 msgstr ""
 
+msgid "Limited sample: %1$s, %2$d of %3$d items remaining."
+msgstr ""
+
 msgid "Live preview — updates automatically"
 msgstr ""
 
@@ -380,6 +389,9 @@ msgid "No languages configured yet."
 msgstr ""
 
 msgid "No translations found."
+msgstr ""
+
+msgid "No valid limited sample is available for an enabled language."
 msgstr ""
 
 msgid "None (Use shortcode/widget/function)"
@@ -416,6 +428,9 @@ msgid "Optional. For security, only the official api.deepseek.com HTTPS host is 
 msgstr ""
 
 msgid "Original Language"
+msgstr ""
+
+msgid "Other queue items and content scanning are on hold. The queue pauses automatically when this sample finishes."
 msgstr ""
 
 msgid "Override CSS"
@@ -491,6 +506,9 @@ msgid "Request failed. Refresh the status before retrying."
 msgstr ""
 
 msgid "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
+msgstr ""
+
+msgid "Resume Sample"
 msgstr ""
 
 msgid "Retry All is disabled to protect API quota. After a successful connection test, retry one language in samples of at most 25."
@@ -644,6 +662,9 @@ msgid "The DeepSeek API URL was rejected. Only the official HTTPS host is allowe
 msgstr ""
 
 msgid "The current language of your website."
+msgstr ""
+
+msgid "The current translation batch is still finishing. Try again after it stops."
 msgstr ""
 
 msgid "The retry sample could not start."
