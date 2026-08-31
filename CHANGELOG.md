@@ -2,6 +2,17 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.1] - 2026-08-31
+
+### 修复候选版
+
+- 修复共享 Core 0.4.2 在访客请求中同步去重/改表造成的数据库阻塞；升级改为后台权限检查、互斥、短锁超时及失败恢复。
+- 旧队列及翻译记忆保持原样，不自动 ALTER、全表 DELETE 或清理空 context；旧队列的新入队使用不等待的锁及锁内复查防重。
+- 修复普通暂停后 Auto-Translate 无法启动；保留真正的 API 熔断、小样本保护、权限和 nonce 校验。
+- 抓取及翻译队列必须排程成功才报告启动；调度失败保留暂停和进度。
+- 新增真实 WordPress 7.1 / MariaDB 10.11 大队列、人工译文校验、并发、失败恢复、激活生命周期回归，并纳入 CI。
+- 候选版尚未完成生产主题/CDN/Redis/真实 Provider 验收，不代表此前所有多语言问题已全部解决。
+
 ## [2.11.0] - 2026-08-30
 
 ### Architecture

@@ -28,6 +28,7 @@ zip -r "$ZIP_NAME" "$PLUGIN_SLUG" \
   --exclude "${PLUGIN_SLUG}/.git/*" \
   --exclude "${PLUGIN_SLUG}/.gitignore" \
   --exclude "${PLUGIN_SLUG}/.github/*" \
+  --exclude "${PLUGIN_SLUG}/.ci/*" \
   --exclude "${PLUGIN_SLUG}/tests/*" \
   --exclude "${PLUGIN_SLUG}/tools/*" \
   --exclude "${PLUGIN_SLUG}/bin/*" \

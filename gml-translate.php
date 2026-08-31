@@ -3,7 +3,7 @@
  * Plugin Name: GML Translate
  * Plugin URI: https://huwencai.com/gml-translate
  * Description: AI multilingual translation for WordPress with stable language URLs, editable translations, glossary, queue controls, hreflang, and sitemap integration.
- * Version: 2.11.0
+ * Version: 2.11.1-rc.1
  * Author: huwencai.com
  * Author URI: https://huwencai.com
  * License: GPL v2 or later
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('GML_VERSION', '2.11.0');
+define('GML_VERSION', '2.11.1-rc.1');
 define('GML_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GML_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GML_PLUGIN_FILE', __FILE__);
@@ -87,7 +87,10 @@ class GML_Translate {
     public function activate() {
         // Create database tables
         require_once GML_PLUGIN_DIR . 'includes/vendor/gml-translation-core/src/class-installer.php';
-        GML_Installer::activate();
+        $result = GML_Installer::activate();
+        if ( is_wp_error( $result ) ) {
+            wp_die( esc_html( $result->get_error_message() ), '', [ 'back_link' => true ] );
+        }
         
         // Flush rewrite rules
         flush_rewrite_rules();
@@ -118,8 +121,8 @@ class GML_Translate {
      * Initialize components
      */
     public function init_components() {
-        // Auto-upgrade DB schema if version changed (e.g. after plugin file update)
-        $this->maybe_upgrade_db();
+        // Only a permitted admin request may perform bounded database setup.
+        GML_Installer::register_hooks();
 
         // Cron context — only the queue processor is needed.
         // Skip all frontend components (Output Buffer, SEO Router, SEO Hreflang,
@@ -192,18 +195,6 @@ class GML_Translate {
      */
     private function is_configured() {
         return GML_Translation_State::ai_available();
-    }
-
-    /**
-     * Auto-upgrade DB schema when plugin files are updated but activate() wasn't called.
-     * WordPress doesn't re-run activation hooks on plugin file updates.
-     */
-    private function maybe_upgrade_db() {
-        $current = get_option( 'gml_db_version', '0' );
-        if ( version_compare( $current, GML_Installer::DB_VERSION, '<' ) ) {
-            require_once GML_PLUGIN_DIR . 'includes/vendor/gml-translation-core/src/class-installer.php';
-            GML_Installer::activate();
-        }
     }
 
     public function maybe_flush_rewrite_rules() {

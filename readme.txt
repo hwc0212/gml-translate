@@ -4,7 +4,7 @@ Tags: translate, multilingual, ai, hreflang, language switcher
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.11.0
+Stable tag: 2.11.1-rc.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,12 @@ Yes. Manual translations are stored separately and take priority over normal aut
 No. It provides only the minimum multilingual SEO output. Use GML AI SEO or another single SEO authority for complete SEO management.
 
 == Changelog ==
+
+= 2.11.1-rc.1 =
+* Release candidate for staging verification, not a production-verified stable release.
+* Prevent blocking translation upgrades: no frontend migration, no legacy-table ALTER or automatic deduplication, nonblocking setup lock and failure recovery.
+* Restore explicit Auto-Translate start from an ordinary pause while retaining provider, sample, permission and scheduling safeguards.
+* Preserve existing translation data and add real WordPress 7.1 / MariaDB large-queue and concurrency regression tests.
 
 = 2.11.0 =
 

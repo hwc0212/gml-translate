@@ -35,3 +35,52 @@ jobs:
           node-version: '20'
       - run: php bin/translation-core.php verify --source=.ci/gml-translation-core
       - run: bash tests/run-all.sh
+
+  database-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: gml-regression-only
+          MARIADB_ROOT_HOST: '%'
+          MARIADB_DATABASE: gml_regression
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    steps:
+      - uses: actions/checkout@v4
+      - id: core-lock
+        run: echo "commit=$(php bin/translation-core.php ref)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: hwc0212/gml-translation-core
+          ref: ${{ steps.core-lock.outputs.commit }}
+          path: .ci/gml-translation-core
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mysqli, dom, mbstring
+          coverage: none
+      - name: Verify bundled source
+        run: php bin/translation-core.php verify --source=.ci/gml-translation-core
+      - name: Install disposable WordPress 7.1
+        env:
+          GML_DATABASE_TESTS: '1'
+          GML_TEST_WP_ROOT: ${{ runner.temp }}/wordpress
+          GML_TEST_DB_HOST: 127.0.0.1:3306
+        run: |
+          curl --fail --location --max-time 90 https://wordpress.org/wordpress-7.1.tar.gz -o "$RUNNER_TEMP/wordpress.tar.gz"
+          tar -xzf "$RUNNER_TEMP/wordpress.tar.gz" -C "$RUNNER_TEMP"
+          cp .ci/gml-translation-core/tests/database/wp-config.php "$GML_TEST_WP_ROOT/wp-config.php"
+          php .ci/gml-translation-core/tests/database/setup.php
+      - name: Test legacy upgrade, concurrent requests and paused crawl
+        env:
+          GML_DATABASE_TESTS: '1'
+          GML_TEST_WP_ROOT: ${{ runner.temp }}/wordpress
+          GML_TEST_DB_HOST: 127.0.0.1:3306
+          GML_TEST_PRODUCT_DIR: ${{ github.workspace }}
+        run: timeout 120 bash .ci/gml-translation-core/tests/database/run.sh
