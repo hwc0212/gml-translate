@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.2\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.3\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
 "POT-Creation-Date: 2026-08-31 00:00+0000\n"
 "PO-Revision-Date: 2026-08-31 00:00+0000\n"
@@ -28,23 +28,23 @@ msgstr "AI Translation is currently unavailable, so no new translation jobs will
 msgid "AI Translation was not enabled because the selected provider does not have a valid saved API key."
 msgstr "AI Translation was not enabled because the selected provider does not have a valid saved API key."
 
+msgid "AI provider selection could not be saved. Check database writes before testing the connection."
+msgstr "AI provider selection could not be saved. Check database writes before testing the connection."
+
 msgid "AI unavailable"
 msgstr "AI unavailable"
 
 msgid "API Base URL"
 msgstr "API Base URL"
 
-msgid "API Key is configured"
-msgstr "La clé API est configurée"
-
-msgid "API Key saved and verified!"
-msgstr "API Key saved and verified!"
-
-msgid "API Key validation failed:"
-msgstr "API Key validation failed:"
-
 msgid "API Status:"
 msgstr "API Status:"
+
+msgid "API key encrypted, saved, and read back successfully. Use Test Saved AI Connection to verify provider access. Translation remains paused."
+msgstr "API key encrypted, saved, and read back successfully. Use Test Saved AI Connection to verify provider access. Translation remains paused."
+
+msgid "API key save could not be verified. Check the key for whitespace, OpenSSL availability, and database writes. No connection test was sent."
+msgstr "API key save could not be verified. Check the key for whitespace, OpenSSL availability, and database writes. No connection test was sent."
 
 msgid "Actions"
 msgstr "Actions"
@@ -139,9 +139,6 @@ msgstr "Terminé"
 msgid "Configure Now"
 msgstr "Configure Now"
 
-msgid "Configured"
-msgstr "Configured"
-
 msgid "Content Scan"
 msgstr "Content Scan"
 
@@ -156,12 +153,6 @@ msgstr "Database Tables"
 
 msgid "DeepSeek API Key"
 msgstr "DeepSeek API Key"
-
-msgid "DeepSeek API Key saved and verified!"
-msgstr "DeepSeek API Key saved and verified!"
-
-msgid "DeepSeek API Key validation failed:"
-msgstr "DeepSeek API Key validation failed:"
 
 msgid "DeepSeek Model"
 msgstr "DeepSeek Model"
@@ -544,8 +535,14 @@ msgstr "Save Order"
 msgid "Save Protected Terms"
 msgstr "Save Protected Terms"
 
+msgid "Saved key is unreadable. Re-enter it."
+msgstr "Saved key is unreadable. Re-enter it."
+
 msgid "Saved provider: %1$s; model: %2$s."
 msgstr "Saved provider: %1$s; model: %2$s."
+
+msgid "Saved. Leave blank to keep unchanged."
+msgstr "Saved. Leave blank to keep unchanged."
 
 msgid "Scan Website Content"
 msgstr "Scan Website Content"
@@ -616,6 +613,9 @@ msgstr "Stop Scan"
 msgid "Stopped"
 msgstr "Stopped"
 
+msgid "Stored and readable. This is not a connection check."
+msgstr "Stored and readable. This is not a connection check."
+
 msgid "Style:"
 msgstr "Style:"
 
@@ -634,14 +634,11 @@ msgstr "Test Saved AI Connection"
 msgid "Test the saved AI connection"
 msgstr "Test the saved AI connection"
 
-msgid "The AI client is unavailable, so the API key was not saved."
-msgstr "The AI client is unavailable, so the API key was not saved."
+msgid "Tested saved configuration: %1$s / %2$s. Key contents are never displayed."
+msgstr "Tested saved configuration: %1$s / %2$s. Key contents are never displayed."
 
 msgid "The AI provider, model, or failed queue must be verified before more API calls are made."
 msgstr "The AI provider, model, or failed queue must be verified before more API calls are made."
-
-msgid "The API key was valid but could not be encrypted and saved. OpenSSL is required; the existing key was not changed."
-msgstr "The API key was valid but could not be encrypted and saved. OpenSSL is required; the existing key was not changed."
 
 msgid "The DeepSeek API URL was rejected. Only the official HTTPS host is allowed; the default endpoint will be used."
 msgstr "The DeepSeek API URL was rejected. Only the official HTTPS host is allowed; the default endpoint will be used."
@@ -652,11 +649,11 @@ msgstr "The current language of your website."
 msgid "The retry sample could not start."
 msgstr "The retry sample could not start."
 
-msgid "The safety pause was cleared; translation remains paused until you resume it manually."
-msgstr "The safety pause was cleared; translation remains paused until you resume it manually."
-
 msgid "The saved AI connection could not be verified."
 msgstr "The saved AI connection could not be verified."
+
+msgid "The saved API key cannot be decrypted on this site. Re-enter and save the key. No API request was sent; existing translations are unaffected."
+msgstr "The saved API key cannot be decrypted on this site. Re-enter and save the key. No API request was sent; existing translations are unaffected."
 
 msgid "The tone/style for translations (e.g. \"professional and friendly\", \"casual\", \"formal\")."
 msgstr "The tone/style for translations (e.g. \"professional and friendly\", \"casual\", \"formal\")."
@@ -669,6 +666,9 @@ msgstr "This cache action is no longer available. No translations or queue items
 
 msgid "This is useful for:"
 msgstr "This is useful for:"
+
+msgid "This test does not start or resume translation."
+msgstr "This test does not start or resume translation."
 
 msgid "Title:"
 msgstr "Title:"
@@ -735,6 +735,9 @@ msgstr "URL matches regex"
 
 msgid "URL starts with"
 msgstr "URL starts with"
+
+msgid "Unknown AI provider. Settings were not saved."
+msgstr "Unknown AI provider. Settings were not saved."
 
 msgid "Unknown error"
 msgstr "Unknown error"

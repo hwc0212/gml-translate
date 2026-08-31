@@ -48,6 +48,7 @@ class GML_Gemini_API extends GML_Translation_AI_Client {
         parent::__construct( [
             'engine'          => $engine,
             'api_key'         => $api_key,
+            'credential_error' => ! array_key_exists( 'api_key', $override ) && GML_Translation_Credentials::status( $engine ) === 'unreadable',
             'model'           => $model,
             'label'           => self::get_engine_label( $engine ),
             'style'           => $style,
@@ -60,11 +61,7 @@ class GML_Gemini_API extends GML_Translation_AI_Client {
     }
 
     private static function stored_api_key( $engine ) {
-        $option = $engine === self::ENGINE_DEEPSEEK
-            ? 'gml_deepseek_api_key_encrypted'
-            : 'gml_api_key_encrypted';
-        $stored = get_option( $option, '' );
-        return $stored ? self::decrypt_key( $stored ) : '';
+        return GML_Translation_Credentials::read( $engine );
     }
 
     /**
@@ -72,47 +69,12 @@ class GML_Gemini_API extends GML_Translation_AI_Client {
      * legacy plaintext fallback read-only, but never create new plaintext keys.
      */
     public static function decrypt_key( $stored ) {
-        if ( function_exists( 'openssl_decrypt' ) ) {
-            $key    = wp_salt( 'auth' );
-            $iv_len = openssl_cipher_iv_length( 'AES-256-CBC' );
-            $raw    = base64_decode( (string) $stored, true );
-            if ( is_string( $raw ) && strlen( $raw ) > $iv_len ) {
-                $iv        = substr( $raw, 0, $iv_len );
-                $cipher    = substr( $raw, $iv_len );
-                $decrypted = openssl_decrypt( $cipher, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv );
-                if ( is_string( $decrypted ) ) {
-                    return $decrypted;
-                }
-            }
-        }
-        return (string) $stored;
+        return GML_Translation_Credentials::decode( $stored );
     }
 
     public static function save_api_key( $api_key, $engine = null ) {
         $engine  = $engine === null ? get_option( 'gml_translation_engine', self::ENGINE_GEMINI ) : sanitize_key( $engine );
-        $api_key = trim( (string) $api_key );
-        if (
-            ! in_array( $engine, [ self::ENGINE_GEMINI, self::ENGINE_DEEPSEEK ], true ) ||
-            $api_key === '' ||
-            strlen( $api_key ) > 512 ||
-            ! function_exists( 'openssl_encrypt' )
-        ) {
-            return false;
-        }
-
-        $key    = wp_salt( 'auth' );
-        $iv_len = openssl_cipher_iv_length( 'AES-256-CBC' );
-        $iv     = function_exists( 'random_bytes' ) ? random_bytes( $iv_len ) : openssl_random_pseudo_bytes( $iv_len );
-        $cipher = openssl_encrypt( $api_key, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv );
-        if ( ! is_string( $cipher ) ) {
-            return false;
-        }
-
-        $option = $engine === self::ENGINE_DEEPSEEK
-            ? 'gml_deepseek_api_key_encrypted'
-            : 'gml_api_key_encrypted';
-        update_option( $option, base64_encode( $iv . $cipher ), false );
-        return true;
+        return GML_Translation_Credentials::save( $api_key, $engine );
     }
 
     public static function test_api_key( $api_key = null, $engine = null ) {

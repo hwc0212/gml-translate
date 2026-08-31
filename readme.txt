@@ -4,7 +4,7 @@ Tags: translate, multilingual, ai, hreflang, language switcher
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.11.1-rc.2
+Stable tag: 2.11.1-rc.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,12 @@ Yes. Manual translations are stored separately and take priority over normal aut
 No. It provides only the minimum multilingual SEO output. Use GML AI SEO or another single SEO authority for complete SEO management.
 
 == Changelog ==
+
+= 2.11.1-rc.3 =
+* Fail locally on unreadable saved credentials and verify encrypted writes by reading them back.
+* Separate local Save Changes from Test Saved AI Connection; neither resumes AI work.
+* Preserve legacy encrypted keys, translation tables, multilingual routes and existing translations.
+* Candidate only: real provider access and production recovery still require verification.
 
 = 2.11.1-rc.2 =
 * Separate content discovery from AI processing and report scheduled versus active batches accurately.

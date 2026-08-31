@@ -13,7 +13,7 @@ GML_Translation_State::set_ai_translation_enabled( false );
 gml_test_assert( ! GML_Translation_State::ai_translation_enabled(), 'AI can be disabled independently' );
 gml_test_assert( GML_Translation_State::multilingual_enabled(), 'disabling AI preserves multilingual output' );
 
-GML_Translate_Test_State::$options['gml_api_key_encrypted'] = 'encrypted-key';
+GML_Gemini_API::save_api_key( 'test-only-key', 'gemini' );
 GML_Translation_State::set_ai_translation_enabled( true );
 gml_test_assert( GML_Translation_State::ai_available(), 'AI becomes available with explicit switch and credentials' );
 

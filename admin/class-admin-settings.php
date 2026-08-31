@@ -166,13 +166,16 @@ class GML_Admin_Settings {
         }
 
         if (isset($_POST['gml_test_connection']) && check_admin_referer('gml_test_connection', 'gml_test_connection_nonce')) {
-            $test = ( new GML_Gemini_API() )->test_connection();
+            $client = new GML_Gemini_API();
+            $test = $client->test_connection();
             if ( ! empty( $test['valid'] ) ) {
                 GML_Queue_Processor::clear_circuit_breaker();
-                echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( $test['message'] ) . ' ' . esc_html__( 'The safety pause was cleared; translation remains paused until you resume it manually.', 'gml-translate' ) . '</p></div>';
+                echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( $test['message'] ) . ' ' . esc_html__( 'This test does not start or resume translation.', 'gml-translate' ) . '</p></div>';
             } else {
+                GML_Translation_Controls::pause();
                 echo '<div class="notice notice-error is-dismissible"><p>' . esc_html( $test['message'] ?? __( 'The saved AI connection could not be verified.', 'gml-translate' ) ) . '</p></div>';
             }
+            echo '<p class="description">' . esc_html( sprintf( __( 'Tested saved configuration: %1$s / %2$s. Key contents are never displayed.', 'gml-translate' ), GML_Gemini_API::get_engine_label( $client->get_engine() ), $client->get_model() ) ) . '</p>';
         }
 
         // Handle advanced settings save
@@ -183,8 +186,10 @@ class GML_Admin_Settings {
         }
 
         $current_engine     = get_option('gml_translation_engine', 'gemini');
-        $api_key_set        = !empty(get_option('gml_api_key_encrypted'));
-        $deepseek_key_set   = !empty(get_option('gml_deepseek_api_key_encrypted'));
+        $api_key_status     = GML_Translation_Credentials::status( 'gemini' );
+        $deepseek_key_status = GML_Translation_Credentials::status( 'deepseek' );
+        $api_key_set        = $api_key_status !== 'missing';
+        $deepseek_key_set   = $deepseek_key_status !== 'missing';
         $multilingual_on    = GML_Translation_State::multilingual_enabled();
         $ai_translation_on  = GML_Translation_State::ai_translation_enabled();
         $wp_locale          = get_locale();
@@ -194,7 +199,7 @@ class GML_Admin_Settings {
         $available_languages = $this->get_available_languages();
         ?>
 
-        <form method="post" action="">
+        <form method="post" action="" id="gml-main-settings-form">
             <?php wp_nonce_field('gml_main_settings', 'gml_settings_nonce'); ?>
             <input type="hidden" name="gml_save_settings" value="1" />
 
@@ -234,10 +239,11 @@ class GML_Admin_Settings {
                     <th><label for="gml_api_key"><?php _e('Gemini API Key', 'gml-translate'); ?></label></th>
                     <td>
                         <input type="password" id="gml_api_key" name="gml_api_key" class="regular-text" autocomplete="new-password"
-                               value="<?php echo $api_key_set ? str_repeat('*', 32) : ''; ?>"
-                               placeholder="<?php echo $api_key_set ? '' : 'AIza...'; ?>" />
-                        <?php if ($api_key_set): ?>
-                            <p class="description" style="color:green;">✓ <?php _e('API Key is configured', 'gml-translate'); ?></p>
+                               value="" placeholder="<?php echo $api_key_set ? esc_attr__( 'Saved. Leave blank to keep unchanged.', 'gml-translate' ) : ''; ?>" />
+                        <?php if ($api_key_status === 'unreadable'): ?>
+                            <p class="description" style="color:#d63638;"><?php echo esc_html( GML_Translation_Credentials::error_message() ); ?></p>
+                        <?php elseif ($api_key_set): ?>
+                            <p class="description"><?php _e('Stored and readable. This is not a connection check.', 'gml-translate'); ?></p>
                         <?php else: ?>
                             <p class="description">
                                 <?php _e('Get your key from', 'gml-translate'); ?>
@@ -250,10 +256,11 @@ class GML_Admin_Settings {
                     <th><label for="gml_deepseek_api_key"><?php _e('DeepSeek API Key', 'gml-translate'); ?></label></th>
                     <td>
                         <input type="password" id="gml_deepseek_api_key" name="gml_deepseek_api_key" class="regular-text" autocomplete="new-password"
-                               value="<?php echo $deepseek_key_set ? str_repeat('*', 32) : ''; ?>"
-                               placeholder="<?php echo $deepseek_key_set ? '' : 'sk-...'; ?>" />
-                        <?php if ($deepseek_key_set): ?>
-                            <p class="description" style="color:green;">✓ <?php _e('API Key is configured', 'gml-translate'); ?></p>
+                               value="" placeholder="<?php echo $deepseek_key_set ? esc_attr__( 'Saved. Leave blank to keep unchanged.', 'gml-translate' ) : ''; ?>" />
+                        <?php if ($deepseek_key_status === 'unreadable'): ?>
+                            <p class="description" style="color:#d63638;"><?php echo esc_html( GML_Translation_Credentials::error_message() ); ?></p>
+                        <?php elseif ($deepseek_key_set): ?>
+                            <p class="description"><?php _e('Stored and readable. This is not a connection check.', 'gml-translate'); ?></p>
                         <?php else: ?>
                             <p class="description">
                                 <?php _e('Get your key from', 'gml-translate'); ?>
@@ -307,12 +314,9 @@ class GML_Admin_Settings {
                                 </span>
                             <?php endforeach; ?>
                         </div>
-                        <form method="post" id="gml-reorder-form" style="display:none;">
-                            <?php wp_nonce_field('gml_language_action', 'gml_language_nonce'); ?>
-                            <input type="hidden" name="action" value="reorder_languages" />
-                            <div id="gml-reorder-inputs"></div>
-                            <button type="submit" class="button button-small" style="margin-bottom:10px;">💾 <?php _e('Save Order', 'gml-translate'); ?></button>
-                        </form>
+                        <div id="gml-reorder-controls" style="display:none;">
+                            <button type="submit" form="gml-reorder-form" class="button button-small" style="margin-bottom:10px;"><?php _e('Save Order', 'gml-translate'); ?></button>
+                        </div>
                         <div id="gml-lang-search-wrap" style="position:relative;display:inline-block;min-width:300px;">
                             <input type="text" id="gml_lang_search" placeholder="<?php esc_attr_e('Type to search languages…', 'gml-translate'); ?>"
                                    autocomplete="off" style="width:100%;box-sizing:border-box;">
@@ -377,14 +381,17 @@ class GML_Admin_Settings {
             <?php submit_button(__('Save Changes', 'gml-translate')); ?>
         </form>
 
-        <?php if ( GML_Translation_State::has_api_key() ) : ?>
-            <form method="post" action="" style="margin-top:-54px;margin-left:150px;padding-bottom:20px;">
+            <form method="post" id="gml-reorder-form" hidden>
+                <?php wp_nonce_field('gml_language_action', 'gml_language_nonce'); ?>
+                <input type="hidden" name="action" value="reorder_languages" />
+                <div id="gml-reorder-inputs"></div>
+            </form>
+            <form method="post" action="" id="gml-test-connection-form" style="margin-bottom:20px;">
                 <?php wp_nonce_field('gml_test_connection', 'gml_test_connection_nonce'); ?>
                 <button type="submit" name="gml_test_connection" value="1" class="button button-secondary">
                     <?php _e('Test Saved AI Connection', 'gml-translate'); ?>
                 </button>
             </form>
-        <?php endif; ?>
 
         <?php if (!empty($languages)): ?>
         <hr style="margin:30px 0;">
@@ -445,9 +452,11 @@ class GML_Admin_Settings {
             <tr>
                 <th><?php _e('API Status:', 'gml-translate'); ?></th>
                 <td><?php
-                    $engine_key_set = $current_engine === 'deepseek' ? $deepseek_key_set : $api_key_set;
-                    if ($engine_key_set): ?>
-                    <span style="color:green;">✓ <?php _e('Configured', 'gml-translate'); ?></span>
+                    $engine_key_status = $current_engine === 'deepseek' ? $deepseek_key_status : $api_key_status;
+                    if ($engine_key_status === 'unreadable'): ?>
+                    <span style="color:#d63638;"><?php _e('Saved key is unreadable. Re-enter it.', 'gml-translate'); ?></span>
+                <?php elseif ($engine_key_status === 'readable'): ?>
+                    <span><?php _e('Stored and readable. This is not a connection check.', 'gml-translate'); ?></span>
                 <?php else: ?>
                     <span style="color:#d63638;">✗ <?php _e('Not configured', 'gml-translate'); ?></span>
                 <?php endif; ?></td>
@@ -464,13 +473,12 @@ class GML_Admin_Settings {
                 tolerance: 'pointer',
                 update: function() {
                     // Show save button and populate hidden inputs
-                    var form = $('#gml-reorder-form');
                     var container = $('#gml-reorder-inputs');
                     container.empty();
                     $('#gml-destination-languages .gml-lang-tag').each(function() {
                         container.append('<input type="hidden" name="lang_order[]" value="' + $(this).data('code') + '">');
                     });
-                    form.show();
+                    $('#gml-reorder-controls').show();
                 }
             });
 
@@ -482,12 +490,6 @@ class GML_Admin_Settings {
                 form.append('<input type="hidden" name="action" value="remove_language">');
                 form.append('<input type="hidden" name="lang_code" value="' + langCode + '">');
                 $('body').append(form); form.submit();
-            });
-            $('#gml_api_key').focus(function() {
-                if ($(this).val().indexOf('*') === 0) { $(this).val('').attr('type', 'text'); }
-            });
-            $('#gml_deepseek_api_key').focus(function() {
-                if ($(this).val().indexOf('*') === 0) { $(this).val('').attr('type', 'text'); }
             });
             // Engine toggle: show/hide Gemini vs DeepSeek fields
             $('#gml_translation_engine').on('change', function() {
@@ -1360,11 +1362,20 @@ class GML_Admin_Settings {
         $was_multilingual = GML_Translation_State::multilingual_enabled();
         $was_ai_enabled   = GML_Translation_State::ai_translation_enabled();
 
-        // Save engine selection
-        $engine = sanitize_text_field($_POST['gml_translation_engine'] ?? 'gemini');
+        $previous_engine = get_option( 'gml_translation_engine', 'gemini' );
+        $engine = sanitize_key( wp_unslash( $_POST['gml_translation_engine'] ?? 'gemini' ) );
+        if ( ! in_array( $engine, [ 'gemini', 'deepseek' ], true ) ) {
+            add_settings_error( 'gml_messages', 'gml_engine_invalid', __( 'Unknown AI provider. Settings were not saved.', 'gml-translate' ), 'error' );
+            return;
+        }
         update_option('gml_translation_engine', $engine);
+        if ( get_option( 'gml_translation_engine' ) !== $engine ) {
+            add_settings_error( 'gml_messages', 'gml_engine_save_failed', __( 'AI provider selection could not be saved. Check database writes before testing the connection.', 'gml-translate' ), 'error' );
+            return;
+        }
 
         $api_key_updated = false;
+        $save_failed = false;
 
         if ($engine === 'deepseek') {
             // Save DeepSeek model and API base FIRST (needed for key validation)
@@ -1382,50 +1393,20 @@ class GML_Admin_Settings {
             } else {
                 delete_option('gml_deepseek_api_base');
             }
-            // Save DeepSeek API key
-            if (!empty($_POST['gml_deepseek_api_key'])) {
-                $api_key = sanitize_text_field($_POST['gml_deepseek_api_key']);
-                if (strpos($api_key, '*') === false) {
-                    if (class_exists('GML_Gemini_API')) {
-                        $test = GML_Gemini_API::test_api_key($api_key, 'deepseek');
-                        if ($test['valid']) {
-                            if ( GML_Gemini_API::save_api_key($api_key, 'deepseek') ) {
-                                GML_Queue_Processor::clear_circuit_breaker();
-                                $api_key_updated = true;
-                                add_settings_error('gml_messages', 'gml_api_key_valid', __('DeepSeek API Key saved and verified!', 'gml-translate') . ' ' . $test['message'], 'success');
-                            } else {
-                                add_settings_error('gml_messages', 'gml_api_key_storage_failed', __('The API key was valid but could not be encrypted and saved. OpenSSL is required; the existing key was not changed.', 'gml-translate'), 'error');
-                            }
-                        } else {
-                            add_settings_error('gml_messages', 'gml_api_key_invalid', __('DeepSeek API Key validation failed:', 'gml-translate') . ' ' . $test['message'], 'error');
-                        }
-                    } else {
-                        add_settings_error('gml_messages', 'gml_api_client_unavailable', __('The AI client is unavailable, so the API key was not saved.', 'gml-translate'), 'error');
-                    }
-                }
-            }
-        } else {
-            // Save Gemini API key
-            if (!empty($_POST['gml_api_key'])) {
-                $api_key = sanitize_text_field($_POST['gml_api_key']);
-                if (strpos($api_key, '*') === false) {
-                    if (class_exists('GML_Gemini_API')) {
-                        $test = GML_Gemini_API::test_api_key($api_key, 'gemini');
-                        if ($test['valid']) {
-                            if ( GML_Gemini_API::save_api_key($api_key, 'gemini') ) {
-                                GML_Queue_Processor::clear_circuit_breaker();
-                                $api_key_updated = true;
-                                add_settings_error('gml_messages', 'gml_api_key_valid', __('API Key saved and verified!', 'gml-translate') . ' ' . $test['message'], 'success');
-                            } else {
-                                add_settings_error('gml_messages', 'gml_api_key_storage_failed', __('The API key was valid but could not be encrypted and saved. OpenSSL is required; the existing key was not changed.', 'gml-translate'), 'error');
-                            }
-                        } else {
-                            add_settings_error('gml_messages', 'gml_api_key_invalid', __('API Key validation failed:', 'gml-translate') . ' ' . $test['message'], 'error');
-                        }
-                    } else {
-                        add_settings_error('gml_messages', 'gml_api_client_unavailable', __('The AI client is unavailable, so the API key was not saved.', 'gml-translate'), 'error');
-                    }
-                }
+        }
+
+        $field = $engine === 'deepseek' ? 'gml_deepseek_api_key' : 'gml_api_key';
+        $submitted = $_POST[ $field ] ?? '';
+        $api_key = is_string( $submitted ) ? trim( wp_unslash( $submitted ) ) : '';
+        // Accept old, already-open forms without ever storing their mask as a key.
+        if ( $api_key === str_repeat( '*', 32 ) ) $api_key = '';
+        if ( $api_key !== '' || ! is_string( $submitted ) ) {
+            $api_key_updated = GML_Gemini_API::save_api_key( $api_key, $engine );
+            if ( $api_key_updated ) {
+                add_settings_error( 'gml_messages', 'gml_api_key_saved', __( 'API key encrypted, saved, and read back successfully. Use Test Saved AI Connection to verify provider access. Translation remains paused.', 'gml-translate' ), 'success' );
+            } else {
+                $save_failed = true;
+                add_settings_error( 'gml_messages', 'gml_api_key_storage_failed', __( 'API key save could not be verified. Check the key for whitespace, OpenSSL availability, and database writes. No connection test was sent.', 'gml-translate' ), 'error' );
             }
         }
 
@@ -1437,22 +1418,21 @@ class GML_Admin_Settings {
         GML_Translation_State::set_ai_translation_enabled( $ai_enabled );
 
         if ( $ai_requested && ! $ai_enabled ) {
+            $save_failed = true;
             add_settings_error( 'gml_messages', 'gml_ai_key_required', __( 'AI Translation was not enabled because the selected provider does not have a valid saved API key.', 'gml-translate' ), 'error' );
         }
 
+        if ( ! $multilingual || ! $ai_enabled || $api_key_updated || $save_failed || $previous_engine !== $engine || ! $was_multilingual || ! $was_ai_enabled ) {
+            GML_Translation_Controls::pause();
+        }
         if ( ! $multilingual || ! $ai_enabled ) {
-            update_option( 'gml_translation_paused', true, false );
             GML_Content_Crawler::stop_crawl();
-            GML_Queue_Processor::unschedule_cron();
-        } elseif ( ! $was_multilingual || ! $was_ai_enabled ) {
-            update_option( 'gml_translation_paused', false, false );
-            wp_schedule_single_event( time(), GML_Queue_Processor::CRON_HOOK );
         }
 
         if ( $changed ) {
             update_option( 'gml_translation_flush_rewrite_rules', 1, false );
         }
-        if (!$api_key_updated) {
+        if (!$api_key_updated && !$save_failed) {
             add_settings_error('gml_messages', 'gml_settings_saved', __('Settings saved successfully!', 'gml-translate'), 'success');
         }
     }

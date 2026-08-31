@@ -82,6 +82,16 @@ $translations = [
 ];
 
 $controls_zh = [
+    'The saved API key cannot be decrypted on this site. Re-enter and save the key. No API request was sent; existing translations are unaffected.' => '此站点无法解密已保存的 API Key。请重新输入并保存。本次未发送 API 请求，已有译文不受影响。',
+    'This test does not start or resume translation.' => '本次测试不会启动或恢复翻译。',
+    'Tested saved configuration: %1$s / %2$s. Key contents are never displayed.' => '本次测试使用已保存配置：%1$s / %2$s。不会显示密钥内容。',
+    'Saved. Leave blank to keep unchanged.' => '已保存，留空则保持不变。',
+    'Stored and readable. This is not a connection check.' => '已保存且可读取，不代表连接验证通过。',
+    'Saved key is unreadable. Re-enter it.' => '已保存的密钥无法读取，请重新输入。',
+    'Unknown AI provider. Settings were not saved.' => '无法识别 AI 服务商，设置未保存。',
+    'AI provider selection could not be saved. Check database writes before testing the connection.' => 'AI 服务商选择保存失败，请先检查数据库写入，再测试连接。',
+    'API key encrypted, saved, and read back successfully. Use Test Saved AI Connection to verify provider access. Translation remains paused.' => 'API Key 已加密保存并回读核对成功。请测试已保存的 AI 连接，确认服务商访问正常。翻译仍保持暂停。',
+    'API key save could not be verified. Check the key for whitespace, OpenSSL availability, and database writes. No connection test was sent.' => 'API Key 保存未通过核对。请检查密钥是否含空白字符、OpenSSL 是否可用、数据库能否写入。本次未发送连接测试。',
     'Translation activation blocked' => '已阻止重复激活翻译模块',
     'GML SEO is already providing multilingual translation. Use its Translation page, or deactivate GML SEO before activating GML Translate. Existing translation data has not been deleted.' => 'GML SEO 已在提供多语言翻译。请使用其 Translation 页面，或先停用 GML SEO，再启用 GML Translate。现有翻译数据未被删除。',
     'Paused' => '已暂停',
@@ -177,7 +187,7 @@ function extract_i18n_strings( $root ) {
 
 function header_text( $locale ) {
     return implode( "\n", [
-        'Project-Id-Version: GML Translate 2.11.1-rc.2',
+        'Project-Id-Version: GML Translate 2.11.1-rc.3',
         'Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues',
         'POT-Creation-Date: 2026-08-31 00:00+0000',
         'PO-Revision-Date: 2026-08-31 00:00+0000',
