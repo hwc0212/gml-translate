@@ -82,6 +82,11 @@ $translations = [
 ];
 
 $controls_zh = [
+    'Confirm Page Cache Refresh' => '确认刷新页面缓存',
+    'Only rendered page cache will be refreshed. Saved translations, manual edits and queue items will not be deleted.' => '仅刷新已生成的页面缓存，不删除已保存的译文、人工修改或翻译队列。',
+    'Type REFRESH to confirm' => '输入 REFRESH 确认',
+    'Confirm Refresh' => '确认刷新',
+    'Type REFRESH to confirm page cache refresh. No changes were made.' => '请输入 REFRESH 确认刷新页面缓存。本次未执行任何修改。',
     'Start All Pending' => '启动全部待翻译任务',
     'Pause All' => '暂停全部',
     'Start Pending for This Language' => '启动该语言的待翻译任务',

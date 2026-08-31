@@ -142,6 +142,12 @@ msgstr ""
 msgid "Configure Now"
 msgstr ""
 
+msgid "Confirm Page Cache Refresh"
+msgstr ""
+
+msgid "Confirm Refresh"
+msgstr ""
+
 msgid "Content Scan"
 msgstr ""
 
@@ -419,6 +425,9 @@ msgid "On"
 msgstr ""
 
 msgid "Only redirects on the homepage. Returning visitors keep their chosen language via cookie. Bots/crawlers are never redirected."
+msgstr ""
+
+msgid "Only rendered page cache will be refreshed. Saved translations, manual edits and queue items will not be deleted."
 msgstr ""
 
 msgid "Optional note"
@@ -752,6 +761,12 @@ msgid "Translations"
 msgstr ""
 
 msgid "Type"
+msgstr ""
+
+msgid "Type REFRESH to confirm"
+msgstr ""
+
+msgid "Type REFRESH to confirm page cache refresh. No changes were made."
 msgstr ""
 
 msgid "Type of Flags"

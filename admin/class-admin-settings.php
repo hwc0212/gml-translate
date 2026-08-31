@@ -809,14 +809,46 @@ class GML_Admin_Settings {
                             <span class="dashicons dashicons-controls-pause" aria-hidden="true"></span><?php esc_html_e( 'Pause All', 'gml-translate' ); ?>
                         </button>
                 </form>
-                <form method="post">
-                    <?php wp_nonce_field( 'gml_cache_action', 'gml_cache_nonce' ); ?>
-                    <button type="submit" name="gml_cache_action" value="refresh_page_cache" class="button">
+                    <button type="button" id="gml-cache-open" class="button">
                         <span class="dashicons dashicons-update" aria-hidden="true"></span><?php esc_html_e( 'Refresh Page Cache', 'gml-translate' ); ?>
                     </button>
-                </form>
             </div>
         </div>
+        <dialog id="gml-cache-confirm" aria-labelledby="gml-cache-title" style="width:420px;max-width:calc(100vw - 48px);box-sizing:border-box;border:1px solid #8c8f94;border-radius:4px;padding:24px">
+            <form method="post" id="gml-cache-form">
+                <h2 id="gml-cache-title" style="margin-top:0"><?php esc_html_e( 'Confirm Page Cache Refresh', 'gml-translate' ); ?></h2>
+                <p><?php esc_html_e( 'Only rendered page cache will be refreshed. Saved translations, manual edits and queue items will not be deleted.', 'gml-translate' ); ?></p>
+                <p><label for="gml-cache-phrase"><?php esc_html_e( 'Type REFRESH to confirm', 'gml-translate' ); ?></label></p>
+                <input type="text" id="gml-cache-phrase" name="gml_cache_confirmation" required autocomplete="off" spellcheck="false" maxlength="40" style="width:100%;box-sizing:border-box">
+                <?php wp_nonce_field( 'gml_cache_action', 'gml_cache_nonce' ); ?>
+                <input type="hidden" name="gml_cache_action" value="refresh_page_cache">
+                <div class="gml-translation-actions" style="justify-content:flex-end;margin-top:20px">
+                    <button type="button" id="gml-cache-cancel" class="button"><?php esc_html_e( 'Cancel', 'gml-translate' ); ?></button>
+                    <button type="submit" id="gml-cache-submit" class="button button-primary" disabled><?php esc_html_e( 'Confirm Refresh', 'gml-translate' ); ?></button>
+                </div>
+            </form>
+        </dialog>
+        <script>
+        (function () {
+            const dialog = document.getElementById('gml-cache-confirm');
+            const phrase = document.getElementById('gml-cache-phrase');
+            const submit = document.getElementById('gml-cache-submit');
+            const open = document.getElementById('gml-cache-open');
+            open.addEventListener('click', function () {
+                phrase.value = '';
+                submit.disabled = true;
+                dialog.showModal();
+                phrase.focus();
+            });
+            phrase.addEventListener('input', function () { submit.disabled = phrase.value.trim() !== 'REFRESH'; });
+            document.getElementById('gml-cache-cancel').addEventListener('click', function () { dialog.close(); });
+            dialog.addEventListener('close', function () { phrase.value = ''; submit.disabled = true; open.focus(); });
+            document.getElementById('gml-cache-form').addEventListener('submit', function (event) {
+                if (phrase.value.trim() !== 'REFRESH') { event.preventDefault(); phrase.focus(); return; }
+                submit.disabled = true;
+            });
+        }());
+        </script>
         <div class="gml-translation-summary" aria-live="polite">
             <dl><dt><?php esc_html_e( 'Queue Status', 'gml-translate' ); ?></dt><dd id="gml-queue-state"><?php echo esc_html( $state_labels[$queue_status['state']] ); ?></dd></dl>
             <dl><dt><?php esc_html_e( 'Pending Segments', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $queue_pending ) ); ?></dd></dl>

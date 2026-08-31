@@ -142,6 +142,12 @@ msgstr "已完成"
 msgid "Configure Now"
 msgstr "Configure Now"
 
+msgid "Confirm Page Cache Refresh"
+msgstr "确认刷新页面缓存"
+
+msgid "Confirm Refresh"
+msgstr "确认刷新"
+
 msgid "Content Scan"
 msgstr "内容扫描"
 
@@ -420,6 +426,9 @@ msgstr "On"
 
 msgid "Only redirects on the homepage. Returning visitors keep their chosen language via cookie. Bots/crawlers are never redirected."
 msgstr "Only redirects on the homepage. Returning visitors keep their chosen language via cookie. Bots/crawlers are never redirected."
+
+msgid "Only rendered page cache will be refreshed. Saved translations, manual edits and queue items will not be deleted."
+msgstr "仅刷新已生成的页面缓存，不删除已保存的译文、人工修改或翻译队列。"
 
 msgid "Optional note"
 msgstr "Optional note"
@@ -753,6 +762,12 @@ msgstr "译文管理"
 
 msgid "Type"
 msgstr "Type"
+
+msgid "Type REFRESH to confirm"
+msgstr "输入 REFRESH 确认"
+
+msgid "Type REFRESH to confirm page cache refresh. No changes were made."
+msgstr "请输入 REFRESH 确认刷新页面缓存。本次未执行任何修改。"
 
 msgid "Type of Flags"
 msgstr "Type of Flags"
