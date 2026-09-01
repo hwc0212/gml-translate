@@ -311,11 +311,11 @@ class GML_SEO_Router {
 
     private function get_enabled_languages() {
         if ( class_exists( 'GML_Language_Utils' ) ) {
-            return GML_Language_Utils::enabled_target_codes();
+            return GML_Language_Utils::enabled_local_target_codes();
         }
         $codes = [];
         foreach ( get_option( 'gml_languages', [] ) as $lang ) {
-            if ( $lang['enabled'] ?? true ) {
+            if ( ( $lang['enabled'] ?? true ) && ( $lang['site_mode'] ?? 'local' ) !== 'external' ) {
                 $codes[] = $lang['code'];
             }
         }
@@ -324,12 +324,12 @@ class GML_SEO_Router {
 
     private static function get_all_language_codes() {
         if ( class_exists( 'GML_Language_Utils' ) ) {
-            return GML_Language_Utils::configured_codes( true, false );
+            return GML_Language_Utils::local_configured_codes( true, false );
         }
         $source = get_option( 'gml_source_lang', 'en' );
         $codes  = [ $source ];
         foreach ( get_option( 'gml_languages', [] ) as $lang ) {
-            $codes[] = $lang['code'];
+            if ( ( $lang['site_mode'] ?? 'local' ) !== 'external' ) $codes[] = $lang['code'];
         }
         return array_unique( $codes );
     }

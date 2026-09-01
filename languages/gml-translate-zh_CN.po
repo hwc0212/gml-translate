@@ -1,14 +1,17 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.9\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.10\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
-"POT-Creation-Date: 2026-08-31 00:00+0000\n"
-"PO-Revision-Date: 2026-08-31 00:00+0000\n"
+"POT-Creation-Date: 2026-09-01 00:00+0000\n"
+"PO-Revision-Date: 2026-09-01 00:00+0000\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: GML Translate language pack builder\n"
+
+msgid "%d external language sites are shown in the language switcher and excluded from this AI queue."
+msgstr "%d 个外部语言站点会显示在语言切换器中，但不会进入此 AI 队列。"
 
 msgid "%s are new since the last successful connection test."
 msgstr "其中 %s 条是在上次连接测试成功后新增的。"
@@ -85,6 +88,12 @@ msgstr "Advanced settings saved!"
 msgid "After Menu"
 msgstr "After Menu"
 
+msgid "Align left"
+msgstr "左对齐"
+
+msgid "Align right"
+msgstr "右对齐"
+
 msgid "All"
 msgstr "All"
 
@@ -93,6 +102,12 @@ msgstr "所有语言"
 
 msgid "Allow the queue and crawler to generate new translations"
 msgstr "Allow the queue and crawler to generate new translations"
+
+msgid "Always open the external homepage"
+msgstr "始终打开外站首页"
+
+msgid "Appearance"
+msgstr "外观"
 
 msgid "Appearance → Widgets"
 msgstr "Appearance → Widgets"
@@ -108,6 +123,9 @@ msgstr "Auto"
 
 msgid "Auto-Detect Language"
 msgstr "Auto-Detect Language"
+
+msgid "Automatic"
+msgstr "自动"
 
 msgid "Automatic Position"
 msgstr "Automatic Position"
@@ -141,6 +159,9 @@ msgstr "请选择已配置的语言。"
 
 msgid "Choose the AI engine for translation."
 msgstr "选择用于翻译的 AI 服务商。"
+
+msgid "Choose whether each language is translated on this WordPress site or linked to an independent website. External sites are excluded from local routing, crawling, and the AI translation queue. This plugin never writes content or settings to the remote website."
+msgstr "选择每种语言由当前 WordPress 站点提供，或链接到独立网站。外部站点不会参与本地路由、扫描和 AI 翻译队列；插件不会向远程网站写入内容或设置。"
 
 msgid "Circle"
 msgstr "Circle"
@@ -205,11 +226,17 @@ msgstr "Delete this translation?"
 msgid "Deleting a saved translation cannot be undone. Review individual records before deleting."
 msgstr "删除已保存的译文无法撤销。请先逐条检查，再确认删除。"
 
+msgid "Delivery"
+msgstr "提供方式"
+
 msgid "Destination Languages"
 msgstr "目标语言"
 
 msgid "Display language switcher"
 msgstr "Display language switcher"
+
+msgid "Dropdown Alignment"
+msgstr "下拉菜单对齐"
 
 msgid "Edit"
 msgstr "编辑"
@@ -228,6 +255,9 @@ msgstr "Enable the multilingual site after choosing your languages. An AI API ke
 
 msgid "Enable the multilingual site and configure AI Translation first."
 msgstr "请先启用多语言站点并配置 AI 翻译。"
+
+msgid "Enter a valid HTTPS URL on a different host for %s. Language routing was not changed."
+msgstr "请为 %s 输入其他主机上的有效 HTTPS URL。语言路由未更改。"
 
 msgid "Enter your API Key above and save settings"
 msgstr "Enter your API Key above and save settings"
@@ -261,6 +291,12 @@ msgstr "排除规则"
 
 msgid "Exclusion rules saved!"
 msgstr "Exclusion rules saved!"
+
+msgid "External Site URL"
+msgstr "外部站点 URL"
+
+msgid "External domain or subdomain"
+msgstr "外部域名或子域名"
 
 msgid "FROM / TO"
 msgstr "源语言 / 目标语言"
@@ -325,6 +361,9 @@ msgstr "Glossary rules saved!"
 msgid "Go to"
 msgstr "Go to"
 
+msgid "HTTPS only. Configure the reciprocal language link on the other website."
+msgstr "仅支持 HTTPS。请在另一个网站上配置反向语言链接。"
+
 msgid "Header"
 msgstr "Header"
 
@@ -364,6 +403,9 @@ msgstr "语言"
 msgid "Language Button Design"
 msgstr "Language Button Design"
 
+msgid "Language Site Routing"
+msgstr "语言站点路由"
+
 msgid "Language Switcher"
 msgstr "语言切换器"
 
@@ -381,6 +423,9 @@ msgstr "Language order saved!"
 
 msgid "Language removed successfully!"
 msgstr "Language removed successfully!"
+
+msgid "Language site routing could not be saved. Check database writes and try again; the previous routing remains active."
+msgstr "语言站点路由无法保存。请检查数据库写入后重试；原路由仍然有效。"
 
 msgid "Language switcher settings saved!"
 msgstr "Language switcher settings saved!"
@@ -414,6 +459,9 @@ msgstr "管理译文"
 
 msgid "Manual"
 msgstr "Manual"
+
+msgid "Match the current path"
+msgstr "匹配当前路径"
 
 msgid "Model or API resource not found"
 msgstr "找不到模型或 API 资源"
@@ -469,6 +517,9 @@ msgstr "Note: After adding glossary rules, clear the translation cache for affec
 msgid "On"
 msgstr "On"
 
+msgid "One external language site is shown in the language switcher and excluded from this AI queue."
+msgstr "1 个外部语言站点会显示在语言切换器中，但不会进入此 AI 队列。"
+
 msgid "Only redirects on the homepage. Returning visitors keep their chosen language via cookie. Bots/crawlers are never redirected."
 msgstr "Only redirects on the homepage. Returning visitors keep their chosen language via cookie. Bots/crawlers are never redirected."
 
@@ -502,6 +553,9 @@ msgstr "其他队列任务和内容扫描保持暂停。该小样本完成后，
 msgid "Other translation error"
 msgstr "其他翻译错误"
 
+msgid "Outlined"
+msgstr "描边"
+
 msgid "Override CSS"
 msgstr "Override CSS"
 
@@ -516,6 +570,9 @@ msgstr "进度"
 
 msgid "Page %1$s of %2$s (%3$s total)"
 msgstr "Page %1$s of %2$s (%3$s total)"
+
+msgid "Page Mapping"
+msgstr "页面映射"
 
 msgid "Page cache refreshed. Saved translations and queue items were preserved."
 msgstr "页面缓存已刷新，已保存的译文和队列任务均已保留。"
@@ -703,6 +760,12 @@ msgstr "排程逾期"
 msgid "Scheduled"
 msgstr "已排程"
 
+msgid "Seamless (inherit theme)"
+msgstr "无缝（继承主题）"
+
+msgid "Seamless is best inside navigation menus. Outlined and Solid provide a clearer standalone control."
+msgstr "导航菜单内建议使用无缝样式；描边和实色更适合作为独立控件。"
+
 msgid "Search translations..."
 msgstr "搜索翻译..."
 
@@ -732,6 +795,9 @@ msgstr "Show flag icons"
 
 msgid "Show language names"
 msgstr "Show language names"
+
+msgid "Solid"
+msgstr "实色"
 
 msgid "Sorry, you are not allowed to access this page."
 msgstr "Sorry, you are not allowed to access this page."
@@ -832,6 +898,9 @@ msgstr "这些是已确认的历史记录，不代表服务商当前仍在失败
 msgid "These terms will never be translated. One per line. Brand names, product names, etc."
 msgstr "These terms will never be translated. One per line. Brand names, product names, etc."
 
+msgid "This WordPress site (subdirectory)"
+msgstr "当前 WordPress 站点（子目录）"
+
 msgid "This cache action is no longer available. No translations or queue items were deleted."
 msgstr "此缓存操作已停用。未删除任何译文或队列任务。"
 
@@ -927,6 +996,9 @@ msgstr "无法识别 AI 服务商，设置未保存。"
 
 msgid "Usage Methods"
 msgstr "Usage Methods"
+
+msgid "Use same path only when equivalent URLs exist on both sites. Homepage mode is omitted from inner-page hreflang."
+msgstr "仅当两个站点存在对应 URL 时使用同路径。首页模式不会加入内页 hreflang。"
 
 msgid "Value"
 msgstr "Value"

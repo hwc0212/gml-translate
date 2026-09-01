@@ -4,7 +4,7 @@ Tags: translate, multilingual, ai, hreflang, language switcher
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.11.1-rc.9
+Stable tag: 2.11.1-rc.10
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,12 +18,12 @@ Multilingual Site and AI Translation are separate states. Removing a provider ke
 
 = Features =
 
-* Language-prefixed WordPress routes and subdirectory-safe URL handling.
+* Language-prefixed WordPress routes, subdirectory-safe URL handling, and external domain/subdomain language links.
 * Google Gemini, DeepSeek, Qwen, and OpenAI translation providers.
 * Bounded, resumable queue with locks, failure states, circuit breaking, and per-language manual recovery.
 * Translation memory, current-page lookups, manual translation editor, glossary, protected terms, and exclusion rules.
 * Content crawler that runs only in admin/WP-Cron and uses signed same-site requests.
-* Menu, shortcode, widget, and automatic language switcher positions.
+* Menu, shortcode, widget, and automatic language switcher positions with theme, outline, and solid appearance presets.
 * Browser-language detection.
 * Translated metadata, self-referencing canonical behavior, hreflang, and multilingual sitemap relationships.
 * Redis/Memcached-safe cache generation invalidation without whole-site cache flushes.
@@ -66,6 +66,13 @@ Yes. Manual translations are stored separately and take priority over normal aut
 No. It provides only the minimum multilingual SEO output. Use GML AI SEO or another single SEO authority for complete SEO management.
 
 == Changelog ==
+
+= 2.11.1-rc.10 =
+* Adds per-language local or external-site delivery for independent domains and subdomains.
+* Supports same-path mapping or a safe external-homepage fallback without copying query strings across domains.
+* Keeps external languages out of local rewrite rules, crawling, glossary work, and AI translation queues.
+* Adds switcher appearance presets and automatic, left, or right dropdown alignment.
+* Emits external hreflang only where a valid equivalent can be represented; remote sites are never modified.
 
 = 2.11.1-rc.9 =
 * Tracks published source changes incrementally without starting AI or resuming a paused queue.

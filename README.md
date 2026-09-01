@@ -6,6 +6,16 @@ GML Translate 是独立的 WordPress AI 多语言插件，专注解决一件事�
 
 它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。这些属于 GML AI SEO。
 
+## 2.11.1-rc.10 跨站点语言与切换器候选版
+
+- 每个目标语言可以选择由当前 WordPress 站点的子目录提供，或链接到独立 HTTPS 域名/子域名，例如英文站 `cnxhe.com` 与中文站 `cnxhe.cn`。
+- 外部站点支持“匹配当前路径”和“始终打开外站首页”两种映射。只有两个站点存在等价路径时才使用同路径；首页模式不会错误地把外站首页声明为每个内页的 hreflang 对应页。
+- 外部语言不会注册成本地 `/zh/` 路由，也不会进入本站 Crawler、Glossary 或 AI Translation Queue；已有本地译文和队列记录不会被删除，切回本地模式即可继续使用。
+- 跨域链接只接受无账号、无 query、无 fragment 的 HTTPS 基础 URL，切换时不复制 `gclid`、`utm_*` 等参数，也不会向远程服务器写入内容或设置。
+- 语言切换器新增继承主题、描边、实色三种外观，以及自动/左/右下拉对齐；默认仍继承主题，避免升级后改变前台样式。
+
+这是跨站导航与 SEO 关系配置，不是跨服务器内容同步。两个独立站点必须分别维护内容，并在另一台服务器上配置反向语言关系。
+
 ## 2.11.1-rc.9 增量同步与 Provider 对齐候选版
 
 - 编辑并保存已发布页面、文章或产品后，插件会记录一次轻量增量扫描。保存动作本身不调用 AI；后续 Cron 只发现新文本并生成新 `source_hash`，不会自动恢复已暂停的队列。
@@ -160,6 +170,8 @@ GML Translate 提供：
 
 - Google Gemini
 - DeepSeek
+- Qwen
+- OpenAI
 
 Provider 层统一处理：
 
@@ -178,6 +190,17 @@ Provider 层统一处理：
 3. 开启 Multilingual Site，先验证每个语言首页、页面、产品和分类 URL。
 4. 需要新翻译时，保存 Gemini 或 DeepSeek Key，再开启 AI Translation。
 5. 先选择一个目标语言和少量页面试译，检查品牌词、链接、布局、表单和 SEO Meta。
+
+## 独立域名语言配置
+
+以 `cnxhe.com` 为英文国际站、`cnxhe.cn` 为中文国内站为例：
+
+1. 在 `cnxhe.com` 的 GML Translate → Settings 中添加简体中文，Delivery 选择 External domain or subdomain，URL 填 `https://cnxhe.cn/`。
+2. 若两站页面 slug 一致，Page Mapping 选择 Match the current path；否则选择 Always open the external homepage。后者只在首页输出跨域 hreflang，避免制造错误的一对一页面关系。
+3. 在 `cnxhe.cn` 上独立安装并配置插件，把英文设为外部语言并指向 `https://cnxhe.com/`，形成双向切换与 reciprocal hreflang。
+4. 在未登录窗口检查首页和代表性内页。确认链接、canonical 和 hreflang 后再启用浏览器语言自动跳转。
+
+插件不会登录或修改另一台服务器，也不会自动复制页面。若两站路径不同且需要内页一一对应，应先统一 URL 结构；当前版本不会猜测不同 slug 的页面关系。
 6. 填写 Glossary 与 Exclusions，再启动全站 Crawler。
 7. 在 Translations 中观察 pending、processing、failed 和完成度；不要在大量失败时“全部重试”。
 8. 完成后检查 canonical、hreflang、语言回链和 sitemap，再决定是否允许搜索引擎索引。

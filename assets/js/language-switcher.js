@@ -75,9 +75,21 @@
         var scrollY = window.pageYOffset || document.documentElement.scrollTop;
         var menuWidth = menu.offsetWidth || 160;
 
-        // Position below the button, right-aligned
+        var alignment = btn.getAttribute('data-panel-align') || 'auto';
+
+        // Position below the button using the selected alignment. Automatic
+        // alignment keeps the panel inside the viewport without layout shifts.
         var top = rect.bottom + scrollY + 4;
-        var left = rect.right + scrollX - menuWidth;
+        var left;
+        if (alignment === 'left') {
+            left = rect.left + scrollX;
+        } else if (alignment === 'right') {
+            left = rect.right + scrollX - menuWidth;
+        } else {
+            left = rect.left + menuWidth <= document.documentElement.clientWidth - 8
+                ? rect.left + scrollX
+                : rect.right + scrollX - menuWidth;
+        }
 
         // Clamp to viewport
         if (left < 8) left = rect.left + scrollX;

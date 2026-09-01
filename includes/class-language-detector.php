@@ -99,7 +99,15 @@ class GML_Language_Detector {
 
         // Redirect to detected language homepage
         $this->set_cookie( $detected );
-        $redirect_url = home_url( '/' . $detected . '/' );
+        $redirect_url = class_exists( 'GML_URL_Helper' )
+            ? GML_URL_Helper::get_language_url(
+                home_url( '/' ),
+                $detected,
+                $this->source_lang,
+                class_exists( 'GML_Language_Utils' ) ? GML_Language_Utils::local_configured_codes( true, false ) : $this->enabled_langs
+            )
+            : home_url( '/' . $detected . '/' );
+        if ( ! $redirect_url ) return;
         wp_redirect( $redirect_url, 302 );
         exit;
     }
@@ -169,6 +177,9 @@ class GML_Language_Detector {
      */
     private function get_url_language() {
         $path = strtok( $_SERVER['REQUEST_URI'] ?? '', '?' );
+        if ( class_exists( 'GML_Language_Utils' ) ) {
+            return GML_Language_Utils::detect_prefix_from_path( $path, true ) ?: null;
+        }
         if ( preg_match( '#^/([a-z]{2})(/|$)#', $path, $m ) ) {
             if ( in_array( $m[1], $this->enabled_langs, true ) ) {
                 return $m[1];

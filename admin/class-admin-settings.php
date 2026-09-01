@@ -442,6 +442,71 @@ class GML_Admin_Settings {
                     </td>
                 </tr>
             </table>
+            <?php if ( ! empty( $languages ) ): ?>
+                <h2><?php esc_html_e( 'Language Site Routing', 'gml-translate' ); ?></h2>
+                <p class="description">
+                    <?php esc_html_e( 'Choose whether each language is translated on this WordPress site or linked to an independent website. External sites are excluded from local routing, crawling, and the AI translation queue. This plugin never writes content or settings to the remote website.', 'gml-translate' ); ?>
+                </p>
+                <table class="widefat striped gml-language-routing" style="margin-top:12px;max-width:1100px;">
+                    <thead>
+                        <tr>
+                            <th><?php esc_html_e( 'Language', 'gml-translate' ); ?></th>
+                            <th><?php esc_html_e( 'Delivery', 'gml-translate' ); ?></th>
+                            <th><?php esc_html_e( 'External Site URL', 'gml-translate' ); ?></th>
+                            <th><?php esc_html_e( 'Page Mapping', 'gml-translate' ); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ( $languages as $language ):
+                        $code      = GML_Language_Utils::normalize_code( $language['code'] ?? '' );
+                        $external  = GML_Language_Utils::is_external_language( $language );
+                        $site_url  = GML_Language_Utils::get_external_site_url( $language );
+                        $path_mode = GML_Language_Utils::get_external_path_mode( $language );
+                        if ( ! $code ) continue;
+                    ?>
+                        <tr class="gml-language-route" data-code="<?php echo esc_attr( $code ); ?>">
+                            <td><strong><?php echo esc_html( $language['native_name'] ?? strtoupper( $code ) ); ?></strong><br><code><?php echo esc_html( $code ); ?></code></td>
+                            <td>
+                                <select name="gml_language_site_mode[<?php echo esc_attr( $code ); ?>]" class="gml-language-site-mode">
+                                    <option value="local" <?php selected( ! $external ); ?>><?php esc_html_e( 'This WordPress site (subdirectory)', 'gml-translate' ); ?></option>
+                                    <option value="external" <?php selected( $external ); ?>><?php esc_html_e( 'External domain or subdomain', 'gml-translate' ); ?></option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="url" name="gml_language_external_url[<?php echo esc_attr( $code ); ?>]" class="regular-text gml-language-external-url" value="<?php echo esc_attr( $site_url ); ?>" placeholder="https://cnxhe.cn/" <?php disabled( ! $external ); ?> />
+                                <p class="description"><?php esc_html_e( 'HTTPS only. Configure the reciprocal language link on the other website.', 'gml-translate' ); ?></p>
+                            </td>
+                            <td>
+                                <select name="gml_language_external_path_mode[<?php echo esc_attr( $code ); ?>]" class="gml-language-path-mode" <?php disabled( ! $external ); ?>>
+                                    <option value="same_path" <?php selected( $path_mode, 'same_path' ); ?>><?php esc_html_e( 'Match the current path', 'gml-translate' ); ?></option>
+                                    <option value="homepage" <?php selected( $path_mode, 'homepage' ); ?>><?php esc_html_e( 'Always open the external homepage', 'gml-translate' ); ?></option>
+                                </select>
+                                <p class="description"><?php esc_html_e( 'Use same path only when equivalent URLs exist on both sites. Homepage mode is omitted from inner-page hreflang.', 'gml-translate' ); ?></p>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <script>
+                (function(){
+                    document.querySelectorAll('.gml-language-route').forEach(function(row){
+                        var mode = row.querySelector('.gml-language-site-mode');
+                        var url = row.querySelector('.gml-language-external-url');
+                        var path = row.querySelector('.gml-language-path-mode');
+                        if (!mode || !url || !path) return;
+                        function sync(){
+                            var external = mode.value === 'external';
+                            url.disabled = !external;
+                            path.disabled = !external;
+                            if (external) url.required = true;
+                            else url.required = false;
+                        }
+                        mode.addEventListener('change', sync);
+                        sync();
+                    });
+                })();
+                </script>
+            <?php endif; ?>
             <?php submit_button(__('Save Changes', 'gml-translate')); ?>
         </form>
 
@@ -501,7 +566,11 @@ class GML_Admin_Settings {
                 <tr>
                     <td><strong><?php echo esc_html($lang['native_name']); ?></strong></td>
                     <td><code><?php echo esc_html($lang['code']); ?></code></td>
-                    <td><code><?php echo esc_html(home_url('/' . $lang['code'] . '/about/')); ?></code></td>
+                    <td><code><?php echo esc_html(
+                        GML_Language_Utils::is_external_language( $lang )
+                            ? GML_URL_Helper::get_external_language_url( home_url( '/about/' ), $lang['code'] )
+                            : home_url( '/' . $lang['code'] . '/about/' )
+                    ); ?></code></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
@@ -580,6 +649,8 @@ class GML_Admin_Settings {
         $flag_type        = get_option('gml_switcher_flag_type', 'rectangle');
         $show_names       = get_option('gml_switcher_show_names', true);
         $use_fullname     = get_option('gml_switcher_use_fullname', true);
+        $appearance       = get_option('gml_switcher_appearance', 'inherit');
+        $panel_alignment  = get_option('gml_switcher_panel_alignment', 'auto');
         $switcher_position = get_option('gml_switcher_position', 'none');
         $custom_css       = get_option('gml_switcher_custom_css', '');
 
@@ -615,6 +686,27 @@ class GML_Admin_Settings {
                     <td>
                         <input type="checkbox" id="gml_switcher_is_dropdown" name="gml_switcher_is_dropdown" value="1" <?php checked($is_dropdown, true); ?> />
                         <span class="description"><?php _e('Show as a dropdown menu', 'gml-translate'); ?></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="gml_switcher_appearance"><?php esc_html_e( 'Appearance', 'gml-translate' ); ?></label></th>
+                    <td>
+                        <select id="gml_switcher_appearance" name="gml_switcher_appearance">
+                            <option value="inherit" <?php selected( $appearance, 'inherit' ); ?>><?php esc_html_e( 'Seamless (inherit theme)', 'gml-translate' ); ?></option>
+                            <option value="outline" <?php selected( $appearance, 'outline' ); ?>><?php esc_html_e( 'Outlined', 'gml-translate' ); ?></option>
+                            <option value="solid" <?php selected( $appearance, 'solid' ); ?>><?php esc_html_e( 'Solid', 'gml-translate' ); ?></option>
+                        </select>
+                        <p class="description"><?php esc_html_e( 'Seamless is best inside navigation menus. Outlined and Solid provide a clearer standalone control.', 'gml-translate' ); ?></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="gml_switcher_panel_alignment"><?php esc_html_e( 'Dropdown Alignment', 'gml-translate' ); ?></label></th>
+                    <td>
+                        <select id="gml_switcher_panel_alignment" name="gml_switcher_panel_alignment">
+                            <option value="auto" <?php selected( $panel_alignment, 'auto' ); ?>><?php esc_html_e( 'Automatic', 'gml-translate' ); ?></option>
+                            <option value="left" <?php selected( $panel_alignment, 'left' ); ?>><?php esc_html_e( 'Align left', 'gml-translate' ); ?></option>
+                            <option value="right" <?php selected( $panel_alignment, 'right' ); ?>><?php esc_html_e( 'Align right', 'gml-translate' ); ?></option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -733,6 +825,12 @@ class GML_Admin_Settings {
                 var showNames   = $('#gml_switcher_show_names').is(':checked');
                 var useFullname = $('#gml_switcher_use_fullname').is(':checked');
                 var flagType    = $('#gml_switcher_flag_type').val();
+                var appearance  = $('#gml_switcher_appearance').val();
+
+                var triggerStyle = 'padding:8px 12px;border-radius:4px;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;gap:8px;min-width:140px;';
+                if (appearance === 'solid') triggerStyle += 'border:1px solid #1d2327;background:#1d2327;color:#fff;';
+                else if (appearance === 'outline') triggerStyle += 'border:1px solid #8c8f94;background:#fff;color:#1d2327;';
+                else triggerStyle += 'border:0;background:transparent;color:#1d2327;padding-left:0;padding-right:0;';
 
                 function itemHtml(country, emoji, label, extraStyle) {
                     var html = '<div style="padding:8px 12px;display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;' + (extraStyle||'') + '">';
@@ -745,7 +843,7 @@ class GML_Admin_Settings {
                 if (isDropdown) {
                     var btnLabel = useFullname ? sourceName : sourceCode;
                     html += '<div style="position:relative;display:inline-block;">';
-                    html += '<button type="button" style="padding:8px 12px;border:1px solid #ddd;border-radius:4px;background:#fff;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;gap:8px;min-width:140px;">';
+                    html += '<button type="button" style="' + triggerStyle + '">';
                     if (showFlags) html += getFlagHtml(sourceCountry, sourceEmoji, flagType, sourceName);
                     if (showNames) html += '<span style="flex:1;text-align:left;">' + btnLabel + '</span>';
                     html += '<span style="font-size:10px;color:#888;margin-left:auto;">▼</span></button>';
@@ -795,6 +893,12 @@ class GML_Admin_Settings {
         }
 
         $languages           = get_option('gml_languages', []);
+        $external_languages  = array_values( array_filter( $languages, static function( $language ) {
+            return class_exists( 'GML_Language_Utils' ) && GML_Language_Utils::is_external_language( $language );
+        } ) );
+        $languages           = array_values( array_filter( $languages, static function( $language ) {
+            return ! class_exists( 'GML_Language_Utils' ) || ! GML_Language_Utils::is_external_language( $language );
+        } ) );
         $wp_locale           = get_locale();
         $source_lang         = get_option('gml_source_lang', substr($wp_locale, 0, 2));
         if ( class_exists( 'GML_Language_Utils' ) ) {
@@ -872,6 +976,17 @@ class GML_Admin_Settings {
         .gml-failure-details-table td,.gml-failure-details-table th{vertical-align:top}
         .gml-failure-details-table small{display:block;margin-top:3px;color:#646970}
         </style>
+        <?php if ( $external_languages ): ?>
+            <div class="notice notice-info inline"><p>
+                <?php
+                $external_count = count( $external_languages );
+                echo esc_html( $external_count === 1
+                    ? __( 'One external language site is shown in the language switcher and excluded from this AI queue.', 'gml-translate' )
+                    : sprintf( __( '%d external language sites are shown in the language switcher and excluded from this AI queue.', 'gml-translate' ), $external_count )
+                );
+                ?>
+            </p></div>
+        <?php endif; ?>
         <div class="gml-translation-toolbar">
             <h2><?php esc_html_e( 'Translation Queue', 'gml-translate' ); ?></h2>
             <div class="gml-translation-actions">
@@ -1361,7 +1476,9 @@ class GML_Admin_Settings {
 
         $glossary_rules  = GML_Glossary::get_rules();
         $protected_terms = get_option('gml_protected_terms', ['GML', 'WordPress', 'WooCommerce', 'Gemini']);
-        $languages       = get_option('gml_languages', []);
+        $languages       = array_values( array_filter( get_option('gml_languages', []), static function( $language ) {
+            return ! class_exists( 'GML_Language_Utils' ) || ! GML_Language_Utils::is_external_language( $language );
+        } ) );
         ?>
 
         <h2><?php _e('Protected Terms (Never Translate)', 'gml-translate'); ?></h2>
@@ -1498,6 +1615,7 @@ class GML_Admin_Settings {
             'flag'        => $lang_info['flag'],
             'country'     => $lang_info['country'],
             'url_prefix'  => '/' . $lang_code . '/',
+            'site_mode'   => 'local',
             'enabled'     => true,
         ];
         update_option('gml_languages', $languages);
@@ -1514,9 +1632,13 @@ class GML_Admin_Settings {
     }
 
     private function register_rewrite_rules_now() {
+        if ( class_exists( 'GML_Translation_Rewrite' ) ) {
+            GML_Translation_Rewrite::register();
+            return;
+        }
         $codes = [];
         foreach (get_option('gml_languages', []) as $lang) {
-            if ($lang['enabled'] ?? true) $codes[] = $lang['code'];
+            if ( ($lang['enabled'] ?? true) && ($lang['site_mode'] ?? 'local') !== 'external' ) $codes[] = $lang['code'];
         }
         if (empty($codes)) return;
         $pattern = implode('|', array_map('preg_quote', $codes));
@@ -1595,6 +1717,11 @@ class GML_Admin_Settings {
         }
 
         update_option('gml_source_lang', sanitize_text_field($_POST['gml_source_lang'] ?? 'en'));
+        $routing_saved = $this->save_language_site_routing();
+        if ( is_wp_error( $routing_saved ) ) {
+            $save_failed = true;
+            add_settings_error( 'gml_messages', 'gml_language_routing_invalid', $routing_saved->get_error_message(), 'error' );
+        }
         $multilingual = ! empty( $_POST['gml_multilingual_enabled'] );
         $ai_requested = ! empty( $_POST['gml_ai_translation_enabled'] );
         $changed      = GML_Translation_State::set_multilingual_enabled( $multilingual );
@@ -1627,8 +1754,56 @@ class GML_Admin_Settings {
         update_option('gml_switcher_flag_type',    sanitize_text_field($_POST['gml_switcher_flag_type'] ?? 'rectangle'));
         update_option('gml_switcher_show_names',   isset($_POST['gml_switcher_show_names']));
         update_option('gml_switcher_use_fullname', isset($_POST['gml_switcher_use_fullname']));
+        $appearance = sanitize_key( $_POST['gml_switcher_appearance'] ?? 'inherit' );
+        if ( ! in_array( $appearance, [ 'inherit', 'outline', 'solid' ], true ) ) $appearance = 'inherit';
+        update_option( 'gml_switcher_appearance', $appearance );
+        $alignment = sanitize_key( $_POST['gml_switcher_panel_alignment'] ?? 'auto' );
+        if ( ! in_array( $alignment, [ 'auto', 'left', 'right' ], true ) ) $alignment = 'auto';
+        update_option( 'gml_switcher_panel_alignment', $alignment );
         update_option('gml_switcher_position',     sanitize_text_field($_POST['gml_switcher_position'] ?? 'none'));
         update_option('gml_switcher_custom_css',   wp_strip_all_tags($_POST['gml_switcher_custom_css'] ?? ''));
+    }
+
+    private function save_language_site_routing() {
+        $languages  = (array) get_option( 'gml_languages', [] );
+        $modes      = isset( $_POST['gml_language_site_mode'] ) && is_array( $_POST['gml_language_site_mode'] ) ? wp_unslash( $_POST['gml_language_site_mode'] ) : [];
+        $urls       = isset( $_POST['gml_language_external_url'] ) && is_array( $_POST['gml_language_external_url'] ) ? wp_unslash( $_POST['gml_language_external_url'] ) : [];
+        $path_modes = isset( $_POST['gml_language_external_path_mode'] ) && is_array( $_POST['gml_language_external_path_mode'] ) ? wp_unslash( $_POST['gml_language_external_path_mode'] ) : [];
+        $updated    = $languages;
+
+        foreach ( $updated as &$language ) {
+            $code = GML_Language_Utils::normalize_code( $language['code'] ?? '' );
+            if ( ! $code || ! array_key_exists( $code, $modes ) ) continue;
+            $mode = sanitize_key( $modes[ $code ] );
+            if ( $mode !== GML_Language_Utils::SITE_MODE_EXTERNAL ) {
+                $language['site_mode'] = GML_Language_Utils::SITE_MODE_LOCAL;
+                unset( $language['external_url'], $language['external_path_mode'] );
+                continue;
+            }
+
+            $external_url = GML_Language_Utils::sanitize_external_site_url( $urls[ $code ] ?? '' );
+            if ( ! $external_url ) {
+                return new WP_Error( 'invalid_external_site_url', sprintf( __( 'Enter a valid HTTPS URL on a different host for %s. Language routing was not changed.', 'gml-translate' ), strtoupper( $code ) ) );
+            }
+            $path_mode = sanitize_key( $path_modes[ $code ] ?? GML_Language_Utils::EXTERNAL_PATH_SAME );
+            if ( ! in_array( $path_mode, [ GML_Language_Utils::EXTERNAL_PATH_SAME, GML_Language_Utils::EXTERNAL_PATH_HOMEPAGE ], true ) ) {
+                $path_mode = GML_Language_Utils::EXTERNAL_PATH_SAME;
+            }
+            $language['site_mode']          = GML_Language_Utils::SITE_MODE_EXTERNAL;
+            $language['external_url']       = $external_url;
+            $language['external_path_mode'] = $path_mode;
+            $language['paused']             = true;
+        }
+        unset( $language );
+
+        if ( $updated !== $languages ) {
+            if ( ! update_option( 'gml_languages', $updated ) ) {
+                return new WP_Error( 'external_language_save_failed', __( 'Language site routing could not be saved. Check database writes and try again; the previous routing remains active.', 'gml-translate' ) );
+            }
+            update_option( 'gml_translation_flush_rewrite_rules', 1, false );
+            if ( class_exists( 'GML_Page_Cache' ) ) GML_Page_Cache::invalidate();
+        }
+        return true;
     }
 
     private function get_available_languages() {

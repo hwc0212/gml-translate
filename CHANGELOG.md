@@ -2,6 +2,17 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.10] - 2026-09-01
+
+### 跨站点语言路由与切换器候选版
+
+- Translation Core 升至 0.5.0：每个目标语言可以标记为本站子目录或外部 HTTPS 域名/子域名；旧配置缺少该字段时继续按本站语言处理，不迁移表、不改 URL。
+- 外部语言使用同路径或外站首页映射。跨域时不复制 query/fragment；首页映射仅在源站首页进入 hreflang，避免把一个首页错误声明为所有内页的替代版本。
+- 外部语言不注册本站 rewrite、不参与路径识别、内容扫描、AI 队列、Glossary 或页面 HTML 重写；切换模式只暂停对应本地 AI 工作，不删除旧译文和队列。
+- 外部基础 URL 仅允许 HTTPS，拒绝账号、密码、query 和 fragment；可选 URL filter 的结果必须保留在管理员配置的同一 origin，不进行远程请求或写入。
+- 语言切换器增加继承主题、描边、实色外观与自动/左/右下拉对齐，默认保持原主题继承样式；外部域名继续在当前标签页打开。
+- 增加跨域映射、子目录隔离、hreflang、队列范围和零网络请求回归。`cnxhe.com` / `cnxhe.cn` 仍需在两台服务器分别配置互相链接并做未登录验收。
+
 ## [2.11.1-rc.9] - 2026-09-01
 
 ### 增量同步与 Provider 对齐候选版

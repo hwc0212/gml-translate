@@ -5,6 +5,7 @@ require_once __DIR__ . '/../bootstrap-mock.php';
 require_once __DIR__ . '/../../includes/vendor/gml-translation-core/src/class-translation-state.php';
 require_once __DIR__ . '/../../includes/vendor/gml-translation-core/src/class-url-helper.php';
 require_once __DIR__ . '/../../includes/vendor/gml-translation-core/src/class-language-utils.php';
+require_once __DIR__ . '/../../includes/vendor/gml-translation-core/src/class-translation-queue-scope.php';
 
 class GML_Queue_Processor {
 	public static function language_is_index_ready( $language ) {
@@ -25,6 +26,20 @@ GML_Translate_Test_State::$options['gml_source_lang'] = 'en';
 GML_Translate_Test_State::$options['gml_languages'] = [
 	[ 'code' => 'de', 'enabled' => true ],
 	[ 'code' => 'es', 'enabled' => true ],
+	[
+		'code'               => 'zh-cn',
+		'enabled'            => true,
+		'site_mode'          => 'external',
+		'external_url'       => 'https://cnxhe.cn/',
+		'external_path_mode' => 'same_path',
+	],
+	[
+		'code'               => 'fr',
+		'enabled'            => true,
+		'site_mode'          => 'external',
+		'external_url'       => 'https://fr.example.net/',
+		'external_path_mode' => 'homepage',
+	],
 ];
 $_SERVER['REQUEST_URI'] = '/ygnaglul/de/about/?utm_source=test';
 
@@ -39,11 +54,18 @@ gml_test_assert( strpos( $head, 'rel="canonical" href="https://example.com/ygnag
 gml_test_assert( strpos( $head, 'hreflang="en" href="https://example.com/ygnaglul/about/"' ) !== false, 'source alternate keeps one site subdirectory' );
 gml_test_assert( strpos( $head, 'hreflang="de" href="https://example.com/ygnaglul/de/about/"' ) !== false, 'ready target alternate is present' );
 gml_test_assert( strpos( $head, 'hreflang="es"' ) === false, 'incomplete target is not advertised' );
+gml_test_assert( strpos( $head, 'hreflang="zh-CN" href="https://cnxhe.cn/about/"' ) !== false, 'external language site is advertised with its mapped URL' );
+gml_test_assert( strpos( $head, 'hreflang="fr"' ) === false, 'homepage-only external site is not advertised as an inner-page equivalent' );
 gml_test_assert( strpos( $head, '/ygnaglul/de/ygnaglul/' ) === false, 'head output never duplicates the WordPress subdirectory' );
 
 $urls = GML_SEO_Router::get_language_urls();
 gml_test_assert( $urls['en'] === 'https://example.com/ygnaglul/about/', 'router source URL is subdirectory-safe' );
 gml_test_assert( $urls['de'] === 'https://example.com/ygnaglul/de/about/', 'router translated URL is subdirectory-safe' );
+gml_test_assert( $urls['zh-cn'] === 'https://cnxhe.cn/about/', 'router exposes the external language site without a local prefix' );
+gml_test_assert( $urls['fr'] === 'https://fr.example.net/', 'router can use an external homepage when page paths do not correspond' );
+gml_test_assert( GML_Language_Utils::detect_prefix_from_path( '/ygnaglul/zh-cn/about/', true ) === '', 'external language is not registered as a local route' );
+gml_test_assert( GML_Language_Utils::sanitize_external_site_url( 'https://example.com/another-site/' ) === '', 'external mode rejects the current WordPress host' );
+gml_test_assert( GML_Translation_Queue_Scope::enabled_languages() === [ 'de', 'es' ], 'external language sites are excluded from the local AI queue' );
 
 if ( ! defined( 'GML_SEO_VER' ) ) define( 'GML_SEO_VER', 'test' );
 GML_Translate_Test_State::$actions = [];

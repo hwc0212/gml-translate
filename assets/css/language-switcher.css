@@ -89,6 +89,21 @@
     opacity: var(--gml-hover-opacity);
 }
 
+/* Optional visual presets. The default inherit preset preserves the theme's
+   existing navigation appearance. */
+.gml-language-switcher.gml-appearance-outline .gml-dropdown-btn {
+    padding: 0.45em 0.7em;
+    border: 1px solid currentColor;
+    border-radius: 6px;
+}
+.gml-language-switcher.gml-appearance-solid .gml-dropdown-btn {
+    padding: 0.45em 0.7em;
+    border: 1px solid var(--gml-switcher-bg, #1d2327);
+    border-radius: 6px;
+    background: var(--gml-switcher-bg, #1d2327);
+    color: var(--gml-switcher-fg, #fff);
+}
+
 .gml-language-switcher .gml-dropdown-arrow {
     font-size: 0.7em;
     opacity: 0.65;
@@ -208,6 +223,13 @@ ul.gml-dropdown-menu.gml-dropdown-teleported,
     opacity: 1;
     font-weight: 600;
     border-width: 2px;
+}
+.gml-language-switcher.gml-appearance-solid .gml-lang-button {
+    border-color: var(--gml-switcher-bg, #1d2327);
+}
+.gml-language-switcher.gml-appearance-solid .gml-lang-button.gml-active {
+    background: var(--gml-switcher-bg, #1d2327);
+    color: var(--gml-switcher-fg, #fff);
 }
 
 /* ── Nav menu context — seamless integration ────────────── */

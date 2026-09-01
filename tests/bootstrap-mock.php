@@ -81,6 +81,7 @@ function home_url( $path = '' ) {
 	return $path === '' ? $base : $base . '/' . ltrim( $path, '/' );
 }
 function wp_parse_url( $url, $component = -1 ) { return parse_url( $url, $component ); }
+function trailingslashit( $value ) { return rtrim( (string) $value, '/\\' ) . '/'; }
 function untrailingslashit( $value ) { return rtrim( (string) $value, '/\\' ); }
 function wp_unslash( $value ) { return $value; }
 function wp_strip_all_tags( $value ) { return strip_tags( (string) $value ); }

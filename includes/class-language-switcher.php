@@ -194,7 +194,9 @@ class GML_Language_Switcher {
 
         // Pass data for link rewriting
         $languages_raw = get_option('gml_languages', []);
-        $lang_codes    = array_values(array_filter(array_column($languages_raw, 'code')));
+        $lang_codes    = class_exists( 'GML_Language_Utils' )
+            ? GML_Language_Utils::enabled_local_target_codes()
+            : array_values(array_filter(array_column($languages_raw, 'code')));
         $source_lang   = get_option('gml_source_lang', substr(get_locale(), 0, 2));
         if ( class_exists( 'GML_Language_Utils' ) ) {
             $lang_codes  = array_values( array_filter( array_map( [ 'GML_Language_Utils', 'normalize_code' ], $lang_codes ) ) );
@@ -225,6 +227,8 @@ class GML_Language_Switcher {
             'flag_type'    => null,
             'show_names'   => null,
             'use_fullname' => null,
+            'appearance'   => null,
+            'panel_alignment' => null,
             // legacy
             'style'        => null,
         ], $atts);
@@ -301,6 +305,8 @@ class GML_Language_Switcher {
         $saved_flag_type   = get_option('gml_switcher_flag_type', 'rectangle');
         $saved_show_names  = get_option('gml_switcher_show_names', true);
         $saved_use_fullname = get_option('gml_switcher_use_fullname', true);
+        $saved_appearance  = get_option('gml_switcher_appearance', 'inherit');
+        $saved_alignment   = get_option('gml_switcher_panel_alignment', 'auto');
 
         $defaults = [
             'is_dropdown'  => $saved_is_dropdown ? 'true' : 'false',
@@ -308,6 +314,8 @@ class GML_Language_Switcher {
             'flag_type'    => $saved_flag_type,
             'show_names'   => $saved_show_names  ? 'true' : 'false',
             'use_fullname' => $saved_use_fullname ? 'true' : 'false',
+            'appearance'   => $saved_appearance,
+            'panel_alignment' => $saved_alignment,
             // legacy compat
             'style'        => $saved_is_dropdown ? 'dropdown' : 'buttons',
         ];
@@ -320,6 +328,10 @@ class GML_Language_Switcher {
         $show_names   = filter_var($args['show_names'],   FILTER_VALIDATE_BOOLEAN);
         $use_fullname = filter_var($args['use_fullname'], FILTER_VALIDATE_BOOLEAN);
         $flag_type    = sanitize_text_field($args['flag_type']); // rectangle|circle|square|emoji
+        $appearance   = sanitize_key( $args['appearance'] );
+        if ( ! in_array( $appearance, [ 'inherit', 'outline', 'solid' ], true ) ) $appearance = 'inherit';
+        $panel_alignment = sanitize_key( $args['panel_alignment'] );
+        if ( ! in_array( $panel_alignment, [ 'auto', 'left', 'right' ], true ) ) $panel_alignment = 'auto';
 
         // Get source language
         $wp_locale   = get_locale();
@@ -443,6 +455,7 @@ class GML_Language_Switcher {
 
         ob_start();
         $wrapper_class = 'gml-language-switcher ' . ($is_dropdown ? 'gml-style-dropdown' : 'gml-style-buttons');
+        $wrapper_class .= ' gml-appearance-' . $appearance;
         if ( $menu_context ) {
             $wrapper_class .= ' gml-in-menu';
         }
@@ -455,7 +468,7 @@ class GML_Language_Switcher {
                 $cur_data  = $language_info[$current_lang] ?? ['name' => $current_lang, 'native' => strtoupper($current_lang), 'code_upper' => strtoupper($current_lang)];
                 $cur_label = $use_fullname ? $cur_data['native'] : $cur_data['code_upper'];
                 ?>
-                <button type="button" class="gml-dropdown-btn" aria-haspopup="listbox" aria-expanded="false">
+                <button type="button" class="gml-dropdown-btn" data-panel-align="<?php echo esc_attr( $panel_alignment ); ?>" aria-label="<?php echo esc_attr( $cur_data['native'] ); ?>" aria-haspopup="listbox" aria-expanded="false">
                     <?php if ($show_flags): echo $this->get_flag_html($current_lang, $flag_type, $cur_data['native'], $lang_countries[$current_lang] ?? ''); endif; ?>
                     <?php if ($show_names): ?><span class="gml-lang-label"><?php echo esc_html($cur_label); ?></span><?php endif; ?>
                     <span class="gml-dropdown-arrow">▼</span>
@@ -466,10 +479,13 @@ class GML_Language_Switcher {
                         if ( $lang === $current_lang ) continue;
                         $d     = $language_info[$lang] ?? ['name' => $lang, 'native' => strtoupper($lang), 'code_upper' => strtoupper($lang)];
                         $label = $use_fullname ? $d['native'] : $d['code_upper'];
-                        $url   = esc_url($language_urls[$lang] ?? '#');
+                        $raw_url = $language_urls[$lang] ?? '';
+                        if ( ! $raw_url ) continue;
+                        $url   = esc_url($raw_url);
+                        $external_class = class_exists( 'GML_Language_Utils' ) && GML_Language_Utils::is_external_language( $lang ) ? ' gml-external-language' : '';
                     ?>
                     <li role="option">
-                        <a href="<?php echo $url; ?>" class="gml-dropdown-item">
+                        <a href="<?php echo $url; ?>" class="gml-dropdown-item<?php echo esc_attr( $external_class ); ?>" hreflang="<?php echo esc_attr( $lang ); ?>">
                             <?php if ($show_flags): echo $this->get_flag_html($lang, $flag_type, $d['native'], $lang_countries[$lang] ?? ''); endif; ?>
                             <?php if ($show_names): ?><span class="gml-lang-label"><?php echo esc_html($label); ?></span><?php endif; ?>
                         </a>
@@ -483,10 +499,13 @@ class GML_Language_Switcher {
                 <?php foreach ($all_languages as $lang):
                     $d     = $language_info[$lang] ?? ['name' => $lang, 'native' => strtoupper($lang), 'code_upper' => strtoupper($lang)];
                     $label = $use_fullname ? $d['native'] : $d['code_upper'];
-                    $url   = esc_url($language_urls[$lang] ?? '#');
+                    $raw_url = $language_urls[$lang] ?? '';
+                    if ( ! $raw_url ) continue;
+                    $url   = esc_url($raw_url);
                     $active = $current_lang === $lang ? ' gml-active' : '';
+                    $external = class_exists( 'GML_Language_Utils' ) && GML_Language_Utils::is_external_language( $lang ) ? ' gml-external-language' : '';
                 ?>
-                <a href="<?php echo $url; ?>" class="gml-lang-button<?php echo $active; ?>">
+                <a href="<?php echo $url; ?>" class="gml-lang-button<?php echo esc_attr( $active . $external ); ?>" hreflang="<?php echo esc_attr( $lang ); ?>"<?php echo $active ? ' aria-current="page"' : ''; ?>>
                     <?php if ($show_flags): echo $this->get_flag_html($lang, $flag_type, $d['native'], $lang_countries[$lang] ?? ''); endif; ?>
                     <?php if ($show_names): ?><span class="gml-lang-label"><?php echo esc_html($label); ?></span><?php endif; ?>
                 </a>

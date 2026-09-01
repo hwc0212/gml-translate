@@ -1,14 +1,17 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.9\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.10\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
-"POT-Creation-Date: 2026-08-31 00:00+0000\n"
-"PO-Revision-Date: 2026-08-31 00:00+0000\n"
+"POT-Creation-Date: 2026-09-01 00:00+0000\n"
+"PO-Revision-Date: 2026-09-01 00:00+0000\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: GML Translate language pack builder\n"
+
+msgid "%d external language sites are shown in the language switcher and excluded from this AI queue."
+msgstr "%d external language sites are shown in the language switcher and excluded from this AI queue."
 
 msgid "%s are new since the last successful connection test."
 msgstr "%s are new since the last successful connection test."
@@ -85,6 +88,12 @@ msgstr "Advanced settings saved!"
 msgid "After Menu"
 msgstr "After Menu"
 
+msgid "Align left"
+msgstr "Align left"
+
+msgid "Align right"
+msgstr "Align right"
+
 msgid "All"
 msgstr "All"
 
@@ -93,6 +102,12 @@ msgstr "Alle Sprachen"
 
 msgid "Allow the queue and crawler to generate new translations"
 msgstr "Allow the queue and crawler to generate new translations"
+
+msgid "Always open the external homepage"
+msgstr "Always open the external homepage"
+
+msgid "Appearance"
+msgstr "Appearance"
 
 msgid "Appearance → Widgets"
 msgstr "Appearance → Widgets"
@@ -108,6 +123,9 @@ msgstr "Auto"
 
 msgid "Auto-Detect Language"
 msgstr "Auto-Detect Language"
+
+msgid "Automatic"
+msgstr "Automatic"
 
 msgid "Automatic Position"
 msgstr "Automatic Position"
@@ -141,6 +159,9 @@ msgstr "Choose a configured language."
 
 msgid "Choose the AI engine for translation."
 msgstr "Choose the AI engine for translation."
+
+msgid "Choose whether each language is translated on this WordPress site or linked to an independent website. External sites are excluded from local routing, crawling, and the AI translation queue. This plugin never writes content or settings to the remote website."
+msgstr "Choose whether each language is translated on this WordPress site or linked to an independent website. External sites are excluded from local routing, crawling, and the AI translation queue. This plugin never writes content or settings to the remote website."
 
 msgid "Circle"
 msgstr "Circle"
@@ -205,11 +226,17 @@ msgstr "Delete this translation?"
 msgid "Deleting a saved translation cannot be undone. Review individual records before deleting."
 msgstr "Deleting a saved translation cannot be undone. Review individual records before deleting."
 
+msgid "Delivery"
+msgstr "Delivery"
+
 msgid "Destination Languages"
 msgstr "Zielsprachen"
 
 msgid "Display language switcher"
 msgstr "Display language switcher"
+
+msgid "Dropdown Alignment"
+msgstr "Dropdown Alignment"
 
 msgid "Edit"
 msgstr "Bearbeiten"
@@ -228,6 +255,9 @@ msgstr "Enable the multilingual site after choosing your languages. An AI API ke
 
 msgid "Enable the multilingual site and configure AI Translation first."
 msgstr "Enable the multilingual site and configure AI Translation first."
+
+msgid "Enter a valid HTTPS URL on a different host for %s. Language routing was not changed."
+msgstr "Enter a valid HTTPS URL on a different host for %s. Language routing was not changed."
 
 msgid "Enter your API Key above and save settings"
 msgstr "Enter your API Key above and save settings"
@@ -261,6 +291,12 @@ msgstr "Ausschlussregeln"
 
 msgid "Exclusion rules saved!"
 msgstr "Exclusion rules saved!"
+
+msgid "External Site URL"
+msgstr "External Site URL"
+
+msgid "External domain or subdomain"
+msgstr "External domain or subdomain"
 
 msgid "FROM / TO"
 msgstr "FROM / TO"
@@ -325,6 +361,9 @@ msgstr "Glossary rules saved!"
 msgid "Go to"
 msgstr "Go to"
 
+msgid "HTTPS only. Configure the reciprocal language link on the other website."
+msgstr "HTTPS only. Configure the reciprocal language link on the other website."
+
 msgid "Header"
 msgstr "Header"
 
@@ -364,6 +403,9 @@ msgstr "Language"
 msgid "Language Button Design"
 msgstr "Language Button Design"
 
+msgid "Language Site Routing"
+msgstr "Language Site Routing"
+
 msgid "Language Switcher"
 msgstr "Sprachumschalter"
 
@@ -381,6 +423,9 @@ msgstr "Language order saved!"
 
 msgid "Language removed successfully!"
 msgstr "Language removed successfully!"
+
+msgid "Language site routing could not be saved. Check database writes and try again; the previous routing remains active."
+msgstr "Language site routing could not be saved. Check database writes and try again; the previous routing remains active."
 
 msgid "Language switcher settings saved!"
 msgstr "Language switcher settings saved!"
@@ -414,6 +459,9 @@ msgstr "Manage Translations"
 
 msgid "Manual"
 msgstr "Manual"
+
+msgid "Match the current path"
+msgstr "Match the current path"
 
 msgid "Model or API resource not found"
 msgstr "Model or API resource not found"
@@ -469,6 +517,9 @@ msgstr "Note: After adding glossary rules, clear the translation cache for affec
 msgid "On"
 msgstr "On"
 
+msgid "One external language site is shown in the language switcher and excluded from this AI queue."
+msgstr "One external language site is shown in the language switcher and excluded from this AI queue."
+
 msgid "Only redirects on the homepage. Returning visitors keep their chosen language via cookie. Bots/crawlers are never redirected."
 msgstr "Only redirects on the homepage. Returning visitors keep their chosen language via cookie. Bots/crawlers are never redirected."
 
@@ -502,6 +553,9 @@ msgstr "Other queue items and content scanning are on hold. The queue pauses aut
 msgid "Other translation error"
 msgstr "Other translation error"
 
+msgid "Outlined"
+msgstr "Outlined"
+
 msgid "Override CSS"
 msgstr "Override CSS"
 
@@ -516,6 +570,9 @@ msgstr "PROGRESS"
 
 msgid "Page %1$s of %2$s (%3$s total)"
 msgstr "Page %1$s of %2$s (%3$s total)"
+
+msgid "Page Mapping"
+msgstr "Page Mapping"
 
 msgid "Page cache refreshed. Saved translations and queue items were preserved."
 msgstr "Page cache refreshed. Saved translations and queue items were preserved."
@@ -703,6 +760,12 @@ msgstr "Schedule overdue"
 msgid "Scheduled"
 msgstr "Scheduled"
 
+msgid "Seamless (inherit theme)"
+msgstr "Seamless (inherit theme)"
+
+msgid "Seamless is best inside navigation menus. Outlined and Solid provide a clearer standalone control."
+msgstr "Seamless is best inside navigation menus. Outlined and Solid provide a clearer standalone control."
+
 msgid "Search translations..."
 msgstr "Übersetzungen suchen..."
 
@@ -732,6 +795,9 @@ msgstr "Show flag icons"
 
 msgid "Show language names"
 msgstr "Show language names"
+
+msgid "Solid"
+msgstr "Solid"
 
 msgid "Sorry, you are not allowed to access this page."
 msgstr "Sorry, you are not allowed to access this page."
@@ -832,6 +898,9 @@ msgstr "These are acknowledged historical records; they do not mean the provider
 msgid "These terms will never be translated. One per line. Brand names, product names, etc."
 msgstr "These terms will never be translated. One per line. Brand names, product names, etc."
 
+msgid "This WordPress site (subdirectory)"
+msgstr "This WordPress site (subdirectory)"
+
 msgid "This cache action is no longer available. No translations or queue items were deleted."
 msgstr "This cache action is no longer available. No translations or queue items were deleted."
 
@@ -927,6 +996,9 @@ msgstr "Unknown AI provider. Settings were not saved."
 
 msgid "Usage Methods"
 msgstr "Usage Methods"
+
+msgid "Use same path only when equivalent URLs exist on both sites. Homepage mode is omitted from inner-page hreflang."
+msgstr "Use same path only when equivalent URLs exist on both sites. Homepage mode is omitted from inner-page hreflang."
 
 msgid "Value"
 msgstr "Value"
