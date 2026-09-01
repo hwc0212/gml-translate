@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.8\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.9\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
 "POT-Creation-Date: 2026-08-31 00:00+0000\n"
 "PO-Revision-Date: 2026-08-31 00:00+0000\n"
@@ -44,7 +44,7 @@ msgid "AI unavailable"
 msgstr "AI 不可用"
 
 msgid "API Base URL"
-msgstr "API Base URL"
+msgstr "API 基础 URL"
 
 msgid "API Status:"
 msgstr "API Status:"
@@ -140,7 +140,7 @@ msgid "Choose a configured language."
 msgstr "请选择已配置的语言。"
 
 msgid "Choose the AI engine for translation."
-msgstr "Choose the AI engine for translation."
+msgstr "选择用于翻译的 AI 服务商。"
 
 msgid "Circle"
 msgstr "Circle"
@@ -308,7 +308,7 @@ msgid "Get your Gemini API Key from"
 msgstr "Get your Gemini API Key from"
 
 msgid "Get your key from"
-msgstr "Get your key from"
+msgstr "获取 API Key："
 
 msgid "Glossary"
 msgstr "术语表"
@@ -475,11 +475,23 @@ msgstr "Only redirects on the homepage. Returning visitors keep their chosen lan
 msgid "Only rendered page cache will be refreshed. Saved translations, manual edits and queue items will not be deleted."
 msgstr "仅刷新已生成的页面缓存，不删除已保存的译文、人工修改或翻译队列。"
 
+msgid "OpenAI API Key"
+msgstr "OpenAI API Key"
+
+msgid "OpenAI Model"
+msgstr "OpenAI 模型"
+
 msgid "Optional note"
 msgstr "Optional note"
 
 msgid "Optional. For security, only the official api.deepseek.com HTTPS host is accepted; leave empty to use the default endpoint."
 msgstr "Optional. For security, only the official api.deepseek.com HTTPS host is accepted; leave empty to use the default endpoint."
+
+msgid "Optional. Only the official api.openai.com HTTPS host is accepted."
+msgstr "Optional. Only the official api.openai.com HTTPS host is accepted."
+
+msgid "Optional. Only the official dashscope.aliyuncs.com HTTPS host is accepted."
+msgstr "Optional. Only the official dashscope.aliyuncs.com HTTPS host is accepted."
 
 msgid "Original Language"
 msgstr "源语言"
@@ -582,6 +594,12 @@ msgstr "队列状态"
 
 msgid "Quick Start Guide"
 msgstr "Quick Start Guide"
+
+msgid "Qwen API Key"
+msgstr "Qwen API Key"
+
+msgid "Qwen Model"
+msgstr "Qwen 模型"
 
 msgid "Rate limit or quota exceeded"
 msgstr "达到速率限制或额度上限"
@@ -787,8 +805,8 @@ msgstr "AI 服务商正在临时冷却。"
 msgid "The AI provider, model, or failed queue must be verified before more API calls are made."
 msgstr "The AI provider, model, or failed queue must be verified before more API calls are made."
 
-msgid "The DeepSeek API URL was rejected. Only the official HTTPS host is allowed; the default endpoint will be used."
-msgstr "The DeepSeek API URL was rejected. Only the official HTTPS host is allowed; the default endpoint will be used."
+msgid "The API URL was rejected. Only the selected provider official HTTPS host is allowed; the default endpoint will be used."
+msgstr "The API URL was rejected. Only the selected provider official HTTPS host is allowed; the default endpoint will be used."
 
 msgid "The current language of your website."
 msgstr "The current language of your website."

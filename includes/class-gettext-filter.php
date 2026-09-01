@@ -222,6 +222,9 @@ class GML_Gettext_Filter {
      * Check if a string is worth translating (not a URL, not pure punctuation, etc.)
      */
     private function is_translatable( $text ) {
+        if ( class_exists( 'GML_Translation_Text' ) && GML_Translation_Text::is_technical_only( $text ) ) {
+            return false;
+        }
         // Skip URLs
         if ( filter_var( $text, FILTER_VALIDATE_URL ) ) {
             return false;

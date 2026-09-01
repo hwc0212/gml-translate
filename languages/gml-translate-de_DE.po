@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.8\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.9\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
 "POT-Creation-Date: 2026-08-31 00:00+0000\n"
 "PO-Revision-Date: 2026-08-31 00:00+0000\n"
@@ -475,11 +475,23 @@ msgstr "Only redirects on the homepage. Returning visitors keep their chosen lan
 msgid "Only rendered page cache will be refreshed. Saved translations, manual edits and queue items will not be deleted."
 msgstr "Only rendered page cache will be refreshed. Saved translations, manual edits and queue items will not be deleted."
 
+msgid "OpenAI API Key"
+msgstr "OpenAI API Key"
+
+msgid "OpenAI Model"
+msgstr "OpenAI Model"
+
 msgid "Optional note"
 msgstr "Optional note"
 
 msgid "Optional. For security, only the official api.deepseek.com HTTPS host is accepted; leave empty to use the default endpoint."
 msgstr "Optional. For security, only the official api.deepseek.com HTTPS host is accepted; leave empty to use the default endpoint."
+
+msgid "Optional. Only the official api.openai.com HTTPS host is accepted."
+msgstr "Optional. Only the official api.openai.com HTTPS host is accepted."
+
+msgid "Optional. Only the official dashscope.aliyuncs.com HTTPS host is accepted."
+msgstr "Optional. Only the official dashscope.aliyuncs.com HTTPS host is accepted."
 
 msgid "Original Language"
 msgstr "Ausgangssprache"
@@ -582,6 +594,12 @@ msgstr "Queue Status"
 
 msgid "Quick Start Guide"
 msgstr "Quick Start Guide"
+
+msgid "Qwen API Key"
+msgstr "Qwen API Key"
+
+msgid "Qwen Model"
+msgstr "Qwen Model"
 
 msgid "Rate limit or quota exceeded"
 msgstr "Rate limit or quota exceeded"
@@ -787,8 +805,8 @@ msgstr "The AI provider is cooling down temporarily."
 msgid "The AI provider, model, or failed queue must be verified before more API calls are made."
 msgstr "The AI provider, model, or failed queue must be verified before more API calls are made."
 
-msgid "The DeepSeek API URL was rejected. Only the official HTTPS host is allowed; the default endpoint will be used."
-msgstr "The DeepSeek API URL was rejected. Only the official HTTPS host is allowed; the default endpoint will be used."
+msgid "The API URL was rejected. Only the selected provider official HTTPS host is allowed; the default endpoint will be used."
+msgstr "The API URL was rejected. Only the selected provider official HTTPS host is allowed; the default endpoint will be used."
 
 msgid "The current language of your website."
 msgstr "The current language of your website."

@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.8\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.9\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
 "POT-Creation-Date: 2026-08-31 00:00+0000\n"
 "PO-Revision-Date: 2026-08-31 00:00+0000\n"
@@ -475,10 +475,22 @@ msgstr ""
 msgid "Only rendered page cache will be refreshed. Saved translations, manual edits and queue items will not be deleted."
 msgstr ""
 
+msgid "OpenAI API Key"
+msgstr ""
+
+msgid "OpenAI Model"
+msgstr ""
+
 msgid "Optional note"
 msgstr ""
 
 msgid "Optional. For security, only the official api.deepseek.com HTTPS host is accepted; leave empty to use the default endpoint."
+msgstr ""
+
+msgid "Optional. Only the official api.openai.com HTTPS host is accepted."
+msgstr ""
+
+msgid "Optional. Only the official dashscope.aliyuncs.com HTTPS host is accepted."
 msgstr ""
 
 msgid "Original Language"
@@ -581,6 +593,12 @@ msgid "Queue Status"
 msgstr ""
 
 msgid "Quick Start Guide"
+msgstr ""
+
+msgid "Qwen API Key"
+msgstr ""
+
+msgid "Qwen Model"
 msgstr ""
 
 msgid "Rate limit or quota exceeded"
@@ -787,7 +805,7 @@ msgstr ""
 msgid "The AI provider, model, or failed queue must be verified before more API calls are made."
 msgstr ""
 
-msgid "The DeepSeek API URL was rejected. Only the official HTTPS host is allowed; the default endpoint will be used."
+msgid "The API URL was rejected. Only the selected provider official HTTPS host is allowed; the default endpoint will be used."
 msgstr ""
 
 msgid "The current language of your website."

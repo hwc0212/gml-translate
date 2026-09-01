@@ -2,6 +2,17 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.9] - 2026-09-01
+
+### 增量同步与 Provider 对齐候选版
+
+- Core 0.4.11 在已发布页面、文章、产品等公开内容保存后记录增量扫描；保存请求不调用 AI，后台 Cron 只发现新 `source_hash`，不解除全局或语言暂停，并保留旧译文供回滚和 Translation Memory 复用。
+- 独立版与 GML SEO 对齐为 Google Gemini、DeepSeek、Qwen、OpenAI 四家 Provider；每家使用独立加密凭据、模型和官方 HTTPS 端点，不交叉复用 Key。
+- 同一批次先去重相同文本，只向 prompt 加入当前文本实际命中的术语表和保护词，并按正文、SEO 标题、SEO 描述限制输出预算；不减少翻译上下文或人工编辑能力。
+- `<40°C`、`<70%`、`90*45*30mm` 等纯技术值不再调用 AI，直接按原值保存；普通说明句仍正常翻译，清理和 Translation Memory 读取不再把比较符误当 HTML。
+- 单批输入上限降至 24 KiB，维持顺序、语言轮转、熔断和失败小样本边界；不改数据库表、旧 options、URL、人工译文或暂停状态。
+- 增加 WordPress 7.1 / MariaDB 10.11 的四 Provider、token 去重、技术参数和源内容增量同步回归；测试 HTTP 全部为模拟请求。
+
 ## [2.11.1-rc.8] - 2026-09-01
 
 ### 翻译失败恢复候选版

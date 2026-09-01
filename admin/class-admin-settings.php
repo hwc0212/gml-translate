@@ -188,8 +188,12 @@ class GML_Admin_Settings {
         $current_engine     = get_option('gml_translation_engine', 'gemini');
         $api_key_status     = GML_Translation_Credentials::status( 'gemini' );
         $deepseek_key_status = GML_Translation_Credentials::status( 'deepseek' );
+        $qwen_key_status    = GML_Translation_Credentials::status( 'qwen' );
+        $openai_key_status  = GML_Translation_Credentials::status( 'openai' );
         $api_key_set        = $api_key_status !== 'missing';
         $deepseek_key_set   = $deepseek_key_status !== 'missing';
+        $qwen_key_set       = $qwen_key_status !== 'missing';
+        $openai_key_set     = $openai_key_status !== 'missing';
         $multilingual_on    = GML_Translation_State::multilingual_enabled();
         $ai_translation_on  = GML_Translation_State::ai_translation_enabled();
         $wp_locale          = get_locale();
@@ -231,11 +235,13 @@ class GML_Admin_Settings {
                         <select id="gml_translation_engine" name="gml_translation_engine" style="min-width:200px;">
                             <option value="gemini" <?php selected($current_engine, 'gemini'); ?>>Google Gemini</option>
                             <option value="deepseek" <?php selected($current_engine, 'deepseek'); ?>>DeepSeek</option>
+                            <option value="qwen" <?php selected($current_engine, 'qwen'); ?>>Qwen</option>
+                            <option value="openai" <?php selected($current_engine, 'openai'); ?>>OpenAI</option>
                         </select>
                         <p class="description"><?php _e('Choose the AI engine for translation.', 'gml-translate'); ?></p>
                     </td>
                 </tr>
-                <tr class="gml-engine-gemini" <?php echo $current_engine !== 'gemini' ? 'style="display:none;"' : ''; ?>>
+                <tr class="gml-provider-row gml-engine-gemini" <?php echo $current_engine !== 'gemini' ? 'style="display:none;"' : ''; ?>>
                     <th><label for="gml_api_key"><?php _e('Gemini API Key', 'gml-translate'); ?></label></th>
                     <td>
                         <input type="password" id="gml_api_key" name="gml_api_key" class="regular-text" autocomplete="new-password"
@@ -252,7 +258,7 @@ class GML_Admin_Settings {
                         <?php endif; ?>
                     </td>
                 </tr>
-                <tr class="gml-engine-deepseek" <?php echo $current_engine !== 'deepseek' ? 'style="display:none;"' : ''; ?>>
+                <tr class="gml-provider-row gml-engine-deepseek" <?php echo $current_engine !== 'deepseek' ? 'style="display:none;"' : ''; ?>>
                     <th><label for="gml_deepseek_api_key"><?php _e('DeepSeek API Key', 'gml-translate'); ?></label></th>
                     <td>
                         <input type="password" id="gml_deepseek_api_key" name="gml_deepseek_api_key" class="regular-text" autocomplete="new-password"
@@ -269,7 +275,7 @@ class GML_Admin_Settings {
                         <?php endif; ?>
                     </td>
                 </tr>
-                <tr class="gml-engine-deepseek" <?php echo $current_engine !== 'deepseek' ? 'style="display:none;"' : ''; ?>>
+                <tr class="gml-provider-row gml-engine-deepseek" <?php echo $current_engine !== 'deepseek' ? 'style="display:none;"' : ''; ?>>
                     <th><label for="gml_deepseek_model"><?php _e('DeepSeek Model', 'gml-translate'); ?></label></th>
                     <td>
                         <input type="text" id="gml_deepseek_model" name="gml_deepseek_model" class="regular-text"
@@ -278,13 +284,71 @@ class GML_Admin_Settings {
                         <p class="description"><?php _e('Default: deepseek-chat. You can also use deepseek-reasoner.', 'gml-translate'); ?></p>
                     </td>
                 </tr>
-                <tr class="gml-engine-deepseek" <?php echo $current_engine !== 'deepseek' ? 'style="display:none;"' : ''; ?>>
+                <tr class="gml-provider-row gml-engine-deepseek" <?php echo $current_engine !== 'deepseek' ? 'style="display:none;"' : ''; ?>>
                     <th><label for="gml_deepseek_api_base"><?php _e('API Base URL', 'gml-translate'); ?></label></th>
                     <td>
                         <input type="text" id="gml_deepseek_api_base" name="gml_deepseek_api_base" class="regular-text"
                                value="<?php echo esc_attr(get_option('gml_deepseek_api_base', '')); ?>"
                                placeholder="https://api.deepseek.com/v1" />
                         <p class="description"><?php _e('Optional. For security, only the official api.deepseek.com HTTPS host is accepted; leave empty to use the default endpoint.', 'gml-translate'); ?></p>
+                    </td>
+                </tr>
+                <tr class="gml-provider-row gml-engine-qwen" <?php echo $current_engine !== 'qwen' ? 'style="display:none;"' : ''; ?>>
+                    <th><label for="gml_qwen_api_key"><?php _e('Qwen API Key', 'gml-translate'); ?></label></th>
+                    <td>
+                        <input type="password" id="gml_qwen_api_key" name="gml_qwen_api_key" class="regular-text" autocomplete="new-password"
+                               value="" placeholder="<?php echo $qwen_key_set ? esc_attr__( 'Saved. Leave blank to keep unchanged.', 'gml-translate' ) : ''; ?>" />
+                        <?php if ($qwen_key_status === 'unreadable'): ?>
+                            <p class="description" style="color:#d63638;"><?php echo esc_html( GML_Translation_Credentials::error_message() ); ?></p>
+                        <?php elseif ($qwen_key_set): ?>
+                            <p class="description"><?php _e('Stored and readable. This is not a connection check.', 'gml-translate'); ?></p>
+                        <?php else: ?>
+                            <p class="description"><?php _e('Get your key from', 'gml-translate'); ?> <a href="https://bailian.console.aliyun.com/" target="_blank" rel="noopener noreferrer">Alibaba Cloud Model Studio</a>.</p>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+                <tr class="gml-provider-row gml-engine-qwen" <?php echo $current_engine !== 'qwen' ? 'style="display:none;"' : ''; ?>>
+                    <th><label for="gml_qwen_model"><?php _e('Qwen Model', 'gml-translate'); ?></label></th>
+                    <td>
+                        <input type="text" id="gml_qwen_model" name="gml_qwen_model" class="regular-text"
+                               value="<?php echo esc_attr(get_option('gml_qwen_model', GML_Gemini_API::QWEN_MODEL)); ?>" placeholder="qwen-plus" />
+                    </td>
+                </tr>
+                <tr class="gml-provider-row gml-engine-qwen" <?php echo $current_engine !== 'qwen' ? 'style="display:none;"' : ''; ?>>
+                    <th><label for="gml_qwen_api_base"><?php _e('API Base URL', 'gml-translate'); ?></label></th>
+                    <td>
+                        <input type="text" id="gml_qwen_api_base" name="gml_qwen_api_base" class="regular-text"
+                               value="<?php echo esc_attr(get_option('gml_qwen_api_base', '')); ?>" placeholder="https://dashscope.aliyuncs.com/compatible-mode/v1" />
+                        <p class="description"><?php _e('Optional. Only the official dashscope.aliyuncs.com HTTPS host is accepted.', 'gml-translate'); ?></p>
+                    </td>
+                </tr>
+                <tr class="gml-provider-row gml-engine-openai" <?php echo $current_engine !== 'openai' ? 'style="display:none;"' : ''; ?>>
+                    <th><label for="gml_openai_api_key"><?php _e('OpenAI API Key', 'gml-translate'); ?></label></th>
+                    <td>
+                        <input type="password" id="gml_openai_api_key" name="gml_openai_api_key" class="regular-text" autocomplete="new-password"
+                               value="" placeholder="<?php echo $openai_key_set ? esc_attr__( 'Saved. Leave blank to keep unchanged.', 'gml-translate' ) : ''; ?>" />
+                        <?php if ($openai_key_status === 'unreadable'): ?>
+                            <p class="description" style="color:#d63638;"><?php echo esc_html( GML_Translation_Credentials::error_message() ); ?></p>
+                        <?php elseif ($openai_key_set): ?>
+                            <p class="description"><?php _e('Stored and readable. This is not a connection check.', 'gml-translate'); ?></p>
+                        <?php else: ?>
+                            <p class="description"><?php _e('Get your key from', 'gml-translate'); ?> <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">OpenAI Platform</a>.</p>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+                <tr class="gml-provider-row gml-engine-openai" <?php echo $current_engine !== 'openai' ? 'style="display:none;"' : ''; ?>>
+                    <th><label for="gml_openai_model"><?php _e('OpenAI Model', 'gml-translate'); ?></label></th>
+                    <td>
+                        <input type="text" id="gml_openai_model" name="gml_openai_model" class="regular-text"
+                               value="<?php echo esc_attr(get_option('gml_openai_model', GML_Gemini_API::OPENAI_MODEL)); ?>" placeholder="gpt-4o-mini" />
+                    </td>
+                </tr>
+                <tr class="gml-provider-row gml-engine-openai" <?php echo $current_engine !== 'openai' ? 'style="display:none;"' : ''; ?>>
+                    <th><label for="gml_openai_api_base"><?php _e('API Base URL', 'gml-translate'); ?></label></th>
+                    <td>
+                        <input type="text" id="gml_openai_api_base" name="gml_openai_api_base" class="regular-text"
+                               value="<?php echo esc_attr(get_option('gml_openai_api_base', '')); ?>" placeholder="https://api.openai.com/v1" />
+                        <p class="description"><?php _e('Optional. Only the official api.openai.com HTTPS host is accepted.', 'gml-translate'); ?></p>
                     </td>
                 </tr>
                 <tr>
@@ -491,11 +555,11 @@ class GML_Admin_Settings {
                 form.append('<input type="hidden" name="lang_code" value="' + langCode + '">');
                 $('body').append(form); form.submit();
             });
-            // Engine toggle: show/hide Gemini vs DeepSeek fields
+            // Show only the selected provider's credentials and model fields.
             $('#gml_translation_engine').on('change', function() {
                 var engine = $(this).val();
-                $('.gml-engine-gemini').toggle(engine === 'gemini');
-                $('.gml-engine-deepseek').toggle(engine === 'deepseek');
+                $('.gml-provider-row').hide();
+                $('.gml-engine-' + engine).show();
             });
         });
         </script>
@@ -962,7 +1026,7 @@ class GML_Admin_Settings {
                             </tr></thead>
                             <tbody>
                             <?php foreach ( $failure_details as $failure ) :
-                                $preview = wp_html_excerpt( wp_strip_all_tags( (string) $failure->source_text ), 120, '...' );
+                                $preview = wp_html_excerpt( (string) $failure->source_text, 120, '...' );
                                 $recorded = $failure->processed_at ?: $failure->created_at;
                             ?>
                                 <tr>
@@ -1474,7 +1538,7 @@ class GML_Admin_Settings {
 
         $previous_engine = get_option( 'gml_translation_engine', 'gemini' );
         $engine = sanitize_key( wp_unslash( $_POST['gml_translation_engine'] ?? 'gemini' ) );
-        if ( ! in_array( $engine, [ 'gemini', 'deepseek' ], true ) ) {
+        if ( ! in_array( $engine, GML_Gemini_API::supported_engines(), true ) ) {
             add_settings_error( 'gml_messages', 'gml_engine_invalid', __( 'Unknown AI provider. Settings were not saved.', 'gml-translate' ), 'error' );
             return;
         }
@@ -1487,25 +1551,35 @@ class GML_Admin_Settings {
         $api_key_updated = false;
         $save_failed = false;
 
-        if ($engine === 'deepseek') {
-            // Save DeepSeek model and API base FIRST (needed for key validation)
-            $model = sanitize_text_field($_POST['gml_deepseek_model'] ?? 'deepseek-chat');
-            if (!empty($model)) {
-                update_option('gml_deepseek_model', $model);
-            }
-            $submitted_api_base = trim( (string) ( $_POST['gml_deepseek_api_base'] ?? '' ) );
-            $api_base = GML_Gemini_API::secure_base_url( $submitted_api_base, GML_Gemini_API::DEEPSEEK_API_BASE );
-            if ( $submitted_api_base !== '' && untrailingslashit( $submitted_api_base ) === $api_base ) {
-                update_option('gml_deepseek_api_base', $api_base, false);
-            } elseif ( $submitted_api_base !== '' ) {
-                add_settings_error('gml_messages', 'gml_api_base_invalid', __('The DeepSeek API URL was rejected. Only the official HTTPS host is allowed; the default endpoint will be used.', 'gml-translate'), 'error');
-                delete_option('gml_deepseek_api_base');
+        $provider_options = [
+            'deepseek' => [ 'model_field' => 'gml_deepseek_model', 'model_option' => 'gml_deepseek_model', 'model_default' => GML_Gemini_API::DEEPSEEK_MODEL, 'base_field' => 'gml_deepseek_api_base', 'base_option' => 'gml_deepseek_api_base', 'base_default' => GML_Gemini_API::DEEPSEEK_API_BASE ],
+            'qwen'     => [ 'model_field' => 'gml_qwen_model', 'model_option' => 'gml_qwen_model', 'model_default' => GML_Gemini_API::QWEN_MODEL, 'base_field' => 'gml_qwen_api_base', 'base_option' => 'gml_qwen_api_base', 'base_default' => GML_Gemini_API::QWEN_API_BASE ],
+            'openai'   => [ 'model_field' => 'gml_openai_model', 'model_option' => 'gml_openai_model', 'model_default' => GML_Gemini_API::OPENAI_MODEL, 'base_field' => 'gml_openai_api_base', 'base_option' => 'gml_openai_api_base', 'base_default' => GML_Gemini_API::OPENAI_API_BASE ],
+        ];
+        if ( isset( $provider_options[ $engine ] ) ) {
+            $provider = $provider_options[ $engine ];
+            $model = sanitize_text_field( wp_unslash( $_POST[ $provider['model_field'] ] ?? $provider['model_default'] ) );
+            update_option( $provider['model_option'], $model !== '' ? $model : $provider['model_default'], false );
+
+            $submitted_api_base = trim( (string) wp_unslash( $_POST[ $provider['base_field'] ] ?? '' ) );
+            $api_base = GML_Gemini_API::secure_base_url( $submitted_api_base, $provider['base_default'] );
+            if ( $submitted_api_base === '' ) {
+                delete_option( $provider['base_option'] );
+            } elseif ( untrailingslashit( $submitted_api_base ) === $api_base ) {
+                update_option( $provider['base_option'], $api_base, false );
             } else {
-                delete_option('gml_deepseek_api_base');
+                add_settings_error( 'gml_messages', 'gml_api_base_invalid', __( 'The API URL was rejected. Only the selected provider official HTTPS host is allowed; the default endpoint will be used.', 'gml-translate' ), 'error' );
+                delete_option( $provider['base_option'] );
             }
         }
 
-        $field = $engine === 'deepseek' ? 'gml_deepseek_api_key' : 'gml_api_key';
+        $key_fields = [
+            'gemini' => 'gml_api_key',
+            'deepseek' => 'gml_deepseek_api_key',
+            'qwen' => 'gml_qwen_api_key',
+            'openai' => 'gml_openai_api_key',
+        ];
+        $field = $key_fields[ $engine ];
         $submitted = $_POST[ $field ] ?? '';
         $api_key = is_string( $submitted ) ? trim( wp_unslash( $submitted ) ) : '';
         // Accept old, already-open forms without ever storing their mask as a key.

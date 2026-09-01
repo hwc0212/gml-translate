@@ -82,6 +82,13 @@ $translations = [
 ];
 
 $controls_zh = [
+	'Qwen API Key' => 'Qwen API Key',
+	'Qwen Model' => 'Qwen 模型',
+	'OpenAI API Key' => 'OpenAI API Key',
+	'OpenAI Model' => 'OpenAI 模型',
+	'API Base URL' => 'API 基础 URL',
+	'Choose the AI engine for translation.' => '选择用于翻译的 AI 服务商。',
+	'Get your key from' => '获取 API Key：',
     'Confirm Page Cache Refresh' => '确认刷新页面缓存',
     'Only rendered page cache will be refreshed. Saved translations, manual edits and queue items will not be deleted.' => '仅刷新已生成的页面缓存，不删除已保存的译文、人工修改或翻译队列。',
     'Type REFRESH to confirm' => '输入 REFRESH 确认',
@@ -247,7 +254,7 @@ function extract_i18n_strings( $root ) {
 
 function header_text( $locale ) {
     return implode( "\n", [
-        'Project-Id-Version: GML Translate 2.11.1-rc.8',
+        'Project-Id-Version: GML Translate 2.11.1-rc.9',
         'Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues',
         'POT-Creation-Date: 2026-08-31 00:00+0000',
         'PO-Revision-Date: 2026-08-31 00:00+0000',

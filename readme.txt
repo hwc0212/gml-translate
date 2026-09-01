@@ -4,7 +4,7 @@ Tags: translate, multilingual, ai, hreflang, language switcher
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.11.1-rc.8
+Stable tag: 2.11.1-rc.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,7 +19,7 @@ Multilingual Site and AI Translation are separate states. Removing a provider ke
 = Features =
 
 * Language-prefixed WordPress routes and subdirectory-safe URL handling.
-* Google Gemini and DeepSeek translation providers.
+* Google Gemini, DeepSeek, Qwen, and OpenAI translation providers.
 * Bounded, resumable queue with locks, failure states, circuit breaking, and per-language manual recovery.
 * Translation memory, current-page lookups, manual translation editor, glossary, protected terms, and exclusion rules.
 * Content crawler that runs only in admin/WP-Cron and uses signed same-site requests.
@@ -43,7 +43,7 @@ When both are active, GML Translate keeps the multilingual runtime until an admi
 1. Upload and activate GML Translate.
 2. Select source and destination languages.
 3. Enable Multilingual Site and verify language routes before using AI.
-4. Save a Gemini or DeepSeek key, then enable AI Translation if new translations are needed.
+4. Save a key for Gemini, DeepSeek, Qwen, or OpenAI, then enable AI Translation if new translations are needed.
 5. Translate one language and a small page sample first.
 6. Review glossary, links, layout, forms, canonical, hreflang, and sitemap before crawling the full site.
 
@@ -66,6 +66,12 @@ Yes. Manual translations are stored separately and take priority over normal aut
 No. It provides only the minimum multilingual SEO output. Use GML AI SEO or another single SEO authority for complete SEO management.
 
 == Changelog ==
+
+= 2.11.1-rc.9 =
+* Tracks published source changes incrementally without starting AI or resuming a paused queue.
+* Adds Qwen and OpenAI alongside Gemini and DeepSeek with separate encrypted credentials.
+* Reduces token use through duplicate removal and relevant-only glossary and protected-term context.
+* Preserves and locally reuses technical-only values such as comparison limits and dimensions.
 
 = 2.11.1-rc.8 =
 * Classifies historical and current translation failures without changing existing tables.

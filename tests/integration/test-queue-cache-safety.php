@@ -51,6 +51,6 @@ $translator_source = file_get_contents( GML_PLUGIN_DIR . 'includes/vendor/gml-tr
 gml_test_assert( strpos( $translator_source, 'load_dictionary_for_hashes' ) !== false, 'frontend loads only translation hashes used by the current page' );
 gml_test_assert( strpos( $translator_source, 'wp_cache_set( $cache_key, $dictionary' ) === false, 'full language dictionaries are not stored in persistent object cache' );
 gml_test_assert( GML_Translator::MAX_SOURCE_BYTES === 32768, 'individual source segments are bounded before queue insertion' );
-gml_test_assert( GML_Queue_Processor::MAX_BATCH_INPUT_BYTES === 131072, 'each provider batch has a total input byte limit' );
+gml_test_assert( GML_Queue_Processor::MAX_BATCH_INPUT_BYTES === 24576, 'each provider batch stays within the translation output budget' );
 
 echo "OK test-queue-cache-safety\n";

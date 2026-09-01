@@ -3,7 +3,7 @@
  * Plugin Name: GML Translate
  * Plugin URI: https://huwencai.com/gml-translate
  * Description: AI multilingual translation for WordPress with stable language URLs, editable translations, glossary, queue controls, hreflang, and sitemap integration.
- * Version: 2.11.1-rc.8
+ * Version: 2.11.1-rc.9
  * Author: huwencai.com
  * Author URI: https://huwencai.com
  * License: GPL v2 or later
@@ -32,7 +32,7 @@ if ( defined( 'GML_TRANSLATION_HOST' ) && GML_TRANSLATION_HOST !== 'standalone' 
 }
 
 // Define plugin constants
-define('GML_VERSION', '2.11.1-rc.8');
+define('GML_VERSION', '2.11.1-rc.9');
 define('GML_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GML_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GML_PLUGIN_FILE', __FILE__);
@@ -137,7 +137,9 @@ class GML_Translate {
         // Only a permitted admin request may perform bounded database setup.
         GML_Installer::register_hooks();
 
-        // Cron context: only explicitly enabled background workers are needed.
+        // Cron context: only background workers are needed. The crawler remains
+        // registered while multilingual output is enabled so incremental source
+        // changes can be discovered even when a full crawl is not running.
         // Skip all frontend components (Output Buffer, SEO Router, SEO Hreflang,
         // Language Switcher) to avoid unnecessary work and reduce the surface area
         // that triggers third-party plugin hooks (e.g. Elementor Pro Notes module).
@@ -145,7 +147,7 @@ class GML_Translate {
             if ( GML_Translation_State::work_enabled() ) {
                 new GML_Queue_Processor();
             }
-            if ( GML_Translation_State::multilingual_enabled() && GML_Translation_State::ai_available() && get_option( 'gml_crawl_running', false ) ) {
+            if ( GML_Translation_State::multilingual_enabled() ) {
                 new GML_Content_Crawler();
             }
             return;
@@ -168,6 +170,11 @@ class GML_Translate {
             }
             return;
         }
+
+        // This is a lightweight save/cron listener. Saving source content only
+        // records a dirty object; discovery happens asynchronously and never
+        // starts AI work or resumes a paused translation queue.
+        new GML_Content_Crawler();
 
         // Nav menu switcher — needed in admin (meta box) and frontend (rendering)
         new GML_Nav_Menu_Switcher();
@@ -201,9 +208,6 @@ class GML_Translate {
         // credentials are removed, quota is exhausted, or AI is switched off.
         if ( GML_Translation_State::work_enabled() ) {
             new GML_Queue_Processor();
-        }
-        if ( GML_Translation_State::ai_available() && get_option( 'gml_crawl_running', false ) ) {
-            new GML_Content_Crawler();
         }
     }
     

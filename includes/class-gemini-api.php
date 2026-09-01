@@ -17,47 +17,86 @@ class GML_Gemini_API extends GML_Translation_AI_Client {
     const API_BASE = 'https://generativelanguage.googleapis.com/v1beta';
     const DEEPSEEK_API_BASE = 'https://api.deepseek.com/v1';
     const DEEPSEEK_MODEL = 'deepseek-chat';
+    const QWEN_API_BASE = 'https://dashscope.aliyuncs.com/compatible-mode/v1';
+    const QWEN_MODEL = 'qwen-plus';
+    const OPENAI_API_BASE = 'https://api.openai.com/v1';
+    const OPENAI_MODEL = 'gpt-4o-mini';
 
     const ENGINE_GEMINI = 'gemini';
     const ENGINE_DEEPSEEK = 'deepseek';
+    const ENGINE_QWEN = 'qwen';
+    const ENGINE_OPENAI = 'openai';
 
     public function __construct( array $override = [] ) {
         $engine = sanitize_key( $override['engine'] ?? get_option( 'gml_translation_engine', self::ENGINE_GEMINI ) );
-        if ( ! in_array( $engine, [ self::ENGINE_GEMINI, self::ENGINE_DEEPSEEK ], true ) ) {
+        if ( ! in_array( $engine, self::supported_engines(), true ) ) {
             $engine = self::ENGINE_GEMINI;
         }
 
-        $api_key = array_key_exists( 'api_key', $override )
-            ? (string) $override['api_key']
-            : self::stored_api_key( $engine );
-
-        if ( $engine === self::ENGINE_DEEPSEEK ) {
-            $model    = sanitize_text_field( $override['model'] ?? get_option( 'gml_deepseek_model', self::DEEPSEEK_MODEL ) );
-            $base_url = self::secure_base_url(
-                $override['base_url'] ?? get_option( 'gml_deepseek_api_base', self::DEEPSEEK_API_BASE ),
-                self::DEEPSEEK_API_BASE
-            );
-            $style = self::STYLE_OPENAI;
-        } else {
-            $model    = sanitize_text_field( $override['model'] ?? get_option( 'gml_api_model', self::DEFAULT_MODEL ) );
-            $base_url = self::API_BASE;
-            $style    = self::STYLE_GEMINI;
-        }
-
-        $host = wp_parse_url( $base_url, PHP_URL_HOST );
-        parent::__construct( [
+        parent::__construct( self::provider_config( $engine, $override ) + [
             'engine'          => $engine,
-            'api_key'         => $api_key,
-            'credential_error' => ! array_key_exists( 'api_key', $override ) && GML_Translation_Credentials::status( $engine ) === 'unreadable',
-            'model'           => $model,
-            'label'           => self::get_engine_label( $engine ),
-            'style'           => $style,
-            'base_url'        => $base_url,
-            'allowed_hosts'   => $host ? [ $host ] : [],
             'protected_terms' => get_option( 'gml_protected_terms', [ 'GML', 'WordPress', 'WooCommerce', 'Gemini' ] ),
             'site_name'       => get_bloginfo( 'name' ),
             'tone'            => get_option( 'gml_tone', 'professional and friendly' ),
         ] );
+    }
+
+    public static function supported_engines() {
+        return [ self::ENGINE_GEMINI, self::ENGINE_DEEPSEEK, self::ENGINE_QWEN, self::ENGINE_OPENAI ];
+    }
+
+    private static function provider_config( $engine, array $override ) {
+        $definitions = [
+            self::ENGINE_GEMINI => [
+                'label' => 'Google Gemini', 'style' => self::STYLE_GEMINI,
+                'model_option' => 'gml_api_model', 'model' => self::DEFAULT_MODEL,
+                'base_option' => '', 'base_url' => self::API_BASE,
+            ],
+            self::ENGINE_DEEPSEEK => [
+                'label' => 'DeepSeek', 'style' => self::STYLE_OPENAI,
+                'model_option' => 'gml_deepseek_model', 'model' => self::DEEPSEEK_MODEL,
+                'base_option' => 'gml_deepseek_api_base', 'base_url' => self::DEEPSEEK_API_BASE,
+            ],
+            self::ENGINE_QWEN => [
+                'label' => 'Qwen', 'style' => self::STYLE_OPENAI,
+                'model_option' => 'gml_qwen_model', 'model' => self::QWEN_MODEL,
+                'base_option' => 'gml_qwen_api_base', 'base_url' => self::QWEN_API_BASE,
+            ],
+            self::ENGINE_OPENAI => [
+                'label' => 'OpenAI', 'style' => self::STYLE_OPENAI,
+                'model_option' => 'gml_openai_model', 'model' => self::OPENAI_MODEL,
+                'base_option' => 'gml_openai_api_base', 'base_url' => self::OPENAI_API_BASE,
+            ],
+        ];
+        $definition = $definitions[ $engine ];
+        $api_key = array_key_exists( 'api_key', $override )
+            ? (string) $override['api_key']
+            : self::stored_api_key( $engine );
+        $model = sanitize_text_field( $override['model'] ?? get_option( $definition['model_option'], $definition['model'] ) );
+        $base_url = $definition['base_url'];
+        if ( $definition['base_option'] !== '' ) {
+            $base_url = self::secure_base_url(
+                $override['base_url'] ?? get_option( $definition['base_option'], $definition['base_url'] ),
+                $definition['base_url']
+            );
+            if ( $engine === self::ENGINE_DEEPSEEK && ! preg_match( '#/v1$#', $base_url ) ) {
+                $base_url .= '/v1';
+            } elseif ( $engine === self::ENGINE_QWEN && ! preg_match( '#/compatible-mode/v1$#', $base_url ) ) {
+                $base_url = preg_replace( '#/(?:compatible-mode)?$#', '', $base_url ) . '/compatible-mode/v1';
+            } elseif ( $engine === self::ENGINE_OPENAI && ! preg_match( '#/v1$#', $base_url ) ) {
+                $base_url .= '/v1';
+            }
+        }
+        $host = wp_parse_url( $base_url, PHP_URL_HOST );
+        return [
+            'api_key'         => $api_key,
+            'credential_error'=> ! array_key_exists( 'api_key', $override ) && GML_Translation_Credentials::status( $engine ) === 'unreadable',
+            'model'           => $model,
+            'label'           => $definition['label'],
+            'style'           => $definition['style'],
+            'base_url'        => $base_url,
+            'allowed_hosts'   => $host ? [ $host ] : [],
+        ];
     }
 
     private static function stored_api_key( $engine ) {
@@ -94,6 +133,12 @@ class GML_Gemini_API extends GML_Translation_AI_Client {
 
     public static function get_engine_label( $engine = null ) {
         $engine = $engine === null ? get_option( 'gml_translation_engine', self::ENGINE_GEMINI ) : sanitize_key( $engine );
-        return $engine === self::ENGINE_DEEPSEEK ? 'DeepSeek' : 'Google Gemini';
+        $labels = [
+            self::ENGINE_GEMINI => 'Google Gemini',
+            self::ENGINE_DEEPSEEK => 'DeepSeek',
+            self::ENGINE_QWEN => 'Qwen',
+            self::ENGINE_OPENAI => 'OpenAI',
+        ];
+        return $labels[ $engine ] ?? 'AI';
     }
 }
