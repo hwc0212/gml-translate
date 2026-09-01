@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.5\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.8\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
 "POT-Creation-Date: 2026-08-31 00:00+0000\n"
 "PO-Revision-Date: 2026-08-31 00:00+0000\n"
@@ -9,6 +9,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: GML Translate language pack builder\n"
+
+msgid "%s are new since the last successful connection test."
+msgstr "%s are new since the last successful connection test."
 
 msgid "A limited translation sample is active. Resume that sample before starting other work."
 msgstr "A limited translation sample is active. Resume that sample before starting other work."
@@ -30,6 +33,9 @@ msgstr "AI Translation is currently unavailable, so no new translation jobs will
 
 msgid "AI Translation was not enabled because the selected provider does not have a valid saved API key."
 msgstr "AI Translation was not enabled because the selected provider does not have a valid saved API key."
+
+msgid "AI provider is not configured"
+msgstr "AI provider is not configured"
 
 msgid "AI provider selection could not be saved. Check database writes before testing the connection."
 msgstr "AI provider selection could not be saved. Check database writes before testing the connection."
@@ -90,6 +96,12 @@ msgstr "Allow the queue and crawler to generate new translations"
 
 msgid "Appearance → Widgets"
 msgstr "Appearance → Widgets"
+
+msgid "Attempts"
+msgstr "Attempts"
+
+msgid "Authentication or permission error"
+msgstr "Authentication or permission error"
 
 msgid "Auto"
 msgstr "Auto"
@@ -154,6 +166,12 @@ msgstr "Content Scan"
 msgid "Content scan scheduled. Translation settings were kept."
 msgstr "Content scan scheduled. Translation settings were kept."
 
+msgid "Content was blocked by the provider"
+msgstr "Content was blocked by the provider"
+
+msgid "Context"
+msgstr "Context"
+
 msgid "Custom CSS for the language switcher."
 msgstr "Custom CSS for the language switcher."
 
@@ -199,6 +217,9 @@ msgstr "Editar"
 msgid "Emoji (Recommended)"
 msgstr "Emoji (Recommended)"
 
+msgid "Empty translation result"
+msgstr "Empty translation result"
+
 msgid "Enable multilingual URLs and saved translations"
 msgstr "Enable multilingual URLs and saved translations"
 
@@ -210,6 +231,9 @@ msgstr "Enable the multilingual site and configure AI Translation first."
 
 msgid "Enter your API Key above and save settings"
 msgstr "Enter your API Key above and save settings"
+
+msgid "Error"
+msgstr "Error"
 
 msgid "Example URL"
 msgstr "Example URL"
@@ -322,6 +346,12 @@ msgstr "Idle"
 msgid "Industry-specific terminology that generic AI might translate incorrectly"
 msgstr "Industry-specific terminology that generic AI might translate incorrectly"
 
+msgid "Invalid provider request (HTTP 400)"
+msgstr "Invalid provider request (HTTP 400)"
+
+msgid "Invalid provider response"
+msgstr "Invalid provider response"
+
 msgid "Is Dropdown"
 msgstr "Is Dropdown"
 
@@ -361,6 +391,9 @@ msgstr "Languages to translate into."
 msgid "Last Worker Activity"
 msgstr "Last Worker Activity"
 
+msgid "Legacy rows may show their original queue time when an exact failure time was not stored. Credentials and raw provider responses are never displayed."
+msgstr "Legacy rows may show their original queue time when an exact failure time was not stored. Credentials and raw provider responses are never displayed."
+
 msgid "Limited sample: %1$s, %2$d of %3$d items remaining."
 msgstr "Limited sample: %1$s, %2$d of %3$d items remaining."
 
@@ -369,6 +402,9 @@ msgstr "Live preview — updates automatically"
 
 msgid "Loading..."
 msgstr "Cargando..."
+
+msgid "Local translation save failed"
+msgstr "Local translation save failed"
 
 msgid "Main Configuration"
 msgstr "Configuración principal"
@@ -379,11 +415,17 @@ msgstr "Manage Translations"
 msgid "Manual"
 msgstr "Manual"
 
+msgid "Model or API resource not found"
+msgstr "Model or API resource not found"
+
 msgid "Multilingual Site"
 msgstr "Sitio multilingüe"
 
 msgid "Navigation"
 msgstr "Navigation"
+
+msgid "Network error"
+msgstr "Network error"
 
 msgid "Next →"
 msgstr "Next →"
@@ -393,6 +435,9 @@ msgstr "No API key provided"
 
 msgid "No languages configured yet."
 msgstr "No languages configured yet."
+
+msgid "No queue item is being discarded and no retry attempt is consumed. Processing will resume automatically after %s."
+msgstr "No queue item is being discarded and no retry attempt is consumed. Processing will resume automatically after %s."
 
 msgid "No translations found."
 msgstr "No se encontraron traducciones."
@@ -441,6 +486,9 @@ msgstr "Idioma de origen"
 
 msgid "Other queue items and content scanning are on hold. The queue pauses automatically when this sample finishes."
 msgstr "Other queue items and content scanning are on hold. The queue pauses automatically when this sample finishes."
+
+msgid "Other translation error"
+msgstr "Other translation error"
 
 msgid "Override CSS"
 msgstr "Override CSS"
@@ -496,14 +544,53 @@ msgstr "Product names that should have specific translations per market"
 msgid "Protected Terms (Never Translate)"
 msgstr "Protected Terms (Never Translate)"
 
+msgid "Protected term changed or removed"
+msgstr "Protected term changed or removed"
+
 msgid "Protected terms saved!"
 msgstr "Protected terms saved!"
+
+msgid "Provider endpoint is not allowed"
+msgstr "Provider endpoint is not allowed"
+
+msgid "Provider output was truncated"
+msgstr "Provider output was truncated"
+
+msgid "Provider request failed"
+msgstr "Provider request failed"
+
+msgid "Provider response exceeds the safety limit"
+msgstr "Provider response exceeds the safety limit"
+
+msgid "Provider returned an incomplete response"
+msgstr "Provider returned an incomplete response"
+
+msgid "Provider returned no final text"
+msgstr "Provider returned no final text"
+
+msgid "Provider temporarily unavailable"
+msgstr "Provider temporarily unavailable"
+
+msgid "Provider timeout"
+msgstr "Provider timeout"
+
+msgid "Provider transport failed"
+msgstr "Provider transport failed"
 
 msgid "Queue Status"
 msgstr "Queue Status"
 
 msgid "Quick Start Guide"
 msgstr "Quick Start Guide"
+
+msgid "Rate limit or quota exceeded"
+msgstr "Rate limit or quota exceeded"
+
+msgid "Reason: %1$s (%2$s)."
+msgstr "Reason: %1$s (%2$s)."
+
+msgid "Recorded at"
+msgstr "Recorded at"
 
 msgid "Rectangle"
 msgstr "Rectangle"
@@ -526,14 +613,17 @@ msgstr "Requires a valid key for the selected provider. Turning this off never r
 msgid "Resume Sample"
 msgstr "Resume Sample"
 
-msgid "Retry All is disabled to protect API quota. After a successful connection test, retry one language in samples of at most 25."
-msgstr "Retry All is disabled to protect API quota. After a successful connection test, retry one language in samples of at most 25."
+msgid "Retry All remains disabled to protect API quota. Retry one language at a time in samples of at most 25 after a successful connection test."
+msgstr "Retry All remains disabled to protect API quota. Retry one language at a time in samples of at most 25 after a successful connection test."
 
 msgid "Retry at most 25 failed items for this language? Watch the result before retrying another sample."
 msgstr "Retry at most 25 failed items for this language? Watch the result before retrying another sample."
 
 msgid "Review %s translations"
 msgstr "Review %s translations"
+
+msgid "Review the 20 most recent failed items"
+msgstr "Review the 20 most recent failed items"
 
 msgid "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
 msgstr "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
@@ -634,6 +724,12 @@ msgstr "Source Term"
 msgid "Source Text"
 msgstr "Texto de origen"
 
+msgid "Source segment exceeds the size limit"
+msgstr "Source segment exceeds the size limit"
+
+msgid "Source text"
+msgstr "Source text"
+
 msgid "Square"
 msgstr "Square"
 
@@ -657,6 +753,9 @@ msgstr "Stop Scan"
 
 msgid "Stopped"
 msgstr "Stopped"
+
+msgid "Stored Failed Items"
+msgstr "Stored Failed Items"
 
 msgid "Stored and readable. This is not a connection check."
 msgstr "Stored and readable. This is not a connection check."
@@ -682,6 +781,9 @@ msgstr "Test the saved AI connection"
 msgid "Tested saved configuration: %1$s / %2$s. Key contents are never displayed."
 msgstr "Tested saved configuration: %1$s / %2$s. Key contents are never displayed."
 
+msgid "The AI provider is cooling down temporarily."
+msgstr "The AI provider is cooling down temporarily."
+
 msgid "The AI provider, model, or failed queue must be verified before more API calls are made."
 msgstr "The AI provider, model, or failed queue must be verified before more API calls are made."
 
@@ -705,6 +807,9 @@ msgstr "The saved API key cannot be decrypted on this site. Re-enter and save th
 
 msgid "The tone/style for translations (e.g. \"professional and friendly\", \"casual\", \"formal\")."
 msgstr "The tone/style for translations (e.g. \"professional and friendly\", \"casual\", \"formal\")."
+
+msgid "These are acknowledged historical records; they do not mean the provider is currently failing."
+msgstr "These are acknowledged historical records; they do not mean the provider is currently failing."
 
 msgid "These terms will never be translated. One per line. Brand names, product names, etc."
 msgstr "These terms will never be translated. One per line. Brand names, product names, etc."
@@ -751,6 +856,12 @@ msgstr "Translation controls updated."
 msgid "Translation is safety-paused. Test the saved AI connection and retry a limited language sample first."
 msgstr "Translation is safety-paused. Test the saved AI connection and retry a limited language sample first."
 
+msgid "Translation request could not be encoded"
+msgstr "Translation request could not be encoded"
+
+msgid "Translation request exceeds the safety limit"
+msgstr "Translation request exceeds the safety limit"
+
 msgid "Translation safety pause is active."
 msgstr "Translation safety pause is active."
 
@@ -790,11 +901,11 @@ msgstr "URL matches regex"
 msgid "URL starts with"
 msgstr "URL starts with"
 
+msgid "Unknown"
+msgstr "Unknown"
+
 msgid "Unknown AI provider. Settings were not saved."
 msgstr "Unknown AI provider. Settings were not saved."
-
-msgid "Unknown error"
-msgstr "Unknown error"
 
 msgid "Usage Methods"
 msgstr "Usage Methods"
@@ -804,6 +915,9 @@ msgstr "Value"
 
 msgid "Visit your site with language prefix, e.g.:"
 msgstr "Visit your site with language prefix, e.g.:"
+
+msgid "Waiting for provider cooldown"
+msgstr "Waiting for provider cooldown"
 
 msgid "Widget"
 msgstr "Widget"
@@ -835,11 +949,11 @@ msgstr "and add the \"GML Language Switcher\" widget."
 msgid "failed"
 msgstr "failed"
 
-msgid "failed translations"
-msgstr "failed translations"
-
 msgid "pending"
 msgstr "pending"
+
+msgid "stored failed items"
+msgstr "stored failed items"
 
 msgid "tables exist"
 msgstr "tables exist"

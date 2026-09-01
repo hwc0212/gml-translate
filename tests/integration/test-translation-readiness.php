@@ -13,9 +13,13 @@ class GML_Readiness_Test_DB {
 			return [
 				(object) [ 'target_lang' => 'de', 'item_count' => 120 ],
 				(object) [ 'target_lang' => 'es', 'item_count' => 95 ],
+				(object) [ 'target_lang' => 'ru', 'item_count' => 40 ],
 			];
 		}
-		return [ (object) [ 'target_lang' => 'es', 'item_count' => 2 ] ];
+		return [
+			(object) [ 'target_lang' => 'es', 'item_count' => 2 ],
+			(object) [ 'target_lang' => 'ru', 'item_count' => 60 ],
+		];
 	}
 }
 
@@ -23,6 +27,7 @@ $GLOBALS['wpdb'] = new GML_Readiness_Test_DB();
 GML_Translate_Test_State::$options['gml_ai_translation_enabled'] = false;
 
 gml_test_assert( GML_Translation_Readiness::language_is_index_ready( 'de' ), 'stored complete language remains index-ready with AI disabled' );
-gml_test_assert( ! GML_Translation_Readiness::language_is_index_ready( 'es' ), 'language with unfinished queue work stays withheld' );
+gml_test_assert( GML_Translation_Readiness::language_is_index_ready( 'es' ), 'a few historical failures do not suppress an otherwise complete language' );
+gml_test_assert( ! GML_Translation_Readiness::language_is_index_ready( 'ru' ), 'a substantially incomplete language remains withheld' );
 
 echo "OK test-translation-readiness\n";

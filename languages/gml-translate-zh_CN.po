@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.5\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.8\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
 "POT-Creation-Date: 2026-08-31 00:00+0000\n"
 "PO-Revision-Date: 2026-08-31 00:00+0000\n"
@@ -9,6 +9,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: GML Translate language pack builder\n"
+
+msgid "%s are new since the last successful connection test."
+msgstr "其中 %s 条是在上次连接测试成功后新增的。"
 
 msgid "A limited translation sample is active. Resume that sample before starting other work."
 msgstr "已有受限翻译样本，请先继续并完成该样本，再启动其他任务。"
@@ -30,6 +33,9 @@ msgstr "AI Translation is currently unavailable, so no new translation jobs will
 
 msgid "AI Translation was not enabled because the selected provider does not have a valid saved API key."
 msgstr "AI Translation was not enabled because the selected provider does not have a valid saved API key."
+
+msgid "AI provider is not configured"
+msgstr "尚未配置 AI 服务商"
 
 msgid "AI provider selection could not be saved. Check database writes before testing the connection."
 msgstr "AI 服务商选择保存失败，请先检查数据库写入，再测试连接。"
@@ -90,6 +96,12 @@ msgstr "Allow the queue and crawler to generate new translations"
 
 msgid "Appearance → Widgets"
 msgstr "Appearance → Widgets"
+
+msgid "Attempts"
+msgstr "尝试次数"
+
+msgid "Authentication or permission error"
+msgstr "身份验证或权限错误"
 
 msgid "Auto"
 msgstr "Auto"
@@ -154,6 +166,12 @@ msgstr "内容扫描"
 msgid "Content scan scheduled. Translation settings were kept."
 msgstr "内容扫描已排程，原有翻译设置保持不变。"
 
+msgid "Content was blocked by the provider"
+msgstr "内容被服务商阻止"
+
+msgid "Context"
+msgstr "内容类型"
+
 msgid "Custom CSS for the language switcher."
 msgstr "Custom CSS for the language switcher."
 
@@ -199,6 +217,9 @@ msgstr "编辑"
 msgid "Emoji (Recommended)"
 msgstr "Emoji (Recommended)"
 
+msgid "Empty translation result"
+msgstr "翻译结果为空"
+
 msgid "Enable multilingual URLs and saved translations"
 msgstr "Enable multilingual URLs and saved translations"
 
@@ -210,6 +231,9 @@ msgstr "请先启用多语言站点并配置 AI 翻译。"
 
 msgid "Enter your API Key above and save settings"
 msgstr "Enter your API Key above and save settings"
+
+msgid "Error"
+msgstr "错误"
 
 msgid "Example URL"
 msgstr "Example URL"
@@ -322,6 +346,12 @@ msgstr "空闲"
 msgid "Industry-specific terminology that generic AI might translate incorrectly"
 msgstr "Industry-specific terminology that generic AI might translate incorrectly"
 
+msgid "Invalid provider request (HTTP 400)"
+msgstr "服务商请求无效（HTTP 400）"
+
+msgid "Invalid provider response"
+msgstr "服务商响应无效"
+
 msgid "Is Dropdown"
 msgstr "Is Dropdown"
 
@@ -329,7 +359,7 @@ msgid "Is Fullname"
 msgstr "Is Fullname"
 
 msgid "Language"
-msgstr "Language"
+msgstr "语言"
 
 msgid "Language Button Design"
 msgstr "Language Button Design"
@@ -361,6 +391,9 @@ msgstr "Languages to translate into."
 msgid "Last Worker Activity"
 msgstr "最近任务活动时间"
 
+msgid "Legacy rows may show their original queue time when an exact failure time was not stored. Credentials and raw provider responses are never displayed."
+msgstr "旧记录未保存准确失败时间时会显示最初入队时间。这里不会显示凭据或服务商原始响应。"
+
 msgid "Limited sample: %1$s, %2$d of %3$d items remaining."
 msgstr "受限小样本：%1$s，共 %3$d 条，剩余 %2$d 条。"
 
@@ -369,6 +402,9 @@ msgstr "Live preview — updates automatically"
 
 msgid "Loading..."
 msgstr "加载中..."
+
+msgid "Local translation save failed"
+msgstr "本地译文保存失败"
 
 msgid "Main Configuration"
 msgstr "主要配置"
@@ -379,11 +415,17 @@ msgstr "管理译文"
 msgid "Manual"
 msgstr "Manual"
 
+msgid "Model or API resource not found"
+msgstr "找不到模型或 API 资源"
+
 msgid "Multilingual Site"
 msgstr "多语言站点"
 
 msgid "Navigation"
 msgstr "Navigation"
+
+msgid "Network error"
+msgstr "网络错误"
 
 msgid "Next →"
 msgstr "Next →"
@@ -393,6 +435,9 @@ msgstr "No API key provided"
 
 msgid "No languages configured yet."
 msgstr "No languages configured yet."
+
+msgid "No queue item is being discarded and no retry attempt is consumed. Processing will resume automatically after %s."
+msgstr "不会丢弃队列任务，也不会消耗任务重试次数。处理将在 %s 后自动恢复。"
 
 msgid "No translations found."
 msgstr "未找到翻译。"
@@ -441,6 +486,9 @@ msgstr "源语言"
 
 msgid "Other queue items and content scanning are on hold. The queue pauses automatically when this sample finishes."
 msgstr "其他队列任务和内容扫描保持暂停。该小样本完成后，队列会自动暂停。"
+
+msgid "Other translation error"
+msgstr "其他翻译错误"
 
 msgid "Override CSS"
 msgstr "Override CSS"
@@ -496,14 +544,53 @@ msgstr "Product names that should have specific translations per market"
 msgid "Protected Terms (Never Translate)"
 msgstr "Protected Terms (Never Translate)"
 
+msgid "Protected term changed or removed"
+msgstr "受保护术语被修改或删除"
+
 msgid "Protected terms saved!"
 msgstr "Protected terms saved!"
+
+msgid "Provider endpoint is not allowed"
+msgstr "不允许使用该服务商端点"
+
+msgid "Provider output was truncated"
+msgstr "服务商输出被截断"
+
+msgid "Provider request failed"
+msgstr "服务商请求失败"
+
+msgid "Provider response exceeds the safety limit"
+msgstr "服务商响应超过安全限制"
+
+msgid "Provider returned an incomplete response"
+msgstr "服务商返回了不完整响应"
+
+msgid "Provider returned no final text"
+msgstr "服务商未返回最终文本"
+
+msgid "Provider temporarily unavailable"
+msgstr "服务商暂时不可用"
+
+msgid "Provider timeout"
+msgstr "服务商响应超时"
+
+msgid "Provider transport failed"
+msgstr "服务商网络传输失败"
 
 msgid "Queue Status"
 msgstr "队列状态"
 
 msgid "Quick Start Guide"
 msgstr "Quick Start Guide"
+
+msgid "Rate limit or quota exceeded"
+msgstr "达到速率限制或额度上限"
+
+msgid "Reason: %1$s (%2$s)."
+msgstr "原因：%1$s（%2$s）。"
+
+msgid "Recorded at"
+msgstr "记录时间"
 
 msgid "Rectangle"
 msgstr "Rectangle"
@@ -526,14 +613,17 @@ msgstr "Requires a valid key for the selected provider. Turning this off never r
 msgid "Resume Sample"
 msgstr "继续小样本"
 
-msgid "Retry All is disabled to protect API quota. After a successful connection test, retry one language in samples of at most 25."
-msgstr "Retry All is disabled to protect API quota. After a successful connection test, retry one language in samples of at most 25."
+msgid "Retry All remains disabled to protect API quota. Retry one language at a time in samples of at most 25 after a successful connection test."
+msgstr "为保护 API 额度，仍不提供全部重试。连接测试成功后，请按语言每次最多重试 25 条。"
 
 msgid "Retry at most 25 failed items for this language? Watch the result before retrying another sample."
 msgstr "Retry at most 25 failed items for this language? Watch the result before retrying another sample."
 
 msgid "Review %s translations"
 msgstr "检查 %s 译文"
+
+msgid "Review the 20 most recent failed items"
+msgstr "查看最近 20 条失败记录"
 
 msgid "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
 msgstr "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
@@ -634,6 +724,12 @@ msgstr "Source Term"
 msgid "Source Text"
 msgstr "原文"
 
+msgid "Source segment exceeds the size limit"
+msgstr "源文本段超过大小限制"
+
+msgid "Source text"
+msgstr "源文本"
+
 msgid "Square"
 msgstr "Square"
 
@@ -657,6 +753,9 @@ msgstr "停止扫描"
 
 msgid "Stopped"
 msgstr "已停止"
+
+msgid "Stored Failed Items"
+msgstr "已保存的失败记录"
 
 msgid "Stored and readable. This is not a connection check."
 msgstr "已保存且可读取，不代表连接验证通过。"
@@ -682,6 +781,9 @@ msgstr "Test the saved AI connection"
 msgid "Tested saved configuration: %1$s / %2$s. Key contents are never displayed."
 msgstr "本次测试使用已保存配置：%1$s / %2$s。不会显示密钥内容。"
 
+msgid "The AI provider is cooling down temporarily."
+msgstr "AI 服务商正在临时冷却。"
+
 msgid "The AI provider, model, or failed queue must be verified before more API calls are made."
 msgstr "The AI provider, model, or failed queue must be verified before more API calls are made."
 
@@ -705,6 +807,9 @@ msgstr "此站点无法解密已保存的 API Key。请重新输入并保存。�
 
 msgid "The tone/style for translations (e.g. \"professional and friendly\", \"casual\", \"formal\")."
 msgstr "The tone/style for translations (e.g. \"professional and friendly\", \"casual\", \"formal\")."
+
+msgid "These are acknowledged historical records; they do not mean the provider is currently failing."
+msgstr "这些是已确认的历史记录，不代表服务商当前仍在失败。"
 
 msgid "These terms will never be translated. One per line. Brand names, product names, etc."
 msgstr "These terms will never be translated. One per line. Brand names, product names, etc."
@@ -751,6 +856,12 @@ msgstr "翻译控制状态已更新。"
 msgid "Translation is safety-paused. Test the saved AI connection and retry a limited language sample first."
 msgstr "翻译处于安全暂停。请先测试已保存的 AI 连接，再重试一个语言的小批量样本。"
 
+msgid "Translation request could not be encoded"
+msgstr "无法编码翻译请求"
+
+msgid "Translation request exceeds the safety limit"
+msgstr "翻译请求超过安全限制"
+
 msgid "Translation safety pause is active."
 msgstr "Translation safety pause is active."
 
@@ -790,11 +901,11 @@ msgstr "URL matches regex"
 msgid "URL starts with"
 msgstr "URL starts with"
 
+msgid "Unknown"
+msgstr "未知"
+
 msgid "Unknown AI provider. Settings were not saved."
 msgstr "无法识别 AI 服务商，设置未保存。"
-
-msgid "Unknown error"
-msgstr "Unknown error"
 
 msgid "Usage Methods"
 msgstr "Usage Methods"
@@ -804,6 +915,9 @@ msgstr "Value"
 
 msgid "Visit your site with language prefix, e.g.:"
 msgstr "Visit your site with language prefix, e.g.:"
+
+msgid "Waiting for provider cooldown"
+msgstr "等待 AI 服务商冷却"
 
 msgid "Widget"
 msgstr "Widget"
@@ -835,11 +949,11 @@ msgstr "and add the \"GML Language Switcher\" widget."
 msgid "failed"
 msgstr "失败"
 
-msgid "failed translations"
-msgstr "failed translations"
-
 msgid "pending"
 msgstr "待处理"
+
+msgid "stored failed items"
+msgstr "条已保存的失败记录"
 
 msgid "tables exist"
 msgstr "tables exist"

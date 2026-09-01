@@ -4,7 +4,7 @@ Tags: translate, multilingual, ai, hreflang, language switcher
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.11.1-rc.7
+Stable tag: 2.11.1-rc.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,12 @@ Yes. Manual translations are stored separately and take priority over normal aut
 No. It provides only the minimum multilingual SEO output. Use GML AI SEO or another single SEO authority for complete SEO management.
 
 == Changelog ==
+
+= 2.11.1-rc.8 =
+* Classifies historical and current translation failures without changing existing tables.
+* Uses bounded automatic cooldown for HTTP 429, 5xx, network and timeout failures without consuming item attempts.
+* Keeps configuration failures safety-paused and failed retries limited to 25 items per language.
+* Adds redacted recent-failure details and prevents a small historical tail from suppressing an otherwise complete language.
 
 = 2.11.1-rc.3 =
 * Fail locally on unreadable saved credentials and verify encrypted writes by reading them back.

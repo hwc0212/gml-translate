@@ -743,14 +743,19 @@ class GML_Admin_Settings {
         $source_country      = self::get_country_from_locale($source_lang, $wp_locale);
         $source_native       = $available_languages[$source_lang]['native'] ?? strtoupper($source_lang);
         $queue_pending       = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}gml_queue WHERE status IN ('pending','processing')");
-        $total_failed        = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}gml_queue WHERE status='failed'");
+        $failure_counts      = GML_Queue_Processor::get_failure_counts();
+        $total_failed        = $failure_counts['total'];
         $circuit             = GML_Queue_Processor::get_circuit_breaker();
         $safety_paused       = ! empty( $circuit );
+        $cooldown_waiting    = GML_Queue_Processor::backoff_is_active();
+        $backoff             = $cooldown_waiting ? GML_Queue_Processor::get_backoff() : [];
         $failure_summary     = $total_failed > 0 ? GML_Queue_Processor::get_failure_summary( '', 3 ) : [];
+        $failure_details     = $total_failed > 0 ? GML_Queue_Processor::get_failure_details( '', 20 ) : [];
 
         $state_labels = [
             'unavailable' => __( 'AI unavailable', 'gml-translate' ),
             'safety_paused' => __( 'Safety paused', 'gml-translate' ),
+            'waiting' => __( 'Waiting for provider cooldown', 'gml-translate' ),
             'paused' => __( 'Paused', 'gml-translate' ),
             'pausing' => __( 'Pausing after current batch', 'gml-translate' ),
             'processing' => __( 'Processing batch', 'gml-translate' ),
@@ -796,6 +801,12 @@ class GML_Admin_Settings {
         .gml-translation-danger{margin:24px 0;padding-top:16px;border-top:1px solid #d63638}
         .gml-translation-danger h3{color:#b32d2e}
         .gml-translation-danger .gml-danger-actions{display:flex;gap:8px;flex-wrap:wrap}
+        .gml-failure-details{margin-top:12px;color:#3c434a}
+        .gml-failure-details summary{cursor:pointer;font-weight:600}
+        .gml-failure-details-table{max-width:100%;overflow-x:auto;margin-top:10px}
+        .gml-failure-details-table table{min-width:920px}
+        .gml-failure-details-table td,.gml-failure-details-table th{vertical-align:top}
+        .gml-failure-details-table small{display:block;margin-top:3px;color:#646970}
         </style>
         <div class="gml-translation-toolbar">
             <h2><?php esc_html_e( 'Translation Queue', 'gml-translate' ); ?></h2>
@@ -852,7 +863,7 @@ class GML_Admin_Settings {
         <div class="gml-translation-summary" aria-live="polite">
             <dl><dt><?php esc_html_e( 'Queue Status', 'gml-translate' ); ?></dt><dd id="gml-queue-state"><?php echo esc_html( $state_labels[$queue_status['state']] ); ?></dd></dl>
             <dl><dt><?php esc_html_e( 'Pending Segments', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $queue_pending ) ); ?></dd></dl>
-            <dl><dt><?php esc_html_e( 'Failed Segments', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $total_failed ) ); ?></dd></dl>
+            <dl><dt><?php esc_html_e( 'Stored Failed Items', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $total_failed ) ); ?></dd></dl>
             <dl><dt><?php esc_html_e( 'Last Worker Activity', 'gml-translate' ); ?></dt><dd id="gml-queue-last"><?php echo esc_html( $queue_status['last_activity'] ? wp_date( 'Y-m-d H:i:s', $queue_status['last_activity'] ) : __( 'Not recorded yet', 'gml-translate' ) ); ?></dd></dl>
         </div>
         <div class="gml-content-scan">
@@ -892,6 +903,19 @@ class GML_Admin_Settings {
             <div class="notice notice-warning inline"><p><?php _e('AI Translation is currently unavailable, so no new translation jobs will run. Existing multilingual URLs and saved translations remain available while the multilingual site is enabled.', 'gml-translate'); ?></p></div>
         <?php endif; ?>
 
+        <?php if ( $cooldown_waiting ): ?>
+            <div class="notice notice-info inline" style="margin:0 0 20px;"><p>
+                <strong><?php esc_html_e( 'The AI provider is cooling down temporarily.', 'gml-translate' ); ?></strong>
+                <?php printf(
+                    esc_html__( 'No queue item is being discarded and no retry attempt is consumed. Processing will resume automatically after %s.', 'gml-translate' ),
+                    esc_html( wp_date( 'Y-m-d H:i:s', (int) ( $backoff['until'] ?? time() ) ) )
+                ); ?>
+                <?php if ( ! empty( $backoff['code'] ) ) : ?>
+                    <br><?php printf( esc_html__( 'Reason: %1$s (%2$s).', 'gml-translate' ), esc_html( translate( GML_Translation_Error::label( $backoff['code'] ), 'gml-translate' ) ), esc_html( $backoff['code'] ) ); ?>
+                <?php endif; ?>
+            </p></div>
+        <?php endif; ?>
+
         <?php if ($safety_paused): ?>
             <div class="notice notice-error inline" style="margin:0 0 20px;"><p>
                 <strong><?php _e('Translation safety pause is active.', 'gml-translate'); ?></strong>
@@ -905,18 +929,55 @@ class GML_Admin_Settings {
         <?php endif; ?>
 
         <?php if ($total_failed > 0): ?>
-        <!-- Failed Items Banner -->
         <div style="background:#fef3cd;border:1px solid #ffc107;border-radius:4px;padding:12px 20px;margin-bottom:20px;">
             <div>
-                <strong style="color:#856404;">⚠ <?php echo $total_failed; ?> <?php _e('failed translations', 'gml-translate'); ?></strong>
-                <span style="color:#856404;font-size:13px;margin-left:8px;"><?php _e('Retry All is disabled to protect API quota. After a successful connection test, retry one language in samples of at most 25.', 'gml-translate'); ?></span>
+                <strong style="color:#856404;"><?php echo esc_html( number_format_i18n( $total_failed ) ); ?> <?php esc_html_e( 'stored failed items', 'gml-translate' ); ?></strong>
+                <?php if ( $failure_counts['new'] > 0 ) : ?>
+                    <span style="color:#b32d2e;font-size:13px;margin-left:8px;"><?php printf( esc_html__( '%s are new since the last successful connection test.', 'gml-translate' ), esc_html( number_format_i18n( $failure_counts['new'] ) ) ); ?></span>
+                <?php else : ?>
+                    <span style="color:#856404;font-size:13px;margin-left:8px;"><?php esc_html_e( 'These are acknowledged historical records; they do not mean the provider is currently failing.', 'gml-translate' ); ?></span>
+                <?php endif; ?>
             </div>
+            <p style="margin:8px 0 0;color:#6c5400;"><?php esc_html_e( 'Retry All remains disabled to protect API quota. Retry one language at a time in samples of at most 25 after a successful connection test.', 'gml-translate' ); ?></p>
             <?php if ( ! empty( $failure_summary ) ) : ?>
                 <ul style="margin:8px 0 0 18px;color:#6c5400;">
                     <?php foreach ( $failure_summary as $failure ) : ?>
-                        <li><?php echo esc_html( number_format_i18n( (int) $failure->item_count ) . ' × ' . ( $failure->error_message ?: __( 'Unknown error', 'gml-translate' ) ) ); ?></li>
+                        <li><?php echo esc_html( number_format_i18n( (int) $failure->item_count ) . ' x ' . translate( GML_Translation_Error::label( $failure->error_code ?? 'unknown' ), 'gml-translate' ) ); ?></li>
                     <?php endforeach; ?>
                 </ul>
+            <?php endif; ?>
+            <?php if ( ! empty( $failure_details ) ) : ?>
+                <details class="gml-failure-details">
+                    <summary><?php esc_html_e( 'Review the 20 most recent failed items', 'gml-translate' ); ?></summary>
+                    <p><?php esc_html_e( 'Legacy rows may show their original queue time when an exact failure time was not stored. Credentials and raw provider responses are never displayed.', 'gml-translate' ); ?></p>
+                    <div class="gml-failure-details-table">
+                        <table class="widefat striped">
+                            <thead><tr>
+                                <th><?php esc_html_e( 'Source text', 'gml-translate' ); ?></th>
+                                <th><?php esc_html_e( 'Language', 'gml-translate' ); ?></th>
+                                <th><?php esc_html_e( 'Context', 'gml-translate' ); ?></th>
+                                <th><?php esc_html_e( 'Error', 'gml-translate' ); ?></th>
+                                <th><?php esc_html_e( 'Attempts', 'gml-translate' ); ?></th>
+                                <th><?php esc_html_e( 'Recorded at', 'gml-translate' ); ?></th>
+                            </tr></thead>
+                            <tbody>
+                            <?php foreach ( $failure_details as $failure ) :
+                                $preview = wp_html_excerpt( wp_strip_all_tags( (string) $failure->source_text ), 120, '...' );
+                                $recorded = $failure->processed_at ?: $failure->created_at;
+                            ?>
+                                <tr>
+                                    <td><?php echo esc_html( $preview ); ?></td>
+                                    <td><?php echo esc_html( strtoupper( (string) $failure->target_lang ) ); ?></td>
+                                    <td><?php echo esc_html( str_replace( '_', ' ', (string) $failure->context_type ) ); ?></td>
+                                    <td><?php echo esc_html( translate( GML_Translation_Error::label( $failure->error_code ?? 'unknown' ), 'gml-translate' ) ); ?><small><code><?php echo esc_html( $failure->error_code ?? 'unknown' ); ?></code> <?php echo esc_html( $failure->safe_message ?? '' ); ?></small></td>
+                                    <td><?php echo esc_html( (int) $failure->attempts ); ?></td>
+                                    <td><?php echo esc_html( $recorded ?: __( 'Unknown', 'gml-translate' ) ); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
             <?php endif; ?>
         </div>
         <?php endif; ?>
