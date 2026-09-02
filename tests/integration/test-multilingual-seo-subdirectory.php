@@ -49,10 +49,17 @@ ob_start();
 $seo->inject_multilingual_meta();
 $head = ob_get_clean();
 
+$_SERVER['REQUEST_URI'] = '/ygnaglul/about/';
+ob_start();
+$seo->inject_multilingual_meta();
+$source_head = ob_get_clean();
+$_SERVER['REQUEST_URI'] = '/ygnaglul/de/about/?utm_source=test';
+
 gml_test_assert( substr_count( $head, '<link rel="canonical"' ) === 1, 'standalone emits one canonical without another SEO authority' );
 gml_test_assert( strpos( $head, 'rel="canonical" href="https://example.com/ygnaglul/de/about/"' ) !== false, 'translated canonical is self-referencing' );
 gml_test_assert( strpos( $head, 'hreflang="en" href="https://example.com/ygnaglul/about/"' ) !== false, 'source alternate keeps one site subdirectory' );
 gml_test_assert( strpos( $head, 'hreflang="de" href="https://example.com/ygnaglul/de/about/"' ) !== false, 'ready target alternate is present' );
+gml_test_assert( strpos( $source_head, 'hreflang="de" href="https://example.com/ygnaglul/de/about/"' ) !== false, 'source route reciprocates the ready translated alternate' );
 gml_test_assert( strpos( $head, 'hreflang="es"' ) === false, 'incomplete target is not advertised' );
 gml_test_assert( strpos( $head, 'hreflang="zh-CN" href="https://cnxhe.cn/about/"' ) !== false, 'external language site is advertised with its mapped URL' );
 gml_test_assert( strpos( $head, 'hreflang="fr"' ) === false, 'homepage-only external site is not advertised as an inner-page equivalent' );
@@ -66,6 +73,17 @@ gml_test_assert( $urls['fr'] === 'https://fr.example.net/', 'router can use an e
 gml_test_assert( GML_Language_Utils::detect_prefix_from_path( '/ygnaglul/zh-cn/about/', true ) === '', 'external language is not registered as a local route' );
 gml_test_assert( GML_Language_Utils::sanitize_external_site_url( 'https://example.com/another-site/' ) === '', 'external mode rejects the current WordPress host' );
 gml_test_assert( GML_Translation_Queue_Scope::enabled_languages() === [ 'de', 'es' ], 'external language sites are excluded from the local AI queue' );
+
+GML_Translate_Test_State::$is_404 = true;
+ob_start();
+$seo->inject_multilingual_meta();
+$not_found_head = ob_get_clean();
+gml_test_assert( $not_found_head === '', 'standalone emits no canonical, hreflang, or locale discovery metadata on a 404' );
+gml_test_assert(
+	$seo->filter_canonical_url( 'https://example.com/ygnaglul/missing/' ) === 'https://example.com/ygnaglul/missing/',
+	'standalone does not manufacture a translated canonical for a 404'
+);
+GML_Translate_Test_State::$is_404 = false;
 
 if ( ! defined( 'GML_SEO_VER' ) ) define( 'GML_SEO_VER', 'test' );
 GML_Translate_Test_State::$actions = [];

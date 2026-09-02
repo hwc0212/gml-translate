@@ -4,7 +4,7 @@ Tags: translate, multilingual, ai, hreflang, language switcher
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.11.1-rc.10
+Stable tag: 2.11.1-rc.12
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,7 +65,26 @@ Yes. Manual translations are stored separately and take priority over normal aut
 
 No. It provides only the minimum multilingual SEO output. Use GML AI SEO or another single SEO authority for complete SEO management.
 
+= What happens to my translations if I delete the plugin? =
+
+All data is retained by default, including saved and manual translations, settings, glossary, queue, and encrypted provider credentials. To remove everything, first select permanent removal under Settings > Uninstall Data Retention and type DELETE exactly. Deactivation and normal updates never delete stored data.
+
 == Changelog ==
+
+= 2.11.1-rc.12 =
+* Updates Translation Core to 0.6.2 with atomic database compare-and-swap leases and one deferred rewrite refresh after routing imports.
+* Prevents competing stale takeovers and prevents an expired or wrong owner from releasing a newer lock.
+* Restricts processing-row recovery and late provider-result writes to the current queue owner.
+* Preserves legacy lock values and makes no schema, translation, provider, URL, readiness, or multilingual SEO changes.
+* Makes the language-switcher shortcode safe inside another plugin's output-buffer callback through a shared string renderer.
+
+= 2.11.1-rc.11 =
+* Retains all plugin data by default when the plugin is deleted, allowing a later reinstall to reuse it.
+* Adds an explicit permanent-removal preference protected by an exact typed DELETE confirmation.
+* Removes translation tables, legacy tables, settings, credentials, glossary, jobs, and dedicated cache only during confirmed WordPress uninstall.
+* Protects shared translation data while GML AI SEO remains installed and handles multisite preferences per site.
+* Hides every switcher surface and multilingual discovery tag on real 404 responses instead of manufacturing translated 404 links.
+* Verifies reciprocal hreflang for index-ready pages while incomplete translations remain noindex and unadvertised.
 
 = 2.11.1-rc.10 =
 * Adds per-language local or external-site delivery for independent domains and subdomains.

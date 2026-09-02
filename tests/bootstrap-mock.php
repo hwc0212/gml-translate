@@ -14,6 +14,7 @@ final class GML_Translate_Test_State {
 	public static $home_url = 'https://example.com';
 	public static $http_requests = [];
 	public static $http_responses = [];
+	public static $is_404 = false;
 
 	public static function reset() {
 		self::$options = [];
@@ -21,6 +22,7 @@ final class GML_Translate_Test_State {
 		self::$home_url = 'https://example.com';
 		self::$http_requests = [];
 		self::$http_responses = [];
+		self::$is_404 = false;
 	}
 }
 
@@ -90,6 +92,7 @@ function get_locale() { return 'en_US'; }
 function get_bloginfo( $show = '' ) { return $show === 'name' ? 'Example Site' : ''; }
 function wp_salt( $scheme = 'auth' ) { return 'test-salt-' . $scheme; }
 function is_admin() { return false; }
+function is_404() { return GML_Translate_Test_State::$is_404; }
 function is_user_logged_in() { return false; }
 function sanitize_key( $key ) { return preg_replace( '/[^a-z0-9_\-]/', '', strtolower( (string) $key ) ); }
 function sanitize_text_field( $value ) { return trim( wp_strip_all_tags( (string) $value ) ); }
@@ -97,6 +100,49 @@ function esc_url_raw( $url ) { return (string) $url; }
 function wp_cache_get( $key, $group = '' ) { return false; }
 function wp_cache_set( $key, $value, $group = '', $expire = 0 ) { return true; }
 function wp_cache_delete( $key, $group = '' ) { return true; }
+function wp_generate_uuid4() { return sprintf( '00000000-0000-4000-8000-%012d', count( GML_Translate_Test_State::$options ) + 1 ); }
+
+class GML_Translate_Test_WPDB {
+	public $options = 'test_options';
+	private $prepared = [];
+
+	public function prepare( $query ) {
+		$this->prepared = [ (string) $query, array_slice( func_get_args(), 1 ) ];
+		return '__gml_prepared_lock_query__';
+	}
+
+	public function get_var( $query ) {
+		if ( $query !== '__gml_prepared_lock_query__' ) return null;
+		$args = $this->prepared[1];
+		return array_key_exists( $args[0], GML_Translate_Test_State::$options )
+			? GML_Translate_Test_State::$options[ $args[0] ]
+			: null;
+	}
+
+	public function query( $query ) {
+		if ( $query !== '__gml_prepared_lock_query__' ) return false;
+		$sql  = ltrim( $this->prepared[0] );
+		$args = $this->prepared[1];
+		if ( strpos( $sql, 'INSERT IGNORE' ) === 0 ) {
+			if ( array_key_exists( $args[0], GML_Translate_Test_State::$options ) ) return 0;
+			GML_Translate_Test_State::$options[ $args[0] ] = $args[1];
+			return 1;
+		}
+		if ( strpos( $sql, 'UPDATE ' ) === 0 ) {
+			if ( ! isset( GML_Translate_Test_State::$options[ $args[1] ] ) || GML_Translate_Test_State::$options[ $args[1] ] !== $args[2] ) return 0;
+			GML_Translate_Test_State::$options[ $args[1] ] = $args[0];
+			return 1;
+		}
+		if ( strpos( $sql, 'DELETE FROM' ) === 0 ) {
+			if ( ! isset( GML_Translate_Test_State::$options[ $args[0] ] ) || GML_Translate_Test_State::$options[ $args[0] ] !== $args[1] ) return 0;
+			unset( GML_Translate_Test_State::$options[ $args[0] ] );
+			return 1;
+		}
+		return false;
+	}
+}
+
+$wpdb = new GML_Translate_Test_WPDB();
 
 if ( ! class_exists( 'WP_Error' ) ) {
 	class WP_Error {

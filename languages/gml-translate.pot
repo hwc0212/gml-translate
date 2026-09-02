@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.10\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.12\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
 "POT-Creation-Date: 2026-09-01 00:00+0000\n"
 "PO-Revision-Date: 2026-09-01 00:00+0000\n"
@@ -169,6 +169,12 @@ msgstr ""
 msgid "Code"
 msgstr ""
 
+msgid "Complete removal is armed. No data is deleted now; it runs only when the plugin is deleted from the Plugins page."
+msgstr ""
+
+msgid "Complete removal was not enabled. Type DELETE exactly to confirm."
+msgstr ""
+
 msgid "Completed"
 msgstr ""
 
@@ -328,6 +334,9 @@ msgstr ""
 msgid "GML SEO is already providing multilingual translation. Use its Translation page, or deactivate GML SEO before activating GML Translate. Existing translation data has not been deleted."
 msgstr ""
 
+msgid "GML SEO is also installed, so deleting this product will not remove shared translation data. To remove it later, enable complete removal in the last remaining GML product before deleting that product."
+msgstr ""
+
 msgid "GML Switcher"
 msgstr ""
 
@@ -395,6 +404,9 @@ msgid "Is Dropdown"
 msgstr ""
 
 msgid "Is Fullname"
+msgstr ""
+
+msgid "Keeps settings, encrypted provider credentials, language configuration, glossary, queue, manual edits, and the translation library for a future reinstall."
 msgstr ""
 
 msgid "Language"
@@ -598,10 +610,16 @@ msgstr ""
 msgid "Pending Segments"
 msgstr ""
 
+msgid "Permanently delete all plugin data"
+msgstr ""
+
 msgid "Plugin Version"
 msgstr ""
 
 msgid "Plugin Version:"
+msgstr ""
+
+msgid "Plugin data will be retained if GML Translate is deleted."
 msgstr ""
 
 msgid "Processing batch"
@@ -688,6 +706,9 @@ msgstr ""
 msgid "Resume Sample"
 msgstr ""
 
+msgid "Retain all plugin data (recommended)"
+msgstr ""
+
 msgid "Retry All remains disabled to protect API quota. Retry one language at a time in samples of at most 25 after a successful connection test."
 msgstr ""
 
@@ -737,6 +758,9 @@ msgid "Save Order"
 msgstr ""
 
 msgid "Save Protected Terms"
+msgstr ""
+
+msgid "Save Uninstall Preference"
 msgstr ""
 
 msgid "Saved key is unreadable. Re-enter it."
@@ -892,6 +916,12 @@ msgstr ""
 msgid "The tone/style for translations (e.g. \"professional and friendly\", \"casual\", \"formal\")."
 msgstr ""
 
+msgid "The uninstall preference could not be saved. Existing data remains unchanged."
+msgstr ""
+
+msgid "The uninstall preference could not be saved. No data has been deleted."
+msgstr ""
+
 msgid "These are acknowledged historical records; they do not mean the provider is currently failing."
 msgstr ""
 
@@ -961,6 +991,9 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
+msgid "Type DELETE to enable complete removal"
+msgstr ""
+
 msgid "Type REFRESH to confirm"
 msgstr ""
 
@@ -988,6 +1021,15 @@ msgstr ""
 msgid "URL starts with"
 msgstr ""
 
+msgid "Uninstall Data"
+msgstr ""
+
+msgid "Uninstall Data Retention"
+msgstr ""
+
+msgid "Uninstall data behavior"
+msgstr ""
+
 msgid "Unknown"
 msgstr ""
 
@@ -1009,6 +1051,9 @@ msgstr ""
 msgid "Waiting for provider cooldown"
 msgstr ""
 
+msgid "When the plugin is deleted, removes translation tables, saved and manual translations, queue history, settings, credentials, glossary, jobs, and cache. This cannot be undone."
+msgstr ""
+
 msgid "Widget"
 msgstr ""
 
@@ -1027,10 +1072,16 @@ msgstr ""
 msgid "WordPress Version"
 msgstr ""
 
+msgid "WordPress cannot show a plugin-specific choice after you click Delete. Choose here what should happen if the plugin is later deleted. Deactivation and normal updates never delete stored data."
+msgstr ""
+
 msgid "WordPress could not schedule translation. Pause settings were kept."
 msgstr ""
 
 msgid "Writable"
+msgstr ""
+
+msgid "You are not allowed to change uninstall data retention."
 msgstr ""
 
 msgid "and add the \"GML Language Switcher\" widget."

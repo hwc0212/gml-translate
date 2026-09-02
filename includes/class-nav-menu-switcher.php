@@ -125,6 +125,19 @@ class GML_Nav_Menu_Switcher {
      * Filter menu objects — keep the item but mark it so the walker replaces it.
      */
     public function filter_menu_objects( $sorted_items, $args ) {
+        if (
+            class_exists( 'GML_Language_Switcher' )
+            && ! GML_Language_Switcher::request_supports_language_links()
+        ) {
+            return array_values( array_filter( $sorted_items, static function( $item ) {
+                return ! is_object( $item )
+                    || (
+                        ( $item->url ?? '' ) !== '#gml-language-switcher'
+                        && ( $item->type ?? '' ) !== self::ITEM_TYPE
+                    );
+            } ) );
+        }
+
         foreach ( $sorted_items as $item ) {
             if ( isset( $item->url ) && $item->url === '#gml-language-switcher' ) {
                 $item->type = self::ITEM_TYPE;
@@ -148,6 +161,10 @@ class GML_Nav_Menu_Switcher {
         // Don't render in admin (Customizer live preview is fine)
         if ( is_admin() && ! wp_doing_ajax() ) {
             return $item_output;
+        }
+
+        if ( ! GML_Language_Switcher::request_supports_language_links() ) {
+            return '';
         }
 
         $switcher = new GML_Language_Switcher();

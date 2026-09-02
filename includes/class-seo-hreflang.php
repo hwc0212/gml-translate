@@ -46,7 +46,7 @@ class GML_SEO_Hreflang {
     }
 
     public function inject_multilingual_meta() {
-        if ( is_admin() ) {
+        if ( is_admin() || $this->is_not_found_request() ) {
             return;
         }
 
@@ -77,6 +77,9 @@ class GML_SEO_Hreflang {
 
     public function filter_canonical_url( $canonical_url, $post = null ) {
         unset( $post );
+        if ( $this->is_not_found_request() ) {
+            return $canonical_url;
+        }
         $source = $canonical_url ?: $this->current_source_url();
         $url    = $this->provider->get_translated_url( $source, $this->provider->get_current_language() );
         return $url ?: $canonical_url;
@@ -121,5 +124,9 @@ class GML_SEO_Hreflang {
             || defined( 'THE_SEO_FRAMEWORK_VERSION' )
             || class_exists( 'WPSEO_Options' )
             || class_exists( 'RankMath' );
+    }
+
+    private function is_not_found_request() {
+        return function_exists( 'is_404' ) && is_404();
     }
 }

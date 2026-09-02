@@ -12,7 +12,7 @@ require_once GML_PLUGIN_DIR . 'includes/class-content-crawler.php';
 class GML_Test_Content_Crawler extends GML_Content_Crawler {
 	public static function exact_site_url( $url ) { return parent::is_exact_site_url( $url ); }
 	public static function acquire() { return parent::acquire_lock(); }
-	public static function release() { parent::release_lock(); }
+	public static function release( $token ) { return parent::release_lock( $token ); }
 }
 
 GML_Translate_Test_State::reset();
@@ -27,11 +27,14 @@ gml_test_assert( GML_Test_Content_Crawler::is_internal_request(), 'signed intern
 $_SERVER['HTTP_X_GML_CRAWL'] = 'wrong-token';
 gml_test_assert( ! GML_Test_Content_Crawler::is_internal_request(), 'invalid crawler signature is rejected' );
 
-gml_test_assert( GML_Test_Content_Crawler::acquire(), 'first crawler obtains its lock' );
-gml_test_assert( ! GML_Test_Content_Crawler::acquire(), 'overlapping crawler is rejected' );
-GML_Test_Content_Crawler::release();
-gml_test_assert( GML_Test_Content_Crawler::acquire(), 'crawler lock can be acquired after release' );
-GML_Test_Content_Crawler::release();
+$first_lock = GML_Test_Content_Crawler::acquire();
+gml_test_assert( is_string( $first_lock ) && $first_lock !== '', 'first crawler obtains its owner-token lock' );
+gml_test_assert( GML_Test_Content_Crawler::acquire() === '', 'overlapping crawler is rejected' );
+gml_test_assert( ! GML_Test_Content_Crawler::release( 'wrong-owner' ), 'wrong crawler owner cannot release the lock' );
+gml_test_assert( GML_Test_Content_Crawler::release( $first_lock ), 'current crawler owner releases its lock' );
+$second_lock = GML_Test_Content_Crawler::acquire();
+gml_test_assert( is_string( $second_lock ) && $second_lock !== '', 'crawler lock can be acquired after owner-safe release' );
+GML_Test_Content_Crawler::release( $second_lock );
 
 $source = file_get_contents( GML_PLUGIN_DIR . 'includes/vendor/gml-translation-core/src/class-translation-content-crawler.php' );
 gml_test_assert( strpos( $source, 'wp_safe_remote_get' ) !== false, 'crawler uses WordPress safe HTTP transport' );

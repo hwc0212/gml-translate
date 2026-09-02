@@ -2,6 +2,31 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.12] - 2026-09-02
+
+### Queue 与 Crawler 原子锁候选版
+
+- Translation Core 升至 0.6.2；在 0.6.1 原子锁基础上，语言导入只记录一个延迟 rewrite 刷新标记，在安全生命周期软刷新一次，相同路由重复导入不刷新。
+- 每个 worker 使用独立 owner token；释放、续租和 stale takeover 都比较数据库中的精确旧值，旧进程、错误 token 或 stale object cache 不能删除新 owner 的锁。
+- 只有当前 Queue owner 可以把崩溃遗留的 `processing` 行恢复为 `pending`；失去 lease 的旧 worker 不再保存 Provider 结果或覆盖当前 batch 状态。
+- Queue 在有界 Provider 调用前后续租，Crawler 在每页抓取、每语言发现和进度提交前续租；fatal/shutdown 只释放同 token 锁。
+- 兼容旧 Queue array 和 Crawler integer 锁值；不改数据库表、翻译数据、Translation Memory、URL、Provider、prompt、readiness 或多语言 SEO 输出。
+- 增加真实 WordPress 7.1 / MariaDB 10.11 双进程 stale takeover、owner-safe release、queue recovery 及根目录/子目录完整回归，测试不调用外部 AI。
+- 语言切换 shortcode 改为纯字符串 renderer；shortcode、widget、菜单和自动位置共用同一渲染器，在其他插件的 `ob_start(callback)` 内重复或嵌套调用时不再争用外层 output buffer。
+
+## [2.11.1-rc.11] - 2026-09-01
+
+### 安全卸载与数据保留候选版
+
+- Settings 新增卸载数据策略，默认保留设置、加密 Provider 凭据、语言配置、Glossary、队列、人工译文和 Translation Memory，删除后重新安装仍可复用。
+- 永久删除必须由 `manage_options` 管理员通过 nonce 校验并准确输入 `DELETE`；保存选择不会立即删除任何数据，只在 WordPress 真正卸载插件时执行。
+- 完整卸载清理当前及旧版翻译表、`gml_*` 翻译 options/transients、后台 Cron 和 `uploads/gml-cache`，同时明确排除 GML SEO options 与 WordPress 标准内容字段。
+- GML SEO 仍安装时不停止共享 Translation runtime，也不删除共享表、设置或缓存；最终清除必须由最后保留的 GML 产品明确确认。
+- 多站点逐站读取各自策略；停用、普通更新和覆盖安装不进入卸载清理流程。
+- 增加共享 Core 0.6.0、静态卸载契约和真实 WordPress/MariaDB 数据保留回归。
+- 真实 404 不再加载或渲染 shortcode、自动位置、导航菜单语言切换器，也不生成 Standalone canonical、hreflang 或 OG locale discovery；语言前缀不会把不存在的源地址伪装成多语言页面。
+- 增加 404 输出与 reciprocal hreflang 回归；已达到索引标准的源页和译文页输出同一组 alternate，未达到 95% 且 SEO 关键文本不完整的页面继续保持 `noindex` 且不发布 hreflang。
+
 ## [2.11.1-rc.10] - 2026-09-01
 
 ### 跨站点语言路由与切换器候选版

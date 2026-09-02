@@ -115,6 +115,8 @@ class GML_Admin_Settings {
     // ── Tab: Settings ────────────────────────────────────────────────────────
 
     private function render_settings_tab() {
+        $uninstall_notice = $this->handle_uninstall_preference();
+
         // Show Weglot import success notice (one-time)
         $weglot_imported = get_option( 'gml_weglot_imported', false );
         if ( $weglot_imported !== false ) {
@@ -597,6 +599,8 @@ class GML_Admin_Settings {
             <tr><th><?php _e('Active Languages:', 'gml-translate'); ?></th><td><strong><?php echo count($languages); ?></strong></td></tr>
         </table>
 
+        <?php $this->render_uninstall_preference( $uninstall_notice ); ?>
+
         <script>
         jQuery(document).ready(function($) {
             // Sortable language tags
@@ -633,6 +637,97 @@ class GML_Admin_Settings {
         });
         </script>
         <style>.gml-lang-tag:hover{background:#e0e0e0!important;}.gml-remove-lang:hover{color:#d63638!important;}.gml-lang-tag.ui-sortable-helper{background:#fff!important;box-shadow:0 2px 8px rgba(0,0,0,.15);}.gml-lang-tag.ui-sortable-placeholder{visibility:visible!important;background:#e8f0fe!important;border:1px dashed #2271b1;border-radius:3px;}</style>
+        <?php
+    }
+
+    private function handle_uninstall_preference() {
+        if ( empty( $_POST['gml_save_uninstall_preference'] ) ) {
+            return null;
+        }
+
+        if ( ! current_user_can( 'manage_options' ) ) {
+            return [
+                'type'    => 'error',
+                'message' => __( 'You are not allowed to change uninstall data retention.', 'gml-translate' ),
+            ];
+        }
+
+        check_admin_referer( 'gml_uninstall_preference', 'gml_uninstall_nonce' );
+        $mode = sanitize_key( wp_unslash( $_POST['gml_uninstall_data_mode'] ?? 'retain' ) );
+
+        if ( $mode === 'delete' ) {
+            $confirmation = trim( (string) wp_unslash( $_POST['gml_uninstall_confirmation'] ?? '' ) );
+            if ( ! hash_equals( 'DELETE', $confirmation ) ) {
+                return [
+                    'type'    => 'error',
+                    'message' => __( 'Complete removal was not enabled. Type DELETE exactly to confirm.', 'gml-translate' ),
+                ];
+            }
+            update_option( 'gml_translate_uninstall_delete_data', 1, false );
+            if ( (int) get_option( 'gml_translate_uninstall_delete_data', 0 ) !== 1 ) {
+                return [
+                    'type'    => 'error',
+                    'message' => __( 'The uninstall preference could not be saved. No data has been deleted.', 'gml-translate' ),
+                ];
+            }
+            return [
+                'type'    => 'warning',
+                'message' => __( 'Complete removal is armed. No data is deleted now; it runs only when the plugin is deleted from the Plugins page.', 'gml-translate' ),
+            ];
+        }
+
+        update_option( 'gml_translate_uninstall_delete_data', 0, false );
+        if ( (int) get_option( 'gml_translate_uninstall_delete_data', 0 ) !== 0 ) {
+            return [
+                'type'    => 'error',
+                'message' => __( 'The uninstall preference could not be saved. Existing data remains unchanged.', 'gml-translate' ),
+            ];
+        }
+
+        return [
+            'type'    => 'success',
+            'message' => __( 'Plugin data will be retained if GML Translate is deleted.', 'gml-translate' ),
+        ];
+    }
+
+    private function render_uninstall_preference( $notice = null ) {
+        $delete_data        = (bool) get_option( 'gml_translate_uninstall_delete_data', false );
+        $seo_also_installed = defined( 'WP_PLUGIN_DIR' ) && is_file( WP_PLUGIN_DIR . '/gml-seo/gml-seo.php' );
+        ?>
+        <hr style="margin:30px 0;">
+        <section id="gml-uninstall-data" style="max-width:900px;border-left:4px solid #d63638;background:#fff;padding:16px 20px;box-sizing:border-box;">
+            <h2 style="margin-top:0;"><?php esc_html_e( 'Uninstall Data Retention', 'gml-translate' ); ?></h2>
+            <?php if ( is_array( $notice ) ) : ?>
+                <div class="notice notice-<?php echo esc_attr( $notice['type'] ); ?> inline"><p><?php echo esc_html( $notice['message'] ); ?></p></div>
+            <?php endif; ?>
+            <p><?php esc_html_e( 'WordPress cannot show a plugin-specific choice after you click Delete. Choose here what should happen if the plugin is later deleted. Deactivation and normal updates never delete stored data.', 'gml-translate' ); ?></p>
+            <form method="post" action="">
+                <?php wp_nonce_field( 'gml_uninstall_preference', 'gml_uninstall_nonce' ); ?>
+                <fieldset>
+                    <legend class="screen-reader-text"><?php esc_html_e( 'Uninstall data behavior', 'gml-translate' ); ?></legend>
+                    <p>
+                        <label><input type="radio" name="gml_uninstall_data_mode" value="retain" <?php checked( ! $delete_data ); ?>>
+                            <strong><?php esc_html_e( 'Retain all plugin data (recommended)', 'gml-translate' ); ?></strong>
+                        </label><br>
+                        <span class="description"><?php esc_html_e( 'Keeps settings, encrypted provider credentials, language configuration, glossary, queue, manual edits, and the translation library for a future reinstall.', 'gml-translate' ); ?></span>
+                    </p>
+                    <p>
+                        <label><input type="radio" name="gml_uninstall_data_mode" value="delete" <?php checked( $delete_data ); ?>>
+                            <strong><?php esc_html_e( 'Permanently delete all plugin data', 'gml-translate' ); ?></strong>
+                        </label><br>
+                        <span class="description"><?php esc_html_e( 'When the plugin is deleted, removes translation tables, saved and manual translations, queue history, settings, credentials, glossary, jobs, and cache. This cannot be undone.', 'gml-translate' ); ?></span>
+                    </p>
+                </fieldset>
+                <p>
+                    <label for="gml-uninstall-confirmation"><?php esc_html_e( 'Type DELETE to enable complete removal', 'gml-translate' ); ?></label><br>
+                    <input type="text" id="gml-uninstall-confirmation" name="gml_uninstall_confirmation" value="" autocomplete="off" spellcheck="false" maxlength="20" class="regular-text">
+                </p>
+                <?php if ( $seo_also_installed ) : ?>
+                    <p class="notice notice-info inline" style="padding:10px 12px;"><?php esc_html_e( 'GML SEO is also installed, so deleting this product will not remove shared translation data. To remove it later, enable complete removal in the last remaining GML product before deleting that product.', 'gml-translate' ); ?></p>
+                <?php endif; ?>
+                <?php submit_button( __( 'Save Uninstall Preference', 'gml-translate' ), 'secondary', 'gml_save_uninstall_preference', false ); ?>
+            </form>
+        </section>
         <?php
     }
 

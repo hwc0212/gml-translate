@@ -28,6 +28,7 @@ class GML_SEO_Router {
     private $languages = [];
 
     public function __construct() {
+        GML_Translation_Rewrite::register_hooks();
         $this->languages = $this->get_enabled_languages();
 
         add_action( 'init',           [ $this, 'add_rewrite_rules' ] );

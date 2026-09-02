@@ -82,6 +82,23 @@ $translations = [
 ];
 
 $controls_zh = [
+	'Uninstall Data Retention' => '卸载数据保留',
+	'Uninstall data behavior' => '卸载数据处理方式',
+	'Uninstall Data' => '卸载数据',
+	'Retain all plugin data (recommended)' => '保留全部插件数据（推荐）',
+	'Permanently delete all plugin data' => '永久删除全部插件数据',
+	'Type DELETE to enable complete removal' => '输入 DELETE 以启用永久删除',
+	'Save Uninstall Preference' => '保存卸载设置',
+	'WordPress cannot show a plugin-specific choice after you click Delete. Choose here what should happen if the plugin is later deleted. Deactivation and normal updates never delete stored data.' => 'WordPress 在点击删除后无法显示插件专用选择框。请在这里预先选择以后删除插件时如何处理数据。停用插件和普通更新永远不会删除已保存的数据。',
+	'Keeps settings, encrypted provider credentials, language configuration, glossary, queue, manual edits, and the translation library for a future reinstall.' => '保留设置、加密的服务商凭据、语言配置、术语表、队列、人工修改和翻译库，重新安装后可继续使用。',
+	'When the plugin is deleted, removes translation tables, saved and manual translations, queue history, settings, credentials, glossary, jobs, and cache. This cannot be undone.' => '删除插件时，清理翻译表、已保存和人工译文、队列历史、设置、凭据、术语表、任务和缓存。此操作无法撤销。',
+	'GML SEO is also installed, so deleting this product will not remove shared translation data. To remove it later, enable complete removal in the last remaining GML product before deleting that product.' => '检测到 GML SEO，删除当前产品不会清理共享翻译数据。如需以后彻底清理，请在最后保留的 GML 产品中启用永久删除后，再删除该产品。',
+	'You are not allowed to change uninstall data retention.' => '你没有权限修改卸载数据保留设置。',
+	'Complete removal was not enabled. Type DELETE exactly to confirm.' => '未启用永久删除。请准确输入 DELETE 进行确认。',
+	'The uninstall preference could not be saved. No data has been deleted.' => '卸载设置保存失败，未删除任何数据。',
+	'Complete removal is armed. No data is deleted now; it runs only when the plugin is deleted from the Plugins page.' => '已启用永久删除。现在不会删除数据；只有从插件页面真正删除插件时才会执行。',
+	'The uninstall preference could not be saved. Existing data remains unchanged.' => '卸载设置保存失败，现有数据保持不变。',
+	'Plugin data will be retained if GML Translate is deleted.' => '删除 GML Translate 时将保留插件数据。',
 	'Language Site Routing' => '语言站点路由',
 	'Choose whether each language is translated on this WordPress site or linked to an independent website. External sites are excluded from local routing, crawling, and the AI translation queue. This plugin never writes content or settings to the remote website.' => '选择每种语言由当前 WordPress 站点提供，或链接到独立网站。外部站点不会参与本地路由、扫描和 AI 翻译队列；插件不会向远程网站写入内容或设置。',
 	'Language' => '语言',
@@ -279,7 +296,7 @@ function extract_i18n_strings( $root ) {
 
 function header_text( $locale ) {
     return implode( "\n", [
-        'Project-Id-Version: GML Translate 2.11.1-rc.10',
+        'Project-Id-Version: GML Translate 2.11.1-rc.12',
         'Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues',
         'POT-Creation-Date: 2026-09-01 00:00+0000',
         'PO-Revision-Date: 2026-09-01 00:00+0000',

@@ -6,6 +6,22 @@ GML Translate 是独立的 WordPress AI 多语言插件，专注解决一件事�
 
 它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。这些属于 GML AI SEO。
 
+## 2.11.1-rc.12 Queue 与 Crawler 原子锁候选版
+
+- Translation Core 0.6.2 以数据库 CAS lease 取代过期锁的 `get/delete/add` 流程，并为语言导入增加幂等的延迟 rewrite 刷新；批量导入不逐项 flush，相同路由不重复 flush。
+- owner token 同时约束续租、释放和 Queue `processing` 恢复；旧 worker 在 lease 过期后不能删除新锁、恢复活动任务、保存迟到的 AI 结果或覆盖当前批次状态。
+- 旧版 Queue array 与 Crawler integer 锁会在自然过期后原子接管，不需要清表、清队列或迁移 Translation Memory。
+- 不修改 Provider、prompt、URL、readiness、canonical、hreflang 或 sitemap；升级不会自动启动 AI 翻译。
+- 语言切换 shortcode 使用纯字符串渲染，可安全运行在其他插件的 output-buffer callback 内；widget、菜单和自动位置继续复用同一输出。
+
+## 2.11.1-rc.11 卸载数据保留候选版
+
+- Settings 底部新增 **Uninstall Data Retention**。默认保留全部设置、加密凭据、语言配置、术语表、队列、人工译文和翻译库，停用、升级或删除后重新安装仍可继续使用。
+- 只有管理员选择永久删除并准确输入 `DELETE` 后，WordPress 从 Plugins 页面真正删除插件时，才清理翻译表、旧版兼容表、options、任务、页面缓存和专用缓存目录。
+- 选择永久删除只保存未来的卸载行为，不会立即删数据、清缓存、停止队列或调用 AI；可随时切回默认保留模式。
+- GML SEO 仍安装时，共享翻译数据不会由 GML Translate 删除。若最终需要清除共享数据，必须在最后保留的 GML 产品中启用永久删除后再删除该产品。
+- 多站点按各站点自己的选择处理；卸载不会删除 WordPress 标准内容字段，例如媒体库的图片 ALT。
+
 ## 2.11.1-rc.10 跨站点语言与切换器候选版
 
 - 每个目标语言可以选择由当前 WordPress 站点的子目录提供，或链接到独立 HTTPS 域名/子域名，例如英文站 `cnxhe.com` 与中文站 `cnxhe.cn`。
@@ -81,6 +97,7 @@ GML Translate 是独立的 WordPress AI 多语言插件，专注解决一件事�
 
 - 修复插件在 WordPress `init` 之后激活时，语言路由没有写入固定链接缓存，导致 `/es/` 等入口返回 404。激活时先注册语言规则再保存；普通管理员后台请求也会检查并补齐缺失规则，保留其他插件的路由。
 - 前台、AJAX、Cron 不执行该路由修复；没有 Key 或 AI 暂停不会阻止已有语言页访问。没有真实内容的 URL 仍返回 404，不把错误页面伪装成首页。
+- 真实 404 不显示 shortcode、自动位置或导航菜单语言切换器，也不输出 multilingual canonical/hreflang；不会再从 `/missing/` 制造 `/de/missing/` 等无效入口。有效页面只有在 SEO 关键文本完整且页面译文达到 95% 后才发布 reciprocal hreflang。
 - 共享 Core 0.4.6 按语言轮流处理队列，避免西语积压时俄语一直等待。保持原有每次一个批次、互斥、暂停、熔断和小样本限制，不新增 API 并发，不重置进度。
 - 安装后进入一次普通后台页面，再用未登录窗口核对语言首页和内页。路由恢复不代表全部译文完成；缺译应在连接验证后小批量补齐，不要清库重译。
 - 回退时恢复升级前备份的插件文件即可，保留当前数据库和已修复的语言规则；仅在确定路由修复本身有问题时才恢复规则快照，否则旧快照可能重新造成 404。不执行卸载、删表或全站缓存清理。
@@ -149,6 +166,14 @@ GML Translate 提供：
 - 需要固定 `/de/`、`/fr/`、`/es/` 等语言路径的企业站和内容站。
 - 需要术语一致、品牌词保护和人工修订的外贸网站。
 - 需要从自动翻译逐步过渡到人工审核内容的团队。
+
+## 卸载与数据保留
+
+WordPress 原生删除插件流程不能在点击 Delete 后显示插件自己的选择框，因此卸载策略需要预先在 **GML Translate → Settings → Uninstall Data Retention** 中保存。
+
+- **Retain all plugin data（默认、推荐）**：删除插件文件，但保留翻译库和设置，重新安装后可以继续使用。
+- **Permanently delete all plugin data**：必须输入 `DELETE` 才能启用；仅在随后真正删除插件时执行，且无法恢复。
+- 停用插件和普通更新永远不会删除持久数据。
 
 ## 主要功能
 
