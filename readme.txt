@@ -4,7 +4,7 @@ Tags: translate, multilingual, ai, hreflang, language switcher
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.11.1-rc.12
+Stable tag: 2.11.1-rc.13
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,6 +70,15 @@ No. It provides only the minimum multilingual SEO output. Use GML AI SEO or anot
 All data is retained by default, including saved and manual translations, settings, glossary, queue, and encrypted provider credentials. To remove everything, first select permanent removal under Settings > Uninstall Data Retention and type DELETE exactly. Deactivation and normal updates never delete stored data.
 
 == Changelog ==
+
+= 2.11.1-rc.13 =
+* Updates Translation Core to 0.7.0 with additive resource manifests, source-hash relationships, and per-resource/language machine-readiness snapshots.
+* Requires all critical SEO hashes and at least 95% of the current resource manifest without treating manual Translation Memory as human publication approval.
+* Uses bounded, signed, cookie-free, same-install HTTP 200 HTML renders and fails closed as render_error.
+* Invalidates only an edited resource; global presentation changes advance one generation and schedule five-resource background batches.
+* Keeps discovery and readiness operational with AI disabled and never starts paid AI work during shadow backfill.
+* Adds object-aware single and bulk provider APIs without changing public canonical, hreflang, Sitemap, switcher, or anonymous access.
+* Verifies one query for one resource and two indexed bulk queries for 1000 resources across root and subdirectory installations.
 
 = 2.11.1-rc.12 =
 * Updates Translation Core to 0.6.2 with atomic database compare-and-swap leases and one deferred rewrite refresh after routing imports.

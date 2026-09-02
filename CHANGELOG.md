@@ -2,6 +2,19 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.13] - 2026-09-02
+
+### 资源清单与机器 Readiness Shadow 候选版
+
+- Translation Core 升至 0.7.0，新增资源 manifest、资源与 source hash 关系、资源/语言机器 readiness 三张增量表；保留现有 Translation Memory、人工译文、队列、URL、术语表和锁。
+- 以类型化资源 key 区分页面、文章、产品、公开 CPT、首页/文章页角色、taxonomy term 与明确支持的 archive；搜索、404、feed、REST/AJAX、账户和个性化请求默认排除。
+- 只有同源、无 Cookie、签名、禁止跳转且返回完整 HTTP 200 HTML 的有界渲染可以生成当前 manifest；失败记录 `render_error`，简化 fallback 不可证明页面完整。
+- readiness 只按当前资源的精确 manifest 计算：所有 SEO 关键字符串已翻译且总 required hash 至少 95%；`manual` 仅表示可复用译文，不代表页面人工批准或发布。
+- 源内容保存会同步把单个资源标为 stale；菜单、主题、widget、站点信息及相关 WooCommerce 全局设置每请求只提升一次全局 generation，并异步有界重建。
+- 新 object-aware Provider 提供单资源与批量状态、alternate candidates；Phase 2B 只产生 shadow 候选，不改变 Standalone canonical、hreflang、Sitemap、语言切换器或匿名访问。
+- 后台 backfill 每批最多 5 个资源，支持暂停/恢复，使用 owner-safe lease，AI 关闭、无 Key、额度耗尽或 Queue 暂停时仍可发现 manifest 和复用 Translation Memory，且不会自动创建付费任务。
+- 真实 WordPress 7.1 / MariaDB 10.11 根目录与 `/ygnaglul` 回归证明：单资源全语言读取 1 条查询，1000 资源多语言批量读取 2 条查询；DB generation 始终优先于 Redis 缓存。
+
 ## [2.11.1-rc.12] - 2026-09-02
 
 ### Queue 与 Crawler 原子锁候选版
