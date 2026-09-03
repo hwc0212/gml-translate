@@ -220,6 +220,15 @@ $controls_zh = [
     'No queue item is being discarded and no retry attempt is consumed. Processing will resume automatically after %s.' => '不会丢弃队列任务，也不会消耗任务重试次数。处理将在 %s 后自动恢复。',
     'Reason: %1$s (%2$s).' => '原因：%1$s（%2$s）。',
     'stored failed items' => '条已保存的失败记录',
+    'The current-content inventory is rebuilding. Until it completes, queue controls use legacy totals and public language readiness remains withheld.' => '当前内容清单正在重建。完成前，队列控制继续使用旧版总数，并暂不公开语言就绪状态。',
+    'Progress and retries now use current site content. Stored failures from removed or replaced content remain available for audit, but do not reduce current progress or consume retry quota.' => '进度和重试现在只统计当前网站内容。已删除或已替换内容的历史失败记录仍保留供审计，但不会降低当前进度或占用重试额度。',
+    'not queued' => '尚未入队',
+    'stored history' => '历史记录',
+    'Current Failed Items' => '当前失败项',
+    'Stored History' => '历史记录',
+    'current failed items' => '个当前失败项',
+    '%s stored historical records do not affect current progress or retry quota.' => '%s 条历史记录不影响当前进度或重试额度。',
+    'Review stored failure history' => '查看已保存的失败历史',
     '%s are new since the last successful connection test.' => '其中 %s 条是在上次连接测试成功后新增的。',
     'These are acknowledged historical records; they do not mean the provider is currently failing.' => '这些是已确认的历史记录，不代表服务商当前仍在失败。',
     'Retry All remains disabled to protect API quota. Retry one language at a time in samples of at most 25 after a successful connection test.' => '为保护 API 额度，仍不提供全部重试。连接测试成功后，请按语言每次最多重试 25 条。',
@@ -296,7 +305,7 @@ function extract_i18n_strings( $root ) {
 
 function header_text( $locale ) {
     return implode( "\n", [
-        'Project-Id-Version: GML Translate 2.11.1-rc.14',
+        'Project-Id-Version: GML Translate 2.11.1-rc.15',
         'Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues',
         'POT-Creation-Date: 2026-09-01 00:00+0000',
         'PO-Revision-Date: 2026-09-01 00:00+0000',

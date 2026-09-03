@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.14\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.15\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
 "POT-Creation-Date: 2026-09-01 00:00+0000\n"
 "PO-Revision-Date: 2026-09-01 00:00+0000\n"
@@ -15,6 +15,9 @@ msgstr "%d 个外部语言站点会显示在语言切换器中，但不会进入
 
 msgid "%s are new since the last successful connection test."
 msgstr "其中 %s 条是在上次连接测试成功后新增的。"
+
+msgid "%s stored historical records do not affect current progress or retry quota."
+msgstr "%s 条历史记录不影响当前进度或重试额度。"
 
 msgid "A limited translation sample is active. Resume that sample before starting other work."
 msgstr "已有受限翻译样本，请先继续并完成该样本，再启动其他任务。"
@@ -198,6 +201,9 @@ msgstr "内容被服务商阻止"
 
 msgid "Context"
 msgstr "内容类型"
+
+msgid "Current Failed Items"
+msgstr "当前失败项"
 
 msgid "Custom CSS for the language switcher."
 msgstr "Custom CSS for the language switcher."
@@ -628,6 +634,9 @@ msgstr "正在处理批次"
 msgid "Product names that should have specific translations per market"
 msgstr "Product names that should have specific translations per market"
 
+msgid "Progress and retries now use current site content. Stored failures from removed or replaced content remain available for audit, but do not reduce current progress or consume retry quota."
+msgstr "进度和重试现在只统计当前网站内容。已删除或已替换内容的历史失败记录仍保留供审计，但不会降低当前进度或占用重试额度。"
+
 msgid "Protected Terms (Never Translate)"
 msgstr "Protected Terms (Never Translate)"
 
@@ -717,6 +726,9 @@ msgstr "Retry at most 25 failed items for this language? Watch the result before
 
 msgid "Review %s translations"
 msgstr "检查 %s 译文"
+
+msgid "Review stored failure history"
+msgstr "查看已保存的失败历史"
 
 msgid "Review the 20 most recent failed items"
 msgstr "查看最近 20 条失败记录"
@@ -865,6 +877,9 @@ msgstr "已停止"
 msgid "Stored Failed Items"
 msgstr "已保存的失败记录"
 
+msgid "Stored History"
+msgstr "历史记录"
+
 msgid "Stored and readable. This is not a connection check."
 msgstr "已保存且可读取，不代表连接验证通过。"
 
@@ -903,6 +918,9 @@ msgstr "The current language of your website."
 
 msgid "The current translation batch is still finishing. Try again after it stops."
 msgstr "当前翻译批次尚未结束，请在该批次停止后再继续。"
+
+msgid "The current-content inventory is rebuilding. Until it completes, queue controls use legacy totals and public language readiness remains withheld."
+msgstr "当前内容清单正在重建。完成前，队列控制继续使用旧版总数，并暂不公开语言就绪状态。"
 
 msgid "The retry sample could not start."
 msgstr "The retry sample could not start."
@@ -1087,14 +1105,23 @@ msgstr "你没有权限修改卸载数据保留设置。"
 msgid "and add the \"GML Language Switcher\" widget."
 msgstr "and add the \"GML Language Switcher\" widget."
 
+msgid "current failed items"
+msgstr "个当前失败项"
+
 msgid "failed"
 msgstr "失败"
+
+msgid "not queued"
+msgstr "尚未入队"
 
 msgid "pending"
 msgstr "待处理"
 
 msgid "stored failed items"
 msgstr "条已保存的失败记录"
+
+msgid "stored history"
+msgstr "历史记录"
 
 msgid "tables exist"
 msgstr "tables exist"

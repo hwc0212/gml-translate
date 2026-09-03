@@ -2,6 +2,18 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.15] - 2026-09-03
+
+### 当前内容翻译范围与历史错误隔离候选版
+
+- Translation Core 升至 0.7.2，语言完成度与公开 readiness 改为只统计当前完整 resource manifest 引用的唯一 source hash。
+- 普通 Queue、有限重试与安全熔断排除改版后不再存在的 pending/failed 文本，并排除已由 Translation Memory 满足的失败记录，避免重复 API 调用和 token 消耗。
+- 所有历史队列、失败明细、Translation Memory、人工译文、术语表和配置继续保留；后台区分当前 pending、failed、not queued 与 stored history。
+- manifest inventory 未完成、有 active dirty work 或当前 render error 时保持 fail-closed，不以部分语料发布语言 readiness，也不提前收窄 Queue。
+- 前台 readiness 使用轻量覆盖率缓存，不读取历史 Queue 统计；actionable failure 熔断计数增加短时缓存和完整失效链。
+- 新增真实 WordPress 7.1 / MariaDB 10.11 根目录与子目录回归，覆盖改版删除文本、历史数据保留、当前重试选择、95% 阈值、关键 SEO 文本及零外部 API 调用。
+- 不改数据库结构、Provider、prompt、URL、人工审批或卸载策略；升级不启动 AI、不恢复暂停任务、不清空翻译库。
+
 ## [2.11.1-rc.14] - 2026-09-03
 
 ### 持久化 Readiness 失效与高扇出恢复候选版

@@ -1005,14 +1005,24 @@ class GML_Admin_Settings {
         $available_languages = $this->get_available_languages();
         $source_country      = self::get_country_from_locale($source_lang, $wp_locale);
         $source_native       = $available_languages[$source_lang]['native'] ?? strtoupper($source_lang);
-        $queue_pending       = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}gml_queue WHERE status IN ('pending','processing')");
+        $corpus_stats        = class_exists( 'GML_Translation_Readiness' ) ? GML_Translation_Readiness::language_statistics() : [];
+        $uses_current_corpus = class_exists( 'GML_Translation_Readiness' ) && GML_Translation_Readiness::uses_current_corpus();
+        $current_corpus_ready= $uses_current_corpus && GML_Translation_Readiness::current_corpus_is_complete();
+        $queue_pending       = $current_corpus_ready
+            ? array_sum( array_map( static function( $row ) { return (int) ( $row['pending'] ?? 0 ); }, $corpus_stats ) )
+            : (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}gml_queue WHERE status IN ('pending','processing')");
         $failure_counts      = GML_Queue_Processor::get_failure_counts();
         $total_failed        = $failure_counts['total'];
+        $current_failure_counts = $current_corpus_ready ? GML_Queue_Processor::get_actionable_failure_counts() : $failure_counts;
+        $current_failed      = (int) $current_failure_counts['total'];
+        $stored_history      = $current_corpus_ready ? max( 0, $total_failed - $current_failed ) : 0;
         $circuit             = GML_Queue_Processor::get_circuit_breaker();
         $safety_paused       = ! empty( $circuit );
         $cooldown_waiting    = GML_Queue_Processor::backoff_is_active();
         $backoff             = $cooldown_waiting ? GML_Queue_Processor::get_backoff() : [];
-        $failure_summary     = $total_failed > 0 ? GML_Queue_Processor::get_failure_summary( '', 3 ) : [];
+        $failure_summary     = $current_failed > 0
+            ? ( $current_corpus_ready ? GML_Queue_Processor::get_actionable_failure_summary( '', 3 ) : GML_Queue_Processor::get_failure_summary( '', 3 ) )
+            : [];
         $failure_details     = $total_failed > 0 ? GML_Queue_Processor::get_failure_details( '', 20 ) : [];
 
         $state_labels = [
@@ -1071,6 +1081,11 @@ class GML_Admin_Settings {
         .gml-failure-details-table td,.gml-failure-details-table th{vertical-align:top}
         .gml-failure-details-table small{display:block;margin-top:3px;color:#646970}
         </style>
+        <?php if ( $uses_current_corpus && ! $current_corpus_ready ): ?>
+            <div class="notice notice-info inline"><p><?php esc_html_e( 'The current-content inventory is rebuilding. Until it completes, queue controls use legacy totals and public language readiness remains withheld.', 'gml-translate' ); ?></p></div>
+        <?php elseif ( $current_corpus_ready ): ?>
+            <div class="notice notice-info inline"><p><?php esc_html_e( 'Progress and retries now use current site content. Stored failures from removed or replaced content remain available for audit, but do not reduce current progress or consume retry quota.', 'gml-translate' ); ?></p></div>
+        <?php endif; ?>
         <?php if ( $external_languages ): ?>
             <div class="notice notice-info inline"><p>
                 <?php
@@ -1137,7 +1152,8 @@ class GML_Admin_Settings {
         <div class="gml-translation-summary" aria-live="polite">
             <dl><dt><?php esc_html_e( 'Queue Status', 'gml-translate' ); ?></dt><dd id="gml-queue-state"><?php echo esc_html( $state_labels[$queue_status['state']] ); ?></dd></dl>
             <dl><dt><?php esc_html_e( 'Pending Segments', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $queue_pending ) ); ?></dd></dl>
-            <dl><dt><?php esc_html_e( 'Stored Failed Items', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $total_failed ) ); ?></dd></dl>
+            <dl><dt><?php echo esc_html( $current_corpus_ready ? __( 'Current Failed Items', 'gml-translate' ) : __( 'Stored Failed Items', 'gml-translate' ) ); ?></dt><dd><?php echo esc_html( number_format_i18n( $current_failed ) ); ?></dd></dl>
+            <?php if ( $current_corpus_ready && $stored_history > 0 ): ?><dl><dt><?php esc_html_e( 'Stored History', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $stored_history ) ); ?></dd></dl><?php endif; ?>
             <dl><dt><?php esc_html_e( 'Last Worker Activity', 'gml-translate' ); ?></dt><dd id="gml-queue-last"><?php echo esc_html( $queue_status['last_activity'] ? wp_date( 'Y-m-d H:i:s', $queue_status['last_activity'] ) : __( 'Not recorded yet', 'gml-translate' ) ); ?></dd></dl>
         </div>
         <div class="gml-content-scan">
@@ -1203,16 +1219,18 @@ class GML_Admin_Settings {
         <?php endif; ?>
 
         <?php if ($total_failed > 0): ?>
-        <div style="background:#fef3cd;border:1px solid #ffc107;border-radius:4px;padding:12px 20px;margin-bottom:20px;">
+        <div style="background:<?php echo $current_failed > 0 ? '#fef3cd' : '#f6f7f7'; ?>;border:1px solid <?php echo $current_failed > 0 ? '#ffc107' : '#dcdcde'; ?>;border-radius:4px;padding:12px 20px;margin-bottom:20px;">
             <div>
-                <strong style="color:#856404;"><?php echo esc_html( number_format_i18n( $total_failed ) ); ?> <?php esc_html_e( 'stored failed items', 'gml-translate' ); ?></strong>
-                <?php if ( $failure_counts['new'] > 0 ) : ?>
-                    <span style="color:#b32d2e;font-size:13px;margin-left:8px;"><?php printf( esc_html__( '%s are new since the last successful connection test.', 'gml-translate' ), esc_html( number_format_i18n( $failure_counts['new'] ) ) ); ?></span>
+                <strong style="color:<?php echo $current_failed > 0 ? '#856404' : '#3c434a'; ?>;"><?php echo esc_html( number_format_i18n( $current_failed ) ); ?> <?php echo esc_html( $current_corpus_ready ? __( 'current failed items', 'gml-translate' ) : __( 'stored failed items', 'gml-translate' ) ); ?></strong>
+                <?php if ( $current_corpus_ready ) : ?>
+                    <span style="color:#646970;font-size:13px;margin-left:8px;"><?php printf( esc_html__( '%s stored historical records do not affect current progress or retry quota.', 'gml-translate' ), esc_html( number_format_i18n( $stored_history ) ) ); ?></span>
+                <?php elseif ( $current_failure_counts['new'] > 0 ) : ?>
+                    <span style="color:#b32d2e;font-size:13px;margin-left:8px;"><?php printf( esc_html__( '%s are new since the last successful connection test.', 'gml-translate' ), esc_html( number_format_i18n( $current_failure_counts['new'] ) ) ); ?></span>
                 <?php else : ?>
                     <span style="color:#856404;font-size:13px;margin-left:8px;"><?php esc_html_e( 'These are acknowledged historical records; they do not mean the provider is currently failing.', 'gml-translate' ); ?></span>
                 <?php endif; ?>
             </div>
-            <p style="margin:8px 0 0;color:#6c5400;"><?php esc_html_e( 'Retry All remains disabled to protect API quota. Retry one language at a time in samples of at most 25 after a successful connection test.', 'gml-translate' ); ?></p>
+            <?php if ( $current_failed > 0 ): ?><p style="margin:8px 0 0;color:#6c5400;"><?php esc_html_e( 'Retry All remains disabled to protect API quota. Retry one language at a time in samples of at most 25 after a successful connection test.', 'gml-translate' ); ?></p><?php endif; ?>
             <?php if ( ! empty( $failure_summary ) ) : ?>
                 <ul style="margin:8px 0 0 18px;color:#6c5400;">
                     <?php foreach ( $failure_summary as $failure ) : ?>
@@ -1222,7 +1240,7 @@ class GML_Admin_Settings {
             <?php endif; ?>
             <?php if ( ! empty( $failure_details ) ) : ?>
                 <details class="gml-failure-details">
-                    <summary><?php esc_html_e( 'Review the 20 most recent failed items', 'gml-translate' ); ?></summary>
+                    <summary><?php echo esc_html( $current_corpus_ready ? __( 'Review stored failure history', 'gml-translate' ) : __( 'Review the 20 most recent failed items', 'gml-translate' ) ); ?></summary>
                     <p><?php esc_html_e( 'Legacy rows may show their original queue time when an exact failure time was not stored. Credentials and raw provider responses are never displayed.', 'gml-translate' ); ?></p>
                     <div class="gml-failure-details-table">
                         <table class="widefat striped">
@@ -1283,16 +1301,28 @@ class GML_Admin_Settings {
                     $lang_paused  = $lang['paused'] ?? false;
                     $lang_running = $is_enabled && ! $is_paused && in_array( $lang_code, $normal_languages, true );
 
-                    $translated_words = (int) $wpdb->get_var($wpdb->prepare(
-                        "SELECT COUNT(*) FROM {$wpdb->prefix}gml_index WHERE target_lang=%s AND status IN ('auto','manual')", $lang_code
-                    ));
-                    $pending_count = (int) $wpdb->get_var($wpdb->prepare(
-                        "SELECT COUNT(*) FROM {$wpdb->prefix}gml_queue WHERE target_lang=%s AND status IN ('pending','processing')", $lang_code
-                    ));
-                    $failed_count = (int) $wpdb->get_var($wpdb->prepare(
-                        "SELECT COUNT(*) FROM {$wpdb->prefix}gml_queue WHERE target_lang=%s AND status='failed'", $lang_code
-                    ));
-                    $total_words = $translated_words + $pending_count + $failed_count;
+                    $current_stats = $current_corpus_ready ? ( $corpus_stats[ $lang_code ] ?? [] ) : [];
+                    if ( $current_stats ) {
+                        $translated_words  = (int) $current_stats['translated'];
+                        $pending_count     = (int) $current_stats['pending'];
+                        $failed_count      = (int) $current_stats['failed'];
+                        $unqueued_count    = (int) $current_stats['unqueued'];
+                        $historical_count  = (int) $current_stats['historical_irrelevant'];
+                        $total_words       = (int) $current_stats['required'];
+                    } else {
+                        $translated_words = (int) $wpdb->get_var($wpdb->prepare(
+                            "SELECT COUNT(*) FROM {$wpdb->prefix}gml_index WHERE target_lang=%s AND status IN ('auto','manual')", $lang_code
+                        ));
+                        $pending_count = (int) $wpdb->get_var($wpdb->prepare(
+                            "SELECT COUNT(*) FROM {$wpdb->prefix}gml_queue WHERE target_lang=%s AND status IN ('pending','processing')", $lang_code
+                        ));
+                        $failed_count = (int) $wpdb->get_var($wpdb->prepare(
+                            "SELECT COUNT(*) FROM {$wpdb->prefix}gml_queue WHERE target_lang=%s AND status='failed'", $lang_code
+                        ));
+                        $unqueued_count = 0;
+                        $historical_count = 0;
+                        $total_words = $translated_words + $pending_count + $failed_count;
+                    }
                     $pct = $total_words > 0 ? min(100, round($translated_words / $total_words * 100)) : 0;
                     $bar_color = $pct >= 100 ? '#00a32a' : '#2271b1';
                 ?>
@@ -1313,6 +1343,12 @@ class GML_Admin_Settings {
                         <?php endif; ?>
                         <?php if ($failed_count > 0): ?>
                             <br><span style="font-size:11px;color:#d63638;cursor:pointer;" class="gml-retry-lang" data-lang="<?php echo esc_attr($lang_code); ?>"><?php echo $failed_count; ?> <?php _e('failed', 'gml-translate'); ?> ↻</span>
+                        <?php endif; ?>
+                        <?php if ($unqueued_count > 0): ?>
+                            <br><span style="font-size:11px;color:#996800;"><?php echo esc_html( number_format_i18n( $unqueued_count ) ); ?> <?php esc_html_e('not queued', 'gml-translate'); ?></span>
+                        <?php endif; ?>
+                        <?php if ($historical_count > 0): ?>
+                            <br><span style="font-size:11px;color:#646970;"><?php echo esc_html( number_format_i18n( $historical_count ) ); ?> <?php esc_html_e('stored history', 'gml-translate'); ?></span>
                         <?php endif; ?>
                     </td>
                     <td style="padding:16px 20px;text-align:center;">

@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.14\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.15\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
 "POT-Creation-Date: 2026-09-01 00:00+0000\n"
 "PO-Revision-Date: 2026-09-01 00:00+0000\n"
@@ -14,6 +14,9 @@ msgid "%d external language sites are shown in the language switcher and exclude
 msgstr ""
 
 msgid "%s are new since the last successful connection test."
+msgstr ""
+
+msgid "%s stored historical records do not affect current progress or retry quota."
 msgstr ""
 
 msgid "A limited translation sample is active. Resume that sample before starting other work."
@@ -197,6 +200,9 @@ msgid "Content was blocked by the provider"
 msgstr ""
 
 msgid "Context"
+msgstr ""
+
+msgid "Current Failed Items"
 msgstr ""
 
 msgid "Custom CSS for the language switcher."
@@ -628,6 +634,9 @@ msgstr ""
 msgid "Product names that should have specific translations per market"
 msgstr ""
 
+msgid "Progress and retries now use current site content. Stored failures from removed or replaced content remain available for audit, but do not reduce current progress or consume retry quota."
+msgstr ""
+
 msgid "Protected Terms (Never Translate)"
 msgstr ""
 
@@ -716,6 +725,9 @@ msgid "Retry at most 25 failed items for this language? Watch the result before 
 msgstr ""
 
 msgid "Review %s translations"
+msgstr ""
+
+msgid "Review stored failure history"
 msgstr ""
 
 msgid "Review the 20 most recent failed items"
@@ -865,6 +877,9 @@ msgstr ""
 msgid "Stored Failed Items"
 msgstr ""
 
+msgid "Stored History"
+msgstr ""
+
 msgid "Stored and readable. This is not a connection check."
 msgstr ""
 
@@ -902,6 +917,9 @@ msgid "The current language of your website."
 msgstr ""
 
 msgid "The current translation batch is still finishing. Try again after it stops."
+msgstr ""
+
+msgid "The current-content inventory is rebuilding. Until it completes, queue controls use legacy totals and public language readiness remains withheld."
 msgstr ""
 
 msgid "The retry sample could not start."
@@ -1087,13 +1105,22 @@ msgstr ""
 msgid "and add the \"GML Language Switcher\" widget."
 msgstr ""
 
+msgid "current failed items"
+msgstr ""
+
 msgid "failed"
+msgstr ""
+
+msgid "not queued"
 msgstr ""
 
 msgid "pending"
 msgstr ""
 
 msgid "stored failed items"
+msgstr ""
+
+msgid "stored history"
 msgstr ""
 
 msgid "tables exist"

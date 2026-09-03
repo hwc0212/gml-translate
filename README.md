@@ -6,6 +6,17 @@ GML Translate 是独立的 WordPress AI 多语言插件，专注解决一件事�
 
 它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。这些属于 GML AI SEO。
 
+## 2.11.1-rc.15 当前内容翻译范围候选版
+
+- Translation Core 0.7.2 以当前完整 resource manifest 中的唯一原文 hash 计算语言进度和公开语言就绪度；网站改版后已删除或替换的旧文本不再长期压低完成率。
+- 普通翻译批次、按语言最多 25 条的有限重试和安全熔断只处理当前网站仍需要且 Translation Memory 尚未满足的文本；旧 pending/failed 行不再重复消耗 token 或重试额度。
+- 旧失败、旧 pending、Translation Memory、人工译文、术语表及审计明细全部保留，不做清库、迁移或静默删除。后台将不再相关的失败标为 `stored history`，并把当前 pending、failed 与 `not queued` 分开显示。
+- 只有全站当前内容清单完成且没有当前渲染错误后，才启用新范围；重建期间公开语言 readiness 保持 fail-closed，队列继续沿用旧范围，避免部分扫描误放行 hreflang 或索引。
+- 前台 canonical/hreflang 判断只读取带短时缓存的轻量当前覆盖率，不扫描历史队列表；当前失败计数也短时缓存并随队列、译文、manifest 和 backfill 变化失效。
+- 语言公开就绪仍要求当前关键 SEO 文本全部完成且当前文本覆盖率至少 95%。这是机器就绪判断，不代表人工审批。
+
+升级不会启动 AI、恢复暂停任务、重试失败、删除旧数据或改变 URL。首次完成当前内容清单后，像 CNXHE 改版遗留的历史错误仍可审计，但不会继续占用当前错误和进度名额。
+
 ## 2.11.1-rc.14 持久化 Readiness 失效与恢复候选版
 
 - Translation Core 0.7.1 删除了会被不同高扇出 source hash 相互覆盖的单一 continuation 游标；现有 resource readiness 数据库行本身就是持久化待处理状态。
