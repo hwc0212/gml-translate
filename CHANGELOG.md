@@ -2,6 +2,17 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.14] - 2026-09-03
+
+### 持久化 Readiness 失效与高扇出恢复候选版
+
+- Translation Core 升至 0.7.1，以 readiness 数据库状态取代可被不同 source hash 覆盖的单一 continuation option。
+- Translation Memory 变化后先用一条索引化 `UPDATE JOIN` 将全部当前关联资源/语言行标记为 `stale`，再由每批最多 500 行的通用 worker 异步重建。
+- worker 使用 owner-token lease 和 `rebuilding` 超时认领；PHP 退出、Cron 中断、进程或服务器重启后均可从数据库恢复，且新失效状态不会被旧 worker 结果覆盖。
+- 多 hash、高于 1,500 个资源及重叠资源通过既有 resource/language 唯一行去重，不创建每个 hash/resource 的独立任务。
+- 数据库版本 3.0.1 只为 readiness 表新增 `status_id (status, id)` 索引；保留 Translation Memory、人工译文、Queue、术语表、排除规则、URL 和暂停状态。
+- 保持 Phase 2B shadow-only，不改变 Human Approval、公开路由、canonical、hreflang、Sitemap、语言切换器、readiness 阈值或 AI Provider。
+
 ## [2.11.1-rc.13] - 2026-09-02
 
 ### 资源清单与机器 Readiness Shadow 候选版

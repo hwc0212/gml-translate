@@ -1,10 +1,10 @@
 {
     "schemaVersion": 1,
     "package": "gml-translation-core",
-    "version": "0.7.0",
+    "version": "0.7.1",
     "source": {
         "repository": "https://github.com/hwc0212/gml-translation-core",
-        "commit": "500d3b4cf43f055d55f7db147b58b546cb48cf7e"
+        "commit": "adc779185d0c077bc1eaf54f071c31fd6dc9921e"
     },
     "vendorRoot": "includes/vendor/gml-translation-core",
     "files": {
@@ -15,16 +15,16 @@
         "src/class-gemini-response.php": "40e0c208831ad0aa31f2c2cc309138d6e64db43b9632a876cf6230ccb8fca3af",
         "src/class-glossary.php": "e7eb427ec70b21777dc918d04717235da56423f1390630df167e9cb933eeab34",
         "src/class-html-parser.php": "f8a8a9d13af07b9b200178b870643cc24f67548b0749fdc9d8380c01d7ed9da2",
-        "src/class-installer.php": "9c87088309301c6facadc803b11f2f59b24013311ce4b76ecc20786107df23a7",
+        "src/class-installer.php": "51d99b0b48e979d3120da9e438d94d09f984012727b27dca200b5fe294fdca45",
         "src/class-language-utils.php": "686c593e130abe1d2fc75abdeed439c888b7113990fc353f5e9cb1caf9a4cdab",
         "src/class-output-buffer.php": "67483bb69df99a2ffa8d9969269aebab2087b1b4581492d4d4568d5dd84e874b",
         "src/class-page-cache.php": "9e4f950501e1ed5e7c59c2f484956dc8e4403bb97f49975fdda0ca7c6d687c1d",
         "src/class-resource-backfill.php": "e0286726b8002ea5763a9d4240a1e0b548b572e55aa497d39ceee95fb3875adb",
         "src/class-resource-identity.php": "b1b767a9ae0fe7719bb01baeb304d7a67736ec658496f0d8c44fd2ed333e040b",
         "src/class-resource-manifest-discovery.php": "ea46806dfd7ce7496167148207be320c6cd9ab2e4e9bb683aaa241bc1ca0ef06",
-        "src/class-resource-manifest-manager.php": "bc84bccdda910cf5f5e87f1c9aa6e196ebd14e9a2e7cc52982b06b535b3a0a33",
+        "src/class-resource-manifest-manager.php": "fa8b5f038c3cb6ebc0dcbb01ea722cde769c7918c6796b81d2349a9c032e5acb",
         "src/class-resource-manifest-store.php": "6cbf3a7266c4c2a53ce5e7b32cdca98428eeeea2917b4a518ade57ed1dd99c8a",
-        "src/class-resource-readiness.php": "7a0ceb2d7b8776c520006e0ffaf256ba1b597540884e41faed1540c3d6c7f123",
+        "src/class-resource-readiness.php": "89b8b52f9457d4ec5b560d9fca0afc91a266c450d4cd7c8513f36e86843422dc",
         "src/class-translation-ai-client.php": "5d70d7bcd4397c087cdfaf7408572e67431e8e66d0507d3fee38fc3db6e9adcf",
         "src/class-translation-content-crawler.php": "86bd15f452da2f7bb09a9c998c863e534363c4963ba0c77ce5631442004a598b",
         "src/class-translation-controls.php": "d0e4acb28a91088d71a9ce06e348564d01a41d4830d80a2064e97ab58ae8eeeb",
@@ -38,7 +38,7 @@
         "src/class-translation-rewrite.php": "354a7101833a5f2f5a03ffd7b4f402b27a2341bdfc7c3d30c0e3ebc440783df2",
         "src/class-translation-state.php": "3c98754b8f52f061933aec6387982f46c8ba5d5c524ed7ef59e6246852d7851f",
         "src/class-translation-text.php": "b5aecd68212f6d36285a032054d10ac6e42cfd077d7058cca908b2b58ff7e902",
-        "src/class-translation-uninstaller.php": "9ccf795b4e1e3778a6ea5050c1029503fe1e2cd36d8eabec7843c5d8a4738a0f",
+        "src/class-translation-uninstaller.php": "9d2784e81aef23b25314ef8acd92b5703141b3779143a99bb6ce0fe3574ed3aa",
         "src/class-translator.php": "e5c59a0103d05c10158a9cd3ea55ab055baeb6dc2362961b7ed9b1022c4518f6",
         "src/class-url-helper.php": "df53fc077def900f13b81a2231a7e027a3a679ba2205f074bcc8187f1f46772b",
         "src/interface-ai-provider.php": "7afed51ba778f14300dd5f3812e974e78454a9596fc04a45bf315c64cdf048ab",

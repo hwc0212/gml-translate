@@ -6,6 +6,15 @@ GML Translate 是独立的 WordPress AI 多语言插件，专注解决一件事�
 
 它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。这些属于 GML AI SEO。
 
+## 2.11.1-rc.14 持久化 Readiness 失效与恢复候选版
+
+- Translation Core 0.7.1 删除了会被不同高扇出 source hash 相互覆盖的单一 continuation 游标；现有 resource readiness 数据库行本身就是持久化待处理状态。
+- Translation Memory 保存或删除后，用一条索引化 SQL 将所有当前关联的资源/语言行先原子标记为 `stale`，再异步计算；后台任务丢失或崩溃只会延迟恢复，不会留下假 `complete`。
+- 通用 worker 每批最多认领 500 行，继续使用 owner-token lease；崩溃留下的 `rebuilding` 行在租约超时后可由后续 worker 从数据库直接恢复。
+- 多个 hash 同时变化、同一 hash 重复变化，以及同一资源引用多个变化 hash 时，均由现有 resource/language 唯一行去重；较新的 `stale` 状态会阻止旧 worker 写回过期结果。
+- 数据库只在现有 readiness 表增加 `status_id (status, id)` 索引。Translation Memory、人工译文、队列、术语表、排除规则、URL 和暂停状态均不迁移、不删除。
+- 本版继续严格保持 shadow-only，不改变公开路由、canonical、hreflang、Sitemap、语言切换器、readiness 阈值或 AI Provider。
+
 ## 2.11.1-rc.13 资源清单与机器 Readiness Shadow 候选版
 
 - Translation Core 0.7.0 为页面、文章、产品、公开 CPT、taxonomy、首页/文章页角色和明确支持的 archive 建立类型化 resource manifest。

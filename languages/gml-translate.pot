@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.13\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.14\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
 "POT-Creation-Date: 2026-09-01 00:00+0000\n"
 "PO-Revision-Date: 2026-09-01 00:00+0000\n"
