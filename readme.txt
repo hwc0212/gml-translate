@@ -4,7 +4,7 @@ Tags: translate, multilingual, ai, hreflang, language switcher
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.11.1-rc.15
+Stable tag: 2.11.1-rc.16
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,6 +70,15 @@ No. It provides only the minimum multilingual SEO output. Use GML AI SEO or anot
 All data is retained by default, including saved and manual translations, settings, glossary, queue, and encrypted provider credentials. To remove everything, first select permanent removal under Settings > Uninstall Data Retention and type DELETE exactly. Deactivation and normal updates never delete stored data.
 
 == Changelog ==
+
+= 2.11.1-rc.16 =
+* Updates Translation Core to 0.8.0 and separates machine readiness from explicit human review.
+* Lets administrators review and approve or reject one exact local resource-language snapshot at a time, with no bulk-approval bypass.
+* Binds decisions to manifest, global, and translation generations so real source or translated-text changes make old decisions stale.
+* Keeps identical authoritative rescans idempotent and commits translation writes, readiness invalidation, and approval invalidation atomically.
+* Adds current decisions, translation generations, and append-only audit history without copying source or translated page text into audit rows.
+* Keeps Phase 2C shadow-only: decisions do not publish, hide, route, index, or change canonical, hreflang, Sitemap, switcher, or anonymous access.
+* Adds a direct MariaDB test preflight and retains full no-provider root/subdirectory regression coverage.
 
 = 2.11.1-rc.15 =
 * Updates Translation Core to 0.7.2 and calculates language progress and public readiness from unique source hashes in the completed current resource manifest.

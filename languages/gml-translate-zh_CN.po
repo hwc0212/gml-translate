@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.15\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.16\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
 "POT-Creation-Date: 2026-09-01 00:00+0000\n"
 "PO-Revision-Date: 2026-09-01 00:00+0000\n"
@@ -15,6 +15,9 @@ msgstr "%d 个外部语言站点会显示在语言切换器中，但不会进入
 
 msgid "%s are new since the last successful connection test."
 msgstr "其中 %s 条是在上次连接测试成功后新增的。"
+
+msgid "%s resource-language snapshots"
+msgstr "%s 个资源语言快照"
 
 msgid "%s stored historical records do not affect current progress or retry quota."
 msgstr "%s 条历史记录不影响当前进度或重试额度。"
@@ -61,6 +64,9 @@ msgstr "API Key 已加密保存并回读核对成功。请测试已保存的 AI 
 msgid "API key save could not be verified. Check the key for whitespace, OpenSSL availability, and database writes. No connection test was sent."
 msgstr "API Key 保存未通过核对。请检查密钥是否含空白字符、OpenSSL 是否可用、数据库能否写入。本次未发送连接测试。"
 
+msgid "Action"
+msgstr "操作"
+
 msgid "Actions"
 msgstr "操作"
 
@@ -72,6 +78,9 @@ msgstr "Add Rule"
 
 msgid "Add a language →"
 msgstr "Add a language →"
+
+msgid "Add a reason before rejecting this translation."
+msgstr "拒绝此翻译前请填写原因。"
 
 msgid "Add language switcher to your site using shortcode:"
 msgstr "Add language switcher to your site using shortcode:"
@@ -115,6 +124,15 @@ msgstr "外观"
 msgid "Appearance → Widgets"
 msgstr "Appearance → Widgets"
 
+msgid "Approval note (optional)"
+msgstr "批准备注（可选）"
+
+msgid "Approve Current Snapshot"
+msgstr "批准当前快照"
+
+msgid "Approved"
+msgstr "已批准"
+
 msgid "Attempts"
 msgstr "尝试次数"
 
@@ -135,6 +153,9 @@ msgstr "Automatic Position"
 
 msgid "Automatically redirect first-time visitors to their preferred language based on browser settings."
 msgstr "Automatically redirect first-time visitors to their preferred language based on browser settings."
+
+msgid "Back to review queue"
+msgstr "返回审核队列"
 
 msgid "Basic Usage"
 msgstr "Basic Usage"
@@ -172,6 +193,9 @@ msgstr "Circle"
 msgid "Code"
 msgstr "Code"
 
+msgid "Complete"
+msgstr "完整"
+
 msgid "Complete removal is armed. No data is deleted now; it runs only when the plugin is deleted from the Plugins page."
 msgstr "已启用永久删除。现在不会删除数据；只有从插件页面真正删除插件时才会执行。"
 
@@ -190,6 +214,9 @@ msgstr "确认刷新页面缓存"
 msgid "Confirm Refresh"
 msgstr "确认刷新"
 
+msgid "Confirm that you reviewed the current translation snapshot."
+msgstr "请确认你已审核当前翻译快照。"
+
 msgid "Content Scan"
 msgstr "内容扫描"
 
@@ -200,7 +227,16 @@ msgid "Content was blocked by the provider"
 msgstr "内容被服务商阻止"
 
 msgid "Context"
-msgstr "内容类型"
+msgstr "上下文"
+
+msgid "Coverage"
+msgstr "覆盖率"
+
+msgid "Critical"
+msgstr "关键"
+
+msgid "Critical missing"
+msgstr "缺失的关键文本"
 
 msgid "Current Failed Items"
 msgstr "当前失败项"
@@ -210,6 +246,9 @@ msgstr "Custom CSS for the language switcher."
 
 msgid "Database Tables"
 msgstr "Database Tables"
+
+msgid "Decision"
+msgstr "决定"
 
 msgid "DeepSeek API Key"
 msgstr "DeepSeek API Key"
@@ -394,8 +433,17 @@ msgstr "Header - Right"
 msgid "How It Works"
 msgstr "How It Works"
 
+msgid "Human Review"
+msgstr "人工审核"
+
+msgid "I reviewed this current source and translation snapshot."
+msgstr "我已审核当前源文和翻译快照。"
+
 msgid "Idle"
 msgstr "空闲"
+
+msgid "Incomplete"
+msgstr "不完整"
 
 msgid "Industry-specific terminology that generic AI might translate incorrectly"
 msgstr "Industry-specific terminology that generic AI might translate incorrectly"
@@ -469,17 +517,29 @@ msgstr "加载中..."
 msgid "Local translation save failed"
 msgstr "本地译文保存失败"
 
+msgid "Machine"
+msgstr "机器状态"
+
+msgid "Machine Readiness"
+msgstr "机器就绪度"
+
 msgid "Main Configuration"
 msgstr "主要配置"
 
 msgid "Manage Translations"
 msgstr "管理译文"
 
+msgid "Manifest generation"
+msgstr "清单版本"
+
 msgid "Manual"
 msgstr "Manual"
 
 msgid "Match the current path"
 msgstr "匹配当前路径"
+
+msgid "Missing"
+msgstr "缺失"
 
 msgid "Model or API resource not found"
 msgstr "找不到模型或 API 资源"
@@ -499,11 +559,17 @@ msgstr "Next →"
 msgid "No API key provided"
 msgstr "No API key provided"
 
+msgid "No current resource manifests are available for local target languages yet."
+msgstr "当前还没有可供本站目标语言审核的资源清单。"
+
 msgid "No languages configured yet."
 msgstr "No languages configured yet."
 
 msgid "No queue item is being discarded and no retry attempt is consumed. Processing will resume automatically after %s."
 msgstr "不会丢弃队列任务，也不会消耗任务重试次数。处理将在 %s 后自动恢复。"
+
+msgid "No review decisions have been recorded."
+msgstr "尚未记录审核决定。"
 
 msgid "No translations found."
 msgstr "未找到翻译。"
@@ -527,7 +593,7 @@ msgid "Not writable"
 msgstr "Not writable"
 
 msgid "Note"
-msgstr "Note"
+msgstr "备注"
 
 msgid "Note: After adding glossary rules, clear the translation cache for affected languages to re-translate with the new rules."
 msgstr "Note: After adding glossary rules, clear the translation cache for affected languages to re-translate with the new rules."
@@ -538,11 +604,20 @@ msgstr "On"
 msgid "One external language site is shown in the language switcher and excluded from this AI queue."
 msgstr "1 个外部语言站点会显示在语言切换器中，但不会进入此 AI 队列。"
 
+msgid "Only configured local target languages can be reviewed."
+msgstr "只能审核已配置的本站目标语言。"
+
 msgid "Only redirects on the homepage. Returning visitors keep their chosen language via cookie. Bots/crawlers are never redirected."
 msgstr "Only redirects on the homepage. Returning visitors keep their chosen language via cookie. Bots/crawlers are never redirected."
 
 msgid "Only rendered page cache will be refreshed. Saved translations, manual edits and queue items will not be deleted."
 msgstr "仅刷新已生成的页面缓存，不删除已保存的译文、人工修改或翻译队列。"
+
+msgid "Open source page"
+msgstr "打开源页面"
+
+msgid "Open translated page"
+msgstr "打开译文页面"
 
 msgid "OpenAI API Key"
 msgstr "OpenAI API Key"
@@ -619,6 +694,9 @@ msgstr "待处理文本段"
 msgid "Permanently delete all plugin data"
 msgstr "永久删除全部插件数据"
 
+msgid "Phase 2C review is a shadow workflow. An approval records your decision for the exact current manifest and translation snapshot, but it does not publish, hide, route, index, or advertise a language page yet."
+msgstr "Phase 2C 审核是影子工作流。批准只记录针对当前清单和翻译快照的决定，暂时不会发布、隐藏、路由、索引或推广语言页面。"
+
 msgid "Plugin Version"
 msgstr "Plugin Version"
 
@@ -691,6 +769,12 @@ msgstr "达到速率限制或额度上限"
 msgid "Reason: %1$s (%2$s)."
 msgstr "原因：%1$s（%2$s）。"
 
+msgid "Rebuilding"
+msgstr "重建中"
+
+msgid "Record Review Decision"
+msgstr "记录审核决定"
+
 msgid "Recorded at"
 msgstr "记录时间"
 
@@ -700,17 +784,32 @@ msgstr "Rectangle"
 msgid "Refresh Page Cache"
 msgstr "刷新页面缓存"
 
+msgid "Reject Current Snapshot"
+msgstr "拒绝当前快照"
+
+msgid "Rejected"
+msgstr "已拒绝"
+
+msgid "Rejection reason"
+msgstr "拒绝原因"
+
 msgid "Remove"
 msgstr "Remove"
 
 msgid "Remove this language?"
 msgstr "Remove this language?"
 
+msgid "Render Error"
+msgstr "渲染错误"
+
 msgid "Request failed. Refresh the status before retrying."
 msgstr "请求失败。请先刷新状态再重试。"
 
 msgid "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
 msgstr "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
+
+msgid "Resource"
+msgstr "资源"
 
 msgid "Resume Sample"
 msgstr "继续小样本"
@@ -724,14 +823,29 @@ msgstr "为保护 API 额度，仍不提供全部重试。连接测试成功后�
 msgid "Retry at most 25 failed items for this language? Watch the result before retrying another sample."
 msgstr "Retry at most 25 failed items for this language? Watch the result before retrying another sample."
 
+msgid "Review"
+msgstr "审核"
+
 msgid "Review %s translations"
 msgstr "检查 %s 译文"
+
+msgid "Review History"
+msgstr "审核历史"
+
+msgid "Review one machine-complete resource and language at a time. Source or translation changes automatically make the old decision stale."
+msgstr "每次审核一个已达到机器完整状态的资源和语言。源内容或译文变化后，旧决定会自动失效。"
+
+msgid "Review pages"
+msgstr "审核分页"
 
 msgid "Review stored failure history"
 msgstr "查看已保存的失败历史"
 
 msgid "Review the 20 most recent failed items"
 msgstr "查看最近 20 条失败记录"
+
+msgid "Reviewer"
+msgstr "审核人"
 
 msgid "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
 msgstr "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
@@ -838,11 +952,14 @@ msgstr "实色"
 msgid "Sorry, you are not allowed to access this page."
 msgstr "Sorry, you are not allowed to access this page."
 
+msgid "Sorry, you are not allowed to review translations."
+msgstr "抱歉，你无权审核翻译。"
+
 msgid "Source Term"
 msgstr "Source Term"
 
 msgid "Source Text"
-msgstr "原文"
+msgstr "源文本"
 
 msgid "Source segment exceeds the size limit"
 msgstr "源文本段超过大小限制"
@@ -852,6 +969,9 @@ msgstr "源文本"
 
 msgid "Square"
 msgstr "Square"
+
+msgid "Stale"
+msgstr "已失效"
 
 msgid "Start"
 msgstr "开始"
@@ -895,6 +1015,9 @@ msgstr "System Status"
 msgid "TRANSLATED"
 msgstr "已翻译"
 
+msgid "Target language"
+msgstr "目标语言"
+
 msgid "Test Saved AI Connection"
 msgstr "Test Saved AI Connection"
 
@@ -916,14 +1039,32 @@ msgstr "The API URL was rejected. Only the selected provider official HTTPS host
 msgid "The current language of your website."
 msgstr "The current language of your website."
 
+msgid "The current resource manifest is unavailable."
+msgstr "当前资源清单不可用。"
+
 msgid "The current translation batch is still finishing. Try again after it stops."
 msgstr "当前翻译批次尚未结束，请在该批次停止后再继续。"
+
+msgid "The current translation snapshot was approved."
+msgstr "当前翻译快照已批准。"
+
+msgid "The current translation snapshot was rejected and the reason was recorded."
+msgstr "当前翻译快照已拒绝，并已记录原因。"
 
 msgid "The current-content inventory is rebuilding. Until it completes, queue controls use legacy totals and public language readiness remains withheld."
 msgstr "当前内容清单正在重建。完成前，队列控制继续使用旧版总数，并暂不公开语言就绪状态。"
 
 msgid "The retry sample could not start."
 msgstr "The retry sample could not start."
+
+msgid "The review database schema is not ready. Reload this administration page after the database upgrade completes."
+msgstr "翻译审核数据库尚未就绪，请在数据库升级完成后重新加载此后台页面。"
+
+msgid "The review database schema is unavailable."
+msgstr "翻译审核数据库结构不可用。"
+
+msgid "The review decision could not be saved. No partial decision was kept."
+msgstr "无法保存审核决定，未保留任何不完整状态。"
 
 msgid "The saved AI connection could not be verified."
 msgstr "The saved AI connection could not be verified."
@@ -952,11 +1093,20 @@ msgstr "当前 WordPress 站点（子目录）"
 msgid "This cache action is no longer available. No translations or queue items were deleted."
 msgstr "此缓存操作已停用。未删除任何译文或队列任务。"
 
+msgid "This decision is stored for the exact manifest and target-language translation generation shown below. It does not publish the page in Phase 2C."
+msgstr "此决定只绑定下方显示的精确清单和目标语言译文版本。Phase 2C 不会因此发布页面。"
+
 msgid "This is useful for:"
 msgstr "This is useful for:"
 
+msgid "This snapshot is not machine-complete. Approval and rejection remain disabled until its current manifest is complete."
+msgstr "此快照尚未达到机器完整状态。在当前清单完整前，批准和拒绝操作保持禁用。"
+
 msgid "This test does not start or resume translation."
 msgstr "本次测试不会启动或恢复翻译。"
+
+msgid "This translation is not machine-complete. Finish or repair it before review."
+msgstr "此翻译尚未达到机器完整状态，请先完成或修复。"
 
 msgid "Title:"
 msgstr "Title:"
@@ -987,6 +1137,9 @@ msgstr "已阻止重复激活翻译模块"
 
 msgid "Translation controls updated."
 msgstr "翻译控制状态已更新。"
+
+msgid "Translation generation"
+msgstr "译文版本"
 
 msgid "Translation is safety-paused. Test the saved AI connection and retry a limited language sample first."
 msgstr "翻译处于安全暂停。请先测试已保存的 AI 连接，再重试一个语言的小批量样本。"
@@ -1054,11 +1207,20 @@ msgstr "未知"
 msgid "Unknown AI provider. Settings were not saved."
 msgstr "无法识别 AI 服务商，设置未保存。"
 
+msgid "Unknown review action."
+msgstr "未知的审核操作。"
+
+msgid "Unreviewed"
+msgstr "未审核"
+
 msgid "Usage Methods"
 msgstr "Usage Methods"
 
 msgid "Use same path only when equivalent URLs exist on both sites. Homepage mode is omitted from inner-page hreflang."
 msgstr "仅当两个站点存在对应 URL 时使用同路径。首页模式不会加入内页 hreflang。"
+
+msgid "User #%d"
+msgstr "用户 #%d"
 
 msgid "Value"
 msgstr "Value"

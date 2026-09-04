@@ -6,6 +6,16 @@ GML Translate 是独立的 WordPress AI 多语言插件，专注解决一件事�
 
 它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。这些属于 GML AI SEO。
 
+## 2.11.1-rc.16 资源级人工审核候选版
+
+- Translation Core 0.8.0 将机器 readiness 与 Human Review 分离。机器完整的资源仍需管理员逐个语言查看当前文本后明确批准或填写理由拒绝。
+- 批准绑定当前 manifest 指纹及译文 generation；源页面或译文改变后旧批准自动变为 `stale`，异步 readiness 重建不会把旧批准恢复为有效。
+- 相同内容重复扫描不会无故撤销批准。译文写入、readiness 失效和批准失效在同一事务中提交，任一步骤失败都会整体回滚。
+- Review 页面分页读取资源与文本，不提供批量批准；审计历史只保存决定、版本指纹、管理员 ID 和备注，不复制页面正文或译文。
+- 本版仍是 Phase 2C shadow workflow：人工批准只记录状态，不改变公开路由、canonical、hreflang、Sitemap、语言切换器或匿名访问。公开发布门控留待 Phase 2D 单独切换和验收。
+
+升级不会启动 AI、恢复暂停队列、调用 Provider、删除旧翻译或改变 URL。
+
 ## 2.11.1-rc.15 当前内容翻译范围候选版
 
 - Translation Core 0.7.2 以当前完整 resource manifest 中的唯一原文 hash 计算语言进度和公开语言就绪度；网站改版后已删除或替换的旧文本不再长期压低完成率。

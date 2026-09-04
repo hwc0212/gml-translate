@@ -2,6 +2,18 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.16] - 2026-09-04
+
+### 资源级人工审核与快照批准候选版
+
+- Translation Core 升至 0.8.0，在机器 readiness 之上增加独立的 Human Review；机器完成不再等同于人工批准。
+- 管理员只能逐个资源、逐种本地语言查看当前 manifest 文本并明确批准或填写理由拒绝；不提供批量批准旁路。
+- 批准绑定 manifest generation、fingerprint、global generation 与 translation generation；源内容或公开译文发生真实变化后，旧决定自动变为 stale。
+- 相同权威内容重复扫描保持幂等，不撤销有效批准；译文写入、readiness 失效和批准 generation 提升在同一数据库事务中完成，失败时整体回滚。
+- 新增当前决定表、译文 generation 表和 append-only 审计表；审计仅保存标识、指纹、决定和备注，不复制源文或译文正文。
+- Review 是 Phase 2C shadow workflow，不发布、隐藏、路由或索引语言页面，也不改变 canonical、hreflang、Sitemap、语言切换器和前台访问。
+- 数据库回归入口增加直连预检，防止 WordPress 数据库错误页以退出码 0 被误判为测试通过；完整回归继续禁止外部 AI/HTTP 请求。
+
 ## [2.11.1-rc.15] - 2026-09-03
 
 ### 当前内容翻译范围与历史错误隔离候选版

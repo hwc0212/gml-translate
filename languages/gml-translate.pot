@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GML Translate 2.11.1-rc.15\n"
+"Project-Id-Version: GML Translate 2.11.1-rc.16\n"
 "Report-Msgid-Bugs-To: https://github.com/hwc0212/gml-translate/issues\n"
 "POT-Creation-Date: 2026-09-01 00:00+0000\n"
 "PO-Revision-Date: 2026-09-01 00:00+0000\n"
@@ -14,6 +14,9 @@ msgid "%d external language sites are shown in the language switcher and exclude
 msgstr ""
 
 msgid "%s are new since the last successful connection test."
+msgstr ""
+
+msgid "%s resource-language snapshots"
 msgstr ""
 
 msgid "%s stored historical records do not affect current progress or retry quota."
@@ -61,6 +64,9 @@ msgstr ""
 msgid "API key save could not be verified. Check the key for whitespace, OpenSSL availability, and database writes. No connection test was sent."
 msgstr ""
 
+msgid "Action"
+msgstr ""
+
 msgid "Actions"
 msgstr ""
 
@@ -71,6 +77,9 @@ msgid "Add Rule"
 msgstr ""
 
 msgid "Add a language →"
+msgstr ""
+
+msgid "Add a reason before rejecting this translation."
 msgstr ""
 
 msgid "Add language switcher to your site using shortcode:"
@@ -115,6 +124,15 @@ msgstr ""
 msgid "Appearance → Widgets"
 msgstr ""
 
+msgid "Approval note (optional)"
+msgstr ""
+
+msgid "Approve Current Snapshot"
+msgstr ""
+
+msgid "Approved"
+msgstr ""
+
 msgid "Attempts"
 msgstr ""
 
@@ -134,6 +152,9 @@ msgid "Automatic Position"
 msgstr ""
 
 msgid "Automatically redirect first-time visitors to their preferred language based on browser settings."
+msgstr ""
+
+msgid "Back to review queue"
 msgstr ""
 
 msgid "Basic Usage"
@@ -172,6 +193,9 @@ msgstr ""
 msgid "Code"
 msgstr ""
 
+msgid "Complete"
+msgstr ""
+
 msgid "Complete removal is armed. No data is deleted now; it runs only when the plugin is deleted from the Plugins page."
 msgstr ""
 
@@ -190,6 +214,9 @@ msgstr ""
 msgid "Confirm Refresh"
 msgstr ""
 
+msgid "Confirm that you reviewed the current translation snapshot."
+msgstr ""
+
 msgid "Content Scan"
 msgstr ""
 
@@ -202,6 +229,15 @@ msgstr ""
 msgid "Context"
 msgstr ""
 
+msgid "Coverage"
+msgstr ""
+
+msgid "Critical"
+msgstr ""
+
+msgid "Critical missing"
+msgstr ""
+
 msgid "Current Failed Items"
 msgstr ""
 
@@ -209,6 +245,9 @@ msgid "Custom CSS for the language switcher."
 msgstr ""
 
 msgid "Database Tables"
+msgstr ""
+
+msgid "Decision"
 msgstr ""
 
 msgid "DeepSeek API Key"
@@ -394,7 +433,16 @@ msgstr ""
 msgid "How It Works"
 msgstr ""
 
+msgid "Human Review"
+msgstr ""
+
+msgid "I reviewed this current source and translation snapshot."
+msgstr ""
+
 msgid "Idle"
+msgstr ""
+
+msgid "Incomplete"
 msgstr ""
 
 msgid "Industry-specific terminology that generic AI might translate incorrectly"
@@ -469,16 +517,28 @@ msgstr ""
 msgid "Local translation save failed"
 msgstr ""
 
+msgid "Machine"
+msgstr ""
+
+msgid "Machine Readiness"
+msgstr ""
+
 msgid "Main Configuration"
 msgstr ""
 
 msgid "Manage Translations"
 msgstr ""
 
+msgid "Manifest generation"
+msgstr ""
+
 msgid "Manual"
 msgstr ""
 
 msgid "Match the current path"
+msgstr ""
+
+msgid "Missing"
 msgstr ""
 
 msgid "Model or API resource not found"
@@ -499,10 +559,16 @@ msgstr ""
 msgid "No API key provided"
 msgstr ""
 
+msgid "No current resource manifests are available for local target languages yet."
+msgstr ""
+
 msgid "No languages configured yet."
 msgstr ""
 
 msgid "No queue item is being discarded and no retry attempt is consumed. Processing will resume automatically after %s."
+msgstr ""
+
+msgid "No review decisions have been recorded."
 msgstr ""
 
 msgid "No translations found."
@@ -538,10 +604,19 @@ msgstr ""
 msgid "One external language site is shown in the language switcher and excluded from this AI queue."
 msgstr ""
 
+msgid "Only configured local target languages can be reviewed."
+msgstr ""
+
 msgid "Only redirects on the homepage. Returning visitors keep their chosen language via cookie. Bots/crawlers are never redirected."
 msgstr ""
 
 msgid "Only rendered page cache will be refreshed. Saved translations, manual edits and queue items will not be deleted."
+msgstr ""
+
+msgid "Open source page"
+msgstr ""
+
+msgid "Open translated page"
 msgstr ""
 
 msgid "OpenAI API Key"
@@ -619,6 +694,9 @@ msgstr ""
 msgid "Permanently delete all plugin data"
 msgstr ""
 
+msgid "Phase 2C review is a shadow workflow. An approval records your decision for the exact current manifest and translation snapshot, but it does not publish, hide, route, index, or advertise a language page yet."
+msgstr ""
+
 msgid "Plugin Version"
 msgstr ""
 
@@ -691,6 +769,12 @@ msgstr ""
 msgid "Reason: %1$s (%2$s)."
 msgstr ""
 
+msgid "Rebuilding"
+msgstr ""
+
+msgid "Record Review Decision"
+msgstr ""
+
 msgid "Recorded at"
 msgstr ""
 
@@ -700,16 +784,31 @@ msgstr ""
 msgid "Refresh Page Cache"
 msgstr ""
 
+msgid "Reject Current Snapshot"
+msgstr ""
+
+msgid "Rejected"
+msgstr ""
+
+msgid "Rejection reason"
+msgstr ""
+
 msgid "Remove"
 msgstr ""
 
 msgid "Remove this language?"
 msgstr ""
 
+msgid "Render Error"
+msgstr ""
+
 msgid "Request failed. Refresh the status before retrying."
 msgstr ""
 
 msgid "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
+msgstr ""
+
+msgid "Resource"
 msgstr ""
 
 msgid "Resume Sample"
@@ -724,13 +823,28 @@ msgstr ""
 msgid "Retry at most 25 failed items for this language? Watch the result before retrying another sample."
 msgstr ""
 
+msgid "Review"
+msgstr ""
+
 msgid "Review %s translations"
+msgstr ""
+
+msgid "Review History"
+msgstr ""
+
+msgid "Review one machine-complete resource and language at a time. Source or translation changes automatically make the old decision stale."
+msgstr ""
+
+msgid "Review pages"
 msgstr ""
 
 msgid "Review stored failure history"
 msgstr ""
 
 msgid "Review the 20 most recent failed items"
+msgstr ""
+
+msgid "Reviewer"
 msgstr ""
 
 msgid "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
@@ -838,6 +952,9 @@ msgstr ""
 msgid "Sorry, you are not allowed to access this page."
 msgstr ""
 
+msgid "Sorry, you are not allowed to review translations."
+msgstr ""
+
 msgid "Source Term"
 msgstr ""
 
@@ -851,6 +968,9 @@ msgid "Source text"
 msgstr ""
 
 msgid "Square"
+msgstr ""
+
+msgid "Stale"
 msgstr ""
 
 msgid "Start"
@@ -895,6 +1015,9 @@ msgstr ""
 msgid "TRANSLATED"
 msgstr ""
 
+msgid "Target language"
+msgstr ""
+
 msgid "Test Saved AI Connection"
 msgstr ""
 
@@ -916,13 +1039,31 @@ msgstr ""
 msgid "The current language of your website."
 msgstr ""
 
+msgid "The current resource manifest is unavailable."
+msgstr ""
+
 msgid "The current translation batch is still finishing. Try again after it stops."
+msgstr ""
+
+msgid "The current translation snapshot was approved."
+msgstr ""
+
+msgid "The current translation snapshot was rejected and the reason was recorded."
 msgstr ""
 
 msgid "The current-content inventory is rebuilding. Until it completes, queue controls use legacy totals and public language readiness remains withheld."
 msgstr ""
 
 msgid "The retry sample could not start."
+msgstr ""
+
+msgid "The review database schema is not ready. Reload this administration page after the database upgrade completes."
+msgstr ""
+
+msgid "The review database schema is unavailable."
+msgstr ""
+
+msgid "The review decision could not be saved. No partial decision was kept."
 msgstr ""
 
 msgid "The saved AI connection could not be verified."
@@ -952,10 +1093,19 @@ msgstr ""
 msgid "This cache action is no longer available. No translations or queue items were deleted."
 msgstr ""
 
+msgid "This decision is stored for the exact manifest and target-language translation generation shown below. It does not publish the page in Phase 2C."
+msgstr ""
+
 msgid "This is useful for:"
 msgstr ""
 
+msgid "This snapshot is not machine-complete. Approval and rejection remain disabled until its current manifest is complete."
+msgstr ""
+
 msgid "This test does not start or resume translation."
+msgstr ""
+
+msgid "This translation is not machine-complete. Finish or repair it before review."
 msgstr ""
 
 msgid "Title:"
@@ -986,6 +1136,9 @@ msgid "Translation activation blocked"
 msgstr ""
 
 msgid "Translation controls updated."
+msgstr ""
+
+msgid "Translation generation"
 msgstr ""
 
 msgid "Translation is safety-paused. Test the saved AI connection and retry a limited language sample first."
@@ -1054,10 +1207,19 @@ msgstr ""
 msgid "Unknown AI provider. Settings were not saved."
 msgstr ""
 
+msgid "Unknown review action."
+msgstr ""
+
+msgid "Unreviewed"
+msgstr ""
+
 msgid "Usage Methods"
 msgstr ""
 
 msgid "Use same path only when equivalent URLs exist on both sites. Homepage mode is omitted from inner-page hreflang."
+msgstr ""
+
+msgid "User #%d"
 msgstr ""
 
 msgid "Value"

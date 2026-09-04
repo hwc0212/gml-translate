@@ -9,7 +9,10 @@ if (!defined('ABSPATH')) { exit; }
 
 class GML_Admin_Settings {
 
+    private $resource_review;
+
     public function __construct() {
+        $this->resource_review = new GML_Resource_Review_Admin();
         add_action('admin_menu',             [$this, 'add_menu']);
         GML_Admin_Settings_Registration::register_hooks();
         add_action('admin_enqueue_scripts',  [$this, 'enqueue_admin_assets']);
@@ -85,6 +88,7 @@ class GML_Admin_Settings {
             'settings'     => __('Settings',           'gml-translate'),
             'switcher'     => __('Language Switcher',   'gml-translate'),
             'translations' => __('Translations',        'gml-translate'),
+            'review'       => __('Review',              'gml-translate'),
             'exclusions'   => __('Exclusion Rules',     'gml-translate'),
             'glossary'     => __('Glossary',            'gml-translate'),
         ];
@@ -104,6 +108,7 @@ class GML_Admin_Settings {
             <?php
             if ($tab === 'settings')     $this->render_settings_tab();
             elseif ($tab === 'switcher') $this->render_switcher_tab();
+            elseif ($tab === 'review') $this->resource_review->render();
             elseif ($tab === 'exclusions') $this->render_exclusions_tab();
             elseif ($tab === 'glossary') $this->render_glossary_tab();
             else                         $this->render_translations_tab();

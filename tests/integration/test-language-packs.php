@@ -17,7 +17,12 @@ foreach ( $locales as $locale ) {
 	$data = file_get_contents( $file );
 	language_pack_assert( is_string( $data ) && strlen( $data ) > 28, $locale . ' catalog is non-empty' );
 	language_pack_assert( substr( $data, 0, 4 ) === pack( 'V', 0x950412de ), $locale . ' catalog has GNU MO magic' );
+	$po = file_get_contents( $root . '/languages/gml-translate-' . $locale . '.po' );
+	language_pack_assert( strpos( $po, 'Project-Id-Version: GML Translate 2.11.1-rc.16' ) !== false, $locale . ' catalog identifies the current plugin version' );
 }
+
+$zh = file_get_contents( $root . '/languages/gml-translate-zh_CN.po' );
+language_pack_assert( strpos( $zh, "msgid \"Human Review\"\nmsgstr \"人工审核\"" ) !== false, 'Simplified Chinese catalog translates the Phase 2C review workflow' );
 
 language_pack_assert( is_file( $root . '/languages/gml-translate.pot' ), 'POT uses the gml-translate text domain name' );
 language_pack_assert( ! file_exists( $root . '/languages/gemini-translate.pot' ), 'obsolete Gemini catalog name is removed' );

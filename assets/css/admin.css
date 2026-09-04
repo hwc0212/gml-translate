@@ -167,3 +167,127 @@
     border-color: #dc3232;
     background: #fbeaea;
 }
+
+.gml-review-heading,
+.gml-review-detail-header,
+.gml-review-status-pair,
+.gml-review-links {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.gml-review-heading h2,
+.gml-review-detail-header h2 {
+    margin-bottom: 4px;
+}
+
+.gml-review-table {
+    max-width: 100%;
+    overflow-x: auto;
+    margin-top: 16px;
+}
+
+.gml-review-table table {
+    min-width: 880px;
+}
+
+.gml-review-table th,
+.gml-review-table td,
+.gml-review-audit th,
+.gml-review-audit td {
+    vertical-align: top;
+}
+
+.gml-review-badge {
+    display: inline-block;
+    min-width: 76px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: #f0f0f1;
+    color: #2c3338;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.gml-review-badge-complete,
+.gml-review-badge-approved {
+    background: #edfaef;
+    color: #176b2c;
+}
+
+.gml-review-badge-incomplete,
+.gml-review-badge-stale,
+.gml-review-badge-unreviewed,
+.gml-review-badge-rebuilding {
+    background: #fff8e5;
+    color: #7a5200;
+}
+
+.gml-review-badge-rejected,
+.gml-review-badge-blocked,
+.gml-review-badge-render_error {
+    background: #fcf0f1;
+    color: #8a2424;
+}
+
+.gml-review-metadata {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    margin: 16px 0;
+    background: #dcdcde;
+    border: 1px solid #dcdcde;
+}
+
+.gml-review-metadata div {
+    min-height: 64px;
+    padding: 12px;
+    background: #fff;
+}
+
+.gml-review-metadata dt {
+    color: #50575e;
+    font-size: 12px;
+}
+
+.gml-review-metadata dd {
+    margin: 6px 0 0;
+    font-weight: 600;
+}
+
+.gml-review-decision {
+    margin: 24px 0;
+    padding-top: 16px;
+    border-top: 1px solid #dcdcde;
+}
+
+.gml-review-decision-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.gml-review-decision-grid form {
+    padding: 16px;
+    background: #fff;
+    border: 1px solid #dcdcde;
+}
+
+.gml-review-decision-grid textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.gml-review-pagination {
+    margin: 16px 0;
+}
+
+@media (max-width: 782px) {
+    .gml-review-decision-grid {
+        grid-template-columns: 1fr;
+    }
+}
