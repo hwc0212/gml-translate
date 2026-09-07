@@ -24,7 +24,7 @@
  *   - Reads the CSV file
  *   - Deduplicates by source text (keeps the first occurrence)
  *   - Skips empty translations and identical source/target
- *   - Inserts into wp_gml_index with status='auto'
+ *   - Writes through the Core Translation Memory mutation service
  *   - Does NOT overwrite existing 'manual' translations
  *   - Reports: imported, skipped (duplicate), skipped (exists), errors
  *
@@ -159,43 +159,41 @@ echo "Columns: source={$col_from}, translation={$col_to}\n\n";
 
 // ── Process rows ─────────────────────────────────────────────────────────────
 global $wpdb;
-$table = $wpdb->prefix . 'gml_index';
+if ( ! class_exists( 'GML_Translation_Memory' ) ) {
+    fwrite( STDERR, "Error: The GML Translation Core mutation service is unavailable. Activate or upgrade GML Translate first.\n" );
+    exit( 1 );
+}
 
 $imported  = 0;
 $skipped_dup   = 0;  // duplicate source text in CSV
 $skipped_exist = 0;  // already exists in DB (manual)
+$skipped_unchanged = 0;
 $skipped_empty = 0;  // empty or identical
 $skipped_short = 0;  // too short to be useful
 $errors    = 0;
 $total     = 0;
 $seen      = [];     // track seen source hashes to deduplicate
 
-$now = current_time( 'mysql' );
-
 // Batch insert for performance
 $batch = [];
 $batch_size = 100;
 
-$flush_batch = function() use ( &$batch, &$imported, &$errors, $wpdb, $table, $now ) {
+$flush_batch = function() use ( &$batch, &$imported, &$errors, &$skipped_exist, &$skipped_unchanged ) {
     if ( empty( $batch ) ) return;
-
-    foreach ( $batch as $item ) {
-        $result = $wpdb->replace( $table, [
-            'source_hash'     => $item['hash'],
-            'source_text'     => $item['source'],
-            'source_lang'     => $item['source_lang'],
-            'target_lang'     => $item['target_lang'],
-            'translated_text' => $item['translated'],
-            'context_type'    => $item['context_type'],
-            'status'          => 'auto',
-            'created_at'      => $now,
-            'updated_at'      => $now,
-        ] );
-        if ( $result === false ) {
-            $errors++;
-        } else {
-            $imported++;
-        }
+    $records = array_map( static function( $item ) {
+        return [
+            'source_hash' => $item['hash'], 'source_text' => $item['source'],
+            'source_lang' => $item['source_lang'], 'target_lang' => $item['target_lang'],
+            'translated_text' => $item['translated'], 'context_type' => $item['context_type'],
+            'status' => 'auto',
+        ];
+    }, $batch );
+    $result = GML_Translation_Memory::upsert_batch( $records, true );
+    if ( $result === false ) $errors += count( $batch );
+    else {
+        $imported += (int) $result['written'];
+        $skipped_exist += (int) $result['skipped_manual'];
+        $skipped_unchanged += (int) $result['unchanged'];
     }
     $batch = [];
 };
@@ -233,16 +231,6 @@ while ( ( $row = fgetcsv( $handle ) ) !== false ) {
         continue;
     }
     $seen[ $hash ] = true;
-
-    // Check if manual translation exists in DB — don't overwrite
-    $existing_status = $wpdb->get_var( $wpdb->prepare(
-        "SELECT status FROM $table WHERE source_hash = %s AND source_lang = %s AND target_lang = %s",
-        $hash, $source_lang, $target_lang
-    ) );
-    if ( $existing_status === 'manual' ) {
-        $skipped_exist++;
-        continue;
-    }
 
     // Determine context type from Weglot's type column (if available)
     $context_type = 'text';
@@ -302,6 +290,7 @@ echo "Total CSV rows:        {$total}\n";
 echo "Imported:              {$imported}\n";
 echo "Skipped (duplicate):   {$skipped_dup}\n";
 echo "Skipped (manual):      {$skipped_exist}\n";
+echo "Skipped (unchanged):   {$skipped_unchanged}\n";
 echo "Skipped (empty/same):  {$skipped_empty}\n";
 echo "Skipped (too short):   {$skipped_short}\n";
 echo "Errors:                {$errors}\n";

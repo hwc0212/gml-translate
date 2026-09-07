@@ -2,6 +2,19 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.17] - 2026-09-07
+
+### 快照安全人工审核加固候选版
+
+- Translation Core 升至 0.8.1，批准和拒绝必须匹配管理员打开页面时看到的 manifest、global generation、translation generation、两个 fingerprint、machine status 与 review revision。
+- 资源内容、译文、机器状态或现有决定在提交前发生变化时，Core 以原子 compare-and-swap 拒绝旧表单；并发、重放、不完整快照和事务故障均不记录部分成功。
+- Review mutation 显式限制为 POST，并继续要求 `manage_options` 与 WordPress nonce；审批备注保持长度限制，列表增加本地目标语言和有效 review state 筛选。
+- 所有参与审批事务的表必须使用 InnoDB；缺表或不支持事务时 fail-closed，后台禁用决定并列出需要管理员检查的表。
+- Translation Memory 自动写入增加数据库级人工译文保护，消除“预检查后、实际写入前”并发覆盖人工结果的窗口。
+- Weglot 导入不再直接写 `gml_index`，统一调用 Core mutation contract，使导入、readiness 失效与审批失效共享同一事务和保护规则。
+- 数据库测试预检要求有效非空 `siteurl`，防止 WordPress 安装失败页以退出码 0 被误判为通过；clean-room 覆盖 PHP 8.3 完整场景和 PHP 7.4 关键路径。
+- Phase 2C.1 继续保持 shadow-only；不改变匿名访问、canonical、hreflang、Sitemap、语言切换器、公开路由或索引。
+
 ## [2.11.1-rc.16] - 2026-09-04
 
 ### 资源级人工审核与快照批准候选版

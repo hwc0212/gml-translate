@@ -3,7 +3,7 @@
  * Plugin Name: GML Translate
  * Plugin URI: https://huwencai.com/gml-translate
  * Description: AI multilingual translation for WordPress with stable language URLs, editable translations, glossary, queue controls, hreflang, and sitemap integration.
- * Version: 2.11.1-rc.16
+ * Version: 2.11.1-rc.17
  * Author: huwencai.com
  * Author URI: https://huwencai.com
  * License: GPL v2 or later
@@ -32,7 +32,7 @@ if ( defined( 'GML_TRANSLATION_HOST' ) && GML_TRANSLATION_HOST !== 'standalone' 
 }
 
 // Define plugin constants
-define('GML_VERSION', '2.11.1-rc.16');
+define('GML_VERSION', '2.11.1-rc.17');
 define('GML_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GML_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GML_PLUGIN_FILE', __FILE__);

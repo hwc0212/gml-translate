@@ -4,7 +4,7 @@ Tags: translate, multilingual, ai, hreflang, language switcher
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.11.1-rc.16
+Stable tag: 2.11.1-rc.17
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,6 +70,16 @@ No. It provides only the minimum multilingual SEO output. Use GML AI SEO or anot
 All data is retained by default, including saved and manual translations, settings, glossary, queue, and encrypted provider credentials. To remove everything, first select permanent removal under Settings > Uninstall Data Retention and type DELETE exactly. Deactivation and normal updates never delete stored data.
 
 == Changelog ==
+
+= 2.11.1-rc.17 =
+* Updates Translation Core to 0.8.1 and binds every approval or rejection to the exact manifest, translation, machine-state, and review-revision snapshot displayed to the reviewer.
+* Rejects stale, incomplete, concurrent, or replayed decisions without recording partial success; review writes require POST, administrator capability, and a valid WordPress nonce.
+* Requires InnoDB for all tables participating in the atomic review transaction and disables decisions with an actionable health message when transaction safety is unavailable.
+* Prevents automatic imports or queue writes from replacing a concurrent manual translation at the database mutation boundary.
+* Routes the Weglot importer through the Core Translation Memory service so imports, readiness invalidation, and review invalidation share one protected write contract.
+* Adds language and effective review-state filters while keeping review strictly one resource and one language at a time.
+* Strengthens clean-room database preflight so an empty or invalid WordPress installation cannot be reported as a passing regression run.
+* Keeps Phase 2C.1 shadow-only: review decisions still do not publish, hide, route, index, or alter canonical, hreflang, Sitemap, switcher, or anonymous access.
 
 = 2.11.1-rc.16 =
 * Updates Translation Core to 0.8.0 and separates machine readiness from explicit human review.

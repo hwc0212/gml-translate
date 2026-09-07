@@ -14,6 +14,7 @@ final class GML_Resource_Review_Admin {
         $page = sanitize_key( wp_unslash( $_GET['page'] ?? '' ) );
         $tab = sanitize_key( wp_unslash( $_GET['tab'] ?? '' ) );
         if ( ! is_admin() || $page !== 'gml-translate' || $tab !== 'review' ) return;
+        if ( strtoupper( (string) ( $_SERVER['REQUEST_METHOD'] ?? '' ) ) !== 'POST' ) return;
         if ( ! isset( $_POST['gml_resource_review_action'] ) ) return;
         if ( ! current_user_can( 'manage_options' ) ) wp_die( esc_html__( 'Sorry, you are not allowed to review translations.', 'gml-translate' ) );
         check_admin_referer( 'gml_resource_review_action', 'gml_resource_review_nonce' );
@@ -22,14 +23,23 @@ final class GML_Resource_Review_Admin {
         $resource_key = sanitize_text_field( wp_unslash( $_POST['gml_resource_key'] ?? '' ) );
         $lang = sanitize_key( wp_unslash( $_POST['gml_target_lang'] ?? '' ) );
         $note = sanitize_textarea_field( wp_unslash( $_POST['gml_review_note'] ?? '' ) );
+        $expected = [
+            'manifest_fingerprint' => sanitize_text_field( wp_unslash( $_POST['gml_expected_manifest_fingerprint'] ?? '' ) ),
+            'manifest_generation' => (int) ( $_POST['gml_expected_manifest_generation'] ?? 0 ),
+            'global_generation' => (int) ( $_POST['gml_expected_global_generation'] ?? 0 ),
+            'translation_generation' => (int) ( $_POST['gml_expected_translation_generation'] ?? 0 ),
+            'translation_fingerprint' => sanitize_text_field( wp_unslash( $_POST['gml_expected_translation_fingerprint'] ?? '' ) ),
+            'machine_status' => sanitize_key( wp_unslash( $_POST['gml_expected_machine_status'] ?? '' ) ),
+            'review_revision' => (int) ( $_POST['gml_expected_review_revision'] ?? 0 ),
+        ];
         if ( ! class_exists( 'GML_Resource_Approval' ) || ! GML_Resource_Approval::tables_ready() ) {
             $result = new WP_Error( 'gml_review_schema', __( 'The review database schema is unavailable.', 'gml-translate' ) );
         } elseif ( $action === 'approve' && empty( $_POST['gml_review_confirm'] ) ) {
             $result = new WP_Error( 'gml_review_confirmation', __( 'Confirm that you reviewed the current translation snapshot.', 'gml-translate' ) );
         } elseif ( $action === 'approve' ) {
-            $result = GML_Resource_Approval::approve( $resource_key, $lang, get_current_user_id(), $note );
+            $result = GML_Resource_Approval::approve( $resource_key, $lang, get_current_user_id(), $note, $expected );
         } elseif ( $action === 'reject' ) {
-            $result = GML_Resource_Approval::reject( $resource_key, $lang, get_current_user_id(), $note );
+            $result = GML_Resource_Approval::reject( $resource_key, $lang, get_current_user_id(), $note, $expected );
         } else {
             $result = new WP_Error( 'gml_review_action', __( 'Unknown review action.', 'gml-translate' ) );
         }
@@ -50,6 +60,13 @@ final class GML_Resource_Review_Admin {
             echo '<div class="notice notice-warning inline"><p>' . esc_html__( 'The review database schema is not ready. Reload this administration page after the database upgrade completes.', 'gml-translate' ) . '</p></div>';
             return;
         }
+        $health = GML_Resource_Approval::transaction_health();
+        if ( ! $health['ready'] ) {
+            $tables = implode( ', ', array_keys( $health['unsupported'] ) );
+            echo '<div class="notice notice-error inline"><p>'
+                . esc_html__( 'Human Review is unavailable because one or more required database tables are missing or are not using InnoDB. Ask the database administrator to inspect these tables:', 'gml-translate' )
+                . ' <code>' . esc_html( $tables ) . '</code></p></div>';
+        }
 
         $resource = sanitize_text_field( wp_unslash( $_GET['resource'] ?? '' ) );
         $lang = sanitize_key( wp_unslash( $_GET['lang'] ?? '' ) );
@@ -69,6 +86,10 @@ final class GML_Resource_Review_Admin {
             'gml_review_machine' => __( 'This translation is not machine-complete. Finish or repair it before review.', 'gml-translate' ),
             'gml_review_language' => __( 'Only configured local target languages can be reviewed.', 'gml-translate' ),
             'gml_review_schema' => __( 'The review database schema is unavailable.', 'gml-translate' ),
+            'gml_review_snapshot' => __( 'The submitted Review snapshot was incomplete. Refresh the page and review it again.', 'gml-translate' ),
+            'gml_review_conflict' => __( 'This resource or its Review decision changed after the page was loaded. Refresh and review the current snapshot before deciding.', 'gml-translate' ),
+            'gml_review_storage_engine' => __( 'Human Review requires all participating database tables to use InnoDB.', 'gml-translate' ),
+            'gml_review_transaction' => __( 'The review transaction could not complete. No success was recorded.', 'gml-translate' ),
             'gml_review_write' => __( 'The review decision could not be saved. No partial decision was kept.', 'gml-translate' ),
             'gml_review_action' => __( 'Unknown review action.', 'gml-translate' ),
         ];
@@ -77,7 +98,14 @@ final class GML_Resource_Review_Admin {
 
     private function render_list() {
         $page = max( 1, (int) ( $_GET['review_page'] ?? 1 ) );
-        $result = GML_Resource_Approval::list_resources( [ 'page' => $page, 'per_page' => self::PAGE_SIZE ] );
+        $language = sanitize_key( wp_unslash( $_GET['review_lang'] ?? '' ) );
+        $state = sanitize_key( wp_unslash( $_GET['review_state'] ?? '' ) );
+        $languages = GML_Resource_Approval::get_reviewable_languages();
+        if ( ! in_array( $language, $languages, true ) ) $language = '';
+        if ( ! in_array( $state, GML_Resource_Approval::review_states(), true ) ) $state = '';
+        $args = [ 'page' => $page, 'per_page' => self::PAGE_SIZE, 'review_state' => $state ];
+        if ( $language !== '' ) $args['languages'] = [ $language ];
+        $result = GML_Resource_Approval::list_resources( $args );
         ?>
         <div class="notice notice-info inline"><p>
             <?php esc_html_e( 'Phase 2C review is a shadow workflow. An approval records your decision for the exact current manifest and translation snapshot, but it does not publish, hide, route, index, or advertise a language page yet.', 'gml-translate' ); ?>
@@ -89,6 +117,21 @@ final class GML_Resource_Review_Admin {
             </div>
             <span><?php printf( esc_html__( '%s resource-language snapshots', 'gml-translate' ), esc_html( number_format_i18n( $result['total'] ) ) ); ?></span>
         </div>
+        <form method="get" class="gml-review-filters">
+            <input type="hidden" name="page" value="gml-translate">
+            <input type="hidden" name="tab" value="review">
+            <label><?php esc_html_e( 'Target language', 'gml-translate' ); ?>
+                <select name="review_lang"><option value=""><?php esc_html_e( 'All local languages', 'gml-translate' ); ?></option>
+                    <?php foreach ( $languages as $code ): ?><option value="<?php echo esc_attr( $code ); ?>" <?php selected( $language, $code ); ?>><?php echo esc_html( strtoupper( $code ) ); ?></option><?php endforeach; ?>
+                </select>
+            </label>
+            <label><?php esc_html_e( 'Review state', 'gml-translate' ); ?>
+                <select name="review_state"><option value=""><?php esc_html_e( 'All states', 'gml-translate' ); ?></option>
+                    <?php foreach ( GML_Resource_Approval::review_states() as $review_state ): ?><option value="<?php echo esc_attr( $review_state ); ?>" <?php selected( $state, $review_state ); ?>><?php echo esc_html( ucwords( str_replace( '_', ' ', $review_state ) ) ); ?></option><?php endforeach; ?>
+                </select>
+            </label>
+            <button class="button"><?php esc_html_e( 'Filter', 'gml-translate' ); ?></button>
+        </form>
         <div class="gml-review-table">
             <table class="widefat striped">
                 <thead><tr>
@@ -115,7 +158,7 @@ final class GML_Resource_Review_Admin {
                 </tbody>
             </table>
         </div>
-        <?php $this->pagination( $result['page'], $result['pages'], [] ); ?>
+        <?php $this->pagination( $result['page'], $result['pages'], [ 'review_lang' => $language, 'review_state' => $state ] ); ?>
         <?php
     }
 
@@ -130,7 +173,8 @@ final class GML_Resource_Review_Admin {
             return;
         }
         $summary = $payload['summary'];
-        $can_decide = $summary['machine_status'] === 'complete';
+        $health = GML_Resource_Approval::transaction_health();
+        $can_decide = $summary['machine_status'] === 'complete' && $health['ready'];
         ?>
         <p><a href="<?php echo esc_url( admin_url( 'admin.php?page=gml-translate&tab=review' ) ); ?>">&larr; <?php esc_html_e( 'Back to review queue', 'gml-translate' ); ?></a></p>
         <div class="gml-review-detail-header">
@@ -149,7 +193,11 @@ final class GML_Resource_Review_Admin {
             <div><dt><?php esc_html_e( 'Coverage', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $summary['translated_count'] ) . ' / ' . number_format_i18n( $summary['required_count'] ) ); ?></dd></div>
             <div><dt><?php esc_html_e( 'Critical missing', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $summary['critical_missing_count'] ) ); ?></dd></div>
             <div><dt><?php esc_html_e( 'Manifest generation', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $summary['manifest_generation'] ) ); ?></dd></div>
+            <div><dt><?php esc_html_e( 'Global generation', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $summary['global_generation'] ) ); ?></dd></div>
             <div><dt><?php esc_html_e( 'Translation generation', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $summary['translation_generation'] ) ); ?></dd></div>
+            <div><dt><?php esc_html_e( 'Manifest fingerprint', 'gml-translate' ); ?></dt><dd><code><?php echo esc_html( substr( $summary['manifest_fingerprint'], 0, 12 ) ); ?></code></dd></div>
+            <div><dt><?php esc_html_e( 'Translation fingerprint', 'gml-translate' ); ?></dt><dd><code><?php echo esc_html( substr( $summary['translation_fingerprint'], 0, 12 ) ); ?></code></dd></div>
+            <div><dt><?php esc_html_e( 'Review revision', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $summary['review_revision'] ) ); ?></dd></div>
         </dl>
         <p class="gml-review-links">
             <?php if ( $summary['source_url'] ): ?><a class="button" target="_blank" rel="noopener noreferrer" href="<?php echo esc_url( $summary['source_url'] ); ?>"><?php esc_html_e( 'Open source page', 'gml-translate' ); ?></a><?php endif; ?>
@@ -185,6 +233,7 @@ final class GML_Resource_Review_Admin {
                     <?php wp_nonce_field( 'gml_resource_review_action', 'gml_resource_review_nonce' ); ?>
                     <input type="hidden" name="gml_resource_key" value="<?php echo esc_attr( $summary['resource_key'] ); ?>">
                     <input type="hidden" name="gml_target_lang" value="<?php echo esc_attr( $summary['target_lang'] ); ?>">
+                    <?php $this->snapshot_fields( $summary ); ?>
                     <label><input type="checkbox" name="gml_review_confirm" value="1" required <?php disabled( ! $can_decide ); ?>> <?php esc_html_e( 'I reviewed this current source and translation snapshot.', 'gml-translate' ); ?></label>
                     <p><label><?php esc_html_e( 'Approval note (optional)', 'gml-translate' ); ?><br><textarea name="gml_review_note" rows="3" maxlength="4000"></textarea></label></p>
                     <button class="button button-primary" name="gml_resource_review_action" value="approve" <?php disabled( ! $can_decide ); ?>><?php esc_html_e( 'Approve Current Snapshot', 'gml-translate' ); ?></button>
@@ -193,6 +242,7 @@ final class GML_Resource_Review_Admin {
                     <?php wp_nonce_field( 'gml_resource_review_action', 'gml_resource_review_nonce' ); ?>
                     <input type="hidden" name="gml_resource_key" value="<?php echo esc_attr( $summary['resource_key'] ); ?>">
                     <input type="hidden" name="gml_target_lang" value="<?php echo esc_attr( $summary['target_lang'] ); ?>">
+                    <?php $this->snapshot_fields( $summary ); ?>
                     <label><?php esc_html_e( 'Rejection reason', 'gml-translate' ); ?><br><textarea name="gml_review_note" rows="3" maxlength="4000" required <?php disabled( ! $can_decide ); ?>></textarea></label>
                     <p><button class="button" name="gml_resource_review_action" value="reject" <?php disabled( ! $can_decide ); ?>><?php esc_html_e( 'Reject Current Snapshot', 'gml-translate' ); ?></button></p>
                 </form>
@@ -212,6 +262,13 @@ final class GML_Resource_Review_Admin {
         </tr><?php endforeach; endif; ?>
         </tbody></table>
         <?php
+    }
+
+    private function snapshot_fields( array $summary ) {
+        $snapshot = GML_Resource_Approval::expected_snapshot( $summary );
+        foreach ( $snapshot as $key => $value ) {
+            echo '<input type="hidden" name="gml_expected_' . esc_attr( $key ) . '" value="' . esc_attr( (string) $value ) . '">';
+        }
     }
 
     private function status_badge( $status ) {

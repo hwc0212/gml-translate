@@ -3,7 +3,7 @@ require_once __DIR__ . '/../bootstrap-mock.php';
 require_once __DIR__ . '/../../includes/vendor/gml-translation-core/src/class-installer.php';
 
 $source = file_get_contents( __DIR__ . '/../../includes/vendor/gml-translation-core/src/class-installer.php' );
-gml_test_assert( GML_Installer::DB_VERSION === '3.1.0', 'pins the reviewed human-approval database version' );
+gml_test_assert( GML_Installer::DB_VERSION === '3.2.0', 'pins the reviewed snapshot-safe human-approval database version' );
 gml_test_assert( strpos( $source, 'gml_index' ) !== false, 'installer owns the translation index' );
 gml_test_assert( strpos( $source, 'gml_queue' ) !== false, 'installer owns the translation queue' );
 gml_test_assert( strpos( $source, 'gml_resource_manifests' ) !== false, 'installer owns shadow resource manifests' );
@@ -17,7 +17,13 @@ gml_test_assert( strpos( $source, 'gml_plan_items' ) === false, 'removed plan it
 gml_test_assert( strpos( $source, 'UNIQUE KEY queue_hash_lang (source_hash, source_lang, target_lang)' ) !== false, 'queue prevents duplicate provider work' );
 gml_test_assert( strpos( $source, 'deduplicate_queue_rows' ) === false, 'upgrade never deduplicates a live queue' );
 gml_test_assert( strpos( $source, 'DELETE FROM' ) === false, 'upgrade never deletes existing translation or readiness rows' );
-gml_test_assert( substr_count( $source, 'ALTER TABLE' ) === 1 && strpos( $source, 'ALTER TABLE $table ADD KEY status_id (status, id)' ) !== false, 'approval schema remains additive and the only legacy ALTER is the bounded readiness worker index' );
+gml_test_assert(
+    substr_count( $source, 'ALTER TABLE' ) === 2
+        && strpos( $source, 'ALTER TABLE $table ADD COLUMN $column $definition' ) !== false
+        && strpos( $source, 'ALTER TABLE $table ADD KEY status_id (status, id)' ) !== false,
+    'schema upgrades are limited to idempotent additive columns and the bounded readiness worker index'
+);
+gml_test_assert( strpos( $source, 'DROP TABLE' ) === false && strpos( $source, 'DROP COLUMN' ) === false, 'snapshot-safe schema upgrade contains no destructive migration' );
 gml_test_assert( strpos( $source, 'disable_large_option_autoload' ) !== false, 'upgrade removes large rule arrays from alloptions' );
 gml_test_assert( strpos( $source, 'wp_set_option_autoload_values' ) !== false, 'uses the modern WordPress autoload API when available' );
 gml_test_assert( strpos( $source, "autoload = 'no'" ) !== false, 'supports the WordPress 6.0-6.5 autoload migration fallback' );
