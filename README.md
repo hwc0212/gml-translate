@@ -6,6 +6,17 @@ GML Translate 是 GML 系列的主产品，也是独立的 WordPress AI 多语�
 
 它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。完整 SEO 应交给 SEOPress、Yoast、Rank Math 等成熟 SEO authority；GML SEO 已进入 LTS，仅维护安全、兼容、迁移与严重缺陷。
 
+## 2.11.1-rc.19 网站改版翻译同步候选版
+
+- Translation Core 0.9.2 只以当前页面 manifest 判断完成度。页面必须达到当前字符串 100% 才能公开，避免改版后出现“旧译文 + 新英文”的混合页面。
+- 未变化的字符串继续精确复用 Translation Memory；新增或变化字符串才进入 Queue；已删除字符串只保留为历史 Memory，不再参与当前页面进度、渲染和公开判断。
+- 人工译文不会因重新扫描被删除或覆盖。Human Review 数据与安全状态机继续保留，但普通站点默认无需逐页批准；明确拒绝的当前快照仍会阻止公开，也可通过 filter 启用强制审批流程。
+- 页面尚未完整翻译时，匿名访问临时 302 到对应英文源页面；语言选择器、hreflang 和 Sitemap 同时隐藏该目标，管理员可在 `noindex` 保护下预览。
+- WordPress reusable block、FSE template、GeneratePress Element、Oxygen template 和 Elementor template 的保存或删除会触发全站 manifest generation 失效，再由后台小批量重新发现实际 HTML；不会在保存请求里同步抓取或调用 AI。
+- 新增改版回归覆盖 SEO title/description、内容删除和新增、链接变化、根目录/子目录、Redis 缓存、人工译文复用及零真实 AI 请求。
+
+升级不会清空翻译、全站重译、恢复暂停队列或调用 Provider。安装到测试副本后，应先重新扫描当前内容并让少量新增字符串完成，再检查匿名页面、语言切换器、canonical、hreflang 和 Sitemap。
+
 ## 2.11.1-rc.18 Publication Gate 候选版
 
 - Translation Core 0.9.1 不保存容易漂移的 `published` 开关，而是实时派生：资源机器翻译完成、人工批准匹配当前精确快照、源资源可索引、本地目标语言启用且路由有效时，目标页才具备公开资格。
@@ -17,7 +28,7 @@ GML Translate 是 GML 系列的主产品，也是独立的 WordPress AI 多语�
 - 没有受支持 SEO 插件时，GML Sitemap 是唯一 Sitemap authority；检测到 SEOPress、Yoast、Rank Math 或 GML SEO 时，保留对方主 Sitemap，只扩展经过批准的多语言关系。
 - 独立域名、子域名和跨服务器语言配置继续保留，但本 RC 在无法验证远端精确快照与反向关系时标记为 `external_unverified`，不会加入公开 switcher、hreflang 或 Sitemap。跨服务器签名 manifest 属于后续阶段。
 
-升级不会启动 AI、恢复暂停队列、调用 Provider、批量批准资源、删除旧翻译或改变已保存的人工决定。安装后应先在测试站逐个批准少量页面，再验证匿名 302、管理员 Preview、canonical、hreflang 和 Sitemap。
+升级不会启动 AI、恢复暂停队列、调用 Provider、批量批准资源、删除旧翻译或改变已保存的人工决定。该版本要求逐页批准的默认策略已在 rc.19 简化为可选策略。
 
 ## 2.11.1-rc.17 快照安全人工审核候选版
 
@@ -49,7 +60,7 @@ GML Translate 是 GML 系列的主产品，也是独立的 WordPress AI 多语�
 - 旧失败、旧 pending、Translation Memory、人工译文、术语表及审计明细全部保留，不做清库、迁移或静默删除。后台将不再相关的失败标为 `stored history`，并把当前 pending、failed 与 `not queued` 分开显示。
 - 只有全站当前内容清单完成且没有当前渲染错误后，才启用新范围；重建期间公开语言 readiness 保持 fail-closed，队列继续沿用旧范围，避免部分扫描误放行 hreflang 或索引。
 - 前台 canonical/hreflang 判断只读取带短时缓存的轻量当前覆盖率，不扫描历史队列表；当前失败计数也短时缓存并随队列、译文、manifest 和 backfill 变化失效。
-- 语言公开就绪仍要求当前关键 SEO 文本全部完成且当前文本覆盖率至少 95%。这是机器就绪判断，不代表人工审批。
+- 该版本的语言公开阈值为 95%；rc.19 已提高为当前 manifest 100%，防止残留英文内容被公开。
 
 升级不会启动 AI、恢复暂停任务、重试失败、删除旧数据或改变 URL。首次完成当前内容清单后，像 CNXHE 改版遗留的历史错误仍可审计，但不会继续占用当前错误和进度名额。
 

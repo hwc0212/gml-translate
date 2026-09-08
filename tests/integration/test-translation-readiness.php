@@ -27,7 +27,7 @@ $GLOBALS['wpdb'] = new GML_Readiness_Test_DB();
 GML_Translate_Test_State::$options['gml_ai_translation_enabled'] = false;
 
 gml_test_assert( GML_Translation_Readiness::language_is_index_ready( 'de' ), 'stored complete language remains index-ready with AI disabled' );
-gml_test_assert( GML_Translation_Readiness::language_is_index_ready( 'es' ), 'a few historical failures do not suppress an otherwise complete language' );
+gml_test_assert( ! GML_Translation_Readiness::language_is_index_ready( 'es' ), '95 percent coverage remains withheld to prevent mixed-language publication' );
 gml_test_assert( ! GML_Translation_Readiness::language_is_index_ready( 'ru' ), 'a substantially incomplete language remains withheld' );
 
 echo "OK test-translation-readiness\n";

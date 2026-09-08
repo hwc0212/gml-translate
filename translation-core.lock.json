@@ -1,10 +1,10 @@
 {
     "schemaVersion": 1,
     "package": "gml-translation-core",
-    "version": "0.9.1",
+    "version": "0.9.2",
     "source": {
         "repository": "https://github.com/hwc0212/gml-translation-core",
-        "commit": "14e573d8e2997ca355a303f0c8b779cd46d4075a"
+        "commit": "83acb3352091107bb30c03443bd1d4acadf92f5f"
     },
     "vendorRoot": "includes/vendor/gml-translation-core",
     "files": {
@@ -17,16 +17,16 @@
         "src/class-html-parser.php": "f8a8a9d13af07b9b200178b870643cc24f67548b0749fdc9d8380c01d7ed9da2",
         "src/class-installer.php": "0b0a07ef49a094c98b6a3f49bc9498069d316d7697edac12d18c6665df1fc363",
         "src/class-language-utils.php": "686c593e130abe1d2fc75abdeed439c888b7113990fc353f5e9cb1caf9a4cdab",
-        "src/class-output-buffer.php": "23b2795627c89d58005c248bf91550d413919cb337091cf433c1ce0033fdd015",
+        "src/class-output-buffer.php": "52a23dcf66b93e0b320b2e13eaef7aa215196b207a48c7c362331ec16067de55",
         "src/class-page-cache.php": "175a093a23eb753843d2b619dad34edd80b8c70c2f774009654ccc92a52027f4",
-        "src/class-public-eligibility.php": "4aa5370938b1e53d3295655c930ddccb90bcaa917e34b878acd5f9c60126701f",
+        "src/class-public-eligibility.php": "2a22de7f0272860d80eee46d08535eee939106022e2d33f4baee4dba6dc1f2c4",
         "src/class-resource-approval.php": "327724879e0d04d9d851f64066d769fb2b68140df8a73566b7e7ece16c255e9a",
         "src/class-resource-backfill.php": "e640245c61fb50496c0391212dd103f454956df45d91c7ea23911098f6c2c905",
         "src/class-resource-identity.php": "f2126cc8617bc1c91c6d7b7503cd21c2738af9985f5091ba09a0d2a4e67d6e58",
         "src/class-resource-manifest-discovery.php": "ea46806dfd7ce7496167148207be320c6cd9ab2e4e9bb683aaa241bc1ca0ef06",
-        "src/class-resource-manifest-manager.php": "fa8b5f038c3cb6ebc0dcbb01ea722cde769c7918c6796b81d2349a9c032e5acb",
+        "src/class-resource-manifest-manager.php": "3686b55a5e66b8979e2f773892a27becd0102465325f99f9bf9a10ee1c4596c4",
         "src/class-resource-manifest-store.php": "e5bc1ed031dd0126902ab1727133591c645cc0bfc1e746f7c79df0305aa7d134",
-        "src/class-resource-readiness.php": "d65c8a74b144b04946ddada21829b65645668c1aa0a2aa4892847fba1055ca6c",
+        "src/class-resource-readiness.php": "1f790cae6e18521c0050bd3648281dd87fe269a544be1d35c96c6139da5eb55d",
         "src/class-translation-ai-client.php": "5d70d7bcd4397c087cdfaf7408572e67431e8e66d0507d3fee38fc3db6e9adcf",
         "src/class-translation-content-crawler.php": "477879aae09584fdac4345bd7dd1fc3aecfba8822a755aa770dba3202d49d75f",
         "src/class-translation-controls.php": "fe0fca453fa0d90ae5d1682c3137fac9a8e094e3981ff11dca24d75dd9fd4c52",
@@ -37,7 +37,7 @@
         "src/class-translation-provider.php": "b129d610061cbce196e6f7fca4420709a05a83aa604baf1c1b8a2a5ca141f64c",
         "src/class-translation-queue-processor.php": "d0ed5ce961c70c739c11f83562428cba95f4a3fb56b4a3bd5b4cb3d98453c42d",
         "src/class-translation-queue-scope.php": "08e430eed7bb6f89f737fa9d249c2d06cee17eca82ce47c299d39addc3a40829",
-        "src/class-translation-readiness.php": "ed068b9ee8d2571818fa98b2bc2dfc155797c29ff5006366e85678c6354a7914",
+        "src/class-translation-readiness.php": "dad67baa311509116ddba70086e9f66f0624f87d993d8bf7761415210879d722",
         "src/class-translation-rewrite.php": "354a7101833a5f2f5a03ffd7b4f402b27a2341bdfc7c3d30c0e3ebc440783df2",
         "src/class-translation-state.php": "3c98754b8f52f061933aec6387982f46c8ba5d5c524ed7ef59e6246852d7851f",
         "src/class-translation-text.php": "b5aecd68212f6d36285a032054d10ac6e42cfd077d7058cca908b2b58ff7e902",

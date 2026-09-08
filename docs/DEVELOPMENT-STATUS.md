@@ -4,14 +4,14 @@ Last updated: 2026-09-08
 
 ## Current State
 
-- Product version: `2.11.1-rc.18`
+- Product version: `2.11.1-rc.19`
 - Development branch: `codex/upgrade-lock-hotfix`
-- Vendored Core version: `0.9.1`
-- Vendored Core commit: `14e573d8e2997ca355a303f0c8b779cd46d4075a`
+- Vendored Core version: `0.9.2`
+- Vendored Core commit: `83acb3352091107bb30c03443bd1d4acadf92f5f`
 - Last committed Translate baseline before Phase 2D: `a2b51262eb9724ab4a32c6b06fc6f5a3c1fa5d61`
 - Phase 2D Translate implementation commit: `b213d98d5bda43a77a0cf5d66f84ffc89a2f295d`
 
-Phase 2C.1 is complete. Phase 2D implementation is feature-complete locally and is undergoing clean-room and release-package verification before the first user-operated RC Stop Gate.
+The current priority is real-site correctness after a source-site redesign. GML SEO is in LTS; new general SEO scope is not part of this release. The Core keeps the Phase 2C.1 safety foundation, while per-page approval is optional for ordinary sites.
 
 ## Phase 2D Scope
 
@@ -25,7 +25,7 @@ Phase 2C.1 is complete. Phase 2D implementation is feature-complete locally and 
 
 ## Verification Completed
 
-- Translation Core database suite: 92 scenarios on WordPress 7.1, PHP 8.3, MariaDB 10.11, root and `/ygnaglul` installations.
+- Translation Core database suite: 94 scenarios on WordPress 7.1, PHP 8.3, MariaDB 10.11, root and `/ygnaglul` installations.
 - Retention fixture: 130,000 historical queue rows and 52,000 Translation Memory rows preserved.
 - Review and public-cluster query metrics: one bulk query per tested batch and installation context.
 - GML Translate PHP lint and all integration tests, including runtime anonymous/admin Gate behavior and Sitemap namespace/eligibility behavior.
@@ -36,8 +36,7 @@ Phase 2C.1 is complete. Phase 2D implementation is feature-complete locally and 
 
 ## Current Blockers
 
-- GitHub push and remote CI confirmation remain pending because the execution environment requires a direct in-chat authorization before networked Git writes, even though the project brief authorizes normal development-branch pushes.
-- Actual browser acceptance on a cloned WordPress site is intentionally deferred to the first RC Stop Gate.
+- Actual browser acceptance on a cloned CNXHE WordPress site is intentionally deferred to the RC Stop Gate.
 
 ## Remaining Risks
 
@@ -48,4 +47,4 @@ Phase 2C.1 is complete. Phase 2D implementation is feature-complete locally and 
 
 ## Next Stage
 
-Build and verify `2.11.1-rc.18`, then stop for user acceptance. After that acceptance, Phase 2E can design a reversible GML SEO to GML Translate migration using a clone, never the production database first.
+Build and verify `2.11.1-rc.19`, then stop for user acceptance on a CNXHE test copy. Do not start the OzonGenerators migration audit until that acceptance succeeds.

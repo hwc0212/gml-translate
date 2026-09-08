@@ -4,7 +4,7 @@ Tags: translate, multilingual, ai, hreflang, language switcher
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.11.1-rc.18
+Stable tag: 2.11.1-rc.19
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,7 @@ Multilingual Site and AI Translation are separate states. Removing a provider ke
 * Content crawler that runs only in admin/WP-Cron and uses signed same-site requests.
 * Menu, shortcode, widget, and automatic language switcher positions with theme, outline, and solid appearance presets.
 * Browser-language detection.
-* Exact-snapshot Human Review and a derived Publication Gate shared by routes, switchers, canonical, hreflang, and multilingual sitemaps.
+* Optional exact-snapshot Human Review and a derived Publication Gate shared by routes, switchers, canonical, hreflang, and multilingual sitemaps.
 * Redis/Memcached-safe cache generation invalidation without whole-site cache flushes.
 
 = Relationship with GML AI SEO =
@@ -71,9 +71,17 @@ All data is retained by default, including saved and manual translations, settin
 
 = Why does an untranslated or stale language URL redirect to the source page? =
 
-Public translated pages require a complete machine snapshot and an explicit Human Review approval for that exact snapshot. Anonymous visitors receive a temporary 302 source-language redirect until those conditions are met. Authorized administrators can still preview the target page under forced noindex protection.
+Public translated pages require 100 percent coverage of the exact current page manifest. Human Review is optional by default, but an explicit rejection of the current snapshot still blocks publication. Anonymous visitors receive a temporary 302 source-language redirect while the current page is incomplete. Authorized administrators can still preview the target page under forced noindex protection.
 
 == Changelog ==
+
+= 2.11.1-rc.19 =
+* Updates Translation Core to 0.9.2 and requires 100 percent coverage of the exact current page manifest before a translated route is public.
+* Reuses unchanged and manual translations, queues only new or changed current strings, and removes deleted strings from current readiness without deleting historical Translation Memory.
+* Keeps incomplete targets out of public switchers, hreflang, and sitemap clusters while retaining the temporary source redirect and protected administrator preview.
+* Makes per-page Human Review optional by default while preserving exact-snapshot approval, rejection, CAS, transactions, and audit records; a current rejection always blocks publication.
+* Invalidates all dependent manifests after reusable builder or template content changes, using bounded background rediscovery without synchronous rendering or provider calls on save.
+* Adds root/subdirectory redesign regressions for content, SEO metadata, changed links, manual translations, historical retention, and no real AI requests.
 
 = 2.11.1-rc.18 =
 * Updates Translation Core to 0.9.1 and derives public eligibility from machine completeness, exact-snapshot Human Review, source indexability, local language enablement, and route validity.

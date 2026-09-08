@@ -2,6 +2,18 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.19] - 2026-09-08
+
+### 网站改版翻译同步候选版
+
+- Translation Core 升至 0.9.2，公开语言页面必须覆盖当前页面 manifest 的全部字符串；95% 完成但仍夹杂新英文的页面不再作为正常译文公开。
+- 页面改版后，未变化文本继续精确复用 Translation Memory，新增或变化文本才进入翻译队列；删除文本退出当前 manifest 和 readiness，但历史译文、人工译文及失败记录不删除。
+- 当前页面尚未完整翻译时，匿名访问继续使用无循环的 302 源语言临时跳转，并从语言选择器、hreflang 和 Sitemap 语言关系中隐藏；管理员仍可在 noindex 保护下预览。
+- Human Review 保留完整的快照、CAS、事务和审计能力，但默认不再要求普通用户逐页逐语言批准；站点可通过 `gml_translation_review_required` 启用强制审批，当前快照被明确拒绝时始终阻止公开。
+- 保存或删除 WordPress reusable block、FSE template/template part、GeneratePress Element、Oxygen template 或 Elementor template 时提升全站 manifest generation，由有界后台任务重新发现受影响页面；保存请求不执行同步渲染或 AI 调用。
+- 新增真实 WordPress/MariaDB 改版同步回归，覆盖根目录与子目录、SEO title/description、链接变化、历史数据保留、人工译文复用、仅新增字符串排队及零真实 Provider 请求。
+- 不修改数据库结构、URL 规则、AI Provider、Translation Memory、人工译文、历史失败或队列暂停状态；升级不会自动启动全站翻译。
+
 ## [2.11.1-rc.18] - 2026-09-08
 
 ### 精确快照 Publication Gate 候选版
