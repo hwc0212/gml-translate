@@ -9,7 +9,7 @@ Last updated: 2026-09-08
 - Vendored Core version: `0.9.1`
 - Vendored Core commit: `14e573d8e2997ca355a303f0c8b779cd46d4075a`
 - Last committed Translate baseline before Phase 2D: `a2b51262eb9724ab4a32c6b06fc6f5a3c1fa5d61`
-- Phase 2D Translate implementation commit: pending final local commit; record it here in the post-implementation status commit.
+- Phase 2D Translate implementation commit: `b213d98d5bda43a77a0cf5d66f84ffc89a2f295d`
 
 Phase 2C.1 is complete. Phase 2D implementation is feature-complete locally and is undergoing clean-room and release-package verification before the first user-operated RC Stop Gate.
 
