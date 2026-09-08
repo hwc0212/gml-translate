@@ -4,7 +4,7 @@ Tags: translate, multilingual, ai, hreflang, language switcher
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.11.1-rc.17
+Stable tag: 2.11.1-rc.18
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,23 +18,23 @@ Multilingual Site and AI Translation are separate states. Removing a provider ke
 
 = Features =
 
-* Language-prefixed WordPress routes, subdirectory-safe URL handling, and external domain/subdomain language links.
+* Language-prefixed WordPress routes and subdirectory-safe URL handling; external-domain mappings stay fail-closed until remote readiness can be verified.
 * Google Gemini, DeepSeek, Qwen, and OpenAI translation providers.
 * Bounded, resumable queue with locks, failure states, circuit breaking, and per-language manual recovery.
 * Translation memory, current-page lookups, manual translation editor, glossary, protected terms, and exclusion rules.
 * Content crawler that runs only in admin/WP-Cron and uses signed same-site requests.
 * Menu, shortcode, widget, and automatic language switcher positions with theme, outline, and solid appearance presets.
 * Browser-language detection.
-* Translated metadata, self-referencing canonical behavior, hreflang, and multilingual sitemap relationships.
+* Exact-snapshot Human Review and a derived Publication Gate shared by routes, switchers, canonical, hreflang, and multilingual sitemaps.
 * Redis/Memcached-safe cache generation invalidation without whole-site cache flushes.
 
 = Relationship with GML AI SEO =
 
 If you only need multilingual translation, use GML Translate.
 
-If you want the complete GML SEO suite with technical SEO, search data and AI SEO workflow, use GML SEO.
+Use one established SEO authority such as SEOPress, Yoast, or Rank Math for complete SEO management. GML Translate adds only the multilingual relationships that are safe to publish.
 
-GML SEO already includes multilingual translation, so installing both is normally unnecessary.
+GML SEO is in LTS and still includes its existing multilingual host for compatibility. Installing both is normally unnecessary.
 
 When both are active, GML Translate keeps the multilingual runtime until an administrator confirms handover, while GML SEO owns final canonical, meta, Open Graph, Schema, hreflang, and sitemap output. Existing data is never silently deleted.
 
@@ -69,7 +69,21 @@ No. It provides only the minimum multilingual SEO output. Use GML AI SEO or anot
 
 All data is retained by default, including saved and manual translations, settings, glossary, queue, and encrypted provider credentials. To remove everything, first select permanent removal under Settings > Uninstall Data Retention and type DELETE exactly. Deactivation and normal updates never delete stored data.
 
+= Why does an untranslated or stale language URL redirect to the source page? =
+
+Public translated pages require a complete machine snapshot and an explicit Human Review approval for that exact snapshot. Anonymous visitors receive a temporary 302 source-language redirect until those conditions are met. Authorized administrators can still preview the target page under forced noindex protection.
+
 == Changelog ==
+
+= 2.11.1-rc.18 =
+* Updates Translation Core to 0.9.1 and derives public eligibility from machine completeness, exact-snapshot Human Review, source indexability, local language enablement, and route validity.
+* Temporarily redirects anonymous visitors from ineligible local translated routes to the corresponding source URL while retaining a visibly marked, noindex administrator preview.
+* Makes routes, language switchers, canonical adaptation, hreflang, and sitemap output consume the same publication decision.
+* Integrates approved multilingual sitemap clusters with SEOPress, Yoast, and Rank Math, listing every eligible language URL independently with reciprocal alternates.
+* Removes resources with no eligible URLs, preserves image/video/news sitemap namespaces, and batches URL resolution and eligibility reads.
+* Counts target strings already translated by the Gettext pipeline as request-local rendered translations, avoiding false incomplete pages without extra database reads.
+* Uses the GML sitemap as the sole sitemap authority only when no supported SEO plugin is active; existing cross-server mappings remain fail-closed as external_unverified in this RC.
+* Does not start AI, resume queues, approve resources, delete translations, or perform production changes during upgrade.
 
 = 2.11.1-rc.17 =
 * Updates Translation Core to 0.8.1 and binds every approval or rejection to the exact manifest, translation, machine-state, and review-revision snapshot displayed to the reviewer.

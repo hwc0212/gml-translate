@@ -3,7 +3,7 @@
  * Plugin Name: GML Translate
  * Plugin URI: https://huwencai.com/gml-translate
  * Description: AI multilingual translation for WordPress with stable language URLs, editable translations, glossary, queue controls, hreflang, and sitemap integration.
- * Version: 2.11.1-rc.17
+ * Version: 2.11.1-rc.18
  * Author: huwencai.com
  * Author URI: https://huwencai.com
  * License: GPL v2 or later
@@ -32,7 +32,7 @@ if ( defined( 'GML_TRANSLATION_HOST' ) && GML_TRANSLATION_HOST !== 'standalone' 
 }
 
 // Define plugin constants
-define('GML_VERSION', '2.11.1-rc.17');
+define('GML_VERSION', '2.11.1-rc.18');
 define('GML_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GML_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GML_PLUGIN_FILE', __FILE__);
@@ -136,8 +136,8 @@ class GML_Translate {
     public function init_components() {
         // Only a permitted admin request may perform bounded database setup.
         GML_Installer::register_hooks();
-        // Machine-readiness discovery is a provider-free shadow process. It
-        // remains available when AI is disabled and does not alter public SEO.
+        // Resource discovery is provider-free. Publication remains separately
+        // derived from machine readiness plus exact-snapshot Human Review.
         if ( class_exists( 'GML_Resource_Manifest_Manager' ) ) {
             GML_Resource_Manifest_Manager::register_hooks();
         }
@@ -194,10 +194,11 @@ class GML_Translate {
         
         // Initialize SEO router
         new GML_SEO_Router();
-        
+
         // Translation Core supplies language relationships; the standalone
         // adapter owns the minimum multilingual SEO markup.
         $translation_provider = new GML_Translation_Provider();
+        new GML_Publication_Gate( $translation_provider );
         new GML_SEO_Hreflang( $translation_provider );
         
         // Initialize language switcher

@@ -128,6 +128,14 @@ class GML_Translate_Test_WPDB {
 			GML_Translate_Test_State::$options[ $args[0] ] = $args[1];
 			return 1;
 		}
+		if ( strpos( $sql, 'UPDATE ' ) === 0 && strpos( $sql, 'GREATEST(CAST(option_value AS UNSIGNED)' ) !== false ) {
+			if ( ! array_key_exists( $args[1], GML_Translate_Test_State::$options ) ) return 0;
+			GML_Translate_Test_State::$options[ $args[1] ] = max(
+				(int) GML_Translate_Test_State::$options[ $args[1] ],
+				(int) $args[0]
+			) + 1;
+			return 1;
+		}
 		if ( strpos( $sql, 'UPDATE ' ) === 0 ) {
 			if ( ! isset( GML_Translate_Test_State::$options[ $args[1] ] ) || GML_Translate_Test_State::$options[ $args[1] ] !== $args[2] ) return 0;
 			GML_Translate_Test_State::$options[ $args[1] ] = $args[0];

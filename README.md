@@ -2,9 +2,22 @@
 
 **AI Multilingual Translation for WordPress**
 
-GML Translate 是独立的 WordPress AI 多语言插件，专注解决一件事：以可控成本建立稳定、可维护、可人工修订的多语言网站。
+GML Translate 是 GML 系列的主产品，也是独立的 WordPress AI 多语言插件，专注解决一件事：以可控成本建立稳定、可维护、可人工修订的多语言网站。
 
-它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。这些属于 GML AI SEO。
+它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。完整 SEO 应交给 SEOPress、Yoast、Rank Math 等成熟 SEO authority；GML SEO 已进入 LTS，仅维护安全、兼容、迁移与严重缺陷。
+
+## 2.11.1-rc.18 Publication Gate 候选版
+
+- Translation Core 0.9.1 不保存容易漂移的 `published` 开关，而是实时派生：资源机器翻译完成、人工批准匹配当前精确快照、源资源可索引、本地目标语言启用且路由有效时，目标页才具备公开资格。
+- 未达到公开条件的本地语言 URL 对匿名访客执行 302 临时跳转到对应源语言 URL，不再展示旧译文、新英文和过期数据混合页面；管理员仍可预览，但响应强制 `noindex, nofollow` 并显示醒目标识和原因。
+- Router、语言选择器、hreflang、canonical 与 Sitemap 统一读取同一套派生资格，避免“页面被拦截但 Sitemap 仍宣传”或 hreflang 与 canonical 冲突。
+- SEOPress 为首要兼容目标，并适配 Yoast 与 Rank Math 的 Sitemap 输出。每个公开语言 URL 都有独立 `<url>`，同一 cluster 的 alternate 集合完全互相返回；不合格资源从 GML Sitemap 删除。
+- Sitemap URL 解析和资格读取按批处理，目标语言数量不会造成 URL × language 查询；转换器保留 image/video/news namespace，并避免重复节点的 O(n²) 清理。
+- Gettext 已先翻译的主题/插件文字会以请求级内存标记传给 HTML Output Buffer，不再被误判为缺少译文；不增加 Translation Memory 全表读取或前台数据库查询。
+- 没有受支持 SEO 插件时，GML Sitemap 是唯一 Sitemap authority；检测到 SEOPress、Yoast、Rank Math 或 GML SEO 时，保留对方主 Sitemap，只扩展经过批准的多语言关系。
+- 独立域名、子域名和跨服务器语言配置继续保留，但本 RC 在无法验证远端精确快照与反向关系时标记为 `external_unverified`，不会加入公开 switcher、hreflang 或 Sitemap。跨服务器签名 manifest 属于后续阶段。
+
+升级不会启动 AI、恢复暂停队列、调用 Provider、批量批准资源、删除旧翻译或改变已保存的人工决定。安装后应先在测试站逐个批准少量页面，再验证匿名 302、管理员 Preview、canonical、hreflang 和 Sitemap。
 
 ## 2.11.1-rc.17 快照安全人工审核候选版
 

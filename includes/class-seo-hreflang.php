@@ -51,22 +51,23 @@ class GML_SEO_Hreflang {
         }
 
         $canonical = $this->current_canonical_url();
-        foreach ( $this->provider->get_alternate_urls( $canonical ) as $hreflang => $url ) {
+        $alternates = $this->provider->get_alternate_urls( $canonical );
+        foreach ( $alternates as $hreflang => $url ) {
             echo '<link rel="alternate" hreflang="' . esc_attr( $hreflang ) . '" href="' . esc_url( $url ) . '" />' . "\n";
         }
 
-        $current = $this->provider->get_current_language();
-        echo '<meta property="og:locale" content="' . esc_attr( $this->provider->get_og_locale( $current ) ) . '" />' . "\n";
-        $seen = [];
-        foreach ( $this->provider->get_alternate_urls( $canonical ) as $hreflang => $url ) {
-            unset( $url );
-            if ( $hreflang === 'x-default' || $hreflang === $this->provider->get_hreflang_code( $current ) ) {
-                continue;
-            }
-            $locale = $this->provider->get_og_locale( $hreflang );
-            if ( ! isset( $seen[ $locale ] ) ) {
-                echo '<meta property="og:locale:alternate" content="' . esc_attr( $locale ) . '" />' . "\n";
-                $seen[ $locale ] = true;
+        if ( ! $this->external_seo_authority ) {
+            $current = $this->provider->get_current_language();
+            echo '<meta property="og:locale" content="' . esc_attr( $this->provider->get_og_locale( $current ) ) . '" />' . "\n";
+            $seen = [];
+            foreach ( $alternates as $hreflang => $url ) {
+                unset( $url );
+                if ( $hreflang === 'x-default' || $hreflang === $this->provider->get_hreflang_code( $current ) ) continue;
+                $locale = $this->provider->get_og_locale( $hreflang );
+                if ( ! isset( $seen[ $locale ] ) ) {
+                    echo '<meta property="og:locale:alternate" content="' . esc_attr( $locale ) . '" />' . "\n";
+                    $seen[ $locale ] = true;
+                }
             }
         }
 
@@ -80,9 +81,15 @@ class GML_SEO_Hreflang {
         if ( $this->is_not_found_request() ) {
             return $canonical_url;
         }
-        $source = $canonical_url ?: $this->current_source_url();
-        $url    = $this->provider->get_translated_url( $source, $this->provider->get_current_language() );
-        return $url ?: $canonical_url;
+        $source = $this->current_source_url() ?: $canonical_url;
+        $current = $this->provider->get_current_language();
+        if ( $current === $this->provider->get_source_language() ) return $source;
+
+        $resource = class_exists( 'GML_Resource_Identity' ) ? GML_Resource_Identity::current_public() : null;
+        $status = $resource instanceof GML_Resource_Identity
+            ? $this->provider->get_public_status( $resource, $current, [ 'entrypoint' => 'canonical' ] )
+            : [];
+        return ! empty( $status['public_eligible'] ) && ! empty( $status['url'] ) ? $status['url'] : $source;
     }
 
     public function filter_seopress_canonical( $canonical_tag ) {

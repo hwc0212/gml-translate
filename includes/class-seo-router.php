@@ -207,6 +207,9 @@ class GML_SEO_Router {
      * that occurs when WordPress internally redirects during navigation.
      */
     public function preserve_lang_in_redirect( $location, $status = 302 ) {
+        if ( class_exists( 'GML_Publication_Gate' ) && GML_Publication_Gate::is_source_redirect() ) {
+            return $location;
+        }
         if ( empty( $this->languages ) ) {
             return $location;
         }
@@ -279,33 +282,10 @@ class GML_SEO_Router {
      * Build a map of language_code => absolute URL for the current page.
      */
     public static function get_language_urls() {
-        $source_lang = get_option( 'gml_source_lang', 'en' );
-        if ( class_exists( 'GML_Language_Utils' ) ) {
-            $source_lang = GML_Language_Utils::normalize_code( $source_lang ) ?: 'en';
-        }
-
-        $request_uri = $_SERVER['REQUEST_URI'] ?? '/';
-        $path        = strtok( $request_uri, '?' );
-        $path        = rtrim( $path, '/' ) . '/';
-
-        $all_langs = self::get_all_language_codes();
-        $path      = class_exists( 'GML_URL_Helper' )
-            ? GML_URL_Helper::strip_language_prefix( $path, $all_langs )
-            : GML_Language_Utils::strip_prefix_from_path( $path, false );
-
-        $urls = [ $source_lang => class_exists( 'GML_URL_Helper' )
-            ? GML_URL_Helper::get_language_url( $path, $source_lang, $source_lang, $all_langs )
-            : home_url( $path ) ];
-
-        foreach ( get_option( 'gml_languages', [] ) as $lang ) {
-            if ( ( $lang['enabled'] ?? true ) && $lang['code'] !== $source_lang ) {
-                $urls[ $lang['code'] ] = class_exists( 'GML_URL_Helper' )
-                    ? GML_URL_Helper::get_language_url( $path, $lang['code'], $source_lang, $all_langs )
-                    : home_url( '/' . $lang['code'] . $path );
-            }
-        }
-
-        return $urls;
+        if ( ! class_exists( 'GML_Resource_Identity' ) || ! class_exists( 'GML_Public_Eligibility' ) ) return [];
+        $resource = GML_Resource_Identity::current_public();
+        if ( ! $resource instanceof GML_Resource_Identity || ! $resource->is_eligible() ) return [];
+        return GML_Public_Eligibility::get_public_urls( $resource, [ 'entrypoint' => 'language_switcher' ] );
     }
 
     // ── Internal helpers ──────────────────────────────────────────────────────

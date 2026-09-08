@@ -193,7 +193,11 @@ class GML_Gettext_Filter {
 
         // Check dictionary
         if ( isset( $this->dict[ $hash ] ) ) {
-            return $this->dict[ $hash ];
+            $translated = $this->dict[ $hash ];
+            if ( class_exists( 'GML_Translation_Output_Buffer', false ) ) {
+                GML_Translation_Output_Buffer::register_pretranslated_text( $translated, $this->target_lang );
+            }
+            return $translated;
         }
 
         // Not in dictionary — record as miss so we skip it on repeat calls.

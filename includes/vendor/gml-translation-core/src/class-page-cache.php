@@ -94,10 +94,41 @@ class GML_Page_Cache {
      * cannot be portably enumerated by transient-name prefix.
      */
     public static function force_invalidate() {
+        global $wpdb;
+
+        // Reconcile a persistent-cache value that may be ahead of the database,
+        // then increment atomically. This prevents both concurrent lost updates
+        // and namespace reuse after a database restore with stale Redis data.
+        $observed = max( 0, (int) get_option( self::GENERATION_OPTION, 0 ) );
+        if ( $observed < 1 ) {
+            $observed = wp_rand( 1000000, 2147480000 );
+        }
+        $update = static function() use ( $wpdb, $observed ) {
+            return $wpdb->query( $wpdb->prepare(
+                "UPDATE {$wpdb->options} SET option_value=GREATEST(CAST(option_value AS UNSIGNED),%d)+1 WHERE option_name=%s",
+                $observed,
+                self::GENERATION_OPTION
+            ) );
+        };
+        $updated = $update();
+        if ( $updated === 0 ) {
+            $inserted = $wpdb->query( $wpdb->prepare(
+                "INSERT IGNORE INTO {$wpdb->options} (option_name,option_value,autoload) VALUES (%s,%s,'no')",
+                self::GENERATION_OPTION,
+                (string) $observed
+            ) );
+            if ( $inserted === false ) return false;
+            $updated = $update();
+        }
+        if ( $updated !== 1 ) {
+            return false;
+        }
+
         self::$invalidated = true;
-        $generation = self::generation() + 1;
-        return update_option( self::GENERATION_OPTION, $generation, false )
-            || self::generation() === $generation;
+        wp_cache_delete( self::GENERATION_OPTION, 'options' );
+        wp_cache_delete( 'alloptions', 'options' );
+        wp_cache_delete( 'notoptions', 'options' );
+        return true;
     }
 
     public static function generation() {

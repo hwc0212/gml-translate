@@ -2,6 +2,22 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.18] - 2026-09-08
+
+### 精确快照 Publication Gate 候选版
+
+- Translation Core 升至 0.9.1，以机器状态、精确快照人工决定、资源可索引性、本地语言状态和路由有效性派生 `public_eligible`，不保存第二个可能漂移的发布开关。
+- 未公开的本地目标语言页面对匿名访客 302 临时跳转到对应源语言 URL；有 Review 权限的管理员可继续预览，但同时设置 HTTP/HTML `noindex, nofollow` 并显示当前阻止原因。
+- 匿名路由、语言选择器、canonical、hreflang 和 Sitemap 使用同一派生 cluster；目标页不会在被 Gate 拦截时继续出现在搜索发现入口。
+- SEOPress、Yoast 和 Rank Math 保持 SEO authority。GML 只扩展经资格验证的多语言 Sitemap cluster，不建立第二套 title、Schema、robots 或社交 SEO 系统。
+- 每个公开语言 URL 独立列入 Sitemap 并带完整 reciprocal alternates 与 `x-default`；无公开 URL 的资源被删除，图片、视频和新闻 namespace 得到保留。
+- URL→resource 与公开资格按每批最多 1,000 项加载，同一 URL 的目标语言在一次 cluster 计算中完成，并将重复 Sitemap 节点清理由嵌套遍历改为线性分组。
+- 修复 Gettext 与 HTML Output Buffer 双路径：已由 Gettext 命中的目标文本只在当前请求、当前目标语言内登记并计入页面完整度，不再把已审批页面误标为 `incomplete`，且不增加数据库读取。
+- Review 决定会推进单调递增的页面缓存 generation；Redis/Memcached 中比数据库更高的陈旧 generation 也不会导致命名空间回退、重用旧缓存或提交无效审批。
+- 没有受支持 SEO 插件时，停用不支持 hreflang 的 WordPress Core Sitemap 并仅公布 GML Sitemap；有 SEO authority 时不提供 competing Sitemap。
+- 独立域名和跨服务器语言在缺少可验证远端 manifest 时保持 `external_unverified`，不进入公开 switcher、hreflang 或 Sitemap；配置和旧数据不删除。
+- 升级不调用真实 AI、不恢复 Queue、不批量批准、不修改生产站、不删除 Translation Memory、人工译文、历史失败或审核记录。
+
 ## [2.11.1-rc.17] - 2026-09-07
 
 ### 快照安全人工审核加固候选版

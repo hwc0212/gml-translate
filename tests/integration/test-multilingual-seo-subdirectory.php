@@ -56,20 +56,14 @@ $source_head = ob_get_clean();
 $_SERVER['REQUEST_URI'] = '/ygnaglul/de/about/?utm_source=test';
 
 gml_test_assert( substr_count( $head, '<link rel="canonical"' ) === 1, 'standalone emits one canonical without another SEO authority' );
-gml_test_assert( strpos( $head, 'rel="canonical" href="https://example.com/ygnaglul/de/about/"' ) !== false, 'translated canonical is self-referencing' );
-gml_test_assert( strpos( $head, 'hreflang="en" href="https://example.com/ygnaglul/about/"' ) !== false, 'source alternate keeps one site subdirectory' );
-gml_test_assert( strpos( $head, 'hreflang="de" href="https://example.com/ygnaglul/de/about/"' ) !== false, 'ready target alternate is present' );
-gml_test_assert( strpos( $source_head, 'hreflang="de" href="https://example.com/ygnaglul/de/about/"' ) !== false, 'source route reciprocates the ready translated alternate' );
-gml_test_assert( strpos( $head, 'hreflang="es"' ) === false, 'incomplete target is not advertised' );
-gml_test_assert( strpos( $head, 'hreflang="zh-CN" href="https://cnxhe.cn/about/"' ) !== false, 'external language site is advertised with its mapped URL' );
-gml_test_assert( strpos( $head, 'hreflang="fr"' ) === false, 'homepage-only external site is not advertised as an inner-page equivalent' );
+gml_test_assert( strpos( $head, 'rel="canonical" href="https://example.com/ygnaglul/about/"' ) !== false, 'unidentified or unapproved target fails closed to the source canonical' );
+gml_test_assert( strpos( $head, 'hreflang=' ) === false, 'unidentified or unapproved target advertises no language alternates' );
+gml_test_assert( strpos( $source_head, 'hreflang="de"' ) === false, 'source route does not advertise a target without a current approved resource snapshot' );
+gml_test_assert( strpos( $head, 'hreflang="zh-CN"' ) === false, 'unverified external sites do not bypass the publication gate' );
 gml_test_assert( strpos( $head, '/ygnaglul/de/ygnaglul/' ) === false, 'head output never duplicates the WordPress subdirectory' );
 
 $urls = GML_SEO_Router::get_language_urls();
-gml_test_assert( $urls['en'] === 'https://example.com/ygnaglul/about/', 'router source URL is subdirectory-safe' );
-gml_test_assert( $urls['de'] === 'https://example.com/ygnaglul/de/about/', 'router translated URL is subdirectory-safe' );
-gml_test_assert( $urls['zh-cn'] === 'https://cnxhe.cn/about/', 'router exposes the external language site without a local prefix' );
-gml_test_assert( $urls['fr'] === 'https://fr.example.net/', 'router can use an external homepage when page paths do not correspond' );
+gml_test_assert( $urls === [], 'router exposes no switcher links without an identifiable approved resource cluster' );
 gml_test_assert( GML_Language_Utils::detect_prefix_from_path( '/ygnaglul/zh-cn/about/', true ) === '', 'external language is not registered as a local route' );
 gml_test_assert( GML_Language_Utils::sanitize_external_site_url( 'https://example.com/another-site/' ) === '', 'external mode rejects the current WordPress host' );
 gml_test_assert( GML_Translation_Queue_Scope::enabled_languages() === [ 'de', 'es' ], 'external language sites are excluded from the local AI queue' );

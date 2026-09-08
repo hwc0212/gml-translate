@@ -22,6 +22,9 @@ class GML_Translation_Output_Buffer {
     protected $target_lang = '';
     protected $buffer_level = 0;
 
+    /** @var array<string, array<string, true>> Request-local upstream translations by language and text hash. */
+    private static $pretranslated_texts = [];
+
     public function __construct() {
         add_action( 'template_redirect', [ $this, 'start_buffer' ], 1 );
         add_action( 'shutdown',          [ $this, 'end_buffer'   ], 999 );
@@ -58,6 +61,22 @@ class GML_Translation_Output_Buffer {
             $this->enabled = false;
             $this->buffer_level = 0;
         }
+    }
+
+    /**
+     * Register text translated before the HTML buffer, for example by a
+     * WordPress gettext adapter. This is request-local and performs no I/O.
+     */
+    public static function register_pretranslated_text( $text, $target_lang ) {
+        $text = trim( (string) $text );
+        $target_lang = sanitize_key( $target_lang );
+        if ( $text === '' || $target_lang === '' ) {
+            return;
+        }
+        if ( ! isset( self::$pretranslated_texts[ $target_lang ] ) ) {
+            self::$pretranslated_texts[ $target_lang ] = [];
+        }
+        self::$pretranslated_texts[ $target_lang ][ md5( $text ) ] = true;
     }
 
     // ── Buffer callback ───────────────────────────────────────────────────────
@@ -143,10 +162,9 @@ class GML_Translation_Output_Buffer {
                 $parser     = new GML_HTML_Parser();
                 $parsed     = $parser->parse( $html_clean );
                 $translated = ( new GML_Translator() )->translate( $parsed, $this->target_lang );
-                $is_index_ready = $this->translation_is_index_ready( $translated );
-                if ( class_exists( 'GML_Queue_Processor' ) ) {
-                    $is_index_ready = $is_index_ready && GML_Queue_Processor::language_is_index_ready( $this->target_lang );
-                }
+                $is_index_ready = $this->publication_is_index_ready(
+                    $this->translation_is_index_ready( $translated )
+                );
                 $result     = $parser->rebuild( $translated );
 
                 // ── Server-side link rewriting ───────────────────────────────
@@ -217,17 +235,59 @@ class GML_Translation_Output_Buffer {
 
             $translated_count = 0;
             foreach ( $unique as $text ) {
-                if ( array_key_exists( $text, $replacements ) && trim( (string) $replacements[ $text ] ) !== '' ) {
+                if ( $this->text_is_translated( $text, $replacements ) ) {
                     $translated_count++;
                 }
             }
             foreach ( $critical as $text ) {
-                if ( ! array_key_exists( $text, $replacements ) || trim( (string) $replacements[ $text ] ) === '' ) {
+                if ( ! $this->text_is_translated( $text, $replacements ) ) {
                     return false;
                 }
             }
 
             return ( $translated_count / count( $unique ) ) >= 0.95;
+        }
+
+        /** Determine whether this rendered text was translated in either pipeline. */
+        protected function text_is_translated( $text, array $replacements ) {
+            if ( array_key_exists( $text, $replacements ) && trim( (string) $replacements[ $text ] ) !== '' ) {
+                return true;
+            }
+
+            $target_lang = sanitize_key( $this->target_lang );
+            $text = trim( (string) $text );
+            return $target_lang !== ''
+                && $text !== ''
+                && ! empty( self::$pretranslated_texts[ $target_lang ][ md5( $text ) ] );
+        }
+
+        /**
+         * Combine this rendered page's completeness with the active publication
+         * authority. Phase 2D publishes per resource and exact review snapshot;
+         * an unrelated language backlog must not strip hreflang from an approved
+         * page. Older hosts without the publication service retain the legacy
+         * language-wide readiness check.
+         */
+        protected function publication_is_index_ready( $page_ready, $resource = null ) {
+            if ( ! $page_ready ) {
+                return false;
+            }
+
+            if ( class_exists( 'GML_Public_Eligibility' ) && class_exists( 'GML_Resource_Identity' ) ) {
+                $resource = $resource instanceof GML_Resource_Identity
+                    ? $resource
+                    : GML_Resource_Identity::current_public();
+                return $resource instanceof GML_Resource_Identity
+                    && $resource->is_eligible()
+                    && GML_Public_Eligibility::is_eligible(
+                        $resource,
+                        $this->target_lang,
+                        [ 'entrypoint' => 'output_buffer' ]
+                    );
+            }
+
+            return ! class_exists( 'GML_Queue_Processor' )
+                || GML_Queue_Processor::language_is_index_ready( $this->target_lang );
         }
 
         /**

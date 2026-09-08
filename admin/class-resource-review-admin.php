@@ -106,9 +106,17 @@ final class GML_Resource_Review_Admin {
         $args = [ 'page' => $page, 'per_page' => self::PAGE_SIZE, 'review_state' => $state ];
         if ( $language !== '' ) $args['languages'] = [ $language ];
         $result = GML_Resource_Approval::list_resources( $args );
+        $resources = [];
+        foreach ( $result['rows'] as $row ) {
+            $identity = GML_Resource_Identity::resolve( $row['resource_key'] );
+            if ( $identity instanceof GML_Resource_Identity ) $resources[] = $identity;
+        }
+        $public_clusters = class_exists( 'GML_Public_Eligibility' )
+            ? GML_Public_Eligibility::get_clusters_bulk( $resources, [ 'entrypoint' => 'review_list' ] )
+            : [];
         ?>
         <div class="notice notice-info inline"><p>
-            <?php esc_html_e( 'Phase 2C review is a shadow workflow. An approval records your decision for the exact current manifest and translation snapshot, but it does not publish, hide, route, index, or advertise a language page yet.', 'gml-translate' ); ?>
+            <?php esc_html_e( 'An approved current snapshot becomes public only while every publication check still passes. Source edits, translation changes, missing routes, noindex settings, or disabled languages revoke public eligibility automatically.', 'gml-translate' ); ?>
         </p></div>
         <div class="gml-review-heading">
             <div>
@@ -139,18 +147,21 @@ final class GML_Resource_Review_Admin {
                     <th><?php esc_html_e( 'Language', 'gml-translate' ); ?></th>
                     <th><?php esc_html_e( 'Machine Readiness', 'gml-translate' ); ?></th>
                     <th><?php esc_html_e( 'Human Review', 'gml-translate' ); ?></th>
+                    <th><?php esc_html_e( 'Public State', 'gml-translate' ); ?></th>
                     <th><?php esc_html_e( 'Coverage', 'gml-translate' ); ?></th>
                     <th><?php esc_html_e( 'Action', 'gml-translate' ); ?></th>
                 </tr></thead>
                 <tbody>
                 <?php if ( ! $result['rows'] ): ?>
-                    <tr><td colspan="6"><?php esc_html_e( 'No current resource manifests are available for local target languages yet.', 'gml-translate' ); ?></td></tr>
+                    <tr><td colspan="7"><?php esc_html_e( 'No current resource manifests are available for local target languages yet.', 'gml-translate' ); ?></td></tr>
                 <?php else: foreach ( $result['rows'] as $row ): ?>
+                    <?php $public = $public_clusters[ $row['resource_key'] ]['languages'][ $row['target_lang'] ] ?? []; ?>
                     <tr>
                         <td><strong><?php echo esc_html( $row['resource_key'] ); ?></strong><br><small><?php echo esc_html( $row['resource_type'] ); ?></small></td>
                         <td><?php echo esc_html( strtoupper( $row['target_lang'] ) ); ?></td>
                         <td><?php $this->status_badge( $row['machine_status'] ); ?></td>
                         <td><?php $this->status_badge( $row['review_status'] ); ?></td>
+                        <td><?php $this->status_badge( ! empty( $public['public_eligible'] ) ? 'public' : 'private' ); ?><br><small><?php echo esc_html( $public['reason'] ?? 'unavailable' ); ?></small></td>
                         <td><?php echo esc_html( number_format_i18n( $row['translated_count'] ) . ' / ' . number_format_i18n( $row['required_count'] ) ); ?></td>
                         <td><a class="button" href="<?php echo esc_url( $this->detail_url( $row['resource_key'], $row['target_lang'] ) ); ?>"><?php esc_html_e( 'Review', 'gml-translate' ); ?></a></td>
                     </tr>
@@ -173,6 +184,9 @@ final class GML_Resource_Review_Admin {
             return;
         }
         $summary = $payload['summary'];
+        $public = class_exists( 'GML_Public_Eligibility' )
+            ? GML_Public_Eligibility::get_status( $summary['resource_key'], $summary['target_lang'], [ 'entrypoint' => 'review_detail' ] )
+            : [];
         $health = GML_Resource_Approval::transaction_health();
         $can_decide = $summary['machine_status'] === 'complete' && $health['ready'];
         ?>
@@ -185,9 +199,10 @@ final class GML_Resource_Review_Admin {
             <div class="gml-review-status-pair">
                 <span><?php esc_html_e( 'Machine', 'gml-translate' ); ?>: <?php $this->status_badge( $summary['machine_status'] ); ?></span>
                 <span><?php esc_html_e( 'Review', 'gml-translate' ); ?>: <?php $this->status_badge( $summary['review_status'] ); ?></span>
+                <span><?php esc_html_e( 'Public', 'gml-translate' ); ?>: <?php $this->status_badge( ! empty( $public['public_eligible'] ) ? 'public' : 'private' ); ?></span>
             </div>
         </div>
-        <div class="notice notice-info inline"><p><?php esc_html_e( 'This decision is stored for the exact manifest and target-language translation generation shown below. It does not publish the page in Phase 2C.', 'gml-translate' ); ?></p></div>
+        <div class="notice notice-info inline"><p><?php echo esc_html( sprintf( __( 'Approval is bound to this exact snapshot. Current publication reason: %s. Administrators may preview private translations; anonymous visitors are redirected to the source URL.', 'gml-translate' ), $public['reason'] ?? 'unavailable' ) ); ?></p></div>
         <dl class="gml-review-metadata">
             <div><dt><?php esc_html_e( 'Target language', 'gml-translate' ); ?></dt><dd><?php echo esc_html( strtoupper( $summary['target_lang'] ) ); ?></dd></div>
             <div><dt><?php esc_html_e( 'Coverage', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $summary['translated_count'] ) . ' / ' . number_format_i18n( $summary['required_count'] ) ); ?></dd></div>
@@ -277,6 +292,7 @@ final class GML_Resource_Review_Admin {
             'complete' => __( 'Complete', 'gml-translate' ), 'incomplete' => __( 'Incomplete', 'gml-translate' ),
             'approved' => __( 'Approved', 'gml-translate' ), 'rejected' => __( 'Rejected', 'gml-translate' ),
             'unreviewed' => __( 'Unreviewed', 'gml-translate' ), 'stale' => __( 'Stale', 'gml-translate' ),
+            'public' => __( 'Public', 'gml-translate' ), 'private' => __( 'Private', 'gml-translate' ),
             'blocked' => __( 'Blocked', 'gml-translate' ), 'unknown' => __( 'Unknown', 'gml-translate' ),
             'render_error' => __( 'Render Error', 'gml-translate' ), 'rebuilding' => __( 'Rebuilding', 'gml-translate' ),
         ];
