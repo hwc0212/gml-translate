@@ -2,6 +2,18 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.20] - 2026-09-08
+
+### 永久重定向与译文质量保护候选版
+
+- 锁定 Core 0.9.3 精确 commit；同源 301/308 通过最多三跳、最终 HTML 200 验证后进入 `permanent_redirect`，不阻塞 current corpus，也不冒用目标 manifest。
+- 重定向旧源从所有公开语言关系中排除；临时跳转、跨域、循环、404/5xx 和网络失败保持 fail closed。复查失败保留历史排除依据，只有源地址有效 200 或明确退休后清理旧关系。
+- 增加 Schema 3.4.0 的两个 nullable 字段，升级失败时阻止新状态写入及错误缓存输出；已撤下资源保留 excluded 历史，dirty 队列溢出重新安排完整有界 inventory。
+- 修复 Redis 在事务提交前回填旧 generation 的跨进程竞态；页面缓存键以数据库权威值为准，状态变化与缓存 namespace 在同一事务失效。
+- 增加源文对照的 obvious contamination guard；合法单短语翻译不被硬拦截。提供带权限、精确快照、规范化 tuple、InnoDB 校验和失败回滚的 auto translation quality hold，保留旧值并保护人工译文。
+- 回归覆盖永久/临时跳转链、失败复查、根目录/子目录、改版同步、跨进程 Redis 竞态、非法 tuple、MyISAM 拒绝、缓存写入失败回滚及共享译文关联失效。
+- 不自动清理历史失败，不清空 TM，不启动或恢复 AI 队列；MAX_TOKENS 策略作为独立后续问题处理。
+
 ## [2.11.1-rc.19] - 2026-09-08
 
 ### 网站改版翻译同步候选版

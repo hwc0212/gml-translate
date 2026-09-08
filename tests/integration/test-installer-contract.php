@@ -3,7 +3,9 @@ require_once __DIR__ . '/../bootstrap-mock.php';
 require_once __DIR__ . '/../../includes/vendor/gml-translation-core/src/class-installer.php';
 
 $source = file_get_contents( __DIR__ . '/../../includes/vendor/gml-translation-core/src/class-installer.php' );
-gml_test_assert( GML_Installer::DB_VERSION === '3.3.0', 'pins the derived publication eligibility database version' );
+gml_test_assert( GML_Installer::DB_VERSION === '3.4.0', 'pins the permanent redirect relationship database version' );
+gml_test_assert( strpos( $source, 'redirect_destination' ) !== false, 'installer preserves the permanent redirect destination' );
+gml_test_assert( strpos( $source, 'redirect_chain' ) !== false, 'installer preserves the verified permanent redirect chain' );
 gml_test_assert( strpos( $source, 'gml_index' ) !== false, 'installer owns the translation index' );
 gml_test_assert( strpos( $source, 'gml_queue' ) !== false, 'installer owns the translation queue' );
 gml_test_assert( strpos( $source, 'gml_resource_manifests' ) !== false, 'installer owns resource manifests' );

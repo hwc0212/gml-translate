@@ -6,6 +6,17 @@ GML Translate 是 GML 系列的主产品，也是独立的 WordPress AI 多语�
 
 它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。完整 SEO 应交给 SEOPress、Yoast、Rank Math 等成熟 SEO authority；GML SEO 已进入 LTS，仅维护安全、兼容、迁移与严重缺陷。
 
+## 2.11.1-rc.20 永久重定向与译文质量保护候选版
+
+- 精确锁定 Translation Core 0.9.3。同站点 301/308 最多验证 3 次跳转，最终目标必须返回完整 HTML 200，才记录为 `permanent_redirect`；不再把这些旧资源误记为 `render_error` 并永久阻塞 current corpus。
+- 保留源地址到目标地址的关系，不把目标内容当作旧源的 manifest。旧源不会进入默认语言或其他语言的 switcher、hreflang、Sitemap 集合；临时跳转、跨域、循环及失败目标仍然阻塞。失败复查保留排除依据，不能冒充仍有效的永久迁移。
+- Schema 3.4.0 仅增加两个 nullable manifest 字段，保留旧表、option、URL 和全部翻译记录。未完成升级时 fail closed。确认删除或撤下的 WordPress 资源保留 excluded 历史；无法解析的资源不能直接当作 obsolete。
+- 页面缓存键读取数据库权威 generation，修复事务提交前 Redis 被另一进程回填旧值时可能重新命中旧 HTML 的竞态；不清空无关缓存。
+- 增加窄范围源文对照检测，拦截明显组合式的模型名、插件名和输出指令泄漏；单个有歧义的术语或格式短语不直接判失败。它不是完整语义审校，不保证发现全部翻译错误。
+- 新增受控维护用 quality hold mutation：需要管理员权限、精确旧值快照及事务存储，保留原译文正文并撤销关联资源的当前资格，保护人工译文。不会自动批量改写、删除译文或启动付费重翻。
+
+升级本身不会清理历史失败、清空翻译库、恢复暂停队列或修改 Provider。历史清理必须先验证 corpus authoritative、完整归档及 dry-run；出现污染时先保存旧译文和反向引用，再定向修正或 hold。回滚需保留旧安装包及升级前数据库备份，不能把旧 Core 对新状态的理解当作已经验证。
+
 ## 2.11.1-rc.19 网站改版翻译同步候选版
 
 - Translation Core 0.9.2 只以当前页面 manifest 判断完成度。页面必须达到当前字符串 100% 才能公开，避免改版后出现“旧译文 + 新英文”的混合页面。
