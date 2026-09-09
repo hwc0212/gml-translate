@@ -2,6 +2,19 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.23] - 2026-09-09
+
+### 运行时文本和资源整组缓存修复候选版
+
+- 锁定 Core 0.9.6：gettext 的 sprintf 模板保留到最终组装后，再由 HTML 管线查询完整原文 TM，避免动态 aria-label 和数量文案与 manifest 不一致。
+- 按语言识别本次请求中已经翻译的 gettext 文案，禁止把目标语言文本再次当作源语言查 TM；不新增译文、不使用模糊匹配、不放宽 readiness。
+- 完整文本节点按解码后的实体查询，一次回写，修复 `&copy;` 页脚漏译并阻止替换结果再次参与替换。保留原始 HTML、技术属性与转义安全。
+- 新增真实 WordPress/MariaDB 运行时和资源缓存回归，数据库套件要求 107 个场景；旧 rc.22 的六项运行时核心断言已复现失败。
+- readiness、TM、quality hold、人工审核及已知 SEO Meta 变化使源页和所有本地语言页一起失效；使用数据库 generation 和非 autoload 的待处理记录，避免源页缓存保留旧 hreflang。
+- 提供有界维护 URL 清单及带 token 的确认接口，旧维护任务不能清掉新变化。外部 Nginx/Cloudflare 精确清理由本地维护工具执行，不在前台同步请求，不调用全站清理。
+- **代码测试不等于生产 STABLE。** 必须按 origin → exact Nginx → exact Cloudflare → 普通访客与 Googlebot 验收。
+- 不修改 TM/Queue、数据库结构、生产默认 Provider 或 GML SEO；不启动 AI。定向 quality hold 和生产验收留在部署门之后执行。
+
 ## [2.11.1-rc.22] - 2026-09-09
 
 ### 定向恢复写入安全候选版

@@ -6,6 +6,14 @@ GML Translate 是 GML 系列的主产品，也是独立的 WordPress AI 多语�
 
 它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。完整 SEO 应交给 SEOPress、Yoast、Rank Math 等成熟 SEO authority；GML SEO 已进入 LTS，仅维护安全、兼容、迁移与严重缺陷。
 
+## 2.11.1-rc.23 运行时修复开发候选版
+
+本版使用 Core 0.9.6，修复 gettext 格式模板过早翻译、目标语言文本被二次翻译、HTML 实体形式的页脚未命中完整 TM。保持原文 hash、人工/自动译文、队列和 readiness 阈值不变，不需要新增译文来通过测试。
+
+源语言与全部本地 alternate 现在作为同一资源组处理。状态变化会更新数据库控制的 GML 页面 generation，并保留非 autoload 的待清理记录和精确 URL 清单。外部 HTML 缓存不会因这个 generation 自动失效，维护适配器需要读取 `GML_Page_Cache::pending_clusters()`，完成每个外部层的精确 URL 清理后，使用原 token 确认消费；并发新变化会让旧确认失败，防止漏清理。
+
+不新增数据库表，不在前台请求中调用 Cloudflare/Nginx，不清空 Redis，不恢复 AI 队列。历史资源无法安全还原原 URL 时保留 blocked 维护记录，不猜地址。服务器具体路径、凭据和删除逻辑不得放入插件。数据库回归要求 107 个场景；生产部署仍需备份、exact SHA、origin 验证、精确缓存清理及独立 HTTP/SEO 验收，不能用本地通过代替生产 STABLE。
+
 ## 2.11.1-rc.22 定向恢复写入安全候选版
 
 - 精确锁定 Translation Core 0.9.5。新增 `insert_missing_batch()`，只插入事务执行时仍不存在的译文，已有 auto、manual、pending/held 全部保留，逐条返回 inserted/existing/duplicate_input 结果。

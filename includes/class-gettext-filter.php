@@ -176,6 +176,13 @@ class GML_Gettext_Filter {
             return $text;
         }
 
+        // sprintf runs after gettext. The final composed text is the source
+        // owned by the HTML manifest/TM; translating this template changes its
+        // hash and makes source readiness disagree with runtime output.
+        if ( preg_match( '/%(?:\d+\$)?[-+0-9.*]*[bcdeEfFgGosuxX]/', $trimmed ) ) {
+            return $text;
+        }
+
         // Lazy-load dictionary on first call
         if ( $this->dict === null ) {
             $this->load_dictionary();
