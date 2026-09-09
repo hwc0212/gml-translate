@@ -2,6 +2,17 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.21] - 2026-09-09
+
+### 翻译输出预算与有界恢复候选版
+
+- 锁定 Core 0.9.4 精确 commit；批量输出预算按原文规模、条数、目标语言和格式开销计算，不再给 SEO 批次固定 1024。
+- 已知 Gemini 模型使用官方支持的 minimal/low thinking，DeepSeek chat/v4 模型显式使用 non-thinking；不自动迁移已保存的 Provider 或模型。
+- `MAX_TOKENS` / `length` 不接收截断译文；先提高预算，再拆批到单条，单次调用共享请求次数、累计输出预算和时长上限。恢复期间发生其他错误也不会重新获得完整重试额度。
+- 恢复耗尽直接保留为 failed，普通 Queue 不自动重试；终止记录写入失败时内部暂停并熔断，覆盖主批次与 single fallback。
+- 加强编号完整性、占位符、格式参数顺序/精度、链接、尺寸及明显污染检查；增加仅保留数字用量、结束原因和时长的脱敏诊断。
+- 新增 Gemini/DeepSeek 和真实 Queue 回归；数据库套件要求 100 个场景。升级不恢复队列、不重试历史失败、不覆盖人工译文、不清空 TM、不改变 URL 或数据库 Schema。
+
 ## [2.11.1-rc.20] - 2026-09-08
 
 ### 永久重定向与译文质量保护候选版

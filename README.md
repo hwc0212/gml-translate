@@ -6,6 +6,16 @@ GML Translate 是 GML 系列的主产品，也是独立的 WordPress AI 多语�
 
 它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。完整 SEO 应交给 SEOPress、Yoast、Rank Math 等成熟 SEO authority；GML SEO 已进入 LTS，仅维护安全、兼容、迁移与严重缺陷。
 
+## 2.11.1-rc.21 翻译输出预算修复候选版
+
+- 使用 Translation Core 0.9.4 的动态预算，短批次最低 2048，单请求本地上限 8192。预算是允许生成的上限，不代表每次一定消耗这么多 tokens。
+- 已知 Gemini 模型使用支持的 minimal/low thinking；DeepSeek chat/v4 请求 non-thinking。未知模型不发送猜测的参数，已保存 Provider/模型不会被升级擅自切换。
+- 截断时先提高预算、再拆批；一次恢复共享最多 12 次请求、32768 累计请求输出额度和 90 秒。截断正文、缺段和格式错误不进入成功结果；恢复耗尽后需要人工检查再定向重试。
+- 正常超时/限流交给 Queue backoff；已开始输出恢复后再次出错，则终止该轮，不通过另一种错误分类重新开启大量请求。
+- API 健康测试成功不等于批量翻译通过。更换 Provider 前应比较同一小样本的完整性、专业术语、占位符、用量与时长，确认后才保存选定候选。
+
+本版没有新增必须手动配置的预算设置，不改变数据库 Schema、路由、历史 TM 或队列暂停状态。升级后应先验证 10–25 条当前缺失文本，不要点击全量历史失败重试。保留 rc.20 安装包及升级前备份，可先暂停 AI 再回退代码；不得为了代码回滚覆盖升级后的新询盘/订单数据。
+
 ## 2.11.1-rc.20 永久重定向与译文质量保护候选版
 
 - 精确锁定 Translation Core 0.9.3。同站点 301/308 最多验证 3 次跳转，最终目标必须返回完整 HTML 200，才记录为 `permanent_redirect`；不再把这些旧资源误记为 `render_error` 并永久阻塞 current corpus。
