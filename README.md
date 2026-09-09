@@ -6,6 +6,15 @@ GML Translate 是 GML 系列的主产品，也是独立的 WordPress AI 多语�
 
 它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。完整 SEO 应交给 SEOPress、Yoast、Rank Math 等成熟 SEO authority；GML SEO 已进入 LTS，仅维护安全、兼容、迁移与严重缺陷。
 
+## 2.11.1-rc.22 定向恢复写入安全候选版
+
+- 精确锁定 Translation Core 0.9.5。新增 `insert_missing_batch()`，只插入事务执行时仍不存在的译文，已有 auto、manual、pending/held 全部保留，逐条返回 inserted/existing/duplicate_input 结果。
+- tuple 冲突使用“仅插入仍缺失项”的策略；数据库或失效处理失败回滚整批。连接在提交期间断开时必须重新核对状态，不能盲目重放。
+- 只有实际插入才推进 readiness/review generation 并失效页面缓存。旧 `upsert_batch()` 不是 missing-only API，恢复流程不得混用。
+- 为指定资源、指定语言增加显式 manifest-to-queue 服务入口，覆盖分类归档。默认 discovery 仍只维护 manifest；重复发现复用已有 Queue，人工和 held 译文不会作为新任务入队。
+- 升级不恢复 AI、不调用 Provider、不重新扫描、不清空 TM、不重试历史失败、不自动写入候选译文，也不改变数据库 Schema。实际恢复仍须核对当前 source、manifest、Queue 和 TM 并获得写入审批。
+- 本地数据库回归覆盖 104 个场景；通过代码测试不等于生产翻译质量或 STABLE 验收通过。
+
 ## 2.11.1-rc.21 翻译输出预算修复候选版
 
 - 使用 Translation Core 0.9.4 的动态预算，短批次最低 2048，单请求本地上限 8192。预算是允许生成的上限，不代表每次一定消耗这么多 tokens。

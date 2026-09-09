@@ -2,6 +2,15 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.22] - 2026-09-09
+
+### 定向恢复写入安全候选版
+
+- 精确锁定 Core 0.9.5；新增正式 missing-only TM API，以唯一键和事务处理写入竞态，保护所有已有状态并返回逐条结果。数据库失败整批回滚，实际插入才推进 generation 和页面缓存 namespace。
+- 新增显式资源/语言 manifest 入队入口，补齐分类归档 required 文本的发现路径；原有默认 discovery 不自动入队。入队锁内重新核对全部 TM 状态，保护人工、pending/held 记录，重复发现不重复入队。
+- 新增旧行为红测、真实双进程竞争、事务失败/回滚、Redis/缓存与 generation、分类资源重复发现和暂停状态回归；数据库套件要求 104 个场景。
+- 不迁移数据库 Schema，不自动写入恢复候选，不启动 AI，不重试历史失败，不清空 TM。生产恢复仍受独立快照和审批门控制。
+
 ## [2.11.1-rc.21] - 2026-09-09
 
 ### 翻译输出预算与有界恢复候选版
