@@ -4,7 +4,7 @@
     "version": "0.9.7",
     "source": {
         "repository": "https://github.com/hwc0212/gml-translation-core",
-        "commit": "1ab38aaba186af4fa6c89a59bbedf3070690ff31"
+        "commit": "07609921b49da4688a26cba5b00ef42c105758cd"
     },
     "vendorRoot": "includes/vendor/gml-translation-core",
     "files": {
