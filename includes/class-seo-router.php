@@ -282,10 +282,17 @@ class GML_SEO_Router {
      * Build a map of language_code => absolute URL for the current page.
      */
     public static function get_language_urls() {
-        if ( ! class_exists( 'GML_Resource_Identity' ) || ! class_exists( 'GML_Public_Eligibility' ) ) return [];
+        if ( ! class_exists( 'GML_Resource_Identity' ) ) return [];
         $resource = GML_Resource_Identity::current_public();
         if ( ! $resource instanceof GML_Resource_Identity || ! $resource->is_eligible() ) return [];
-        return GML_Public_Eligibility::get_public_urls( $resource, [ 'entrypoint' => 'language_switcher' ] );
+        $urls = [];
+        $source = GML_Language_Utils::normalize_code( get_option( 'gml_source_lang', 'en' ) );
+        $languages = array_unique( array_merge( [ $source ], GML_Language_Utils::enabled_local_target_codes() ) );
+        foreach ( $languages as $lang ) {
+            $url = GML_URL_Helper::get_language_url( $resource->get_source_url(), $lang, $source, $languages );
+            if ( $url !== '' ) $urls[$lang] = $url;
+        }
+        return $urls;
     }
 
     // ── Internal helpers ──────────────────────────────────────────────────────

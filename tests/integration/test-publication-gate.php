@@ -23,8 +23,10 @@ final class GML_Translation_State {
 }
 
 final class GML_Resource_Identity {
+    public static $valid = true;
     public static function current_public() { return new self(); }
     public function get_source_url() { return 'https://example.com/about/'; }
+    public function is_eligible() { return self::$valid; }
 }
 
 class GML_Translation_Provider {
@@ -48,6 +50,12 @@ require_once __DIR__ . '/../../includes/class-publication-gate.php';
 
 $_SERVER['REQUEST_URI'] = '/es/about/';
 $gate = new GML_Publication_Gate( new GML_Translation_Provider() );
+foreach ( ['incomplete','unknown','stale','resource_noindex'] as $reason ) {
+    GML_Translation_Provider::$reason = $reason;
+    $gate->enforce();
+    gml_test_assert( $GLOBALS['gml_test_redirect'] === null, 'valid language URL remains accessible despite ' . $reason );
+}
+GML_Resource_Identity::$valid = false;
 $gate->enforce();
 gml_test_assert( $GLOBALS['gml_test_redirect']['url'] === 'https://example.com/about/', 'anonymous ineligible route redirects to the source resource' );
 gml_test_assert( $GLOBALS['gml_test_redirect']['status'] === 302, 'anonymous publication redirect is temporary' );

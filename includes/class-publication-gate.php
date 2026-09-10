@@ -48,6 +48,10 @@ final class GML_Publication_Gate {
             : [];
         if ( ! empty( $status['public_eligible'] ) ) return;
 
+        // Translation progress never removes a valid user-facing language URL.
+        // SEO discovery remains a separate decision; missing/held text uses source.
+        if ( $resource instanceof GML_Resource_Identity && $resource->is_eligible() ) return;
+
         if ( current_user_can( $this->preview_capability() ) ) {
             self::$preview_status = $status ?: [
                 'target_lang' => $current,

@@ -2,6 +2,13 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.28] - 2026-09-10
+
+- Decouple valid language URL access and switcher links from translation completeness. Ordinary partial pages no longer redirect visitors to the source solely because translations are missing.
+- Vendor Core 0.9.7: allow current partial translations in the shared hreflang/sitemap cluster; remove the independent runtime 100-percent SEO veto.
+- Keep missing/held text as source fallback. Preserve explicit SEO exclusions, malformed-source protections, saved translations and paused queues.
+- Add real-database partial-publication and root/subdirectory menu regressions. No traffic measurement, paid AI calls or queue recovery are performed by this upgrade.
+
 ## [2.11.1-rc.27] - 2026-09-10
 
 - Show every enabled language in dropdown and button-list switchers. Unavailable translations have a visible per-page status and no href, while eligible local and external URLs remain clickable.

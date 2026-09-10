@@ -1,5 +1,5 @@
 <?php
-/** Phase 2D publication contract: every public surface consumes one derived gate. */
+/** SEO consumes one authority; user-facing navigation is independent of progress. */
 
 require_once __DIR__ . '/../bootstrap-mock.php';
 
@@ -18,11 +18,11 @@ foreach ( [ $gate, $router, $hreflang, $sitemap, $transformer, $eligibility ] as
 
 gml_test_assert( strpos( $gate, "add_action( 'template_redirect', [ \$this, 'enforce' ], 0 )" ) !== false, 'publication gate runs before ordinary template redirects' );
 gml_test_assert( strpos( $gate, 'wp_safe_redirect( $source_url, 302' ) !== false, 'anonymous ineligible routes return a temporary source redirect' );
-gml_test_assert( strpos( $gate, 'current_user_can( $this->preview_capability() )' ) !== false, 'only an authorized reviewer bypasses the public redirect' );
+gml_test_assert( strpos( $gate, '$resource instanceof GML_Resource_Identity && $resource->is_eligible()' ) !== false, 'valid language pages are accessible independently of SEO completion' );
 gml_test_assert( strpos( $gate, 'X-Robots-Tag: noindex, nofollow' ) !== false, 'private reviewer previews are noindex at the HTTP layer' );
 gml_test_assert( strpos( $gate, 'render_preview_banner' ) !== false, 'private reviewer previews remain visibly marked' );
 
-gml_test_assert( strpos( $router, 'GML_Public_Eligibility::get_public_urls' ) !== false, 'language switcher routes use the derived public cluster' );
+gml_test_assert( strpos( $router, 'GML_Public_Eligibility::get_public_urls' ) === false && strpos( $router, 'GML_Language_Utils::enabled_local_target_codes()' ) !== false, 'language switcher routes use enabled language configuration, not completion' );
 gml_test_assert( strpos( $hreflang, 'get_alternate_urls' ) !== false && strpos( $hreflang, 'get_public_status' ) !== false, 'canonical and hreflang use publication eligibility' );
 gml_test_assert( strpos( $transformer, 'get_public_clusters_bulk' ) !== false, 'sitemap expansion uses one bulk public-cluster read' );
 gml_test_assert( strpos( $sitemap, 'seopress_sitemaps_xml_single' ) !== false, 'SEOPress receives the final multilingual sitemap transform' );

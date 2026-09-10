@@ -6,11 +6,11 @@ GML Translate 是 GML 系列的主产品，也是独立的 WordPress AI 多语�
 
 它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。完整 SEO 应交给 SEOPress、Yoast、Rank Math 等成熟 SEO authority；GML SEO 已进入 LTS，仅维护安全、兼容、迁移与严重缺陷。
 
-## 2.11.1-rc.27 Language Switcher Candidate
+## 2.11.1-rc.28 Progressive Publication Candidate
 
-The switcher lists every enabled language. A language without a public URL for the current page remains visible with "Not ready on this page" and has no link. This does not change publication eligibility, hreflang, sitemaps or incomplete-page redirects.
+Valid source pages keep clickable links for every enabled local language, even while translation is incomplete. User-facing access is independent of translation progress and SEO discovery. Missing or quality-held segments retain their original source text; previously held output is not republished.
 
-This UI-only candidate restores configured external-language navigation and removes empty dropdown controls. Incomplete local translations remain governed by existing public eligibility; external navigation does not change hreflang or sitemap ownership. Keyboard focus is visible and returns to header tab order. Shared Core stays locked to 0.9.6, with no TM, queue or database changes.
+Core 0.9.7 permits current partial translations to join hreflang and sitemap clusters without requiring 100-percent completion or translated Meta. Runtime HTML does not silently override that decision. No effective translation, invalid/stale manifests, explicit review policy and source noindex still affect SEO discovery, not ordinary navigation. This revision does not resume the AI queue, retry failed items, write TM or change database schema. Traffic-aware queue ordering is not included in this corrective RC.
 
 The floating panel also closes when responsive navigation hides its trigger. See `tests/fixtures/switcher-browser.md` for the isolated responsive and keyboard regression fixture.
 
