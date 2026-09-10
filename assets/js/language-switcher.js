@@ -103,6 +103,10 @@
 
     function positionMenu(btn, menu) {
         var rect = btn.getBoundingClientRect();
+        if (!rect.width || !rect.height) {
+            closeAllDropdowns();
+            return;
+        }
         var scrollX = window.pageXOffset || document.documentElement.scrollLeft;
         var scrollY = window.pageYOffset || document.documentElement.scrollTop;
         var menuWidth = menu.offsetWidth || 160;

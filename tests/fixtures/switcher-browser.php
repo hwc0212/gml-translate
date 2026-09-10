@@ -23,6 +23,7 @@ nav { display:flex; justify-content:flex-end; align-items:center; height:64px; g
 nav a { color:#222; text-decoration:none; font-weight:bold; }
 main { padding:24px; } button { font:inherit; }
 @media(max-width:600px) { nav { gap:12px; padding:0 12px; } }
+@media(max-width:360px) { .gml-language-switcher { display:none; } }
 </style>
 <header><nav><a href="/#products">Products</a><a href="/#quote">Request Quote</a>
 <?php echo $switcher->render_component( [ 'menu_context' => true ] ); ?>

@@ -12,4 +12,6 @@ At widths 1440, 768 and 390, open `/?case=all` and `/staging/?case=all`. Verify 
 
 Keyboard: Enter/Down opens and focuses the first link; Up opens at the last; arrows move between links; Escape closes and returns to the trigger. Shift+Tab from the first returns to the trigger; Tab from the last reaches Contact after the trigger.
 
+Open at 390px, then resize to 320px. The fixture hides the trigger at this breakpoint; the teleported panel must close instead of remaining at the top-left of the page. Resize back to 390px and confirm normal opening still works.
+
 `?case=none` must show a static EN label without a button or empty panel. `?case=incomplete` shows only the external destination. `/ru/?case=complete` shows current RU and alternatives EN plus external. PHP integration tests cover disabled/invalid external configuration, local eligibility, 404 and root/subdirectory URLs.

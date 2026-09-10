@@ -2,6 +2,11 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.25] - 2026-09-10
+
+- Close the teleported switcher panel when its trigger is hidden by a responsive navigation breakpoint. Prevent an orphaned panel at the top-left of the page after resizing an open desktop menu.
+- Extend the isolated browser fixture with trigger-hide/reopen regression coverage. No Header, Core, eligibility or data changes.
+
 ## [2.11.1-rc.24] - 2026-09-10
 
 ### Language switcher navigation and accessibility
