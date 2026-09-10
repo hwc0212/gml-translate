@@ -89,6 +89,7 @@ function wp_unslash( $value ) { return $value; }
 function wp_strip_all_tags( $value ) { return strip_tags( (string) $value ); }
 function wp_json_encode( $value, $flags = 0, $depth = 512 ) { return json_encode( $value, $flags, $depth ); }
 function get_locale() { return 'en_US'; }
+function wp_unique_id( $prefix = '' ) { static $id = 0; return $prefix . ++$id; }
 function get_bloginfo( $show = '' ) { return $show === 'name' ? 'Example Site' : ''; }
 function wp_salt( $scheme = 'auth' ) { return 'test-salt-' . $scheme; }
 function is_admin() { return false; }

@@ -52,6 +52,19 @@
 .gml-flag-emoji     { font-size: 1.15em; line-height: 1; display: inline-block; vertical-align: middle; }
 
 /* ── Dropdown trigger — transparent, inherits ALL typography ─ */
+.gml-language-switcher .gml-current-language {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    white-space: nowrap;
+}
+
+.gml-language-switcher .gml-dropdown-btn:focus-visible,
+.gml-dropdown-teleported a:focus-visible {
+    outline: 2px solid currentColor !important;
+    outline-offset: -2px;
+}
+
 .gml-language-switcher .gml-dropdown {
     position: relative;
     display: inline-block;

@@ -428,6 +428,20 @@ class GML_Language_Switcher {
         $current_lang  = $this->get_current_language();
         $language_urls = GML_SEO_Router::get_language_urls();
 
+        // External navigation is not a claim of SEO equivalence. Local
+        // candidates still come exclusively from public eligibility.
+        $source_url = $language_urls[$source_lang] ?? '';
+        if ( $source_url && class_exists( 'GML_URL_Helper' ) && class_exists( 'GML_Language_Utils' ) ) {
+            foreach ( $all_languages as $lang ) {
+                if ( GML_Language_Utils::is_external_language( $lang ) ) {
+                    $language_urls[$lang] = GML_URL_Helper::get_external_language_url( $source_url, $lang );
+                }
+            }
+        }
+        $alternatives = array_filter( $all_languages, static function( $lang ) use ( $current_lang, $language_urls ) {
+            return $lang !== $current_lang && ! empty( $language_urls[$lang] );
+        } );
+
         // Language info map
         $language_info = [
             'en' => ['name' => 'English',      'native' => 'English',          'code_upper' => 'EN'],
@@ -499,11 +513,18 @@ class GML_Language_Switcher {
         if ( $is_dropdown ) {
             $cur_data  = $language_info[$current_lang] ?? ['name' => $current_lang, 'native' => strtoupper($current_lang), 'code_upper' => strtoupper($current_lang)];
             $cur_label = $use_fullname ? $cur_data['native'] : $cur_data['code_upper'];
-            $html .= '<div class="gml-dropdown" tabindex="0">';
-            $html .= '<button type="button" class="gml-dropdown-btn" data-panel-align="' . esc_attr( $panel_alignment ) . '" aria-label="' . esc_attr( $cur_data['native'] ) . '" aria-haspopup="listbox" aria-expanded="false">';
+            if ( ! $alternatives ) {
+                $html .= '<span class="gml-current-language" aria-label="' . esc_attr( $cur_data['native'] ) . '">';
+                if ( $show_flags ) $html .= $this->get_flag_html( $current_lang, $flag_type, $cur_data['native'], $lang_countries[$current_lang] ?? '' );
+                if ( $show_names ) $html .= '<span class="gml-lang-label">' . esc_html( $cur_label ) . '</span>';
+                return $html . '</span></div>';
+            }
+            $panel_id = wp_unique_id( 'gml-language-options-' );
+            $html .= '<div class="gml-dropdown">';
+            $html .= '<button type="button" class="gml-dropdown-btn" data-panel-align="' . esc_attr( $panel_alignment ) . '" aria-label="' . esc_attr( $cur_data['native'] ) . '" aria-controls="' . esc_attr( $panel_id ) . '" aria-expanded="false">';
             if ( $show_flags ) $html .= $this->get_flag_html( $current_lang, $flag_type, $cur_data['native'], $lang_countries[$current_lang] ?? '' );
             if ( $show_names ) $html .= '<span class="gml-lang-label">' . esc_html( $cur_label ) . '</span>';
-            $html .= '<span class="gml-dropdown-arrow">▼</span></button><ul class="gml-dropdown-menu" role="listbox">';
+            $html .= '<span class="gml-dropdown-arrow" aria-hidden="true">▼</span></button><ul class="gml-dropdown-menu" id="' . esc_attr( $panel_id ) . '">';
 
             foreach ( $all_languages as $lang ) {
                 if ( $lang === $current_lang ) continue;
@@ -512,7 +533,7 @@ class GML_Language_Switcher {
                 $raw_url = $language_urls[$lang] ?? '';
                 if ( ! $raw_url ) continue;
                 $external = class_exists( 'GML_Language_Utils' ) && GML_Language_Utils::is_external_language( $lang ) ? ' gml-external-language' : '';
-                $html .= '<li role="option"><a href="' . esc_url( $raw_url ) . '" class="gml-dropdown-item' . esc_attr( $external ) . '" hreflang="' . esc_attr( $lang ) . '">';
+                $html .= '<li><a href="' . esc_url( $raw_url ) . '" class="gml-dropdown-item' . esc_attr( $external ) . '" hreflang="' . esc_attr( $lang ) . '" aria-label="' . esc_attr( $d['native'] ) . '">';
                 if ( $show_flags ) $html .= $this->get_flag_html( $lang, $flag_type, $d['native'], $lang_countries[$lang] ?? '' );
                 if ( $show_names ) $html .= '<span class="gml-lang-label">' . esc_html( $label ) . '</span>';
                 $html .= '</a></li>';

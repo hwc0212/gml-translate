@@ -8,6 +8,8 @@
             var btn = dropdown.querySelector('.gml-dropdown-btn');
             var menu = dropdown.querySelector('.gml-dropdown-menu');
             if (!btn || !menu) return;
+            var links = menu.querySelectorAll('a[href]');
+            if (!links.length) return;
 
             // Teleport the dropdown menu to <body> so no theme CSS can reach it
             menu.style.setProperty('display', 'none', 'important');
@@ -29,6 +31,30 @@
                     // Show first (off-screen) so we can measure, then position
                     menu.style.setProperty('display', 'block', 'important');
                     positionMenu(btn, menu);
+                    if (e.detail === 0) links[0].focus();
+                }
+            });
+
+            btn.addEventListener('keydown', function (e) {
+                if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+                e.preventDefault();
+                closeAllDropdowns();
+                dropdown.classList.add('open');
+                btn.setAttribute('aria-expanded', 'true');
+                menu.style.setProperty('display', 'block', 'important');
+                positionMenu(btn, menu);
+                links[e.key === 'ArrowUp' ? links.length - 1 : 0].focus();
+            });
+            menu.addEventListener('keydown', function (e) {
+                var index = Array.prototype.indexOf.call(links, document.activeElement);
+                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    links[(index + (e.key === 'ArrowDown' ? 1 : links.length - 1)) % links.length].focus();
+                } else if (e.key === 'Tab' && ((e.shiftKey && index === 0) || (!e.shiftKey && index === links.length - 1))) {
+                    // The teleported panel must return to header tab order.
+                    if (e.shiftKey) e.preventDefault();
+                    closeAllDropdowns();
+                    btn.focus();
                 }
             });
         });
@@ -40,7 +66,13 @@
         });
 
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') closeAllDropdowns();
+            if (e.key !== 'Escape') return;
+            var panel = document.activeElement.closest('.gml-dropdown-teleported');
+            closeAllDropdowns();
+            if (panel && panel._gmlBtn) panel._gmlBtn.focus();
+        });
+        document.addEventListener('focusin', function (e) {
+            if (!e.target.closest('.gml-dropdown, .gml-dropdown-teleported')) closeAllDropdowns();
         });
 
         // Reposition on scroll/resize

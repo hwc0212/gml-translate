@@ -2,6 +2,15 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.24] - 2026-09-10
+
+### Language switcher navigation and accessibility
+
+- Restore enabled external-language navigation using its configured URL mapping, without adding unverified external sites to SEO alternates.
+- Keep incomplete local translations excluded by the existing public eligibility policy. With no alternative destination, render a static current-language label instead of an empty dropdown.
+- Use a labelled disclosure and ordinary navigation links; support keyboard opening, arrow navigation, Escape focus restoration and header Tab order after the teleported panel.
+- Add root/subdirectory candidate regressions and a browser fixture with an overflow-constrained header. Shared Core remains exactly 0.9.6; no data migration, translation or queue changes.
+
 ## [2.11.1-rc.23] - 2026-09-09
 
 ### 运行时文本和资源整组缓存修复候选版
