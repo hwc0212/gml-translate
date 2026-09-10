@@ -429,7 +429,8 @@ class GML_Language_Switcher {
         $language_urls = GML_SEO_Router::get_language_urls();
 
         // External navigation is not a claim of SEO equivalence. Local
-        // candidates still come exclusively from public eligibility.
+        // links still come exclusively from public eligibility; unavailable
+        // configured languages remain visible without a URL.
         $source_url = $language_urls[$source_lang] ?? '';
         if ( $source_url && class_exists( 'GML_URL_Helper' ) && class_exists( 'GML_Language_Utils' ) ) {
             foreach ( $all_languages as $lang ) {
@@ -438,8 +439,8 @@ class GML_Language_Switcher {
                 }
             }
         }
-        $alternatives = array_filter( $all_languages, static function( $lang ) use ( $current_lang, $language_urls ) {
-            return $lang !== $current_lang && ! empty( $language_urls[$lang] );
+        $alternatives = array_filter( $all_languages, static function( $lang ) use ( $current_lang ) {
+            return $lang !== $current_lang;
         } );
 
         // Language info map
@@ -531,7 +532,10 @@ class GML_Language_Switcher {
                 $d       = $language_info[$lang] ?? ['name' => $lang, 'native' => strtoupper($lang), 'code_upper' => strtoupper($lang)];
                 $label   = $use_fullname ? $d['native'] : $d['code_upper'];
                 $raw_url = $language_urls[$lang] ?? '';
-                if ( ! $raw_url ) continue;
+                if ( ! $raw_url ) {
+                    $html .= '<li>' . $this->render_unavailable_language( $lang, $d['native'], $label, 'gml-dropdown-item' ) . '</li>';
+                    continue;
+                }
                 $external = class_exists( 'GML_Language_Utils' ) && GML_Language_Utils::is_external_language( $lang ) ? ' gml-external-language' : '';
                 $html .= '<li><a href="' . esc_url( $raw_url ) . '" class="gml-dropdown-item' . esc_attr( $external ) . '" hreflang="' . esc_attr( $lang ) . '" aria-label="' . esc_attr( $d['native'] ) . '">';
                 if ( $show_flags ) $html .= $this->get_flag_html( $lang, $flag_type, $d['native'], $lang_countries[$lang] ?? '' );
@@ -545,7 +549,10 @@ class GML_Language_Switcher {
                 $d       = $language_info[$lang] ?? ['name' => $lang, 'native' => strtoupper($lang), 'code_upper' => strtoupper($lang)];
                 $label   = $use_fullname ? $d['native'] : $d['code_upper'];
                 $raw_url = $language_urls[$lang] ?? '';
-                if ( ! $raw_url ) continue;
+                if ( ! $raw_url ) {
+                    $html .= $this->render_unavailable_language( $lang, $d['native'], $label, 'gml-lang-button' );
+                    continue;
+                }
                 $active   = $current_lang === $lang ? ' gml-active' : '';
                 $external = class_exists( 'GML_Language_Utils' ) && GML_Language_Utils::is_external_language( $lang ) ? ' gml-external-language' : '';
                 $html .= '<a href="' . esc_url( $raw_url ) . '" class="gml-lang-button' . esc_attr( $active . $external ) . '" hreflang="' . esc_attr( $lang ) . '"' . ( $active ? ' aria-current="page"' : '' ) . '>';
@@ -557,6 +564,13 @@ class GML_Language_Switcher {
         }
 
         return $html . '</div>';
+    }
+
+    private function render_unavailable_language( $lang, $native, $label, $class ) {
+        $status = __( 'Not ready on this page', 'gml-translate' );
+        return '<span class="' . esc_attr( $class ) . ' gml-language-unavailable" role="link" aria-disabled="true" tabindex="0" data-language="' . esc_attr( $lang ) . '" aria-label="' . esc_attr( $native . ': ' . $status ) . '">'
+            . '<span class="gml-lang-label">' . esc_html( $label ) . '</span>'
+            . '<span class="gml-language-status">' . esc_html( $status ) . '</span></span>';
     }
     
     /**

@@ -14,4 +14,8 @@ Keyboard: Enter/Down opens and focuses the first link; Up opens at the last; arr
 
 Open at 390px, then resize to 320px. The fixture hides the trigger at this breakpoint; the teleported panel must close instead of remaining at the top-left of the page. Resize back to 390px and confirm normal opening still works.
 
-`?case=none` must show a static EN label without a button or empty panel. `?case=incomplete` shows only the external destination. `/ru/?case=complete` shows current RU and alternatives EN plus external. PHP integration tests cover disabled/invalid external configuration, local eligibility, 404 and root/subdirectory URLs.
+`?case=none` has no configured targets and must show a static EN label without a button or empty panel. `?case=incomplete` shows four unavailable local items plus a clickable external destination. `?case=unavailable` shows four unavailable local items and no anchors, but must still open. Click or Enter on an unavailable item must not navigate; arrow keys, Tab and Escape must work across both links and unavailable statuses.
+
+`/ru/?case=complete` shows current RU, clickable EN/external, and three unavailable local items. PHP integration tests cover disabled/invalid external configuration, local eligibility, button-list parity, 404 and root/subdirectory URLs. The SEO public URL list must remain unchanged.
+
+Use `?case=incomplete&low=1` at 390x640 to test a trigger near the bottom: the panel should fit above or scroll within the available viewport. All rows must remain readable and reachable.

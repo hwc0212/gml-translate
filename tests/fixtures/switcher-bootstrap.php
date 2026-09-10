@@ -26,7 +26,8 @@ function gml_switcher_fixture( $case = 'all', $base = 'https://example.com' ) {
             return [ 'code' => $code, 'enabled' => true, 'site_mode' => 'local' ];
         }, [ 'es', 'de', 'ru', 'fr' ] ),
     ];
-    if ( $case !== 'none' ) {
+    if ( $case === 'none' ) GML_Translate_Test_State::$options['gml_languages'] = [];
+    if ( ! in_array( $case, [ 'none', 'unavailable' ], true ) ) {
         GML_Translate_Test_State::$options['gml_languages'][] = [
             'code' => 'zh', 'enabled' => true, 'site_mode' => 'external',
             'external_url' => 'https://external.example/', 'external_path_mode' => 'homepage',

@@ -8,7 +8,7 @@
             var btn = dropdown.querySelector('.gml-dropdown-btn');
             var menu = dropdown.querySelector('.gml-dropdown-menu');
             if (!btn || !menu) return;
-            var links = menu.querySelectorAll('a[href]');
+            var links = menu.querySelectorAll('a[href], .gml-language-unavailable');
             if (!links.length) return;
 
             // Retain a navigation ancestor for theme handlers already bound to links.
@@ -113,13 +113,18 @@
         }
         var scrollX = window.pageXOffset || document.documentElement.scrollLeft;
         var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        menu.style.setProperty('max-height', 'none');
+        var below = Math.max(0, window.innerHeight - rect.bottom - 12);
+        var above = Math.max(0, rect.top - 12);
+        var openAbove = menu.offsetHeight > below && above > below;
+        menu.style.setProperty('max-height', (openAbove ? above : below) + 'px');
         var menuWidth = menu.offsetWidth || 160;
 
         var alignment = btn.getAttribute('data-panel-align') || 'auto';
 
         // Position below the button using the selected alignment. Automatic
         // alignment keeps the panel inside the viewport without layout shifts.
-        var top = rect.bottom + scrollY + 4;
+        var top = openAbove ? rect.top + scrollY - menu.offsetHeight - 4 : rect.bottom + scrollY + 4;
         var left;
         if (alignment === 'left') {
             left = rect.left + scrollX;

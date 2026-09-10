@@ -2,6 +2,12 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.27] - 2026-09-10
+
+- Show every enabled language in dropdown and button-list switchers. Unavailable translations have a visible per-page status and no href, while eligible local and external URLs remain clickable.
+- Allow keyboard access to unavailable statuses and opening a menu with no ready alternatives. Constrain or flip the panel to fit the viewport.
+- Add regressions for incomplete, all-unavailable, complete, disabled-language, root/subdirectory and small-screen navigation without changing Core publication policy or translation data.
+
 ## [2.11.1-rc.26] - 2026-09-10
 
 - Preserve an isolated navigation ancestor when teleporting the language panel, so GeneratePress's pre-bound focus, blur and click handlers remain valid.

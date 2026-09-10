@@ -13,8 +13,10 @@ if ( in_array( $path, [ '/assets/css/language-switcher.css', '/assets/js/languag
 }
 require_once __DIR__ . '/switcher-bootstrap.php';
 $case = $_GET['case'] ?? 'all';
-if ( ! in_array( $case, [ 'all', 'none', 'incomplete', 'complete' ], true ) ) $case = 'none';
-$base = 'http://127.0.0.1:18824' . ( strpos( $path, '/staging/' ) === 0 ? '/staging' : '' );
+if ( ! in_array( $case, [ 'all', 'none', 'unavailable', 'incomplete', 'complete' ], true ) ) $case = 'none';
+$host = $_SERVER['HTTP_HOST'] ?? '127.0.0.1:18824';
+if ( ! preg_match( '/^127\.0\.0\.1:[0-9]+$/D', $host ) ) $host = '127.0.0.1:18824';
+$base = 'http://' . $host . ( strpos( $path, '/staging/' ) === 0 ? '/staging' : '' );
 $switcher = gml_switcher_fixture( $case, $base );
 header( 'Cache-Control: no-store' );
 ?>
@@ -29,6 +31,7 @@ nav a { color:#222; text-decoration:none; font-weight:bold; }
 main { padding:24px; } button { font:inherit; }
 @media(max-width:600px) { nav { gap:12px; padding:0 12px; } }
 @media(max-width:360px) { .gml-language-switcher { display:none; } }
+<?php if ( isset( $_GET['low'] ) ) : ?>header { margin-top:380px; }<?php endif; ?>
 </style>
 <body class="dropdown-hover"><header><nav><div class="main-nav" style="display:contents"><a href="/#products">Products</a><a href="/#quote">Request Quote</a>
 <?php echo $switcher->render_component( [ 'menu_context' => true ] ); ?>
