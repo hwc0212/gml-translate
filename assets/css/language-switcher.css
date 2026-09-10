@@ -132,6 +132,21 @@
 }
 
 /* ── Dropdown panel — floats out of flow, has own styling ─ */
+.gml-dropdown-portal.main-nav {
+    display: block !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    overflow: visible !important;
+    z-index: 99999 !important;
+}
+
 /* This is the ONLY part that doesn't inherit — it's teleported outside
    of the menu container, so must carry its own visual identity. Users
    override via CSS custom properties listed at the top of this file. */

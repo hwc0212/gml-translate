@@ -11,9 +11,13 @@
             var links = menu.querySelectorAll('a[href]');
             if (!links.length) return;
 
-            // Teleport the dropdown menu to <body> so no theme CSS can reach it
+            // Retain a navigation ancestor for theme handlers already bound to links.
+            var portal = document.createElement('nav');
+            portal.className = 'gml-dropdown-portal main-nav';
+            portal.setAttribute('aria-labelledby', menu.id);
             menu.style.setProperty('display', 'none', 'important');
-            document.body.appendChild(menu);
+            document.body.appendChild(portal);
+            portal.appendChild(menu);
             menu.classList.add('gml-dropdown-teleported');
 
             // Store reference for positioning

@@ -2,6 +2,11 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.26] - 2026-09-10
+
+- Preserve an isolated navigation ancestor when teleporting the language panel, so GeneratePress's pre-bound focus, blur and click handlers remain valid.
+- Add an offline theme ancestor-contract fixture and optional testing with the actual GeneratePress menu script. No theme, translation data, Core or publication policy changes.
+
 ## [2.11.1-rc.25] - 2026-09-10
 
 - Close the teleported switcher panel when its trigger is hidden by a responsive navigation breakpoint. Prevent an orphaned panel at the top-left of the page after resizing an open desktop menu.

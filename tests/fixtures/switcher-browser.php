@@ -1,6 +1,11 @@
 <?php
 /** Run with php -S 0.0.0.0:8080 tests/fixtures/switcher-browser.php. */
 $path = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+if ( $path === '/switcher-theme-contract.js' ) {
+    header( 'Content-Type: application/javascript' );
+    readfile( __DIR__ . '/switcher-theme-contract.js' );
+    return;
+}
 if ( in_array( $path, [ '/assets/css/language-switcher.css', '/assets/js/language-switcher.js' ], true ) ) {
     header( 'Content-Type: ' . ( substr( $path, -4 ) === '.css' ? 'text/css' : 'application/javascript' ) );
     readfile( dirname( __DIR__, 2 ) . $path );
@@ -25,8 +30,13 @@ main { padding:24px; } button { font:inherit; }
 @media(max-width:600px) { nav { gap:12px; padding:0 12px; } }
 @media(max-width:360px) { .gml-language-switcher { display:none; } }
 </style>
-<header><nav><a href="/#products">Products</a><a href="/#quote">Request Quote</a>
+<body class="dropdown-hover"><header><nav><div class="main-nav" style="display:contents"><a href="/#products">Products</a><a href="/#quote">Request Quote</a>
 <?php echo $switcher->render_component( [ 'menu_context' => true ] ); ?>
-<a href="/#contact">Contact</a></nav></header>
+<a href="/#contact">Contact</a></div></nav></header>
 <main><h1>Switcher fixture</h1><button id="outside">Outside control</button><p>Case: <?php echo esc_html( $case ); ?></p></main>
-<script src="/assets/js/language-switcher.js"></script></html>
+<?php if ( ( $_GET['theme'] ?? '' ) === 'gp' ) : ?>
+<script src="https://www.cnxhe.com/wp-content/themes/generatepress/assets/js/menu.min.js?ver=3.6.1"></script>
+<?php else : ?>
+<script src="/switcher-theme-contract.js"></script>
+<?php endif; ?>
+<script src="/assets/js/language-switcher.js"></script></body></html>

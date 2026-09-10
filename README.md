@@ -6,7 +6,7 @@ GML Translate 是 GML 系列的主产品，也是独立的 WordPress AI 多语�
 
 它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。完整 SEO 应交给 SEOPress、Yoast、Rank Math 等成熟 SEO authority；GML SEO 已进入 LTS，仅维护安全、兼容、迁移与严重缺陷。
 
-## 2.11.1-rc.25 Language Switcher Candidate
+## 2.11.1-rc.26 Language Switcher Candidate
 
 This UI-only candidate restores configured external-language navigation and removes empty dropdown controls. Incomplete local translations remain governed by existing public eligibility; external navigation does not change hreflang or sitemap ownership. Keyboard focus is visible and returns to header tab order. Shared Core stays locked to 0.9.6, with no TM, queue or database changes.
 
