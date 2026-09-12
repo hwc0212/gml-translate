@@ -17,6 +17,7 @@ final class GML_Publication_Gate {
 
     /** @var bool */
     private static $preview_banner_printed = false;
+    private static $progress_status = null;
 
     public function __construct( GML_Translation_Provider $provider = null ) {
         $this->provider = $provider ?: new GML_Translation_Provider();
@@ -50,7 +51,14 @@ final class GML_Publication_Gate {
 
         // Translation progress never removes a valid user-facing language URL.
         // SEO discovery remains a separate decision; missing/held text uses source.
-        if ( $resource instanceof GML_Resource_Identity && $resource->is_eligible() ) return;
+        if ( $resource instanceof GML_Resource_Identity && $resource->is_eligible() ) {
+            if (!empty($status['page_readiness']['ready'])) return;
+            self::$progress_status = $status;
+            if ( ! headers_sent() ) header( 'X-Robots-Tag: noindex', false );
+            add_action( 'wp_body_open', [ $this, 'render_progress_banner' ], 0 );
+            add_action( 'wp_footer', [ $this, 'render_progress_banner' ], PHP_INT_MAX );
+            return;
+        }
 
         if ( current_user_can( $this->preview_capability() ) ) {
             self::$preview_status = $status ?: [
@@ -197,6 +205,20 @@ final class GML_Publication_Gate {
         echo '<aside class="gml-translation-preview-notice" role="status" style="padding:12px 20px;background:#fff3cd;border-bottom:2px solid #dba617;color:#3c2f00;font:600 14px/1.5 system-ui,sans-serif;text-align:center;">';
         echo esc_html__( 'GML Translate preview: this translation is not public and is forced to noindex.', 'gml-translate' );
         echo ' <code>' . esc_html( $reason ) . '</code></aside>';
+    }
+
+    public function render_progress_banner() {
+        if ( self::$preview_banner_printed || self::$progress_status === null ) return;
+        self::$preview_banner_printed = true;
+        $policy = self::$progress_status['page_readiness'] ?? [];
+        $paused = get_option( 'gml_translation_paused', false ) || ! GML_Translation_State::ai_available();
+        $message = $paused
+            ? __( 'Translation incomplete. Automatic translation is paused; untranslated content is shown in the original language.', 'gml-translate' )
+            : __( 'Translation incomplete. Untranslated content is shown in the original language.', 'gml-translate' );
+        echo '<aside class="gml-translation-progress notranslate" translate="no" role="status" style="padding:8px 16px;border-bottom:1px solid #dcdcde;background:#f6f7f7;color:#1d2327;font:14px/1.5 system-ui,sans-serif;">';
+        echo esc_html( $message );
+        if ( ! empty( $policy['required_count'] ) ) echo ' ' . esc_html( $policy['percent'] . '%' );
+        echo '</aside>';
     }
 
     private function source_url( $resource ) {

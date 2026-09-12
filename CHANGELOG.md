@@ -2,6 +2,17 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.29] - 2026-09-12
+
+- Add page/language progress and default exact 98% SEO readiness (count and source length). Critical missing meta, stale manifests, held text and rejected review stay protected. This replaces rc.28's partial-SEO policy, not its accessible language routes.
+- Keep valid incomplete language pages at 200 with source fallback, self-canonical, noindex and a truthful progress/pause notice. Enabled language links remain clickable and show page progress; ready clusters drive reciprocal hreflang and sitemap.
+- Prioritize homepage and direct main-navigation discovery, bounded page/language work, explicit requests, demand and aging. No automatic queue resume or provider change on upgrade.
+- Add paginated Needs Attention with current/history filters, source/error/context, explicit one-item AI, snapshot-safe manual edits and defer. Background pause is preserved; existing assets need candidate review before replacement.
+- Separate provider circuit/cooldown from user pause, preserve pause during connection tests, repair eligible missing schedules, and add bounded redacted activity events.
+- Add opt-in consent-based first-party aggregate demand and additive DB schema 3.5.0. No external analytics service, arbitrary-URL task creation or frontend AI calls.
+- Consume configured resource-cache adapters in bounded exact-URL batches with token-safe acknowledgement. Unconfigured outer caches are reported as unconfirmed, not purged.
+- Vendor Core 0.9.8 through the exact-commit lock. No GML SEO update, production deployment, official directory submission, tag or Release.
+
 ## [2.11.1-rc.28] - 2026-09-10
 
 - Decouple valid language URL access and switcher links from translation completeness. Ordinary partial pages no longer redirect visitors to the source solely because translations are missing.

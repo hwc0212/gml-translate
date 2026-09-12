@@ -157,7 +157,7 @@
                 var tgtText = escHtml(row.translated_text);
                 if (srcText.length > 120) srcText = srcText.substring(0, 120) + '…';
 
-                html += '<tr data-id="' + row.id + '" style="border-bottom:1px solid #f0f0f0;">';
+                html += '<tr data-id="' + row.id + '" data-edit-snapshot="' + escHtml(row.edit_snapshot) + '" style="border-bottom:1px solid #f0f0f0;">';
                 html += '<td style="padding:10px 16px;font-size:13px;color:#333;word-break:break-word;">' + srcText + '</td>';
                 html += '<td class="gml-tgt-cell" style="padding:10px 16px;font-size:13px;word-break:break-word;">';
                 html += '<span class="gml-tgt-text">' + tgtText + '</span>';
@@ -215,9 +215,11 @@
             action: 'gml_save_translation',
             nonce: gmlEditor.nonce,
             id: id,
+            edit_snapshot: tr.attr('data-edit-snapshot'),
             translated_text: newText
         }, function(r) {
             if (r.success) {
+                tr.attr('data-edit-snapshot', r.data.edit_snapshot);
                 tr.find('.gml-tgt-text').text(newText).show();
                 tr.find('.gml-tgt-input').hide();
                 tr.find('.gml-save-btn, .gml-cancel-btn').hide();
@@ -225,6 +227,7 @@
                 // Update status badge to Manual
                 tr.find('td:eq(2)').html('<span style="display:inline-block;padding:2px 8px;background:#e8f0fe;color:#1a73e8;border-radius:10px;font-size:11px;">M</span>');
             }
+            if (!r.success) window.alert(typeof r.data === 'string' ? r.data : 'Save failed. Refresh and review the current translation.');
             btn.prop('disabled', false).text(i18n.save);
         });
     });

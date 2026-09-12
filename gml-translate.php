@@ -3,7 +3,7 @@
  * Plugin Name: GML Translate
  * Plugin URI: https://huwencai.com/gml-translate
  * Description: AI multilingual translation for WordPress with stable language URLs, editable translations, glossary, queue controls, hreflang, and sitemap integration.
- * Version: 2.11.1-rc.28
+ * Version: 2.11.1-rc.29
  * Author: huwencai.com
  * Author URI: https://huwencai.com
  * License: GPL v2 or later
@@ -32,7 +32,7 @@ if ( defined( 'GML_TRANSLATION_HOST' ) && GML_TRANSLATION_HOST !== 'standalone' 
 }
 
 // Define plugin constants
-define('GML_VERSION', '2.11.1-rc.28');
+define('GML_VERSION', '2.11.1-rc.29');
 define('GML_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GML_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GML_PLUGIN_FILE', __FILE__);
@@ -136,6 +136,8 @@ class GML_Translate {
     public function init_components() {
         // Only a permitted admin request may perform bounded database setup.
         GML_Installer::register_hooks();
+        GML_Resource_Cache_Worker::register_hooks();
+        add_action('gml_page_demand_cleanup',['GML_Page_Demand','cleanup']);
         // Resource discovery is provider-free. Publication remains separately
         // derived from machine readiness plus exact-snapshot Human Review.
         if ( class_exists( 'GML_Resource_Manifest_Manager' ) ) {
@@ -149,7 +151,7 @@ class GML_Translate {
         // Language Switcher) to avoid unnecessary work and reduce the surface area
         // that triggers third-party plugin hooks (e.g. Elementor Pro Notes module).
         if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
-            if ( GML_Translation_State::work_enabled() ) {
+            if ( GML_Translation_State::work_enabled() || (GML_Translation_State::ai_available() && GML_Manual_Translation::pending_id()) ) {
                 new GML_Queue_Processor();
             }
             if ( GML_Translation_State::multilingual_enabled() ) {
@@ -162,11 +164,13 @@ class GML_Translate {
         if (is_admin()) {
             new GML_Admin_Settings();
             new GML_Translation_Editor();
+            new GML_Page_Workflow_Admin();
         }
 
         // Keep generation-based invalidation active while multilingual output
         // is disabled so stale Redis/transient HTML cannot return on re-enable.
         new GML_Page_Cache();
+        new GML_Page_Demand_Tracker();
 
         // Multilingual routing and existing translations do not depend on AI.
         if ( ! GML_Translation_State::multilingual_enabled() ) {

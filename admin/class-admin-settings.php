@@ -88,6 +88,8 @@ class GML_Admin_Settings {
             'settings'     => __('Settings',           'gml-translate'),
             'switcher'     => __('Language Switcher',   'gml-translate'),
             'translations' => __('Translations',        'gml-translate'),
+            'pages'        => __('Page Progress',       'gml-translate'),
+            'failures'     => __('Needs Attention',     'gml-translate'),
             'review'       => __('Review',              'gml-translate'),
             'exclusions'   => __('Exclusion Rules',     'gml-translate'),
             'glossary'     => __('Glossary',            'gml-translate'),
@@ -109,6 +111,7 @@ class GML_Admin_Settings {
             if ($tab === 'settings')     $this->render_settings_tab();
             elseif ($tab === 'switcher') $this->render_switcher_tab();
             elseif ($tab === 'review') $this->resource_review->render();
+            elseif ($tab === 'pages' || $tab === 'failures') (new GML_Page_Workflow_Admin())->render($tab);
             elseif ($tab === 'exclusions') $this->render_exclusions_tab();
             elseif ($tab === 'glossary') $this->render_glossary_tab();
             else                         $this->render_translations_tab();
@@ -179,7 +182,10 @@ class GML_Admin_Settings {
                 GML_Queue_Processor::clear_circuit_breaker();
                 echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( $test['message'] ) . ' ' . esc_html__( 'This test does not start or resume translation.', 'gml-translate' ) . '</p></div>';
             } else {
-                GML_Translation_Controls::pause();
+                if ( GML_Queue_Processor::is_provider_wide_failure( $test['message'] ?? '', $client ) ) {
+                    GML_Queue_Processor::open_circuit( $test['message'], [ 'engine' => $client->get_engine(), 'model' => $client->get_model() ] );
+                }
+                GML_Translation_Activity::record( 'connection_test_failed', GML_Translation_Error::classify( $client->get_last_error(), $test['message'] ?? '' ) + [ 'engine' => $client->get_engine(), 'model' => $client->get_model(), 'actor' => get_current_user_id() ] );
                 echo '<div class="notice notice-error is-dismissible"><p>' . esc_html( $test['message'] ?? __( 'The saved AI connection could not be verified.', 'gml-translate' ) ) . '</p></div>';
             }
             echo '<p class="description">' . esc_html( sprintf( __( 'Tested saved configuration: %1$s / %2$s. Key contents are never displayed.', 'gml-translate' ), GML_Gemini_API::get_engine_label( $client->get_engine() ), $client->get_model() ) ) . '</p>';
@@ -1161,6 +1167,7 @@ class GML_Admin_Settings {
             <?php if ( $current_corpus_ready && $stored_history > 0 ): ?><dl><dt><?php esc_html_e( 'Stored History', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $stored_history ) ); ?></dd></dl><?php endif; ?>
             <dl><dt><?php esc_html_e( 'Last Worker Activity', 'gml-translate' ); ?></dt><dd id="gml-queue-last"><?php echo esc_html( $queue_status['last_activity'] ? wp_date( 'Y-m-d H:i:s', $queue_status['last_activity'] ) : __( 'Not recorded yet', 'gml-translate' ) ); ?></dd></dl>
         </div>
+        <?php include __DIR__ . '/views/translation-activity.php'; ?>
         <div class="gml-content-scan">
             <div>
                 <h3><?php esc_html_e( 'Content Scan', 'gml-translate' ); ?></h3>
@@ -1870,7 +1877,7 @@ class GML_Admin_Settings {
         }
 
         if ( ! $multilingual || ! $ai_enabled || $api_key_updated || $save_failed || $previous_engine !== $engine || ! $was_multilingual || ! $was_ai_enabled ) {
-            GML_Translation_Controls::pause();
+            GML_Translation_Controls::pause( '', 'credentials_changed' );
         }
         if ( ! $multilingual || ! $ai_enabled ) {
             GML_Content_Crawler::stop_crawl();

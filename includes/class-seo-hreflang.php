@@ -89,7 +89,8 @@ class GML_SEO_Hreflang {
         $status = $resource instanceof GML_Resource_Identity
             ? $this->provider->get_public_status( $resource, $current, [ 'entrypoint' => 'canonical' ] )
             : [];
-        return ! empty( $status['public_eligible'] ) && ! empty( $status['url'] ) ? $status['url'] : $source;
+        // Progressive 200 pages keep their own identity even while noindex.
+        return ! empty( $status['route_valid'] ) && ! empty( $status['url'] ) ? $status['url'] : $source;
     }
 
     public function filter_seopress_canonical( $canonical_tag ) {

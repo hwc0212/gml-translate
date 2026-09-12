@@ -6,7 +6,22 @@ GML Translate 是 GML 系列的主产品，也是独立的 WordPress AI 多语�
 
 它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。完整 SEO 应交给 SEOPress、Yoast、Rank Math 等成熟 SEO authority；GML SEO 已进入 LTS，仅维护安全、兼容、迁移与严重缺陷。
 
-## 2.11.1-rc.28 Progressive Publication Candidate
+## 2.11.1-rc.29 Page Workflow Candidate
+
+The current development RC adds **Page Progress** and **Needs Attention** without
+removing existing translation assets or changing the saved provider/pause setting.
+See [Page workflow and upgrade guide](docs/page-workflow.md) for the 98% policy,
+manual review, privacy controls, cache adapters and rollback limitations.
+
+Access and search publication are separate: incomplete valid language URLs remain
+clickable and return 200 with trusted partial translation/source fallback. Below
+the page policy they are noindex and absent from that resource's hreflang/sitemap.
+Global language percentages never authorize or block an individual page.
+
+This candidate is for local/user testing. No production deployment is performed
+by its build, and no real-provider quality or billing claim follows from mock tests.
+
+## 2.11.1-rc.28 Progressive Publication (Historical)
 
 Valid source pages keep clickable links for every enabled local language, even while translation is incomplete. User-facing access is independent of translation progress and SEO discovery. Missing or quality-held segments retain their original source text; previously held output is not republished.
 
