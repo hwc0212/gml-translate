@@ -6,7 +6,23 @@ GML Translate 是 GML 系列的主产品，也是独立的 WordPress AI 多语�
 
 它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。完整 SEO 应交给 SEOPress、Yoast、Rank Math 等成熟 SEO authority；GML SEO 已进入 LTS，仅维护安全、兼容、迁移与严重缺陷。
 
-## 2.11.1-rc.30 Language Switcher Correction
+## 2.11.1-rc.31 Translation Validator Correction
+
+Core 0.9.9 distinguishes prose percentages from printf arguments. Localized spacing
+and decimal commas are allowed without dropping percentage values or weakening
+the existing placeholder/link/dimension checks. Failure diagnostics identify the
+token category, counts and first mismatch, never the full provider response.
+
+Upgrade preserves existing translations, failures, queue pause, provider settings
+and publication policy. Existing failure messages are historical and do not change
+until a new explicitly requested attempt. Do not clear TM or retry all failures.
+After backup and installation, verify the version, normal language navigation,
+and unchanged queue state. Review one affected percentage item using Needs Attention
+before approving its explicit AI action; compare the candidate with its source.
+Keep rc.30 for code rollback. No schema migration or automatic production operation
+is included. Manifest/queue gaps and low batch throughput remain separate work.
+
+## 2.11.1-rc.30 Language Switcher Correction (Historical)
 
 Language navigation no longer displays translation percentages or incomplete
 messages in dropdown or inline links. Existing name/code/flag preferences, local

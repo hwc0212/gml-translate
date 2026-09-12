@@ -2,6 +2,14 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.31] - 2026-09-12
+
+- Vendor Core 0.9.9: fix prose percentages such as `95% or 100%` being mistaken for printf arguments. Preserve percentage values/counts, real formatting directives, links, placeholders and dimensions.
+- Protected-token failures now record the token kind, source/target counts and first mismatch position without recording source/candidate text or URL parameters.
+- Add offline format and Gemini/DeepSeek mock-provider regression checks. This does not prove real-provider quality or automatically recover existing failed records.
+- Preserve rc.30's navigation-only language switcher. No queue resume, failure retry, translation-memory edits, provider changes, schema changes or publication-policy changes on upgrade.
+- Known follow-up: current-manifest queue gaps and small page-focused batches still need separate diagnosis; this RC does not claim to fix them. No production deployment or GML SEO update.
+
 ## [2.11.1-rc.30] - 2026-09-12
 
 - Remove translation-progress messages and percentages from dropdown and inline language links, including their dedicated styles and presentation-only readiness lookup.
