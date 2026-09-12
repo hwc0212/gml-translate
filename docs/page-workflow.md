@@ -25,7 +25,9 @@ engine indexing guarantee.
 A valid incomplete route stays 200, keeps its language canonical and uses current
 source text for missing/held segments. It shows a small incomplete notice; if AI
 or background translation is paused, the notice says so. Enabled local languages
-remain links, with current page progress. External sites use configured mappings,
+remain links. The switcher shows configured language labels/flags, not progress
+percentages or translation diagnostics; use admin Page Progress for those details.
+External sites use configured mappings,
 not invented equivalents. 404, private and permanent-redirect resources retain
 their existing protections. Below-policy routes are noindex and excluded from the
 page's SEO alternate set; ready language versions use reciprocal hreflang/sitemap.

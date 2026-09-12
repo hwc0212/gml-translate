@@ -10,6 +10,12 @@ The fixture uses real renderer, URL helpers, CSS and JS. It has no database, cre
 
 At widths 1440, 768 and 390, open `/?case=all` and `/staging/?case=all`. Verify collapsed/expanded ARIA, five alternatives (four local plus one external), body-level portal placement, hit-testing every link, no header height change, no horizontal overflow, and outside-click closing. The portal must retain a `nav.main-nav` ancestor without inheriting the header's dimensions or clipping. The external example is a fixture destination, not a live site.
 
+The readiness stub deliberately reports incomplete 98.8%/97.6% pages while the
+`all` case provides valid routes. Every language must remain clickable, with no
+progress percentages or incomplete messages anywhere in the switcher. The renderer
+must not query this readiness stub. This is navigation-only, not a change to SEO
+publication or page-level notices.
+
 Keyboard: Enter/Down opens and focuses the first link; Up opens at the last; arrows move between links; Escape closes and returns to the trigger. Shift+Tab from the first returns to the trigger; Tab from the last reaches Contact after the trigger.
 
 Open at 390px, then resize to 320px. The fixture hides the trigger at this breakpoint; the teleported panel must close instead of remaining at the top-left of the page. Resize back to 390px and confirm normal opening still works.

@@ -11,6 +11,23 @@ class GML_SEO_Router {
     public static $urls = [];
     public static function get_language_urls() { return self::$urls; }
 }
+class GML_Resource_Identity {
+    public static function current_public() { return new self(); }
+}
+class GML_Public_Eligibility {
+    public static $calls = 0;
+    public static $ready = false;
+    public static function get_cluster( $resource ) {
+        self::$calls++;
+        $languages = [];
+        foreach ( [ 'es', 'de', 'ru', 'fr' ] as $lang ) {
+            $languages[$lang] = [ 'route_valid' => true, 'page_readiness' => [
+                'ready' => self::$ready, 'percent' => $lang === 'ru' ? 97.6 : 98.8,
+            ] ];
+        }
+        return [ 'languages' => $languages ];
+    }
+}
 require_once __DIR__ . '/../../includes/vendor/gml-translation-core/src/class-language-utils.php';
 require_once __DIR__ . '/../../includes/vendor/gml-translation-core/src/class-url-helper.php';
 require_once __DIR__ . '/../../includes/class-language-switcher.php';

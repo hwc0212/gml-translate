@@ -2,6 +2,13 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.30] - 2026-09-12
+
+- Remove translation-progress messages and percentages from dropdown and inline language links, including their dedicated styles and presentation-only readiness lookup.
+- Preserve configured labels/flags, local/external destinations, keyboard behavior, page notices, admin progress and SEO publication rules. Core remains 0.9.8 with the exact same vendor lock.
+- Add renderer regression coverage for complete/incomplete readiness, source/translated pages, both display modes, full names/codes, external languages and root/subdirectory installs.
+- No translation-data changes, AI calls, queue resume, production deployment or GML SEO changes.
+
 ## [2.11.1-rc.29] - 2026-09-12
 
 - Add page/language progress and default exact 98% SEO readiness (count and source length). Critical missing meta, stale manifests, held text and rejected review stay protected. This replaces rc.28's partial-SEO policy, not its accessible language routes.

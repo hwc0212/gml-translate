@@ -427,11 +427,6 @@ class GML_Language_Switcher {
         // Get current language and URLs
         $current_lang  = $this->get_current_language();
         $language_urls = GML_SEO_Router::get_language_urls();
-        $page_progress=[];
-        if(class_exists('GML_Resource_Identity') && method_exists('GML_Public_Eligibility','get_cluster')) {
-            $resource=GML_Resource_Identity::current_public();
-            if($resource) $page_progress=GML_Public_Eligibility::get_cluster($resource)['languages']??[];
-        }
 
         // External navigation is not a claim of SEO equivalence. Local
         // valid routes stay clickable; page progress never removes those links.
@@ -544,7 +539,7 @@ class GML_Language_Switcher {
                 $html .= '<li><a href="' . esc_url( $raw_url ) . '" class="gml-dropdown-item' . esc_attr( $external ) . '" hreflang="' . esc_attr( $lang ) . '" aria-label="' . esc_attr( $d['native'] ) . '">';
                 if ( $show_flags ) $html .= $this->get_flag_html( $lang, $flag_type, $d['native'], $lang_countries[$lang] ?? '' );
                 if ( $show_names ) $html .= '<span class="gml-lang-label">' . esc_html( $label ) . '</span>';
-                $html .= $this->render_page_progress($page_progress[$lang]??[]).'</a></li>';
+                $html .= '</a></li>';
             }
             $html .= '</ul></div>';
         } else {
@@ -562,18 +557,12 @@ class GML_Language_Switcher {
                 $html .= '<a href="' . esc_url( $raw_url ) . '" class="gml-lang-button' . esc_attr( $active . $external ) . '" hreflang="' . esc_attr( $lang ) . '"' . ( $active ? ' aria-current="page"' : '' ) . '>';
                 if ( $show_flags ) $html .= $this->get_flag_html( $lang, $flag_type, $d['native'], $lang_countries[$lang] ?? '' );
                 if ( $show_names ) $html .= '<span class="gml-lang-label">' . esc_html( $label ) . '</span>';
-                $html .= $this->render_page_progress($page_progress[$lang]??[]).'</a>';
+                $html .= '</a>';
             }
             $html .= '</div>';
         }
 
         return $html . '</div>';
-    }
-
-    private function render_page_progress(array $status) {
-        $policy=$status['page_readiness']??[];
-        if(empty($status['route_valid']) || !$policy || !empty($policy['ready'])) return '';
-        return '<small class="gml-page-progress-label">'.esc_html(sprintf(__('Translation incomplete (%s%%)','gml-translate'),$policy['percent']??0)).'</small>';
     }
 
     private function render_unavailable_language($lang,$native,$label,$class) {

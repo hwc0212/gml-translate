@@ -354,15 +354,3 @@ li.menu-item-gml_language_switcher {
 
 /* ── Footer / sidebar context — no special rules needed ── */
 /* The root inheritance rules already cover these. */
-.gml-page-progress-label {
-    display: block;
-    flex-basis: 100%;
-    font-size: 12px;
-    line-height: 1.4;
-    letter-spacing: 0;
-    font-weight: 400;
-}
-.gml-dropdown-item:has(.gml-page-progress-label),
-.gml-lang-button:has(.gml-page-progress-label) {
-    flex-wrap: wrap;
-}

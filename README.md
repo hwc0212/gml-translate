@@ -6,7 +6,17 @@ GML Translate 是 GML 系列的主产品，也是独立的 WordPress AI 多语�
 
 它不包含 GSC、GA4、Google Ads、通用 SEO Audit、重定向、404、性能优化或完整 Schema 管理。完整 SEO 应交给 SEOPress、Yoast、Rank Math 等成熟 SEO authority；GML SEO 已进入 LTS，仅维护安全、兼容、迁移与严重缺陷。
 
-## 2.11.1-rc.29 Page Workflow Candidate
+## 2.11.1-rc.30 Language Switcher Correction
+
+Language navigation no longer displays translation percentages or incomplete
+messages in dropdown or inline links. Existing name/code/flag preferences, local
+and external URLs, accessibility and publication policy are unchanged. Progress
+remains in the admin Page Progress view; the separate page notice is unchanged.
+Core remains locked to 0.9.8. No data migration, queue restart or provider call is
+performed by this correction. After upgrading, verify the new asset version and
+refresh only affected cached pages if an outer cache still serves the old HTML.
+
+## 2.11.1-rc.29 Page Workflow Candidate (Historical)
 
 The current development RC adds **Page Progress** and **Needs Attention** without
 removing existing translation assets or changing the saved provider/pause setting.
