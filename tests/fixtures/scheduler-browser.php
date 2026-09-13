@@ -22,7 +22,7 @@ main{padding:28px;min-height:500px}h1{font-size:28px}a{color:inherit}.mobile-nav
 @media(max-width:900px){.links{display:none}.brand{font-size:16px}.inner{gap:8px;padding:12px}.quote{font-size:12px;padding:10px}.mobile-nav{display:block}header{height:70px}}
 <?php echo $css; ?></style>
 <body><header><div class="inner"><span class="brand"><?php echo $layout==='cnxhe'?'SIHON':'OzonGenerators'; ?></span>
-<nav class="links">Products &nbsp; Applications &nbsp; Engineering &nbsp; Resources</nav>
+<nav class="links"><a href="https://example.com/products/">Products</a><a href="https://example.com/applications/">Applications</a><a href="https://example.com/engineering/">Engineering</a><a href="https://example.com/resources/">Resources</a></nav>
 <a class="quote" href="https://example.com/quote/">Request Quote</a><?php echo $menu; ?></div></header>
 <main><h1>Synthetic <?php echo $layout; ?> header</h1><p>Root/subdirectory, clipped parent, keyboard and mobile regression.</p>
 <p id="outside">Outside target</p></main><script><?php echo $js; ?></script></body></html>
