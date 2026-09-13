@@ -20,6 +20,7 @@ require_once __DIR__ . '/../bootstrap-mock.php';
 
 final class GML_Translation_State {
     public static function multilingual_enabled() { return true; }
+    public static function ai_available() { return true; }
 }
 
 final class GML_Resource_Identity {
@@ -85,4 +86,12 @@ $eligible_gate = new GML_Publication_Gate( new GML_Translation_Provider() );
 $eligible_gate->enforce();
 gml_test_assert( $GLOBALS['gml_test_redirect'] === null, 'eligible translated route remains public' );
 
+$progress=new ReflectionProperty(GML_Publication_Gate::class,'progress_status');
+$progress->setAccessible(true);
+$progress->setValue(null,['page_readiness'=>['required_count'=>100,'percent'=>98]]);
+$printed=new ReflectionProperty(GML_Publication_Gate::class,'preview_banner_printed');
+$printed->setAccessible(true);$printed->setValue(null,false);
+ob_start();$eligible_gate->render_progress_banner();$banner=ob_get_clean();
+gml_test_assert(strpos($banner,'Traducción incompleta')!==false && strpos($banner,'Translation incomplete')===false,'Spanish page notice uses Spanish regardless of administrator locale');
+gml_test_assert(strpos($banner,'translate="no"')!==false,'plugin notice is excluded from paid translation');
 echo "OK test-publication-gate\n";

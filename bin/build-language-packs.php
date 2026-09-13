@@ -329,6 +329,17 @@ $controls_zh = [
     'Review pages' => '审核分页',
     'The current resource manifest is unavailable.' => '当前资源清单不可用。',
 ];
+$controls_zh += [
+    'Queue Missing Text and Prioritize'=>'补入缺失文本并优先处理',
+    'Missing page text was queued and prioritized. Existing failures require explicit recovery. The background pause setting is unchanged.'=>'已补入本页缺失文本并提高优先级。已有失败项需单独恢复；后台暂停设置保持不变。',
+    'The current queue is empty; %d current text segments are not queued. Review Page Progress to select a page. Stopped scans and failed items are not restarted automatically.'=>'当前队列为空，仍有 %d 个当前文本段尚未入队。请在页面进度中选择要翻译的页面；已停止的扫描及失败项不会自动重启。',
+    'Length coverage:'=>'长度覆盖率：',
+    'Not measured'=>'尚未测量',
+    'Missing fields:'=>'缺失字段：',
+    'None'=>'无',
+    'Queue:'=>'队列：',
+    '%d stored records for this asset'=>'此翻译资产有 %d 条历史记录',
+];
 $translations['zh_CN'] = array_replace( $translations['zh_CN'], $controls_zh );
 $strings = array_values( array_unique( array_merge( $strings, array_keys( $controls_zh ) ) ) );
 sort( $strings, SORT_STRING );

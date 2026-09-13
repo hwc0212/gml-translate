@@ -1053,6 +1053,7 @@ class GML_Admin_Settings {
             'stopped' => __( 'Stopped', 'gml-translate' ),
         ];
         $queue_status = GML_Translation_Controls::queue_status( '', $queue_pending );
+        $not_queued_total=$current_corpus_ready?array_sum(array_map(static function($row){return (int)($row['unqueued']??0);},$corpus_stats)):0;
         $crawl_status = GML_Content_Crawler::get_status();
         $sample = GML_Translation_Controls::sample_status();
         $sample_running = $sample['active'];
@@ -1125,6 +1126,12 @@ class GML_Admin_Settings {
                     </button>
             </div>
         </div>
+        <?php if (!$queue_pending && $not_queued_total>0): ?>
+        <p role="status"><?php echo esc_html(sprintf(__('The current queue is empty; %d current text segments are not queued. Review Page Progress to select a page. Stopped scans and failed items are not restarted automatically.','gml-translate'),$not_queued_total)); ?></p>
+        <?php endif; ?>
+        <?php $last_run=(array)get_option('gml_translation_last_run',[]); if($last_run): ?>
+        <p><?php echo esc_html(sprintf(__('Last worker: %1$d saved, %2$d skipped, %3$d failed. Exit: %4$s. Next due: %5$s.','gml-translate'),(int)($last_run['saved']??0),(int)($last_run['skipped']??0),(int)($last_run['failed']??0),sanitize_key($last_run['exit_reason']??'unknown'),!empty($last_run['next_due_at'])?wp_date('Y-m-d H:i:s',$last_run['next_due_at']):__('Not scheduled','gml-translate'))); ?></p>
+        <?php endif; ?>
         <dialog id="gml-cache-confirm" aria-labelledby="gml-cache-title" style="width:420px;max-width:calc(100vw - 48px);box-sizing:border-box;border:1px solid #8c8f94;border-radius:4px;padding:24px">
             <form method="post" id="gml-cache-form">
                 <h2 id="gml-cache-title" style="margin-top:0"><?php esc_html_e( 'Confirm Page Cache Refresh', 'gml-translate' ); ?></h2>

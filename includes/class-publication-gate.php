@@ -215,6 +215,17 @@ final class GML_Publication_Gate {
         $message = $paused
             ? __( 'Translation incomplete. Automatic translation is paused; untranslated content is shown in the original language.', 'gml-translate' )
             : __( 'Translation incomplete. Untranslated content is shown in the original language.', 'gml-translate' );
+        $lang=strtolower(strtok($this->provider->get_current_language(),'-_'));
+        $messages=[
+            'de'=>['Übersetzung unvollständig. Nicht übersetzte Inhalte werden in der Originalsprache angezeigt.','Die automatische Übersetzung ist pausiert.'],
+            'es'=>['Traducción incompleta. El contenido sin traducir se muestra en el idioma original.','La traducción automática está en pausa.'],
+            'fr'=>['Traduction incomplète. Le contenu non traduit est affiché dans la langue originale.','La traduction automatique est en pause.'],
+            'ru'=>['Перевод не завершён. Непереведённое содержимое показано на исходном языке.','Автоматический перевод приостановлен.'],
+            'it'=>['Traduzione incompleta. I contenuti non tradotti sono mostrati nella lingua originale.','La traduzione automatica è in pausa.'],
+            'pt'=>['Tradução incompleta. O conteúdo não traduzido aparece no idioma original.','A tradução automática está em pausa.'],
+            'zh'=>['翻译尚未完成，未翻译内容以原文显示。','自动翻译已暂停。'],
+        ];
+        if(isset($messages[$lang])) $message=$messages[$lang][0].($paused?' '.$messages[$lang][1]:'');
         echo '<aside class="gml-translation-progress notranslate" translate="no" role="status" style="padding:8px 16px;border-bottom:1px solid #dcdcde;background:#f6f7f7;color:#1d2327;font:14px/1.5 system-ui,sans-serif;">';
         echo esc_html( $message );
         if ( ! empty( $policy['required_count'] ) ) echo ' ' . esc_html( $policy['percent'] . '%' );

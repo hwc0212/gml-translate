@@ -78,6 +78,12 @@ gml_test_assert(
 	'standalone does not manufacture a translated canonical for a 404'
 );
 GML_Translate_Test_State::$is_404 = false;
+$_SERVER['REQUEST_URI']='/ygnaglul/es/about/';
+$locale='<meta property="og:locale" content="en_US">';
+gml_test_assert($seo->filter_seopress_locale($locale)==='<meta property="og:locale" content="es_ES">','SEOPress locale markup uses the target locale without adding another tag');
+gml_test_assert($seo->filter_seopress_locale('')==='','disabled OG remains disabled');
+$_SERVER['REQUEST_URI']='/ygnaglul/about/';
+gml_test_assert($seo->filter_seopress_locale($locale)===$locale,'source locale is untouched');
 
 if ( ! defined( 'GML_SEO_VER' ) ) define( 'GML_SEO_VER', 'test' );
 GML_Translate_Test_State::$actions = [];

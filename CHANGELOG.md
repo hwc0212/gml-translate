@@ -2,6 +2,17 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.32] - 2026-09-13
+
+- Vendor Core 0.9.10: process multiple context-correct batches per worker within time, request and input/output reservation caps; use one fixed-argument continuation event and retain pause, lease, sample, cooldown and manual-request boundaries.
+- Keep a bounded 15-minute page work window across delayed wakes. Remove the smallest-pending-page tie preference; retain homepage, navigation, explicit priority and aging. Prioritize critical SEO contexts within a selected page.
+- Explicit Page Progress requests now discover the selected page/language and enqueue its missing set. Inventory-only scans and stopped/unselected work do not become paid tasks. Report unqueued content separately from an empty queue.
+- Group exact current failed assets into one action with retained history. Resolve duplicate failure rows after an official successful save. Deterministic protected-content errors do not consume three identical attempts.
+- Record actual saved/skipped/failed counts, selection stages, due/start/next timestamps and bounded-worker exit reason.
+- Adapt the existing SEOPress OG locale tag and localize progress notices for the target language. Do not change the navigation-only switcher or the 98% progressive policy.
+- Preserve decimal dimension values across multiplication-sign, spacing and decimal-separator variants while rejecting altered units/values.
+- No production deployment, queue resume, failed-item retry, AI/provider change, schema rename, TM overwrite, GML SEO change, tag or Release. See docs/rc32-scheduler-validation.md for the bounded installation/acceptance gate.
+
 ## [2.11.1-rc.31] - 2026-09-12
 
 - Vendor Core 0.9.9: fix prose percentages such as `95% or 100%` being mistaken for printf arguments. Preserve percentage values/counts, real formatting directives, links, placeholders and dimensions.

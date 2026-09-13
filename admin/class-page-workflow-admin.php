@@ -84,12 +84,18 @@ final class GML_Page_Workflow_Admin {
             global $wpdb;
             $manifest=GML_Resource_Manifest_Store::get_by_key($key);
             if(!$manifest || $manifest->discovery_state!=='complete') wp_send_json_error(['message'=>'Scan the current page content first.'],409);
+            // This explicit page/language request, unlike inventory-only discovery,
+            // authorizes the missing-set enqueue but never resumes paused AI work.
+            $discovered=(new GML_Resource_Manifest_Discovery())->discover($resource,$lang);
+            if(is_wp_error($discovered) || $discovered!==true) wp_send_json_error(['message'=>is_wp_error($discovered)?$discovered->get_error_message():'Page discovery failed.'],409);
+            $manifest=GML_Resource_Manifest_Store::get_by_key($key);
             $relations=GML_Resource_Manifest_Store::relation_table();
             $count=$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}gml_queue q INNER JOIN $relations s ON s.source_hash=q.source_hash
                 SET q.priority=1000 WHERE s.resource_id=%d AND s.manifest_generation=%d AND q.target_lang=%s AND q.status='pending'",
                 $manifest->id,$manifest->manifest_generation,$lang));
             if($count===false) wp_send_json_error(['message'=>'Priority update failed.'],500);
-            wp_send_json_success(['state'=>'prioritized','message'=>__('Pending page text is prioritized. The background pause setting is unchanged.','gml-translate')]);
+            if(GML_Translation_State::work_enabled()) GML_Queue_Processor::ensure_scheduled();
+            wp_send_json_success(['state'=>'prioritized','message'=>__('Missing page text was queued and prioritized. Existing failures require explicit recovery. The background pause setting is unchanged.','gml-translate')]);
         }
         wp_send_json_error(['message'=>'Unknown action.'],400);
     }
@@ -104,6 +110,7 @@ final class GML_Page_Workflow_Admin {
         echo '</section>';
     }
     private function pages() {
+        global $wpdb;
         echo '<h2>'.esc_html__('Page Translation Progress','gml-translate').'</h2>';
         $cache=(array)get_option('gml_resource_cache_worker_status',[]);
         if(($cache['state']??'adapter_required')==='adapter_required') echo '<p>'.esc_html__('GML page cache updates are active. External server/CDN cache needs an exact-URL adapter; external purge is not yet confirmed.','gml-translate').'</p>';
@@ -119,13 +126,26 @@ final class GML_Page_Workflow_Admin {
         $resources=[];
         foreach($result['rows'] as $row) $resources[]=$row['resource_key'];
         $clusters=GML_Public_Eligibility::get_clusters_bulk($resources);
+        $schedules=[];
         echo '<table class="widefat striped"><thead><tr><th>'.esc_html__('Page / Language','gml-translate').'</th><th>'.esc_html__('Translated / Required','gml-translate').'</th><th>'.esc_html__('SEO readiness','gml-translate').'</th><th>'.esc_html__('Actions','gml-translate').'</th></tr></thead><tbody>';
         foreach($result['rows'] as $row) {
             $status=$clusters[$row['resource_key']]['languages'][$row['target_lang']]??[];
             $policy=$status['page_readiness']??[];
+            $critical=$wpdb->get_col($wpdb->prepare("SELECT DISTINCT s.context_type FROM ".GML_Resource_Manifest_Store::relation_table()." s
+                LEFT JOIN {$wpdb->prefix}gml_index i ON i.source_hash=s.source_hash AND i.source_lang=%s AND i.target_lang=%s
+                WHERE s.resource_id=%d AND s.manifest_generation=%d AND s.critical=1 AND (i.id IS NULL OR i.status NOT IN ('auto','manual')) LIMIT 10",
+                get_option('gml_source_lang','en'),$row['target_lang'],$row['resource_id'],$row['manifest_generation']));
+            $bytes=(int)($policy['source_bytes']??0);
+            $length=$bytes?floor((int)($policy['translated_bytes']??0)*1000/$bytes)/10:null;
+            if(!isset($schedules[$row['target_lang']])) $schedules[$row['target_lang']]=GML_Translation_Controls::queue_status($row['target_lang']);
+            $schedule=$schedules[$row['target_lang']];
+            $detail=__('Length coverage:','gml-translate').' '.($length===null?__('Not measured','gml-translate'):$length.'%')
+                .' / '.__('Missing fields:','gml-translate').' '.($critical?implode(', ',$critical):__('None','gml-translate'))
+                .' / '.__('Queue:','gml-translate').' '.($schedule['state']??'unknown');
             echo '<tr><td><code>'.esc_html($row['resource_key']).'</code><br>'.esc_html(strtoupper($row['target_lang'])).'</td><td>'.esc_html($row['translated_count'].' / '.$row['required_count']).'<br>'.esc_html(($policy['percent']??0).'%').'</td><td>'.esc_html($status['reason']??'unknown').'<br>'.esc_html__('Critical missing:','gml-translate').' '.esc_html($row['critical_missing_count']).'</td><td>';
             $this->form_start('priority',['resource'=>$row['resource_key'],'language'=>$row['target_lang']]);
-            echo '<button type="submit" class="button">'.esc_html__('Prioritize This Page','gml-translate').'</button></form> ';
+            echo '<p>'.esc_html($detail).'</p>';
+            echo '<button type="submit" class="button">'.esc_html__('Queue Missing Text and Prioritize','gml-translate').'</button></form> ';
             echo '<a href="'.esc_url(add_query_arg(['page'=>'gml-translate','tab'=>'failures','resource'=>$row['resource_id'],'language'=>$row['target_lang']],admin_url('admin.php'))).'">'.esc_html__('Review Items','gml-translate').'</a></td></tr>';
         }
         echo '</tbody></table>';
@@ -146,8 +166,9 @@ final class GML_Page_Workflow_Admin {
         if($reason!=='') $where.=$wpdb->prepare(' AND q.error_message LIKE %s','%'.$wpdb->esc_like($reason).'%');
         if($resource) $where.=$wpdb->prepare(' AND EXISTS(SELECT 1 FROM '.GML_Resource_Manifest_Store::relation_table().' s INNER JOIN '.GML_Resource_Manifest_Store::manifest_table().' m ON m.id=s.resource_id AND m.manifest_generation=s.manifest_generation WHERE s.source_hash=q.source_hash AND m.id=%d)',$resource);
         $table=$wpdb->prefix.'gml_queue';
-        $total=(int)$wpdb->get_var("SELECT COUNT(*) FROM $table q WHERE $where");
-        $rows=$wpdb->get_results($wpdb->prepare("SELECT q.* FROM $table q WHERE $where ORDER BY q.processed_at DESC,q.id DESC LIMIT 20 OFFSET %d",($page-1)*20));
+        $group="SELECT MAX(q.id) AS id,COUNT(*) AS failure_records FROM $table q WHERE $where GROUP BY q.source_hash,q.source_lang,q.target_lang,q.context_type,BINARY q.source_text";
+        $total=(int)$wpdb->get_var("SELECT COUNT(*) FROM ($group) assets");
+        $rows=$wpdb->get_results($wpdb->prepare("SELECT q.*,assets.failure_records FROM $table q INNER JOIN ($group) assets ON assets.id=q.id ORDER BY q.processed_at DESC,q.id DESC LIMIT 20 OFFSET %d",($page-1)*20));
         echo '<h2>'.esc_html__('Failed / Needs Attention','gml-translate').'</h2><form method="get"><input type="hidden" name="page" value="gml-translate"><input type="hidden" name="tab" value="failures"><select name="scope">';
         foreach(['current'=>__('Current','gml-translate'),'history'=>__('History','gml-translate')] as $key=>$label) echo '<option value="'.esc_attr($key).'" '.selected($history?'history':'current',$key,false).'>'.esc_html($label).'</option>';
         echo '</select> <input name="language" placeholder="Language" value="'.esc_attr($lang).'"> <input name="resource" type="number" placeholder="Resource ID" value="'.esc_attr($resource?:'').'"> <input name="reason" placeholder="Error category" value="'.esc_attr($reason).'"> <button class="button">'.esc_html__('Filter','gml-translate').'</button></form>';
@@ -155,9 +176,17 @@ final class GML_Page_Workflow_Admin {
         foreach($rows as $row) {
             $snapshot=GML_Manual_Translation::snapshot($row->id);
             $token=$snapshot?GML_Manual_Translation::token($snapshot):'';
+            if((int)$row->failure_records>1) {
+                $history_rows=$wpdb->get_results($wpdb->prepare("SELECT id,processed_at,created_at,attempts,error_message FROM $table WHERE source_hash=%s AND source_lang=%s AND target_lang=%s AND context_type=%s AND BINARY source_text=BINARY %s ORDER BY id DESC LIMIT 25",$row->source_hash,$row->source_lang,$row->target_lang,$row->context_type,$row->source_text));
+            } else $history_rows=[];
             echo '<tr data-queue-id="'.esc_attr($row->id).'"><td style="max-width:380px;overflow-wrap:anywhere;">'.esc_html($row->source_text).'<p>'.esc_html(strtoupper($row->target_lang).' / '.$row->context_type).'</p><details><summary>'.esc_html__('Affected pages','gml-translate').' ('.count($snapshot['resources']??[]).')</summary>';
             foreach($snapshot['resources']??[] as $ref) echo '<div><code>'.esc_html($ref['resource_key']).'</code></div>';
             echo '</details></td><td style="max-width:260px;overflow-wrap:anywhere;">'.esc_html(GML_AI_HTTP_Transport::redact($row->error_message)).'<p>'.esc_html($row->processed_at?:$row->created_at).' / '.esc_html($row->attempts).' '.esc_html__('attempts','gml-translate').'</p></td><td>';
+            if($history_rows) {
+                echo '<details><summary>'.esc_html(sprintf(__('%d stored records for this asset','gml-translate'),$row->failure_records)).'</summary>';
+                foreach($history_rows as $entry) echo '<p>'.esc_html(($entry->processed_at?:$entry->created_at).' / '.$entry->attempts.' / '.GML_AI_HTTP_Transport::redact($entry->error_message)).'</p>';
+                echo '</details>';
+            }
             if(!$history && $snapshot) {
                 $fields=['id'=>$row->id,'snapshot'=>$token];
                 $this->form_start('save',$fields);

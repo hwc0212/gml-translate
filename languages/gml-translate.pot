@@ -13,6 +13,9 @@ msgstr ""
 msgid "%d external language sites are shown in the language switcher and excluded from this AI queue."
 msgstr ""
 
+msgid "%d stored records for this asset"
+msgstr ""
+
 msgid "%s are new since the last successful connection test."
 msgstr ""
 
@@ -34,6 +37,9 @@ msgstr ""
 msgid "ACTIONS"
 msgstr ""
 
+msgid "AI Translate This Item"
+msgstr ""
+
 msgid "AI Translation"
 msgstr ""
 
@@ -41,6 +47,9 @@ msgid "AI Translation is currently unavailable, so no new translation jobs will 
 msgstr ""
 
 msgid "AI Translation was not enabled because the selected provider does not have a valid saved API key."
+msgstr ""
+
+msgid "AI candidate (not saved)"
 msgstr ""
 
 msgid "AI provider is not configured"
@@ -97,6 +106,9 @@ msgstr ""
 msgid "Advanced settings saved!"
 msgstr ""
 
+msgid "Affected pages"
+msgstr ""
+
 msgid "After Menu"
 msgstr ""
 
@@ -112,16 +124,31 @@ msgstr ""
 msgid "All Languages"
 msgstr ""
 
+msgid "All local languages"
+msgstr ""
+
+msgid "All states"
+msgstr ""
+
 msgid "Allow the queue and crawler to generate new translations"
 msgstr ""
 
 msgid "Always open the external homepage"
 msgstr ""
 
+msgid "An approved current snapshot becomes public only while every publication check still passes. Source edits, translation changes, missing routes, noindex settings, or disabled languages revoke public eligibility automatically."
+msgstr ""
+
+msgid "An existing pause was retained. Older versions did not record who paused it or why."
+msgstr ""
+
 msgid "Appearance"
 msgstr ""
 
 msgid "Appearance → Widgets"
+msgstr ""
+
+msgid "Approval is bound to this exact snapshot. Current publication reason: %s. Administrators may preview private translations; anonymous visitors are redirected to the source URL."
 msgstr ""
 
 msgid "Approval note (optional)"
@@ -238,6 +265,12 @@ msgstr ""
 msgid "Critical missing"
 msgstr ""
 
+msgid "Critical missing:"
+msgstr ""
+
+msgid "Current"
+msgstr ""
+
 msgid "Current Failed Items"
 msgstr ""
 
@@ -257,6 +290,12 @@ msgid "DeepSeek Model"
 msgstr ""
 
 msgid "Default: deepseek-chat. You can also use deepseek-reasoner."
+msgstr ""
+
+msgid "Defer"
+msgstr ""
+
+msgid "Deferred; this text remains required for page completion."
 msgstr ""
 
 msgid "Define how specific terms should always be translated. These rules are injected into the AI prompt to ensure consistent translations."
@@ -283,6 +322,9 @@ msgstr ""
 msgid "Destination Languages"
 msgstr ""
 
+msgid "Details"
+msgstr ""
+
 msgid "Display language switcher"
 msgstr ""
 
@@ -296,6 +338,9 @@ msgid "Emoji (Recommended)"
 msgstr ""
 
 msgid "Empty translation result"
+msgstr ""
+
+msgid "Enable anonymous aggregate counts after site consent"
 msgstr ""
 
 msgid "Enable multilingual URLs and saved translations"
@@ -314,6 +359,9 @@ msgid "Enter your API Key above and save settings"
 msgstr ""
 
 msgid "Error"
+msgstr ""
+
+msgid "Event"
 msgstr ""
 
 msgid "Example URL"
@@ -352,10 +400,19 @@ msgstr ""
 msgid "FROM / TO"
 msgstr ""
 
+msgid "Failed / Needs Attention"
+msgstr ""
+
 msgid "Failed Segments"
 msgstr ""
 
+msgid "Filter"
+msgstr ""
+
 msgid "Finish Sample"
+msgstr ""
+
+msgid "First-party page demand"
 msgstr ""
 
 msgid "Footer"
@@ -388,7 +445,13 @@ msgstr ""
 msgid "GML Translate"
 msgstr ""
 
+msgid "GML Translate preview: this translation is not public and is forced to noindex."
+msgstr ""
+
 msgid "GML Translate:"
+msgstr ""
+
+msgid "GML page cache updates are active. External server/CDN cache needs an exact-URL adapter; external purge is not yet confirmed."
 msgstr ""
 
 msgid "Gemini API Key"
@@ -398,6 +461,9 @@ msgid "Get your Gemini API Key from"
 msgstr ""
 
 msgid "Get your key from"
+msgstr ""
+
+msgid "Global generation"
 msgstr ""
 
 msgid "Glossary"
@@ -430,13 +496,28 @@ msgstr ""
 msgid "Header - Right"
 msgstr ""
 
+msgid "Historical or stale source: rescan current content before translating."
+msgstr ""
+
+msgid "History"
+msgstr ""
+
 msgid "How It Works"
 msgstr ""
 
 msgid "Human Review"
 msgstr ""
 
+msgid "Human Review is unavailable because one or more required database tables are missing or are not using InnoDB. Ask the database administrator to inspect these tables:"
+msgstr ""
+
+msgid "Human Review requires all participating database tables to use InnoDB."
+msgstr ""
+
 msgid "I reviewed this current source and translation snapshot."
+msgstr ""
+
+msgid "I reviewed this held text and explicitly release it as manual."
 msgstr ""
 
 msgid "Idle"
@@ -502,7 +583,13 @@ msgstr ""
 msgid "Last Worker Activity"
 msgstr ""
 
+msgid "Last worker: %1$d saved, %2$d skipped, %3$d failed. Exit: %4$s. Next due: %5$s."
+msgstr ""
+
 msgid "Legacy rows may show their original queue time when an exact failure time was not stored. Credentials and raw provider responses are never displayed."
+msgstr ""
+
+msgid "Length coverage:"
 msgstr ""
 
 msgid "Limited sample: %1$s, %2$d of %3$d items remaining."
@@ -529,16 +616,28 @@ msgstr ""
 msgid "Manage Translations"
 msgstr ""
 
+msgid "Manifest fingerprint"
+msgstr ""
+
 msgid "Manifest generation"
 msgstr ""
 
 msgid "Manual"
 msgstr ""
 
+msgid "Manual translation saved. Related pages are being refreshed."
+msgstr ""
+
 msgid "Match the current path"
 msgstr ""
 
 msgid "Missing"
+msgstr ""
+
+msgid "Missing fields:"
+msgstr ""
+
+msgid "Missing page text was queued and prioritized. Existing failures require explicit recovery. The background pause setting is unchanged."
 msgstr ""
 
 msgid "Model or API resource not found"
@@ -550,7 +649,13 @@ msgstr ""
 msgid "Navigation"
 msgstr ""
 
+msgid "Needs Attention"
+msgstr ""
+
 msgid "Network error"
+msgstr ""
+
+msgid "Next"
 msgstr ""
 
 msgid "Next →"
@@ -559,10 +664,19 @@ msgstr ""
 msgid "No API key provided"
 msgstr ""
 
+msgid "No activity has been recorded by this version yet."
+msgstr ""
+
 msgid "No current resource manifests are available for local target languages yet."
 msgstr ""
 
+msgid "No language is enabled for queue processing."
+msgstr ""
+
 msgid "No languages configured yet."
+msgstr ""
+
+msgid "No matching failed items."
 msgstr ""
 
 msgid "No queue item is being discarded and no retry attempt is consumed. Processing will resume automatically after %s."
@@ -577,13 +691,25 @@ msgstr ""
 msgid "No valid limited sample is available for an enabled language."
 msgstr ""
 
+msgid "None"
+msgstr ""
+
 msgid "None (Use shortcode/widget/function)"
 msgstr ""
 
 msgid "Not configured"
 msgstr ""
 
+msgid "Not measured"
+msgstr ""
+
+msgid "Not ready on this page"
+msgstr ""
+
 msgid "Not recorded yet"
+msgstr ""
+
+msgid "Not saved: source/translation conflict, invalid text, or held content requires explicit release. Refresh and review."
 msgstr ""
 
 msgid "Not scheduled"
@@ -664,10 +790,22 @@ msgstr ""
 msgid "Page %1$s of %2$s (%3$s total)"
 msgstr ""
 
+msgid "Page / Language"
+msgstr ""
+
 msgid "Page Mapping"
 msgstr ""
 
+msgid "Page Progress"
+msgstr ""
+
+msgid "Page Translation Progress"
+msgstr ""
+
 msgid "Page cache refreshed. Saved translations and queue items were preserved."
+msgstr ""
+
+msgid "Page workflow settings saved."
 msgstr ""
 
 msgid "Pause"
@@ -683,6 +821,9 @@ msgid "Pause Translation"
 msgstr ""
 
 msgid "Paused"
+msgstr ""
+
+msgid "Paused by an administrator."
 msgstr ""
 
 msgid "Pausing after current batch"
@@ -706,6 +847,18 @@ msgstr ""
 msgid "Plugin data will be retained if GML Translate is deleted."
 msgstr ""
 
+msgid "Previous"
+msgstr ""
+
+msgid "Primary navigation"
+msgstr ""
+
+msgid "Priority resource keys"
+msgstr ""
+
+msgid "Private"
+msgstr ""
+
 msgid "Processing batch"
 msgstr ""
 
@@ -722,6 +875,9 @@ msgid "Protected term changed or removed"
 msgstr ""
 
 msgid "Protected terms saved!"
+msgstr ""
+
+msgid "Provider configuration failed; verify the saved connection, then resume."
 msgstr ""
 
 msgid "Provider endpoint is not allowed"
@@ -742,6 +898,9 @@ msgstr ""
 msgid "Provider returned no final text"
 msgstr ""
 
+msgid "Provider settings changed; verify the connection, then resume."
+msgstr ""
+
 msgid "Provider temporarily unavailable"
 msgstr ""
 
@@ -751,7 +910,19 @@ msgstr ""
 msgid "Provider transport failed"
 msgstr ""
 
+msgid "Public"
+msgstr ""
+
+msgid "Public State"
+msgstr ""
+
+msgid "Queue Missing Text and Prioritize"
+msgstr ""
+
 msgid "Queue Status"
+msgstr ""
+
+msgid "Queue:"
 msgstr ""
 
 msgid "Quick Start Guide"
@@ -832,10 +1003,19 @@ msgstr ""
 msgid "Review History"
 msgstr ""
 
+msgid "Review Items"
+msgstr ""
+
 msgid "Review one machine-complete resource and language at a time. Source or translation changes automatically make the old decision stale."
 msgstr ""
 
 msgid "Review pages"
+msgstr ""
+
+msgid "Review revision"
+msgstr ""
+
+msgid "Review state"
 msgstr ""
 
 msgid "Review stored failure history"
@@ -851,6 +1031,12 @@ msgid "Routes, the language switcher, hreflang, sitemap variants, and existing t
 msgstr ""
 
 msgid "SEGMENTS"
+msgstr ""
+
+msgid "SEO readiness"
+msgstr ""
+
+msgid "SEO readiness threshold (%)"
 msgstr ""
 
 msgid "STATUS"
@@ -880,7 +1066,13 @@ msgstr ""
 msgid "Save Glossary Rules"
 msgstr ""
 
+msgid "Save Manual Translation"
+msgstr ""
+
 msgid "Save Order"
+msgstr ""
+
+msgid "Save Page Workflow"
 msgstr ""
 
 msgid "Save Protected Terms"
@@ -893,6 +1085,9 @@ msgid "Saved key is unreadable. Re-enter it."
 msgstr ""
 
 msgid "Saved provider: %1$s; model: %2$s."
+msgstr ""
+
+msgid "Saved translation"
 msgstr ""
 
 msgid "Saved. Leave blank to keep unchanged."
@@ -953,6 +1148,9 @@ msgid "Sorry, you are not allowed to access this page."
 msgstr ""
 
 msgid "Sorry, you are not allowed to review translations."
+msgstr ""
+
+msgid "Source / Context"
 msgstr ""
 
 msgid "Source Term"
@@ -1036,7 +1234,13 @@ msgstr ""
 msgid "The API URL was rejected. Only the selected provider official HTTPS host is allowed; the default endpoint will be used."
 msgstr ""
 
+msgid "The approved sample finished. Ordinary translation remains paused."
+msgstr ""
+
 msgid "The current language of your website."
+msgstr ""
+
+msgid "The current queue is empty; %d current text segments are not queued. Review Page Progress to select a page. Stopped scans and failed items are not restarted automatically."
 msgstr ""
 
 msgid "The current resource manifest is unavailable."
@@ -1066,10 +1270,16 @@ msgstr ""
 msgid "The review decision could not be saved. No partial decision was kept."
 msgstr ""
 
+msgid "The review transaction could not complete. No success was recorded."
+msgstr ""
+
 msgid "The saved AI connection could not be verified."
 msgstr ""
 
 msgid "The saved API key cannot be decrypted on this site. Re-enter and save the key. No API request was sent; existing translations are unaffected."
+msgstr ""
+
+msgid "The submitted Review snapshot was incomplete. Refresh the page and review it again."
 msgstr ""
 
 msgid "The tone/style for translations (e.g. \"professional and friendly\", \"casual\", \"formal\")."
@@ -1099,6 +1309,9 @@ msgstr ""
 msgid "This is useful for:"
 msgstr ""
 
+msgid "This resource or its Review decision changed after the page was loaded. Refresh and review the current snapshot before deciding."
+msgstr ""
+
 msgid "This snapshot is not machine-complete. Approval and rejection remain disabled until its current manifest is complete."
 msgstr ""
 
@@ -1108,13 +1321,25 @@ msgstr ""
 msgid "This translation is not machine-complete. Finish or repair it before review."
 msgstr ""
 
+msgid "Time"
+msgstr ""
+
 msgid "Title:"
 msgstr ""
 
 msgid "Translate As"
 msgstr ""
 
+msgid "Translated / Required"
+msgstr ""
+
 msgid "Translation"
+msgstr ""
+
+msgid "Translation / Actions"
+msgstr ""
+
+msgid "Translation Activity Log"
 msgstr ""
 
 msgid "Translation Engine"
@@ -1138,7 +1363,16 @@ msgstr ""
 msgid "Translation controls updated."
 msgstr ""
 
+msgid "Translation fingerprint"
+msgstr ""
+
 msgid "Translation generation"
+msgstr ""
+
+msgid "Translation incomplete. Automatic translation is paused; untranslated content is shown in the original language."
+msgstr ""
+
+msgid "Translation incomplete. Untranslated content is shown in the original language."
 msgstr ""
 
 msgid "Translation is safety-paused. Test the saved AI connection and retry a limited language sample first."
@@ -1267,7 +1501,13 @@ msgstr ""
 msgid "and add the \"GML Language Switcher\" widget."
 msgstr ""
 
+msgid "attempts"
+msgstr ""
+
 msgid "current failed items"
+msgstr ""
+
+msgid "days"
 msgstr ""
 
 msgid "failed"

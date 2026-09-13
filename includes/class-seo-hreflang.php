@@ -39,6 +39,7 @@ class GML_SEO_Hreflang {
         add_filter( 'wpseo_canonical', [ $this, 'filter_canonical_url' ], 10, 1 );
         add_filter( 'rank_math/frontend/canonical', [ $this, 'filter_canonical_url' ], 10, 1 );
         add_filter( 'seopress_titles_canonical', [ $this, 'filter_seopress_canonical' ], 10, 1 );
+        add_filter('seopress_social_og_locale',[$this,'filter_seopress_locale']);
 
         if ( ! $this->external_seo_authority ) {
             remove_action( 'wp_head', 'rel_canonical' );
@@ -98,6 +99,15 @@ class GML_SEO_Hreflang {
         return $canonical
             ? '<link rel="canonical" href="' . esc_url( $canonical ) . '">'
             : $canonical_tag;
+    }
+
+    public function filter_seopress_locale($markup) {
+        if(is_admin() || $this->is_not_found_request()) return $markup;
+        $current=$this->provider->get_current_language();
+        if($current===$this->provider->get_source_language()) return $markup;
+        $locale=$this->provider->get_og_locale($current);
+        return preg_replace_callback('/(<meta\\b[^>]*property=["\x27]og:locale["\x27][^>]*content=)["\x27][^"\x27]*["\x27]/i',
+            static function($match) use($locale) {return $match[1].'"'.esc_attr($locale).'"';},$markup);
     }
 
     private function current_canonical_url() {
