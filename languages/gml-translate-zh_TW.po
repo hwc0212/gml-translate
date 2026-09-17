@@ -226,6 +226,9 @@ msgstr "Candidate"
 msgid "Candidate ready. Compare with the saved translation, then explicitly save your choice."
 msgstr "Candidate ready. Compare with the saved translation, then explicitly save your choice."
 
+msgid "Candidate token"
+msgstr "Candidate token"
+
 msgid "Check WordPress Cron and provider cooldown; refresh for current status."
 msgstr "Check WordPress Cron and provider cooldown; refresh for current status."
 
@@ -363,6 +366,9 @@ msgstr "目標語言"
 
 msgid "Details"
 msgstr "Details"
+
+msgid "Diagnostic candidate was truncated at the storage limit."
+msgstr "Diagnostic candidate was truncated at the storage limit."
 
 msgid "Display language switcher"
 msgstr "Display language switcher"
@@ -709,6 +715,9 @@ msgstr "Missing fields:"
 msgid "Missing page text was queued and prioritized. Existing failures require explicit recovery. The background pause setting is unchanged."
 msgstr "Missing page text was queued and prioritized. Existing failures require explicit recovery. The background pause setting is unchanged."
 
+msgid "Missing token"
+msgstr "Missing token"
+
 msgid "Model or API resource not found"
 msgstr "Model or API resource not found"
 
@@ -735,6 +744,9 @@ msgstr "No API key provided"
 
 msgid "No activity has been recorded by this version yet."
 msgstr "No activity has been recorded by this version yet."
+
+msgid "No candidate diagnostic was retained for this attempt. The old message alone cannot prove what the provider changed."
+msgstr "No candidate diagnostic was retained for this attempt. The old message alone cannot prove what the provider changed."
 
 msgid "No current resource manifests are available for local target languages yet."
 msgstr "No current resource manifests are available for local target languages yet."
@@ -946,6 +958,9 @@ msgstr "Progress and retries now use current site content. Stored failures from 
 msgid "Protected Terms (Never Translate)"
 msgstr "Protected Terms (Never Translate)"
 
+msgid "Protected content difference (not saved)"
+msgstr "Protected content difference (not saved)"
+
 msgid "Protected term changed or removed"
 msgstr "Protected term changed or removed"
 
@@ -1132,6 +1147,9 @@ msgstr "Revoke the page decision before requesting a replacement translation for
 msgid "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
 msgstr "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
 
+msgid "Rule"
+msgstr "Rule"
+
 msgid "SEGMENTS"
 msgstr "SEGMENTS"
 
@@ -1270,11 +1288,17 @@ msgstr "Source Term"
 msgid "Source Text"
 msgstr "原文"
 
+msgid "Source hash"
+msgstr "Source hash"
+
 msgid "Source segment exceeds the size limit"
 msgstr "Source segment exceeds the size limit"
 
 msgid "Source text"
 msgstr "Source text"
+
+msgid "Source token"
+msgstr "Source token"
 
 msgid "Square"
 msgstr "Square"
@@ -1455,6 +1479,9 @@ msgstr "This is useful for:"
 
 msgid "This local language is disabled."
 msgstr "This local language is disabled."
+
+msgid "This rejected candidate was not written to Translation Memory. Sensitive URL parts are replaced with identity digests. Review before editing."
+msgstr "This rejected candidate was not written to Translation Memory. Sensitive URL parts are replaced with identity digests. Review before editing."
 
 msgid "This resolves the item for this page; it does not count as translated. A changed source snapshot requires a new decision."
 msgstr "This resolves the item for this page; it does not count as translated. A changed source snapshot requires a new decision."

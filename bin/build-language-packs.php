@@ -442,6 +442,17 @@ $controls_zh += [
     'Not saved: source/translation conflict, invalid text, or held content requires explicit release. Refresh and review.'=>'未保存：源文或译文发生冲突、文本无效，或隔离内容需要明确解除。请刷新后审核。',
     'Deferred; this text remains required for page completion.'=>'已暂缓；此文本仍计入页面所需内容。',
 ];
+$controls_zh += [
+    'Protected content difference (not saved)'=>'受保护内容差异（未保存为译文）',
+    'Rule'=>'校验规则',
+    'Source token'=>'源文保护项',
+    'Candidate token'=>'候选保护项',
+    'Source hash'=>'源文标识',
+    'Missing token'=>'缺少保护项',
+    'This rejected candidate was not written to Translation Memory. Sensitive URL parts are replaced with identity digests. Review before editing.'=>'此候选未写入翻译库。网址中的敏感部分已替换为摘要标识，请审核后再编辑。',
+    'Diagnostic candidate was truncated at the storage limit.'=>'候选诊断因存储上限已截断。',
+    'No candidate diagnostic was retained for this attempt. The old message alone cannot prove what the provider changed.'=>'本次尝试未保留候选诊断，仅凭旧错误消息无法确认模型具体改动了什么。',
+];
 $translations['zh_CN'] = array_replace( $translations['zh_CN'], $controls_zh );
 $strings = array_values( array_unique( array_merge( $strings, array_keys( $controls_zh ) ) ) );
 sort( $strings, SORT_STRING );

@@ -226,6 +226,9 @@ msgstr "候选译文"
 msgid "Candidate ready. Compare with the saved translation, then explicitly save your choice."
 msgstr "候选译文已生成。请与已保存译文比较，确认后再保存。"
 
+msgid "Candidate token"
+msgstr "候选保护项"
+
 msgid "Check WordPress Cron and provider cooldown; refresh for current status."
 msgstr "请检查 WordPress Cron 和服务商冷却状态，刷新查看结果。"
 
@@ -363,6 +366,9 @@ msgstr "目标语言"
 
 msgid "Details"
 msgstr "Details"
+
+msgid "Diagnostic candidate was truncated at the storage limit."
+msgstr "候选诊断因存储上限已截断。"
 
 msgid "Display language switcher"
 msgstr "Display language switcher"
@@ -709,6 +715,9 @@ msgstr "缺失字段："
 msgid "Missing page text was queued and prioritized. Existing failures require explicit recovery. The background pause setting is unchanged."
 msgstr "已补入本页缺失文本并提高优先级。已有失败项需单独恢复；后台暂停设置保持不变。"
 
+msgid "Missing token"
+msgstr "缺少保护项"
+
 msgid "Model or API resource not found"
 msgstr "找不到模型或 API 资源"
 
@@ -735,6 +744,9 @@ msgstr "No API key provided"
 
 msgid "No activity has been recorded by this version yet."
 msgstr "No activity has been recorded by this version yet."
+
+msgid "No candidate diagnostic was retained for this attempt. The old message alone cannot prove what the provider changed."
+msgstr "本次尝试未保留候选诊断，仅凭旧错误消息无法确认模型具体改动了什么。"
 
 msgid "No current resource manifests are available for local target languages yet."
 msgstr "当前还没有可供本站目标语言审核的资源清单。"
@@ -946,6 +958,9 @@ msgstr "进度和重试现在只统计当前网站内容。已删除或已替换
 msgid "Protected Terms (Never Translate)"
 msgstr "Protected Terms (Never Translate)"
 
+msgid "Protected content difference (not saved)"
+msgstr "受保护内容差异（未保存为译文）"
+
 msgid "Protected term changed or removed"
 msgstr "受保护术语被修改或删除"
 
@@ -1132,6 +1147,9 @@ msgstr "请先撤销本页使用原文的决定，再请求替代译文。"
 msgid "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
 msgstr "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
 
+msgid "Rule"
+msgstr "校验规则"
+
 msgid "SEGMENTS"
 msgstr "文本段"
 
@@ -1270,11 +1288,17 @@ msgstr "Source Term"
 msgid "Source Text"
 msgstr "源文本"
 
+msgid "Source hash"
+msgstr "源文标识"
+
 msgid "Source segment exceeds the size limit"
 msgstr "源文本段超过大小限制"
 
 msgid "Source text"
 msgstr "源文本"
+
+msgid "Source token"
+msgstr "源文保护项"
 
 msgid "Square"
 msgstr "Square"
@@ -1455,6 +1479,9 @@ msgstr "This is useful for:"
 
 msgid "This local language is disabled."
 msgstr "此本地语言已停用。"
+
+msgid "This rejected candidate was not written to Translation Memory. Sensitive URL parts are replaced with identity digests. Review before editing."
+msgstr "此候选未写入翻译库。网址中的敏感部分已替换为摘要标识，请审核后再编辑。"
 
 msgid "This resolves the item for this page; it does not count as translated. A changed source snapshot requires a new decision."
 msgstr "此操作将该项标记为本页已解决，不计入已翻译；源文快照变化后需重新决定。"

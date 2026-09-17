@@ -226,6 +226,9 @@ msgstr ""
 msgid "Candidate ready. Compare with the saved translation, then explicitly save your choice."
 msgstr ""
 
+msgid "Candidate token"
+msgstr ""
+
 msgid "Check WordPress Cron and provider cooldown; refresh for current status."
 msgstr ""
 
@@ -362,6 +365,9 @@ msgid "Destination Languages"
 msgstr ""
 
 msgid "Details"
+msgstr ""
+
+msgid "Diagnostic candidate was truncated at the storage limit."
 msgstr ""
 
 msgid "Display language switcher"
@@ -709,6 +715,9 @@ msgstr ""
 msgid "Missing page text was queued and prioritized. Existing failures require explicit recovery. The background pause setting is unchanged."
 msgstr ""
 
+msgid "Missing token"
+msgstr ""
+
 msgid "Model or API resource not found"
 msgstr ""
 
@@ -734,6 +743,9 @@ msgid "No API key provided"
 msgstr ""
 
 msgid "No activity has been recorded by this version yet."
+msgstr ""
+
+msgid "No candidate diagnostic was retained for this attempt. The old message alone cannot prove what the provider changed."
 msgstr ""
 
 msgid "No current resource manifests are available for local target languages yet."
@@ -946,6 +958,9 @@ msgstr ""
 msgid "Protected Terms (Never Translate)"
 msgstr ""
 
+msgid "Protected content difference (not saved)"
+msgstr ""
+
 msgid "Protected term changed or removed"
 msgstr ""
 
@@ -1132,6 +1147,9 @@ msgstr ""
 msgid "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
 msgstr ""
 
+msgid "Rule"
+msgstr ""
+
 msgid "SEGMENTS"
 msgstr ""
 
@@ -1270,10 +1288,16 @@ msgstr ""
 msgid "Source Text"
 msgstr ""
 
+msgid "Source hash"
+msgstr ""
+
 msgid "Source segment exceeds the size limit"
 msgstr ""
 
 msgid "Source text"
+msgstr ""
+
+msgid "Source token"
 msgstr ""
 
 msgid "Square"
@@ -1454,6 +1478,9 @@ msgid "This is useful for:"
 msgstr ""
 
 msgid "This local language is disabled."
+msgstr ""
+
+msgid "This rejected candidate was not written to Translation Memory. Sensitive URL parts are replaced with identity digests. Review before editing."
 msgstr ""
 
 msgid "This resolves the item for this page; it does not count as translated. A changed source snapshot requires a new decision."

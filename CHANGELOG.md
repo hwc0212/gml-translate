@@ -2,6 +2,14 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.34] - 2026-09-17
+
+- Vendor Core 0.9.12: accept explicit equivalent Cyrillic length-unit/multiplication spellings and localized percent signs. Keep numeric values, unit meanings, dimension order, real printf, HTML, URLs, templates and configured protected terms protected.
+- Preserve the original failed-item identity across deduplicated and split recovery batches. A deterministic content failure stops after the first worker attempt; other work continues.
+- Show the failed rule, protected tokens, source identity and a bounded/redacted rejected candidate in Needs Attention. Administrators only; never auto-save the candidate into TM. Old failures without candidates are explicitly identified as evidence gaps.
+- Keep at most 100 non-autoloaded private diagnostics; no DB schema migration, global retry, queue resume or change to Keep source/manual/held/CAS/readiness/publication behavior.
+- No production deployment, provider calls, cache purge, tag or Release in this round. See docs/rc34-protected-validation.md.
+
 ## [2.11.1-rc.33] - 2026-09-17
 
 - Vendor Core 0.9.11. Add explicit, revocable Keep source decisions scoped to one resource/language/current manifest, with strong confirmation for critical text. Never automatically convert AI failures into acceptance or store source decisions as auto/manual TM.

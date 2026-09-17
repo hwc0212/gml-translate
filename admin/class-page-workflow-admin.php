@@ -224,6 +224,17 @@ final class GML_Page_Workflow_Admin {
             echo '<tr data-queue-id="'.esc_attr($row->id).'"><td style="max-width:380px;overflow-wrap:anywhere;">'.esc_html($row->source_text).'<p>'.esc_html(strtoupper($row->target_lang).' / '.$row->context_type).'</p><details><summary>'.esc_html__('Affected pages','gml-translate').' ('.count($snapshot['resources']??[]).')</summary>';
             foreach($snapshot['resources']??[] as $ref) echo '<div><code>'.esc_html($ref['resource_key']).'</code></div>';
             echo '</details></td><td style="max-width:260px;overflow-wrap:anywhere;">'.esc_html(GML_AI_HTTP_Transport::redact($row->error_message)).'<p>'.esc_html($row->processed_at?:$row->created_at).' / '.esc_html($row->attempts).' '.esc_html__('attempts','gml-translate').'</p></td><td>';
+            $diagnostic=GML_Translation_Error::diagnostic($row);
+            if($diagnostic) {
+                echo '<details class="gml-protected-diagnostic"><summary>'.esc_html__('Protected content difference (not saved)','gml-translate').'</summary><dl>';
+                foreach (['rule'=>__('Rule','gml-translate'),'source_token'=>__('Source token','gml-translate'),'candidate_token'=>__('Candidate token','gml-translate'),'source_hash'=>__('Source hash','gml-translate')] as $key=>$label)
+                    echo '<dt>'.esc_html($label).'</dt><dd><code>'.esc_html($diagnostic[$key]??__('Missing token','gml-translate')).'</code></dd>';
+                echo '</dl><p>'.esc_html__('This rejected candidate was not written to Translation Memory. Sensitive URL parts are replaced with identity digests. Review before editing.','gml-translate').'</p><pre style="white-space:pre-wrap;overflow-wrap:anywhere;max-width:560px;">'.esc_html($diagnostic['candidate']??'').'</pre>';
+                if(!empty($diagnostic['candidate_truncated'])) echo '<p>'.esc_html__('Diagnostic candidate was truncated at the storage limit.','gml-translate').'</p>';
+                echo '</details>';
+            } elseif(strpos((string)$row->error_message,'[protected_term]')===0) {
+                echo '<p>'.esc_html__('No candidate diagnostic was retained for this attempt. The old message alone cannot prove what the provider changed.','gml-translate').'</p>';
+            }
             if($history_rows) {
                 echo '<details><summary>'.esc_html(sprintf(__('%d stored records for this asset','gml-translate'),$row->failure_records)).'</summary>';
                 foreach($history_rows as $entry) echo '<p>'.esc_html(($entry->processed_at?:$entry->created_at).' / '.$entry->attempts.' / '.GML_AI_HTTP_Transport::redact($entry->error_message)).'</p>';
