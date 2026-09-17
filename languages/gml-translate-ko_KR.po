@@ -31,6 +31,9 @@ msgstr "A limited translation sample is active. Resume that sample before starti
 msgid "A limited translation sample is still running."
 msgstr "A limited translation sample is still running."
 
+msgid "A quality hold must be reviewed before publication."
+msgstr "A quality hold must be reviewed before publication."
+
 msgid "A successful test clears the breaker but does not resume the queue automatically."
 msgstr "A successful test clears the breaker but does not resume the queue automatically."
 
@@ -72,6 +75,9 @@ msgstr "API key encrypted, saved, and read back successfully. Use Test Saved AI 
 
 msgid "API key save could not be verified. Check the key for whitespace, OpenSSL availability, and database writes. No connection test was sent."
 msgstr "API key save could not be verified. Check the key for whitespace, OpenSSL availability, and database writes. No connection test was sent."
+
+msgid "Accepted"
+msgstr "Accepted"
 
 msgid "Action"
 msgstr "Action"
@@ -205,6 +211,15 @@ msgstr "Cache Directory"
 msgid "Cancel"
 msgstr "취소"
 
+msgid "Candidate"
+msgstr "Candidate"
+
+msgid "Candidate ready. Compare with the saved translation, then explicitly save your choice."
+msgstr "Candidate ready. Compare with the saved translation, then explicitly save your choice."
+
+msgid "Check WordPress Cron and provider cooldown; refresh for current status."
+msgstr "Check WordPress Cron and provider cooldown; refresh for current status."
+
 msgid "Choose a configured language."
 msgstr "Choose a configured language."
 
@@ -262,17 +277,23 @@ msgstr "Coverage"
 msgid "Critical"
 msgstr "Critical"
 
+msgid "Critical content: keeping source may publish untranslated SEO, product, payment or safety information. Verify this exact source and page before confirming."
+msgstr "Critical content: keeping source may publish untranslated SEO, product, payment or safety information. Verify this exact source and page before confirming."
+
+msgid "Critical items still need a translation or an explicit source decision."
+msgstr "Critical items still need a translation or an explicit source decision."
+
 msgid "Critical missing"
 msgstr "Critical missing"
 
-msgid "Critical missing:"
-msgstr "Critical missing:"
-
-msgid "Current"
-msgstr "Current"
+msgid "Critical unresolved:"
+msgstr "Critical unresolved:"
 
 msgid "Current Failed Items"
 msgstr "Current Failed Items"
+
+msgid "Current actionable"
+msgstr "Current actionable"
 
 msgid "Custom CSS for the language switcher."
 msgstr "Custom CSS for the language switcher."
@@ -282,6 +303,9 @@ msgstr "Database Tables"
 
 msgid "Decision"
 msgstr "Decision"
+
+msgid "Decision not saved. Refresh and check the source, quality hold, critical confirmation and permissions."
+msgstr "Decision not saved. Refresh and check the source, quality hold, critical confirmation and permissions."
 
 msgid "DeepSeek API Key"
 msgstr "DeepSeek API Key"
@@ -294,6 +318,9 @@ msgstr "Default: deepseek-chat. You can also use deepseek-reasoner."
 
 msgid "Defer"
 msgstr "Defer"
+
+msgid "Deferred"
+msgstr "Deferred"
 
 msgid "Deferred; this text remains required for page completion."
 msgstr "Deferred; this text remains required for page completion."
@@ -361,6 +388,9 @@ msgstr "Enter your API Key above and save settings"
 msgid "Error"
 msgstr "Error"
 
+msgid "Error category"
+msgstr "Error category"
+
 msgid "Event"
 msgstr "Event"
 
@@ -391,6 +421,9 @@ msgstr "제외 규칙"
 msgid "Exclusion rules saved!"
 msgstr "Exclusion rules saved!"
 
+msgid "Expired"
+msgstr "Expired"
+
 msgid "External Site URL"
 msgstr "External Site URL"
 
@@ -399,6 +432,9 @@ msgstr "External domain or subdomain"
 
 msgid "FROM / TO"
 msgstr "FROM / TO"
+
+msgid "Failed"
+msgstr "실패"
 
 msgid "Failed / Needs Attention"
 msgstr "Failed / Needs Attention"
@@ -457,6 +493,9 @@ msgstr "GML page cache updates are active. External server/CDN cache needs an ex
 msgid "Gemini API Key"
 msgstr "Gemini API Key"
 
+msgid "Generating"
+msgstr "Generating"
+
 msgid "Get your Gemini API Key from"
 msgstr "Get your Gemini API Key from"
 
@@ -514,6 +553,9 @@ msgstr "Human Review is unavailable because one or more required database tables
 msgid "Human Review requires all participating database tables to use InnoDB."
 msgstr "Human Review requires all participating database tables to use InnoDB."
 
+msgid "I explicitly approve this critical item in its original language on this page."
+msgstr "I explicitly approve this critical item in its original language on this page."
+
 msgid "I reviewed this current source and translation snapshot."
 msgstr "I reviewed this current source and translation snapshot."
 
@@ -529,6 +571,9 @@ msgstr "Incomplete"
 msgid "Industry-specific terminology that generic AI might translate incorrectly"
 msgstr "Industry-specific terminology that generic AI might translate incorrectly"
 
+msgid "Invalid decision."
+msgstr "Invalid decision."
+
 msgid "Invalid provider request (HTTP 400)"
 msgstr "Invalid provider request (HTTP 400)"
 
@@ -541,8 +586,17 @@ msgstr "Is Dropdown"
 msgid "Is Fullname"
 msgstr "Is Fullname"
 
+msgid "Keep source"
+msgstr "Keep source"
+
+msgid "Keep source text"
+msgstr "Keep source text"
+
 msgid "Keeps settings, encrypted provider credentials, language configuration, glossary, queue, manual edits, and the translation library for a future reinstall."
 msgstr "Keeps settings, encrypted provider credentials, language configuration, glossary, queue, manual edits, and the translation library for a future reinstall."
+
+msgid "Kept source decisions"
+msgstr "Kept source decisions"
 
 msgid "Language"
 msgstr "Language"
@@ -628,6 +682,9 @@ msgstr "Manual"
 msgid "Manual translation saved. Related pages are being refreshed."
 msgstr "Manual translation saved. Related pages are being refreshed."
 
+msgid "Manual translation updates this shared asset on all affected pages. Keep source text applies only to the selected page and language."
+msgstr "Manual translation updates this shared asset on all affected pages. Keep source text applies only to the selected page and language."
+
 msgid "Match the current path"
 msgstr "Match the current path"
 
@@ -676,8 +733,8 @@ msgstr "No language is enabled for queue processing."
 msgid "No languages configured yet."
 msgstr "No languages configured yet."
 
-msgid "No matching failed items."
-msgstr "No matching failed items."
+msgid "No matching current items. Historical failures are retained in History."
+msgstr "No matching current items. Historical failures are retained in History."
 
 msgid "No queue item is being discarded and no retry attempt is consumed. Processing will resume automatically after %s."
 msgstr "No queue item is being discarded and no retry attempt is consumed. Processing will resume automatically after %s."
@@ -805,6 +862,9 @@ msgstr "Page Translation Progress"
 msgid "Page cache refreshed. Saved translations and queue items were preserved."
 msgstr "Page cache refreshed. Saved translations and queue items were preserved."
 
+msgid "Page decision saved. Translation assets and background pause are unchanged."
+msgstr "Page decision saved. Translation assets and background pause are unchanged."
+
 msgid "Page workflow settings saved."
 msgstr "Page workflow settings saved."
 
@@ -834,6 +894,9 @@ msgstr "Pending Segments"
 
 msgid "Permanently delete all plugin data"
 msgstr "Permanently delete all plugin data"
+
+msgid "Permission denied."
+msgstr "Permission denied."
 
 msgid "Phase 2C review is a shadow workflow. An approval records your decision for the exact current manifest and translation snapshot, but it does not publish, hide, route, index, or advertise a language page yet."
 msgstr "Phase 2C review is a shadow workflow. An approval records your decision for the exact current manifest and translation snapshot, but it does not publish, hide, route, index, or advertise a language page yet."
@@ -879,6 +942,9 @@ msgstr "Protected terms saved!"
 
 msgid "Provider configuration failed; verify the saved connection, then resume."
 msgstr "Provider configuration failed; verify the saved connection, then resume."
+
+msgid "Provider configuration requires attention."
+msgstr "Provider configuration requires attention."
 
 msgid "Provider endpoint is not allowed"
 msgstr "Provider endpoint is not allowed"
@@ -973,14 +1039,26 @@ msgstr "Remove this language?"
 msgid "Render Error"
 msgstr "Render Error"
 
+msgid "Request failed. Refresh and try again."
+msgstr "Request failed. Refresh and try again."
+
 msgid "Request failed. Refresh the status before retrying."
 msgstr "Request failed. Refresh the status before retrying."
 
 msgid "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
 msgstr "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
 
+msgid "Resolved count or length coverage is below the page threshold."
+msgstr "Resolved count or length coverage is below the page threshold."
+
+msgid "Resolved coverage"
+msgstr "Resolved coverage"
+
 msgid "Resource"
 msgstr "Resource"
+
+msgid "Resource ID"
+msgstr "Resource ID"
 
 msgid "Resume Sample"
 msgstr "Resume Sample"
@@ -1027,6 +1105,12 @@ msgstr "Review the 20 most recent failed items"
 msgid "Reviewer"
 msgstr "Reviewer"
 
+msgid "Revoke Keep source"
+msgstr "Revoke Keep source"
+
+msgid "Revoke the page decision before requesting a replacement translation for that page."
+msgstr "Revoke the page decision before requesting a replacement translation for that page."
+
 msgid "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
 msgstr "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
 
@@ -1038,6 +1122,12 @@ msgstr "SEO readiness"
 
 msgid "SEO readiness threshold (%)"
 msgstr "SEO readiness threshold (%)"
+
+msgid "SEO ready"
+msgstr "SEO ready"
+
+msgid "SEO ready under the page policy"
+msgstr "SEO ready under the page policy"
 
 msgid "STATUS"
 msgstr "STATUS"
@@ -1080,6 +1170,9 @@ msgstr "Save Protected Terms"
 
 msgid "Save Uninstall Preference"
 msgstr "Save Uninstall Preference"
+
+msgid "Saved"
+msgstr "Saved"
 
 msgid "Saved key is unreadable. Re-enter it."
 msgstr "Saved key is unreadable. Re-enter it."
@@ -1204,6 +1297,9 @@ msgstr "Stored and readable. This is not a connection check."
 msgid "Style:"
 msgstr "Style:"
 
+msgid "Submitting..."
+msgstr "Submitting..."
+
 msgid "System Information"
 msgstr "System Information"
 
@@ -1215,6 +1311,9 @@ msgstr "TRANSLATED"
 
 msgid "Target language"
 msgstr "Target language"
+
+msgid "Task"
+msgstr "Task"
 
 msgid "Test Saved AI Connection"
 msgstr "Test Saved AI Connection"
@@ -1234,11 +1333,20 @@ msgstr "The AI provider, model, or failed queue must be verified before more API
 msgid "The API URL was rejected. Only the selected provider official HTTPS host is allowed; the default endpoint will be used."
 msgstr "The API URL was rejected. Only the selected provider official HTTPS host is allowed; the default endpoint will be used."
 
+msgid "The active task changed. Refresh to review."
+msgstr "The active task changed. Refresh to review."
+
 msgid "The approved sample finished. Ordinary translation remains paused."
 msgstr "The approved sample finished. Ordinary translation remains paused."
 
 msgid "The current language of your website."
 msgstr "The current language of your website."
+
+msgid "The current page has not been measured."
+msgstr "The current page has not been measured."
+
+msgid "The current page review is rejected."
+msgstr "The current page review is rejected."
 
 msgid "The current queue is empty; %d current text segments are not queued. Review Page Progress to select a page. Stopped scans and failed items are not restarted automatically."
 msgstr "The current queue is empty; %d current text segments are not queued. Review Page Progress to select a page. Stopped scans and failed items are not restarted automatically."
@@ -1279,6 +1387,12 @@ msgstr "The saved AI connection could not be verified."
 msgid "The saved API key cannot be decrypted on this site. Re-enter and save the key. No API request was sent; existing translations are unaffected."
 msgstr "The saved API key cannot be decrypted on this site. Re-enter and save the key. No API request was sent; existing translations are unaffected."
 
+msgid "The source or translation changed; readiness is being refreshed."
+msgstr "The source or translation changed; readiness is being refreshed."
+
+msgid "The source page is noindex or excluded."
+msgstr "The source page is noindex or excluded."
+
 msgid "The submitted Review snapshot was incomplete. Refresh the page and review it again."
 msgstr "The submitted Review snapshot was incomplete. Refresh the page and review it again."
 
@@ -1309,6 +1423,9 @@ msgstr "This decision is stored for the exact manifest and target-language trans
 msgid "This is useful for:"
 msgstr "This is useful for:"
 
+msgid "This resolves the item for this page; it does not count as translated. A changed source snapshot requires a new decision."
+msgstr "This resolves the item for this page; it does not count as translated. A changed source snapshot requires a new decision."
+
 msgid "This resource or its Review decision changed after the page was loaded. Refresh and review the current snapshot before deciding."
 msgstr "This resource or its Review decision changed after the page was loaded. Refresh and review the current snapshot before deciding."
 
@@ -1326,6 +1443,9 @@ msgstr "Time"
 
 msgid "Title:"
 msgstr "Title:"
+
+msgid "Transactional storage is required."
+msgstr "Transactional storage is required."
 
 msgid "Translate As"
 msgstr "Translate As"
@@ -1362,6 +1482,9 @@ msgstr "Translation activation blocked"
 
 msgid "Translation controls updated."
 msgstr "Translation controls updated."
+
+msgid "Translation coverage"
+msgstr "Translation coverage"
 
 msgid "Translation fingerprint"
 msgstr "Translation fingerprint"
@@ -1444,6 +1567,9 @@ msgstr "Unknown AI provider. Settings were not saved."
 msgid "Unknown review action."
 msgstr "Unknown review action."
 
+msgid "Unresolved"
+msgstr "Unresolved"
+
 msgid "Unreviewed"
 msgstr "Unreviewed"
 
@@ -1461,6 +1587,9 @@ msgstr "Value"
 
 msgid "Visit your site with language prefix, e.g.:"
 msgstr "Visit your site with language prefix, e.g.:"
+
+msgid "Waiting"
+msgstr "Waiting"
 
 msgid "Waiting for provider cooldown"
 msgstr "Waiting for provider cooldown"
@@ -1491,6 +1620,9 @@ msgstr "WordPress cannot show a plugin-specific choice after you click Delete. C
 
 msgid "WordPress could not schedule translation. Pause settings were kept."
 msgstr "WordPress could not schedule translation. Pause settings were kept."
+
+msgid "Worker busy. Try again after the current request."
+msgstr "Worker busy. Try again after the current request."
 
 msgid "Writable"
 msgstr "Writable"

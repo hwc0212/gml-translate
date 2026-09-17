@@ -188,7 +188,12 @@ final class GML_Resource_Review_Admin {
             ? GML_Public_Eligibility::get_status( $summary['resource_key'], $summary['target_lang'], [ 'entrypoint' => 'review_detail' ] )
             : [];
         $health = GML_Resource_Approval::transaction_health();
-        $can_decide = $summary['machine_status'] === 'complete' && $health['ready'];
+        $reviewable = $summary;
+        $reviewable['decision'] = 'unreviewed';
+        $policies = GML_Page_Readiness_Policy::evaluate_bulk([$summary['resource_key']=>[$lang=>$reviewable]]);
+        $policy = $policies[$summary['resource_key']][$lang];
+        $can_decide = $health['ready'] && ($summary['machine_status'] === 'complete' || (!empty($policy['ready']) && !empty($policy['keep_source_count'])));
+        if(!empty($public['snapshot_matches']) && ($public['review_status']??'')==='approved') $summary['review_status']='approved';
         ?>
         <p><a href="<?php echo esc_url( admin_url( 'admin.php?page=gml-translate&tab=review' ) ); ?>">&larr; <?php esc_html_e( 'Back to review queue', 'gml-translate' ); ?></a></p>
         <div class="gml-review-detail-header">

@@ -72,6 +72,7 @@ class GML_Gettext_Filter {
 
     /** @var bool Whether we've already flushed pending items on shutdown */
     private $flushed = false;
+    private $kept = [];
 
     public function __construct() {
         // Detect language early — before template_redirect (priority 1).
@@ -113,6 +114,7 @@ class GML_Gettext_Filter {
             return;
         }
 
+        $this->kept=GML_Item_Resolution::kept_hashes(GML_Resource_Identity::current_public(),$this->target_lang);
         // Hook into WordPress gettext filters.
         // Priority 10 is fine — we want to run after any plugin that modifies
         // the source string but before the string reaches the template.
@@ -197,6 +199,8 @@ class GML_Gettext_Filter {
         }
 
         $hash = md5( $trimmed );
+        if(isset($this->kept[$hash]) && $this->kept[$hash]['context_type']==='text'
+            && hash_equals($this->kept[$hash]['source_digest'],hash('sha256',$trimmed))) return $text;
 
         // Check dictionary
         if ( isset( $this->dict[ $hash ] ) ) {

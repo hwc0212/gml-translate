@@ -2,6 +2,14 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.33] - 2026-09-17
+
+- Vendor Core 0.9.11. Add explicit, revocable Keep source decisions scoped to one resource/language/current manifest, with strong confirmation for critical text. Never automatically convert AI failures into acceptance or store source decisions as auto/manual TM.
+- Show genuine translation coverage separately from resolved coverage; preserve the existing 98% count/length policy, critical-item protection, held/rejected protection, navigation-only switcher and accessible multilingual routes.
+- Separate current attention, kept-source decisions, deferred items and history. Retain exact shared-asset deduplication and one-item AI/manual workflow; refresh page/list state after successful human actions.
+- Preserve TM, glossary, existing options, paused state and manual translations. Add only a versioned decision/audit table; rollback ignores decisions rather than treating them as translated assets.
+- Add database, transactional cache-failure and real desktop/mobile AJAX regressions, plus Chinese labels and client-side messages. No production deployment or external provider requests. See docs/rc33-resolution-validation.md for bounded live acceptance and rollback.
+
 ## [2.11.1-rc.32] - 2026-09-13
 
 - Vendor Core 0.9.10: process multiple context-correct batches per worker within time, request and input/output reservation caps; use one fixed-argument continuation event and retain pause, lease, sample, cooldown and manual-request boundaries.

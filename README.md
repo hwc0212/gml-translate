@@ -1,5 +1,16 @@
 # GML Translate
 
+### rc.33: resolve translation work without discarding translation assets
+
+Needs Attention supports one-item AI translation, protected manual editing,
+explicit Keep source for one current page/language, and deferral. Translation
+coverage counts genuine translations; resolved coverage also includes explicit
+source decisions. Critical source decisions require additional confirmation.
+Source changes stale a decision, and Revoke reopens it. Nothing resumes the
+global queue or clears Translation Memory automatically.
+
+See [rc.33 validation and rollback](docs/rc33-resolution-validation.md).
+
 **AI Multilingual Translation for WordPress**
 
 GML Translate 是 GML 系列的主产品，也是独立的 WordPress AI 多语言插件，专注解决一件事：以可控成本建立稳定、可维护、可人工修订的多语言网站。

@@ -31,6 +31,9 @@ msgstr "已有受限翻译样本，请先继续并完成该样本，再启动其
 msgid "A limited translation sample is still running."
 msgstr "小批量翻译测试仍在进行中。"
 
+msgid "A quality hold must be reviewed before publication."
+msgstr "存在质量隔离内容，需要审核后才能发布。"
+
 msgid "A successful test clears the breaker but does not resume the queue automatically."
 msgstr "A successful test clears the breaker but does not resume the queue automatically."
 
@@ -38,7 +41,7 @@ msgid "ACTIONS"
 msgstr "操作"
 
 msgid "AI Translate This Item"
-msgstr "AI Translate This Item"
+msgstr "AI 翻译此项"
 
 msgid "AI Translation"
 msgstr "AI 翻译"
@@ -50,7 +53,7 @@ msgid "AI Translation was not enabled because the selected provider does not hav
 msgstr "AI Translation was not enabled because the selected provider does not have a valid saved API key."
 
 msgid "AI candidate (not saved)"
-msgstr "AI candidate (not saved)"
+msgstr "AI 候选译文（未保存）"
 
 msgid "AI provider is not configured"
 msgstr "尚未配置 AI 服务商"
@@ -72,6 +75,9 @@ msgstr "API Key 已加密保存并回读核对成功。请测试已保存的 AI 
 
 msgid "API key save could not be verified. Check the key for whitespace, OpenSSL availability, and database writes. No connection test was sent."
 msgstr "API Key 保存未通过核对。请检查密钥是否含空白字符、OpenSSL 是否可用、数据库能否写入。本次未发送连接测试。"
+
+msgid "Accepted"
+msgstr "已接收"
 
 msgid "Action"
 msgstr "操作"
@@ -107,7 +113,7 @@ msgid "Advanced settings saved!"
 msgstr "Advanced settings saved!"
 
 msgid "Affected pages"
-msgstr "Affected pages"
+msgstr "受影响页面"
 
 msgid "After Menu"
 msgstr "After Menu"
@@ -167,7 +173,7 @@ msgid "Authentication or permission error"
 msgstr "身份验证或权限错误"
 
 msgid "Auto"
-msgstr "Auto"
+msgstr "自动翻译"
 
 msgid "Auto-Detect Language"
 msgstr "Auto-Detect Language"
@@ -204,6 +210,15 @@ msgstr "Cache Directory"
 
 msgid "Cancel"
 msgstr "取消"
+
+msgid "Candidate"
+msgstr "候选译文"
+
+msgid "Candidate ready. Compare with the saved translation, then explicitly save your choice."
+msgstr "候选译文已生成。请与已保存译文比较，确认后再保存。"
+
+msgid "Check WordPress Cron and provider cooldown; refresh for current status."
+msgstr "请检查 WordPress Cron 和服务商冷却状态，刷新查看结果。"
 
 msgid "Choose a configured language."
 msgstr "请选择已配置的语言。"
@@ -262,17 +277,23 @@ msgstr "覆盖率"
 msgid "Critical"
 msgstr "关键"
 
+msgid "Critical content: keeping source may publish untranslated SEO, product, payment or safety information. Verify this exact source and page before confirming."
+msgstr "关键内容：保留原文可能发布未经翻译的 SEO、产品、付款或安全信息。请核对本条原文和页面后再确认。"
+
+msgid "Critical items still need a translation or an explicit source decision."
+msgstr "关键项仍需译文，或明确确认使用原文。"
+
 msgid "Critical missing"
 msgstr "缺失的关键文本"
 
-msgid "Critical missing:"
-msgstr "Critical missing:"
-
-msgid "Current"
-msgstr "Current"
+msgid "Critical unresolved:"
+msgstr "关键未解决项："
 
 msgid "Current Failed Items"
 msgstr "当前失败项"
+
+msgid "Current actionable"
+msgstr "当前可处理项"
 
 msgid "Custom CSS for the language switcher."
 msgstr "Custom CSS for the language switcher."
@@ -282,6 +303,9 @@ msgstr "Database Tables"
 
 msgid "Decision"
 msgstr "决定"
+
+msgid "Decision not saved. Refresh and check the source, quality hold, critical confirmation and permissions."
+msgstr "未保存。请刷新并核对源文、质量隔离、关键项确认及权限。"
 
 msgid "DeepSeek API Key"
 msgstr "DeepSeek API Key"
@@ -293,7 +317,10 @@ msgid "Default: deepseek-chat. You can also use deepseek-reasoner."
 msgstr "Default: deepseek-chat. You can also use deepseek-reasoner."
 
 msgid "Defer"
-msgstr "Defer"
+msgstr "暂缓处理"
+
+msgid "Deferred"
+msgstr "已暂缓"
 
 msgid "Deferred; this text remains required for page completion."
 msgstr "Deferred; this text remains required for page completion."
@@ -341,7 +368,7 @@ msgid "Empty translation result"
 msgstr "翻译结果为空"
 
 msgid "Enable anonymous aggregate counts after site consent"
-msgstr "Enable anonymous aggregate counts after site consent"
+msgstr "获得网站同意后启用匿名汇总计数"
 
 msgid "Enable multilingual URLs and saved translations"
 msgstr "Enable multilingual URLs and saved translations"
@@ -360,6 +387,9 @@ msgstr "Enter your API Key above and save settings"
 
 msgid "Error"
 msgstr "错误"
+
+msgid "Error category"
+msgstr "错误类别"
 
 msgid "Event"
 msgstr "Event"
@@ -391,6 +421,9 @@ msgstr "排除规则"
 msgid "Exclusion rules saved!"
 msgstr "Exclusion rules saved!"
 
+msgid "Expired"
+msgstr "已过期"
+
 msgid "External Site URL"
 msgstr "外部站点 URL"
 
@@ -400,20 +433,23 @@ msgstr "外部域名或子域名"
 msgid "FROM / TO"
 msgstr "源语言 / 目标语言"
 
+msgid "Failed"
+msgstr "失败"
+
 msgid "Failed / Needs Attention"
-msgstr "Failed / Needs Attention"
+msgstr "失败 / 待处理"
 
 msgid "Failed Segments"
 msgstr "失败文本段"
 
 msgid "Filter"
-msgstr "Filter"
+msgstr "筛选"
 
 msgid "Finish Sample"
 msgstr "结束小样本"
 
 msgid "First-party page demand"
-msgstr "First-party page demand"
+msgstr "本站页面访问需求"
 
 msgid "Footer"
 msgstr "Footer"
@@ -452,10 +488,13 @@ msgid "GML Translate:"
 msgstr "GML Translate:"
 
 msgid "GML page cache updates are active. External server/CDN cache needs an exact-URL adapter; external purge is not yet confirmed."
-msgstr "GML page cache updates are active. External server/CDN cache needs an exact-URL adapter; external purge is not yet confirmed."
+msgstr "GML 页面缓存更新已启用。服务器或 CDN 缓存需配置精确 URL 适配器，目前尚未确认外部缓存清理。"
 
 msgid "Gemini API Key"
 msgstr "Gemini API Key"
+
+msgid "Generating"
+msgstr "正在生成"
 
 msgid "Get your Gemini API Key from"
 msgstr "Get your Gemini API Key from"
@@ -497,10 +536,10 @@ msgid "Header - Right"
 msgstr "Header - Right"
 
 msgid "Historical or stale source: rescan current content before translating."
-msgstr "Historical or stale source: rescan current content before translating."
+msgstr "这是历史或已失效源文，请扫描当前内容后再翻译。"
 
 msgid "History"
-msgstr "History"
+msgstr "历史记录"
 
 msgid "How It Works"
 msgstr "How It Works"
@@ -514,11 +553,14 @@ msgstr "Human Review is unavailable because one or more required database tables
 msgid "Human Review requires all participating database tables to use InnoDB."
 msgstr "Human Review requires all participating database tables to use InnoDB."
 
+msgid "I explicitly approve this critical item in its original language on this page."
+msgstr "我明确同意本页面的这条关键内容使用原文。"
+
 msgid "I reviewed this current source and translation snapshot."
 msgstr "我已审核当前源文和翻译快照。"
 
 msgid "I reviewed this held text and explicitly release it as manual."
-msgstr "I reviewed this held text and explicitly release it as manual."
+msgstr "我已审核此隔离文本，并明确将其作为手动译文解除隔离。"
 
 msgid "Idle"
 msgstr "空闲"
@@ -528,6 +570,9 @@ msgstr "不完整"
 
 msgid "Industry-specific terminology that generic AI might translate incorrectly"
 msgstr "Industry-specific terminology that generic AI might translate incorrectly"
+
+msgid "Invalid decision."
+msgstr "无效的处理决定。"
 
 msgid "Invalid provider request (HTTP 400)"
 msgstr "服务商请求无效（HTTP 400）"
@@ -541,8 +586,17 @@ msgstr "Is Dropdown"
 msgid "Is Fullname"
 msgstr "Is Fullname"
 
+msgid "Keep source"
+msgstr "使用原文"
+
+msgid "Keep source text"
+msgstr "使用原文"
+
 msgid "Keeps settings, encrypted provider credentials, language configuration, glossary, queue, manual edits, and the translation library for a future reinstall."
 msgstr "保留设置、加密的服务商凭据、语言配置、术语表、队列、人工修改和翻译库，重新安装后可继续使用。"
+
+msgid "Kept source decisions"
+msgstr "使用原文的决定"
 
 msgid "Language"
 msgstr "语言"
@@ -623,10 +677,13 @@ msgid "Manifest generation"
 msgstr "清单版本"
 
 msgid "Manual"
-msgstr "Manual"
+msgstr "手动翻译"
 
 msgid "Manual translation saved. Related pages are being refreshed."
 msgstr "Manual translation saved. Related pages are being refreshed."
+
+msgid "Manual translation updates this shared asset on all affected pages. Keep source text applies only to the selected page and language."
+msgstr "手动译文更新所有引用该资产的页面；使用原文只影响所选页面和语言。"
 
 msgid "Match the current path"
 msgstr "匹配当前路径"
@@ -656,7 +713,7 @@ msgid "Network error"
 msgstr "网络错误"
 
 msgid "Next"
-msgstr "Next"
+msgstr "下一页"
 
 msgid "Next →"
 msgstr "Next →"
@@ -676,8 +733,8 @@ msgstr "No language is enabled for queue processing."
 msgid "No languages configured yet."
 msgstr "No languages configured yet."
 
-msgid "No matching failed items."
-msgstr "No matching failed items."
+msgid "No matching current items. Historical failures are retained in History."
+msgstr "没有符合条件的当前待处理项。以往失败记录保留在历史中。"
 
 msgid "No queue item is being discarded and no retry attempt is consumed. Processing will resume automatically after %s."
 msgstr "不会丢弃队列任务，也不会消耗任务重试次数。处理将在 %s 后自动恢复。"
@@ -791,7 +848,7 @@ msgid "Page %1$s of %2$s (%3$s total)"
 msgstr "Page %1$s of %2$s (%3$s total)"
 
 msgid "Page / Language"
-msgstr "Page / Language"
+msgstr "页面 / 语言"
 
 msgid "Page Mapping"
 msgstr "页面映射"
@@ -800,10 +857,13 @@ msgid "Page Progress"
 msgstr "Page Progress"
 
 msgid "Page Translation Progress"
-msgstr "Page Translation Progress"
+msgstr "页面翻译进度"
 
 msgid "Page cache refreshed. Saved translations and queue items were preserved."
 msgstr "页面缓存已刷新，已保存的译文和队列任务均已保留。"
+
+msgid "Page decision saved. Translation assets and background pause are unchanged."
+msgstr "页面决定已保存，翻译资产和后台暂停状态保持不变。"
 
 msgid "Page workflow settings saved."
 msgstr "Page workflow settings saved."
@@ -835,6 +895,9 @@ msgstr "待处理文本段"
 msgid "Permanently delete all plugin data"
 msgstr "永久删除全部插件数据"
 
+msgid "Permission denied."
+msgstr "没有操作权限。"
+
 msgid "Phase 2C review is a shadow workflow. An approval records your decision for the exact current manifest and translation snapshot, but it does not publish, hide, route, index, or advertise a language page yet."
 msgstr "Phase 2C 审核是影子工作流。批准只记录针对当前清单和翻译快照的决定，暂时不会发布、隐藏、路由、索引或推广语言页面。"
 
@@ -848,13 +911,13 @@ msgid "Plugin data will be retained if GML Translate is deleted."
 msgstr "删除 GML Translate 时将保留插件数据。"
 
 msgid "Previous"
-msgstr "Previous"
+msgstr "上一页"
 
 msgid "Primary navigation"
-msgstr "Primary navigation"
+msgstr "主导航"
 
 msgid "Priority resource keys"
-msgstr "Priority resource keys"
+msgstr "优先资源标识"
 
 msgid "Private"
 msgstr "Private"
@@ -879,6 +942,9 @@ msgstr "Protected terms saved!"
 
 msgid "Provider configuration failed; verify the saved connection, then resume."
 msgstr "Provider configuration failed; verify the saved connection, then resume."
+
+msgid "Provider configuration requires attention."
+msgstr "需要检查 AI 服务商配置。"
 
 msgid "Provider endpoint is not allowed"
 msgstr "不允许使用该服务商端点"
@@ -973,14 +1039,26 @@ msgstr "Remove this language?"
 msgid "Render Error"
 msgstr "渲染错误"
 
+msgid "Request failed. Refresh and try again."
+msgstr "请求失败，请刷新后重试。"
+
 msgid "Request failed. Refresh the status before retrying."
 msgstr "请求失败。请先刷新状态再重试。"
 
 msgid "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
 msgstr "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
 
+msgid "Resolved count or length coverage is below the page threshold."
+msgstr "已解决项数量或文本长度覆盖率低于页面阈值。"
+
+msgid "Resolved coverage"
+msgstr "已解决覆盖率"
+
 msgid "Resource"
 msgstr "资源"
+
+msgid "Resource ID"
+msgstr "资源 ID"
 
 msgid "Resume Sample"
 msgstr "继续小样本"
@@ -1004,7 +1082,7 @@ msgid "Review History"
 msgstr "审核历史"
 
 msgid "Review Items"
-msgstr "Review Items"
+msgstr "查看待处理项"
 
 msgid "Review one machine-complete resource and language at a time. Source or translation changes automatically make the old decision stale."
 msgstr "每次审核一个已达到机器完整状态的资源和语言。源内容或译文变化后，旧决定会自动失效。"
@@ -1027,6 +1105,12 @@ msgstr "查看最近 20 条失败记录"
 msgid "Reviewer"
 msgstr "审核人"
 
+msgid "Revoke Keep source"
+msgstr "撤销使用原文"
+
+msgid "Revoke the page decision before requesting a replacement translation for that page."
+msgstr "请先撤销本页使用原文的决定，再请求替代译文。"
+
 msgid "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
 msgstr "Routes, the language switcher, hreflang, sitemap variants, and existing translations continue working without an AI API key."
 
@@ -1034,10 +1118,16 @@ msgid "SEGMENTS"
 msgstr "文本段"
 
 msgid "SEO readiness"
-msgstr "SEO readiness"
+msgstr "SEO 就绪状态"
 
 msgid "SEO readiness threshold (%)"
-msgstr "SEO readiness threshold (%)"
+msgstr "SEO 就绪阈值（%）"
+
+msgid "SEO ready"
+msgstr "SEO 已就绪"
+
+msgid "SEO ready under the page policy"
+msgstr "符合页面策略，SEO 已就绪"
 
 msgid "STATUS"
 msgstr "状态"
@@ -1067,19 +1157,22 @@ msgid "Save Glossary Rules"
 msgstr "Save Glossary Rules"
 
 msgid "Save Manual Translation"
-msgstr "Save Manual Translation"
+msgstr "保存手动译文"
 
 msgid "Save Order"
 msgstr "Save Order"
 
 msgid "Save Page Workflow"
-msgstr "Save Page Workflow"
+msgstr "保存页面工作流"
 
 msgid "Save Protected Terms"
 msgstr "Save Protected Terms"
 
 msgid "Save Uninstall Preference"
 msgstr "保存卸载设置"
+
+msgid "Saved"
+msgstr "已保存"
 
 msgid "Saved key is unreadable. Re-enter it."
 msgstr "已保存的密钥无法读取，请重新输入。"
@@ -1088,7 +1181,7 @@ msgid "Saved provider: %1$s; model: %2$s."
 msgstr "Saved provider: %1$s; model: %2$s."
 
 msgid "Saved translation"
-msgstr "Saved translation"
+msgstr "已保存译文"
 
 msgid "Saved. Leave blank to keep unchanged."
 msgstr "已保存，留空则保持不变。"
@@ -1151,7 +1244,7 @@ msgid "Sorry, you are not allowed to review translations."
 msgstr "抱歉，你无权审核翻译。"
 
 msgid "Source / Context"
-msgstr "Source / Context"
+msgstr "源文 / 上下文"
 
 msgid "Source Term"
 msgstr "Source Term"
@@ -1204,6 +1297,9 @@ msgstr "已保存且可读取，不代表连接验证通过。"
 msgid "Style:"
 msgstr "Style:"
 
+msgid "Submitting..."
+msgstr "正在提交……"
+
 msgid "System Information"
 msgstr "System Information"
 
@@ -1215,6 +1311,9 @@ msgstr "已翻译"
 
 msgid "Target language"
 msgstr "目标语言"
+
+msgid "Task"
+msgstr "任务"
 
 msgid "Test Saved AI Connection"
 msgstr "Test Saved AI Connection"
@@ -1234,11 +1333,20 @@ msgstr "The AI provider, model, or failed queue must be verified before more API
 msgid "The API URL was rejected. Only the selected provider official HTTPS host is allowed; the default endpoint will be used."
 msgstr "The API URL was rejected. Only the selected provider official HTTPS host is allowed; the default endpoint will be used."
 
+msgid "The active task changed. Refresh to review."
+msgstr "当前任务已变化，请刷新查看。"
+
 msgid "The approved sample finished. Ordinary translation remains paused."
 msgstr "The approved sample finished. Ordinary translation remains paused."
 
 msgid "The current language of your website."
 msgstr "The current language of your website."
+
+msgid "The current page has not been measured."
+msgstr "尚未测量当前页面。"
+
+msgid "The current page review is rejected."
+msgstr "当前页面审核已拒绝。"
 
 msgid "The current queue is empty; %d current text segments are not queued. Review Page Progress to select a page. Stopped scans and failed items are not restarted automatically."
 msgstr "当前队列为空，仍有 %d 个当前文本段尚未入队。请在页面进度中选择要翻译的页面；已停止的扫描及失败项不会自动重启。"
@@ -1279,6 +1387,12 @@ msgstr "The saved AI connection could not be verified."
 msgid "The saved API key cannot be decrypted on this site. Re-enter and save the key. No API request was sent; existing translations are unaffected."
 msgstr "此站点无法解密已保存的 API Key。请重新输入并保存。本次未发送 API 请求，已有译文不受影响。"
 
+msgid "The source or translation changed; readiness is being refreshed."
+msgstr "源文或译文已变化，正在更新就绪状态。"
+
+msgid "The source page is noindex or excluded."
+msgstr "源页面设为 noindex 或被排除。"
+
 msgid "The submitted Review snapshot was incomplete. Refresh the page and review it again."
 msgstr "The submitted Review snapshot was incomplete. Refresh the page and review it again."
 
@@ -1309,6 +1423,9 @@ msgstr "此决定只绑定下方显示的精确清单和目标语言译文版本
 msgid "This is useful for:"
 msgstr "This is useful for:"
 
+msgid "This resolves the item for this page; it does not count as translated. A changed source snapshot requires a new decision."
+msgstr "此操作将该项标记为本页已解决，不计入已翻译；源文快照变化后需重新决定。"
+
 msgid "This resource or its Review decision changed after the page was loaded. Refresh and review the current snapshot before deciding."
 msgstr "This resource or its Review decision changed after the page was loaded. Refresh and review the current snapshot before deciding."
 
@@ -1327,17 +1444,20 @@ msgstr "Time"
 msgid "Title:"
 msgstr "Title:"
 
+msgid "Transactional storage is required."
+msgstr "需要支持事务的存储引擎。"
+
 msgid "Translate As"
 msgstr "Translate As"
 
 msgid "Translated / Required"
-msgstr "Translated / Required"
+msgstr "翻译完成度 / 所需文本"
 
 msgid "Translation"
 msgstr "译文"
 
 msgid "Translation / Actions"
-msgstr "Translation / Actions"
+msgstr "译文 / 操作"
 
 msgid "Translation Activity Log"
 msgstr "Translation Activity Log"
@@ -1362,6 +1482,9 @@ msgstr "已阻止重复激活翻译模块"
 
 msgid "Translation controls updated."
 msgstr "翻译控制状态已更新。"
+
+msgid "Translation coverage"
+msgstr "翻译完成度"
 
 msgid "Translation fingerprint"
 msgstr "Translation fingerprint"
@@ -1444,6 +1567,9 @@ msgstr "无法识别 AI 服务商，设置未保存。"
 msgid "Unknown review action."
 msgstr "未知的审核操作。"
 
+msgid "Unresolved"
+msgstr "未解决"
+
 msgid "Unreviewed"
 msgstr "未审核"
 
@@ -1461,6 +1587,9 @@ msgstr "Value"
 
 msgid "Visit your site with language prefix, e.g.:"
 msgstr "Visit your site with language prefix, e.g.:"
+
+msgid "Waiting"
+msgstr "等待中"
 
 msgid "Waiting for provider cooldown"
 msgstr "等待 AI 服务商冷却"
@@ -1492,6 +1621,9 @@ msgstr "WordPress 在点击删除后无法显示插件专用选择框。请在�
 msgid "WordPress could not schedule translation. Pause settings were kept."
 msgstr "WordPress 无法排程翻译任务，已保留原暂停设置。"
 
+msgid "Worker busy. Try again after the current request."
+msgstr "任务正在执行，请稍后重试。"
+
 msgid "Writable"
 msgstr "Writable"
 
@@ -1502,13 +1634,13 @@ msgid "and add the \"GML Language Switcher\" widget."
 msgstr "and add the \"GML Language Switcher\" widget."
 
 msgid "attempts"
-msgstr "attempts"
+msgstr "次尝试"
 
 msgid "current failed items"
 msgstr "个当前失败项"
 
 msgid "days"
-msgstr "days"
+msgstr "天"
 
 msgid "failed"
 msgstr "失败"
