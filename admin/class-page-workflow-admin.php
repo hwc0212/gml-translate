@@ -25,7 +25,7 @@ final class GML_Page_Workflow_Admin {
     }
     public function action() {
         check_ajax_referer('gml_page_workflow','nonce');
-        if(!current_user_can('manage_options')) wp_send_json_error(['message'=>'Permission denied.'],403);
+        if(!current_user_can('manage_options')) wp_send_json_error(['message'=>__('Permission denied.','gml-translate')],403);
         $operation=sanitize_key($_POST['operation']??'');
         $id=absint($_POST['id']??0);
         $expected=sanitize_text_field(wp_unslash($_POST['snapshot']??''));
@@ -45,7 +45,21 @@ final class GML_Page_Workflow_Admin {
         }
         if($operation==='ai') {
             $result=GML_Manual_Translation::request($id,$expected);
-            if(is_wp_error($result)) wp_send_json_error(['message'=>$result->get_error_message()],409);
+            if(is_wp_error($result)) {
+                $messages=[
+                    'ai_disabled'=>__('AI translation is disabled or its key is unavailable.','gml-translate'),
+                    'provider_circuit'=>__('Test and repair the provider configuration first.','gml-translate'),
+                    'worker_busy'=>__('A worker request is already running. Retry when it finishes.','gml-translate'),
+                    'manual_busy'=>__('Another explicit item is being processed.','gml-translate'),
+                    'source_conflict'=>__('The source or translation changed. Refresh and review it again.','gml-translate'),
+                    'rate_limited'=>__('Wait 30 seconds before another explicit request.','gml-translate'),
+                    'language_disabled'=>__('This local language is disabled.','gml-translate'),
+                    'transaction_unavailable'=>__('Transactional storage is required.','gml-translate'),
+                    'queue_write'=>__('The request could not be saved.','gml-translate'),
+                    'job_write'=>__('The request could not be recorded.','gml-translate')
+                ];
+                wp_send_json_error(['message'=>$messages[$result->get_error_code()]??$result->get_error_message(),'code'=>$result->get_error_code()],409);
+            }
             wp_send_json_success($result);
         }
         if($operation==='save') {
@@ -55,15 +69,15 @@ final class GML_Page_Workflow_Admin {
         }
         if($operation==='defer') {
             $lock=GML_Atomic_Option_Lock::acquire(GML_Queue_Processor::LOCK_OPTION,10);
-            if(!$lock) wp_send_json_error(['message'=>'Worker busy.'],409);
+            if(!$lock) wp_send_json_error(['message'=>__('Worker busy. Try again after the current request.','gml-translate')],409);
             try {
                 $snapshot=GML_Manual_Translation::snapshot($id);
                 $conflict=!$snapshot || !hash_equals($expected,GML_Manual_Translation::token($snapshot));
                 global $wpdb;
                 $ok=$conflict?false:$wpdb->update($wpdb->prefix.'gml_queue',['status'=>'failed','attempts'=>3,'priority'=>-1],['id'=>$id]);
             } finally { GML_Atomic_Option_Lock::release(GML_Queue_Processor::LOCK_OPTION,$lock); }
-            if($conflict) wp_send_json_error(['message'=>'Source conflict.'],409);
-            if($ok===false) wp_send_json_error(['message'=>'Could not defer item.'],500);
+            if($conflict) wp_send_json_error(['message'=>__('The source or translation changed. Refresh and review it again.','gml-translate')],409);
+            if($ok===false) wp_send_json_error(['message'=>__('Could not defer item.','gml-translate')],500);
             GML_Translation_Activity::record('item_deferred',['queue_id'=>$id,'actor'=>get_current_user_id()]);
             wp_send_json_success(['state'=>'deferred','reload'=>true,'message'=>__('Deferred; this text remains required for page completion.','gml-translate')]);
         }

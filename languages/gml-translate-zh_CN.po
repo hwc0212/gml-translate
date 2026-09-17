@@ -37,6 +37,9 @@ msgstr "存在质量隔离内容，需要审核后才能发布。"
 msgid "A successful test clears the breaker but does not resume the queue automatically."
 msgstr "A successful test clears the breaker but does not resume the queue automatically."
 
+msgid "A worker request is already running. Retry when it finishes."
+msgstr "已有翻译请求正在执行，请等待完成后重试。"
+
 msgid "ACTIONS"
 msgstr "操作"
 
@@ -60,6 +63,9 @@ msgstr "尚未配置 AI 服务商"
 
 msgid "AI provider selection could not be saved. Check database writes before testing the connection."
 msgstr "AI 服务商选择保存失败，请先检查数据库写入，再测试连接。"
+
+msgid "AI translation is disabled or its key is unavailable."
+msgstr "AI 翻译未启用，或其密钥不可用。"
 
 msgid "AI unavailable"
 msgstr "AI 不可用"
@@ -147,6 +153,9 @@ msgstr "An approved current snapshot becomes public only while every publication
 
 msgid "An existing pause was retained. Older versions did not record who paused it or why."
 msgstr "An existing pause was retained. Older versions did not record who paused it or why."
+
+msgid "Another explicit item is being processed."
+msgstr "另一个手动发起的条目正在处理中。"
 
 msgid "Appearance"
 msgstr "外观"
@@ -271,6 +280,9 @@ msgstr "内容被服务商阻止"
 msgid "Context"
 msgstr "上下文"
 
+msgid "Could not defer item."
+msgstr "无法暂缓此项。"
+
 msgid "Coverage"
 msgstr "覆盖率"
 
@@ -323,7 +335,7 @@ msgid "Deferred"
 msgstr "已暂缓"
 
 msgid "Deferred; this text remains required for page completion."
-msgstr "Deferred; this text remains required for page completion."
+msgstr "已暂缓；此文本仍计入页面所需内容。"
 
 msgid "Define how specific terms should always be translated. These rules are injected into the AI prompt to ensure consistent translations."
 msgstr "Define how specific terms should always be translated. These rules are injected into the AI prompt to ensure consistent translations."
@@ -680,7 +692,7 @@ msgid "Manual"
 msgstr "手动翻译"
 
 msgid "Manual translation saved. Related pages are being refreshed."
-msgstr "Manual translation saved. Related pages are being refreshed."
+msgstr "手动译文已保存，正在刷新相关页面。"
 
 msgid "Manual translation updates this shared asset on all affected pages. Keep source text applies only to the selected page and language."
 msgstr "手动译文更新所有引用该资产的页面；使用原文只影响所选页面和语言。"
@@ -767,7 +779,7 @@ msgid "Not recorded yet"
 msgstr "尚无记录"
 
 msgid "Not saved: source/translation conflict, invalid text, or held content requires explicit release. Refresh and review."
-msgstr "Not saved: source/translation conflict, invalid text, or held content requires explicit release. Refresh and review."
+msgstr "未保存：源文或译文发生冲突、文本无效，或隔离内容需要明确解除。请刷新后审核。"
 
 msgid "Not scheduled"
 msgstr "未排程"
@@ -1048,6 +1060,9 @@ msgstr "请求失败。请先刷新状态再重试。"
 msgid "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
 msgstr "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
 
+msgid "Resolve the current page items before review."
+msgstr "请先解决当前页面的待处理项，再进行审核。"
+
 msgid "Resolved count or length coverage is below the page threshold."
 msgstr "已解决项数量或文本长度覆盖率低于页面阈值。"
 
@@ -1086,6 +1101,9 @@ msgstr "查看待处理项"
 
 msgid "Review one machine-complete resource and language at a time. Source or translation changes automatically make the old decision stale."
 msgstr "每次审核一个已达到机器完整状态的资源和语言。源内容或译文变化后，旧决定会自动失效。"
+
+msgid "Review one translated or explicitly source-resolved page and language at a time. Snapshot changes make the old decision stale."
+msgstr "每次审核一个已翻译或明确选择使用原文的页面与语言。快照变化后，旧决定将失效。"
 
 msgid "Review pages"
 msgstr "审核分页"
@@ -1318,6 +1336,9 @@ msgstr "任务"
 msgid "Test Saved AI Connection"
 msgstr "Test Saved AI Connection"
 
+msgid "Test and repair the provider configuration first."
+msgstr "请先测试并修复 AI 服务商配置。"
+
 msgid "Test the saved AI connection"
 msgstr "Test the saved AI connection"
 
@@ -1366,6 +1387,12 @@ msgstr "当前翻译快照已拒绝，并已记录原因。"
 msgid "The current-content inventory is rebuilding. Until it completes, queue controls use legacy totals and public language readiness remains withheld."
 msgstr "当前内容清单正在重建。完成前，队列控制继续使用旧版总数，并暂不公开语言就绪状态。"
 
+msgid "The request could not be recorded."
+msgstr "无法记录请求。"
+
+msgid "The request could not be saved."
+msgstr "无法保存请求。"
+
 msgid "The retry sample could not start."
 msgstr "The retry sample could not start."
 
@@ -1386,6 +1413,9 @@ msgstr "The saved AI connection could not be verified."
 
 msgid "The saved API key cannot be decrypted on this site. Re-enter and save the key. No API request was sent; existing translations are unaffected."
 msgstr "此站点无法解密已保存的 API Key。请重新输入并保存。本次未发送 API 请求，已有译文不受影响。"
+
+msgid "The source or translation changed. Refresh and review it again."
+msgstr "源文或译文已变化，请刷新后重新审核。"
 
 msgid "The source or translation changed; readiness is being refreshed."
 msgstr "源文或译文已变化，正在更新就绪状态。"
@@ -1422,6 +1452,9 @@ msgstr "此决定只绑定下方显示的精确清单和目标语言译文版本
 
 msgid "This is useful for:"
 msgstr "This is useful for:"
+
+msgid "This local language is disabled."
+msgstr "此本地语言已停用。"
 
 msgid "This resolves the item for this page; it does not count as translated. A changed source snapshot requires a new decision."
 msgstr "此操作将该项标记为本页已解决，不计入已翻译；源文快照变化后需重新决定。"
@@ -1587,6 +1620,9 @@ msgstr "Value"
 
 msgid "Visit your site with language prefix, e.g.:"
 msgstr "Visit your site with language prefix, e.g.:"
+
+msgid "Wait 30 seconds before another explicit request."
+msgstr "请等待 30 秒后再发起下一条翻译。"
 
 msgid "Waiting"
 msgstr "等待中"

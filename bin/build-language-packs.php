@@ -425,6 +425,23 @@ $controls_zh += [
     'Previous'=>'上一页',
     'Next'=>'下一页',
 ];
+$controls_zh += [
+    'AI translation is disabled or its key is unavailable.'=>'AI 翻译未启用，或其密钥不可用。',
+    'Test and repair the provider configuration first.'=>'请先测试并修复 AI 服务商配置。',
+    'A worker request is already running. Retry when it finishes.'=>'已有翻译请求正在执行，请等待完成后重试。',
+    'Another explicit item is being processed.'=>'另一个手动发起的条目正在处理中。',
+    'The source or translation changed. Refresh and review it again.'=>'源文或译文已变化，请刷新后重新审核。',
+    'Wait 30 seconds before another explicit request.'=>'请等待 30 秒后再发起下一条翻译。',
+    'This local language is disabled.'=>'此本地语言已停用。',
+    'The request could not be saved.'=>'无法保存请求。',
+    'The request could not be recorded.'=>'无法记录请求。',
+    'Could not defer item.'=>'无法暂缓此项。',
+    'Resolve the current page items before review.'=>'请先解决当前页面的待处理项，再进行审核。',
+    'Review one translated or explicitly source-resolved page and language at a time. Snapshot changes make the old decision stale.'=>'每次审核一个已翻译或明确选择使用原文的页面与语言。快照变化后，旧决定将失效。',
+    'Manual translation saved. Related pages are being refreshed.'=>'手动译文已保存，正在刷新相关页面。',
+    'Not saved: source/translation conflict, invalid text, or held content requires explicit release. Refresh and review.'=>'未保存：源文或译文发生冲突、文本无效，或隔离内容需要明确解除。请刷新后审核。',
+    'Deferred; this text remains required for page completion.'=>'已暂缓；此文本仍计入页面所需内容。',
+];
 $translations['zh_CN'] = array_replace( $translations['zh_CN'], $controls_zh );
 $strings = array_values( array_unique( array_merge( $strings, array_keys( $controls_zh ) ) ) );
 sort( $strings, SORT_STRING );

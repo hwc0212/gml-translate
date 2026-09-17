@@ -37,6 +37,9 @@ msgstr ""
 msgid "A successful test clears the breaker but does not resume the queue automatically."
 msgstr ""
 
+msgid "A worker request is already running. Retry when it finishes."
+msgstr ""
+
 msgid "ACTIONS"
 msgstr ""
 
@@ -59,6 +62,9 @@ msgid "AI provider is not configured"
 msgstr ""
 
 msgid "AI provider selection could not be saved. Check database writes before testing the connection."
+msgstr ""
+
+msgid "AI translation is disabled or its key is unavailable."
 msgstr ""
 
 msgid "AI unavailable"
@@ -146,6 +152,9 @@ msgid "An approved current snapshot becomes public only while every publication 
 msgstr ""
 
 msgid "An existing pause was retained. Older versions did not record who paused it or why."
+msgstr ""
+
+msgid "Another explicit item is being processed."
 msgstr ""
 
 msgid "Appearance"
@@ -269,6 +278,9 @@ msgid "Content was blocked by the provider"
 msgstr ""
 
 msgid "Context"
+msgstr ""
+
+msgid "Could not defer item."
 msgstr ""
 
 msgid "Coverage"
@@ -1048,6 +1060,9 @@ msgstr ""
 msgid "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
 msgstr ""
 
+msgid "Resolve the current page items before review."
+msgstr ""
+
 msgid "Resolved count or length coverage is below the page threshold."
 msgstr ""
 
@@ -1085,6 +1100,9 @@ msgid "Review Items"
 msgstr ""
 
 msgid "Review one machine-complete resource and language at a time. Source or translation changes automatically make the old decision stale."
+msgstr ""
+
+msgid "Review one translated or explicitly source-resolved page and language at a time. Snapshot changes make the old decision stale."
 msgstr ""
 
 msgid "Review pages"
@@ -1318,6 +1336,9 @@ msgstr ""
 msgid "Test Saved AI Connection"
 msgstr ""
 
+msgid "Test and repair the provider configuration first."
+msgstr ""
+
 msgid "Test the saved AI connection"
 msgstr ""
 
@@ -1366,6 +1387,12 @@ msgstr ""
 msgid "The current-content inventory is rebuilding. Until it completes, queue controls use legacy totals and public language readiness remains withheld."
 msgstr ""
 
+msgid "The request could not be recorded."
+msgstr ""
+
+msgid "The request could not be saved."
+msgstr ""
+
 msgid "The retry sample could not start."
 msgstr ""
 
@@ -1385,6 +1412,9 @@ msgid "The saved AI connection could not be verified."
 msgstr ""
 
 msgid "The saved API key cannot be decrypted on this site. Re-enter and save the key. No API request was sent; existing translations are unaffected."
+msgstr ""
+
+msgid "The source or translation changed. Refresh and review it again."
 msgstr ""
 
 msgid "The source or translation changed; readiness is being refreshed."
@@ -1421,6 +1451,9 @@ msgid "This decision is stored for the exact manifest and target-language transl
 msgstr ""
 
 msgid "This is useful for:"
+msgstr ""
+
+msgid "This local language is disabled."
 msgstr ""
 
 msgid "This resolves the item for this page; it does not count as translated. A changed source snapshot requires a new decision."
@@ -1586,6 +1619,9 @@ msgid "Value"
 msgstr ""
 
 msgid "Visit your site with language prefix, e.g.:"
+msgstr ""
+
+msgid "Wait 30 seconds before another explicit request."
 msgstr ""
 
 msgid "Waiting"

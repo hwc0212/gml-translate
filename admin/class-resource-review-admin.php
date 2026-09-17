@@ -83,7 +83,7 @@ final class GML_Resource_Review_Admin {
         $messages = [
             'gml_review_confirmation' => __( 'Confirm that you reviewed the current translation snapshot.', 'gml-translate' ),
             'gml_review_note' => __( 'Add a reason before rejecting this translation.', 'gml-translate' ),
-            'gml_review_machine' => __( 'This translation is not machine-complete. Finish or repair it before review.', 'gml-translate' ),
+            'gml_review_machine' => __( 'Resolve the current page items before review.', 'gml-translate' ),
             'gml_review_language' => __( 'Only configured local target languages can be reviewed.', 'gml-translate' ),
             'gml_review_schema' => __( 'The review database schema is unavailable.', 'gml-translate' ),
             'gml_review_snapshot' => __( 'The submitted Review snapshot was incomplete. Refresh the page and review it again.', 'gml-translate' ),
@@ -121,7 +121,7 @@ final class GML_Resource_Review_Admin {
         <div class="gml-review-heading">
             <div>
                 <h2><?php esc_html_e( 'Human Review', 'gml-translate' ); ?></h2>
-                <p><?php esc_html_e( 'Review one machine-complete resource and language at a time. Source or translation changes automatically make the old decision stale.', 'gml-translate' ); ?></p>
+                <p><?php esc_html_e( 'Review one translated or explicitly source-resolved page and language at a time. Snapshot changes make the old decision stale.', 'gml-translate' ); ?></p>
             </div>
             <span><?php printf( esc_html__( '%s resource-language snapshots', 'gml-translate' ), esc_html( number_format_i18n( $result['total'] ) ) ); ?></span>
         </div>
@@ -247,7 +247,7 @@ final class GML_Resource_Review_Admin {
 
         <div class="gml-review-decision">
             <h3><?php esc_html_e( 'Record Review Decision', 'gml-translate' ); ?></h3>
-            <?php if ( ! $can_decide ): ?><p class="notice notice-warning inline"><?php esc_html_e( 'This snapshot is not machine-complete. Approval and rejection remain disabled until its current manifest is complete.', 'gml-translate' ); ?></p><?php endif; ?>
+            <?php if ( ! $can_decide ): ?><p class="notice notice-warning inline"><?php esc_html_e( 'Resolve the current page items before review.', 'gml-translate' ); ?></p><?php endif; ?>
             <div class="gml-review-decision-grid">
                 <form method="post">
                     <?php wp_nonce_field( 'gml_resource_review_action', 'gml_resource_review_nonce' ); ?>

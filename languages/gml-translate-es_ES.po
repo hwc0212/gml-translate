@@ -37,6 +37,9 @@ msgstr "A quality hold must be reviewed before publication."
 msgid "A successful test clears the breaker but does not resume the queue automatically."
 msgstr "A successful test clears the breaker but does not resume the queue automatically."
 
+msgid "A worker request is already running. Retry when it finishes."
+msgstr "A worker request is already running. Retry when it finishes."
+
 msgid "ACTIONS"
 msgstr "ACTIONS"
 
@@ -60,6 +63,9 @@ msgstr "AI provider is not configured"
 
 msgid "AI provider selection could not be saved. Check database writes before testing the connection."
 msgstr "AI provider selection could not be saved. Check database writes before testing the connection."
+
+msgid "AI translation is disabled or its key is unavailable."
+msgstr "AI translation is disabled or its key is unavailable."
 
 msgid "AI unavailable"
 msgstr "AI unavailable"
@@ -147,6 +153,9 @@ msgstr "An approved current snapshot becomes public only while every publication
 
 msgid "An existing pause was retained. Older versions did not record who paused it or why."
 msgstr "An existing pause was retained. Older versions did not record who paused it or why."
+
+msgid "Another explicit item is being processed."
+msgstr "Another explicit item is being processed."
 
 msgid "Appearance"
 msgstr "Appearance"
@@ -270,6 +279,9 @@ msgstr "Content was blocked by the provider"
 
 msgid "Context"
 msgstr "Context"
+
+msgid "Could not defer item."
+msgstr "Could not defer item."
 
 msgid "Coverage"
 msgstr "Coverage"
@@ -1048,6 +1060,9 @@ msgstr "Request failed. Refresh the status before retrying."
 msgid "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
 msgstr "Requires a valid key for the selected provider. Turning this off never removes or hides saved translations."
 
+msgid "Resolve the current page items before review."
+msgstr "Resolve the current page items before review."
+
 msgid "Resolved count or length coverage is below the page threshold."
 msgstr "Resolved count or length coverage is below the page threshold."
 
@@ -1086,6 +1101,9 @@ msgstr "Review Items"
 
 msgid "Review one machine-complete resource and language at a time. Source or translation changes automatically make the old decision stale."
 msgstr "Review one machine-complete resource and language at a time. Source or translation changes automatically make the old decision stale."
+
+msgid "Review one translated or explicitly source-resolved page and language at a time. Snapshot changes make the old decision stale."
+msgstr "Review one translated or explicitly source-resolved page and language at a time. Snapshot changes make the old decision stale."
 
 msgid "Review pages"
 msgstr "Review pages"
@@ -1318,6 +1336,9 @@ msgstr "Task"
 msgid "Test Saved AI Connection"
 msgstr "Test Saved AI Connection"
 
+msgid "Test and repair the provider configuration first."
+msgstr "Test and repair the provider configuration first."
+
 msgid "Test the saved AI connection"
 msgstr "Test the saved AI connection"
 
@@ -1366,6 +1387,12 @@ msgstr "The current translation snapshot was rejected and the reason was recorde
 msgid "The current-content inventory is rebuilding. Until it completes, queue controls use legacy totals and public language readiness remains withheld."
 msgstr "The current-content inventory is rebuilding. Until it completes, queue controls use legacy totals and public language readiness remains withheld."
 
+msgid "The request could not be recorded."
+msgstr "The request could not be recorded."
+
+msgid "The request could not be saved."
+msgstr "The request could not be saved."
+
 msgid "The retry sample could not start."
 msgstr "The retry sample could not start."
 
@@ -1386,6 +1413,9 @@ msgstr "The saved AI connection could not be verified."
 
 msgid "The saved API key cannot be decrypted on this site. Re-enter and save the key. No API request was sent; existing translations are unaffected."
 msgstr "The saved API key cannot be decrypted on this site. Re-enter and save the key. No API request was sent; existing translations are unaffected."
+
+msgid "The source or translation changed. Refresh and review it again."
+msgstr "The source or translation changed. Refresh and review it again."
 
 msgid "The source or translation changed; readiness is being refreshed."
 msgstr "The source or translation changed; readiness is being refreshed."
@@ -1422,6 +1452,9 @@ msgstr "This decision is stored for the exact manifest and target-language trans
 
 msgid "This is useful for:"
 msgstr "This is useful for:"
+
+msgid "This local language is disabled."
+msgstr "This local language is disabled."
 
 msgid "This resolves the item for this page; it does not count as translated. A changed source snapshot requires a new decision."
 msgstr "This resolves the item for this page; it does not count as translated. A changed source snapshot requires a new decision."
@@ -1587,6 +1620,9 @@ msgstr "Value"
 
 msgid "Visit your site with language prefix, e.g.:"
 msgstr "Visit your site with language prefix, e.g.:"
+
+msgid "Wait 30 seconds before another explicit request."
+msgstr "Wait 30 seconds before another explicit request."
 
 msgid "Waiting"
 msgstr "Waiting"
