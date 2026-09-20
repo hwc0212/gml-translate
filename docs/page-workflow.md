@@ -3,7 +3,7 @@
 ## Current scope
 
 GML Translate is the primary product; GML SEO remains LTS and is not updated by
-this workflow. Core 0.9.8 is bundled at build time. End users install one complete
+this workflow. Core 0.9.13 is bundled at build time. End users install one complete
 ZIP and do not run Composer/npm or install another Core plugin.
 
 This is development/testing work, not production acceptance or a directory listing.
@@ -120,14 +120,14 @@ cache purge is unconfirmed. There is no Purge Everything or Redis-wide flush.
 ## Upgrade and rollback
 
 Back up the current plugin ZIP and relevant database/options before testing. Keep
-the current queue/provider settings. Upgrade adds only the daily aggregate table;
+the current queue/provider settings. rc.35 adds no table or schema migration;
 existing TM, manual/held records, glossary and queue identities remain unchanged.
-The new policy narrows rc.28's partial SEO publication to default 98%, so after
-upgrading review Page Progress and exact page caches before using it publicly.
+The existing 98% page policy and progressive route behavior are unchanged.
 
-A code rollback to rc.28 preserves new data and the additive table, but restores
-rc.28's looser partial-SEO policy. Do not delete/reinstall with erase-data enabled
-to roll back. Do not restore an old whole-site database over new orders/inquiries.
-Pause new AI work before rollback, keep the new TM assets, and verify affected
-language routes and SEO with the restored version. There is no automatic production
+A code rollback to rc.34 preserves data and the existing schema, but restores the
+stale Translation Editor delete behavior. Close open editor windows before rollback
+and refresh before any deletion. Do not delete/reinstall with erase-data enabled to
+roll back, and do not restore an old whole-site database over new orders/inquiries.
+Pause new AI work before rollback and verify affected language routes and SEO with
+the restored version. There is no automatic production
 deployment, provider switch, queue resume, historical retry or translation-library reset.

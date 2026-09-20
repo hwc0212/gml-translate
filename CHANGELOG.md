@@ -2,6 +2,13 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1-rc.35] - 2026-09-20
+
+- Vendor Core 0.9.13. The Translation Editor now binds delete requests to the full row snapshot that was displayed and rechecks it inside the existing mutation transaction.
+- Reject a stale delete when another administrator or background operation changed the automatic, manual, or held translation after the editor loaded. Preserve the newer tuple and require the administrator to refresh before deleting.
+- Keep internal maintenance deletion compatible and preserve the existing readiness, review-generation and resource-cluster invalidation contract. No database migration, queue resume, provider call, publication-policy change or translation-data rewrite.
+- Add a real WordPress 7.1/MariaDB regression for stale-delete rejection and a product adapter regression proving the browser and AJAX handler carry the snapshot token end to end.
+
 ## [2.11.1-rc.34] - 2026-09-17
 
 - Vendor Core 0.9.12: accept explicit equivalent Cyrillic length-unit/multiplication spellings and localized percent signs. Keep numeric values, unit meanings, dimension order, real printf, HTML, URLs, templates and configured protected terms protected.

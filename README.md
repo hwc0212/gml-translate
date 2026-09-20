@@ -1,5 +1,13 @@
 # GML Translate
 
+### rc.35: snapshot-safe Translation Editor deletion
+
+Deleting a saved translation now requires the exact row snapshot displayed in
+the editor. If another administrator or background operation changed that row,
+the stale delete is rejected and the newer translation remains intact. Refresh
+the editor and review the current value before deleting. Core 0.9.13 adds no
+schema migration and does not resume queues, call a provider, or rewrite TM.
+
 ### rc.33: resolve translation work without discarding translation assets
 
 Needs Attention supports one-item AI translation, protected manual editing,

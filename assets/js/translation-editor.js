@@ -241,7 +241,8 @@
         $.post(gmlEditor.ajaxUrl, {
             action: 'gml_delete_translation',
             nonce: gmlEditor.nonce,
-            id: id
+            id: id,
+            edit_snapshot: tr.attr('data-edit-snapshot')
         }, function(r) {
             if (r.success) {
                 tr.fadeOut(300, function() { $(this).remove(); });
