@@ -4,7 +4,7 @@ Tags: translate, multilingual, ai, hreflang, language switcher
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.11.1-rc.35
+Stable tag: 2.11.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,9 +69,9 @@ No. It provides only the minimum multilingual SEO output. Use GML AI SEO or anot
 
 All data is retained by default, including saved and manual translations, settings, glossary, queue, and encrypted provider credentials. To remove everything, first select permanent removal under Settings > Uninstall Data Retention and type DELETE exactly. Deactivation and normal updates never delete stored data.
 
-= Why does an untranslated or stale language URL redirect to the source page? =
+= What happens while a language page is incomplete? =
 
-Public translated pages require 100 percent coverage of the exact current page manifest. Human Review is optional by default, but an explicit rejection of the current snapshot still blocks publication. Anonymous visitors receive a temporary 302 source-language redirect while the current page is incomplete. Authorized administrators can still preview the target page under forced noindex protection.
+Valid language URLs remain accessible while translation is incomplete. Missing text uses the source language, and the page shows a translation-in-progress notice. Search publication follows the current page-by-language readiness policy (98 percent by default, with critical content and review protections); incomplete pages remain noindex and outside hreflang/sitemaps until ready.
 
 == Changelog ==
 

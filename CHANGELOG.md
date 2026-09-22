@@ -2,6 +2,12 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.1] - 2026-09-22
+
+- Promote the accepted rc.35 functional baseline to Stable with version and release documentation only; no runtime, schema, Shared Core, provider, queue or translation-data changes.
+- Continue to bundle Shared Core 0.9.13 at commit `63efe6bb5f49a7850cf5df9addbc6feb4591a388`.
+- See `docs/releases/release-notes-v2.11.1.md` for the accumulated release highlights, upgrade checks and integration limits.
+
 ## [2.11.1-rc.35] - 2026-09-20
 
 - Vendor Core 0.9.13. The Translation Editor now binds delete requests to the full row snapshot that was displayed and rechecks it inside the existing mutation transaction.

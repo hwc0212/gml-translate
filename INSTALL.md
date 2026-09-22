@@ -2,7 +2,7 @@
 
 ## 安装
 
-1. 在 GitHub Release 下载 `gml-translate-2.11.0.zip`。
+1. 在 GitHub Release 下载 `gml-translate-2.11.1.zip`。不要用自动生成的 Source code 压缩包代替安装包。
 2. 进入 WordPress 后台“插件 -> 安装插件 -> 上传插件”。
 3. 上传 ZIP、安装并启用。
 4. 也可以把 ZIP 中的 `gml-translate/` 目录上传到 `wp-content/plugins/`。
@@ -14,7 +14,7 @@ Release ZIP 的第一层必须是 `gml-translate/`，不能再套一层父目录
 1. 进入 `GML Translate -> Settings`。
 2. 选择源语言和目标语言。
 3. 先开启 Multilingual Site，保存后检查一个目标语言 URL。
-4. 只有需要产生新译文时，才配置 Gemini 或 DeepSeek API Key 并开启 AI Translation。
+4. 只有需要产生新译文时，才配置支持的 AI Provider API Key 并开启 AI Translation。
 5. 在 Language Switcher 中选择菜单、Widget、短代码或自动位置。
 6. 先翻译一个语言和少量页面，检查术语、链接、布局、表单与 SEO Meta。
 7. 完善 Glossary 和 Exclusions 后，再启动全站 Crawler。
@@ -29,7 +29,7 @@ Multilingual Site 与 AI Translation 是两个独立状态。删除 Key、额度
 - URL 只包含一次语言前缀和 WordPress 子目录。
 - 切换器能从每种语言返回其他语言对应页面。
 - canonical 自引用，hreflang 与回链一致。
-- 未完成语言 noindex，且不进入 hreflang/sitemap。
+- 当前页面未达到发布条件时，语言页仍可访问，但应为 noindex，且不进入 hreflang/sitemap；默认就绪阈值是 98%，关键内容和人工审核保护仍生效。
 - 登录与未登录前台的菜单、表单、购物车和页面构建器组件正常。
 
 ## 翻译失败

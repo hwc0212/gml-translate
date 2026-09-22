@@ -1,5 +1,11 @@
 # GML Translate
 
+## 2.11.1 Stable
+
+This release promotes the accepted rc.35 functionality without changing translation
+behavior or data. See [release notes](docs/releases/release-notes-v2.11.1.md)
+and [installation/upgrade guidance](INSTALL.md). Shared Core remains 0.9.13.
+
 ### rc.35: snapshot-safe Translation Editor deletion
 
 Deleting a saved translation now requires the exact row snapshot displayed in
