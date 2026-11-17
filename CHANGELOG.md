@@ -2,6 +2,13 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.2-rc.1] - 2026-11-17 (local candidate)
+
+- Vendor Core 0.9.14: discover textarea UI attributes and unnamed submit captions while protecting form content and business values.
+- Retain failed inventory work, recover orphaned manifests, preserve concurrent edits, and fence backfill checkpoints against newer pauses or resets. Inventory maintenance never resumes the paid translation queue.
+- Show concrete inventory/readiness diagnostics in the administrator Review detail.
+- Keep manual/held translations, publication thresholds, URL rules and database schema unchanged. No production deployment or automatic full-site translation.
+
 ## [2.11.1] - 2026-09-22
 
 - Promote the accepted rc.35 functional baseline to Stable with version and release documentation only; no runtime, schema, Shared Core, provider, queue or translation-data changes.

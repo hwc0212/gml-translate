@@ -190,6 +190,11 @@ final class GML_Resource_Readiness {
         return $written;
     }
 
+    /** Manifest discovery may acknowledge only a full configured snapshot. */
+    public static function refresh_manifest_snapshot( $resource_id ) {
+        return self::recalculate_resources( [ (int) $resource_id ] ) === count( self::configured_languages() );
+    }
+
     /** Fail closed for every current resource related to a changed TM hash. */
     public static function translation_changed( $source_hash, $target_lang ) {
         self::migrate_legacy_continuation();
@@ -491,6 +496,21 @@ final class GML_Resource_Readiness {
         if ( (int) $row->readiness_manifest_generation !== (int) $row->manifest_generation
             || (int) $row->readiness_global_generation !== (int) $row->manifest_global_generation ) return 'stale';
         return (string) $row->status;
+    }
+
+    /** Stable diagnostic codes; never includes source or translated content. */
+    public static function explain_status_row( $row ) {
+        $reasons = [];
+        if ( ( $row->discovery_state ?? 'unknown' ) !== 'complete' ) $reasons[] = 'manifest_' . sanitize_key( $row->discovery_state ?? 'unknown' );
+        $global = (int) ( $row->manifest_global_generation ?? $row->global_generation ?? 0 );
+        if ( $global !== self::global_generation() ) $reasons[] = 'manifest_global_generation_mismatch';
+        if ( ! isset( $row->target_lang ) ) $reasons[] = 'readiness_missing';
+        else {
+            if ( (int) $row->readiness_manifest_generation !== (int) $row->manifest_generation ) $reasons[] = 'readiness_manifest_generation_mismatch';
+            if ( (int) $row->readiness_global_generation !== $global ) $reasons[] = 'readiness_global_generation_mismatch';
+            if ( ( $row->status ?? 'unknown' ) !== 'complete' ) $reasons[] = 'readiness_' . sanitize_key( $row->status ?? 'unknown' );
+        }
+        return $reasons;
     }
 
     /** Evaluate the discovery half of a manifest/readiness join row. */
