@@ -2,6 +2,12 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.2-rc.3] - 2026-11-18 (local candidate)
+
+- Reject redirect and render-error writes superseded by a newer resource edit.
+- Sleep until the first retry is due when the inventory queue has only delayed work, and resume promptly when edits add runnable work.
+- Keep markup-shaped component configuration and nested SVG intact and translate only the text inside SEO title tags.
+
 ## [2.11.2-rc.2] - 2026-11-18 (local candidate)
 
 - Recover stale manifests across global generations and incomplete language snapshot writes after upgrading.

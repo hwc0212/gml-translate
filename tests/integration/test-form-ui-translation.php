@@ -113,6 +113,12 @@ $backslash_cases = [
         '<input data-path="C:'.$backslash.'" type="submit" value="Translated">',
 ];
 foreach ($backslash_cases as $input=>$expected) form_check(form_render($input,['Send RFQ'=>'Translated'])===$expected,'Form and component attribute boundaries: '.$input);
+$quoted_markup = '<div data-template=\'<script>Send RFQ</script><title>Send RFQ</title><textarea>Send RFQ</textarea>\'><p>Send RFQ</p></div>';
+form_check( form_render( $quoted_markup, [ 'Send RFQ'=>'Translated' ] ) === str_replace( '<p>Send RFQ</p>', '<p>Translated</p>', $quoted_markup ), 'tag-like configuration and its whitespace are kept byte for byte' );
+$title = '<title data-value="Send RFQ"> Send RFQ </title><p>Send RFQ</p>';
+form_check( form_render( $title, [ 'Send RFQ'=>'Translated' ] ) === '<title data-value="Send RFQ"> Translated </title><p>Translated</p>', 'title text with spaces translates without changing its attributes' );
+$nested_svg = '<svg aria-label="Send RFQ"><svg><text>Send RFQ</text></svg><text>Send RFQ</text></svg><textarea placeholder="Send RFQ">Send RFQ</textarea><p>Send RFQ</p>';
+form_check( form_render( $nested_svg, [ 'Send RFQ'=>'Translated' ] ) === str_replace( [ 'placeholder="Send RFQ"', '<p>Send RFQ</p>' ], [ 'placeholder="Translated"', '<p>Translated</p>' ], $nested_svg ), 'nested SVG text stays intact while following form controls translate' );
 form_check( form_render( $html, [] ) === $html, 'missing translation returns byte-identical source' );
 echo json_encode( [ 'checks' => $checks, 'failed' => count( $failures ), 'failures' => $failures ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE ) . "\n";
 exit( $failures ? 1 : 0 );
