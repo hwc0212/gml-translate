@@ -102,12 +102,17 @@ foreach ( [ 'action', '0', ' ' ] as $name ) {
 }
 $backslash = chr(92);
 $backslash_cases = [
+    '<svg/><textarea placeholder=" Send RFQ ">Send RFQ</textarea><input type="submit" value=" Send RFQ ">' =>
+        '<svg/><textarea placeholder=" Translated ">Send RFQ</textarea><input type="submit" value=" Translated ">',
+    '<p>Send RFQ</p><div data-placeholder="Send RFQ" data-config=\'aria-label="Send RFQ"\' aria-label="Send RFQ"></div>' =>
+        '<p>Translated</p><div data-placeholder="Send RFQ" data-config=\'aria-label="Send RFQ"\' aria-label="Translated"></div>',
+
     '<textarea data-path="C:'.$backslash.'" placeholder="Send RFQ">Send RFQ</textarea>' =>
         '<textarea data-path="C:'.$backslash.'" placeholder="Translated">Send RFQ</textarea>',
     '<input data-path="C:'.$backslash.'" type="submit" value="Send RFQ">' =>
         '<input data-path="C:'.$backslash.'" type="submit" value="Translated">',
 ];
-foreach ($backslash_cases as $input=>$expected) form_check(form_render($input,['Send RFQ'=>'Translated'])===$expected,'HTML quotes close after literal backslashes without changing raw content');
+foreach ($backslash_cases as $input=>$expected) form_check(form_render($input,['Send RFQ'=>'Translated'])===$expected,'Form and component attribute boundaries: '.$input);
 form_check( form_render( $html, [] ) === $html, 'missing translation returns byte-identical source' );
 echo json_encode( [ 'checks' => $checks, 'failed' => count( $failures ), 'failures' => $failures ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE ) . "\n";
 exit( $failures ? 1 : 0 );

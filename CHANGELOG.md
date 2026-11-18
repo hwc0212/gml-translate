@@ -2,6 +2,13 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.2-rc.2] - 2026-11-18 (local candidate)
+
+- Recover stale manifests across global generations and incomplete language snapshot writes after upgrading.
+- Bound recovery and retries, retire orphaned draft and navigation hints, and keep full scans advancing independently.
+- Reject superseded discovery writes and retain scan checkpoints on database read errors.
+- Preserve plain-permalink identities, form default text, whitespace and technical attributes during translation.
+
 ## [2.11.2-rc.1] - 2026-11-17 (local candidate)
 
 - Vendor Core 0.9.14: discover textarea UI attributes and unnamed submit captions while protecting form content and business values.
