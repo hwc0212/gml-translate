@@ -226,7 +226,7 @@ class GML_Language_Switcher {
             $source_lang = GML_Language_Utils::normalize_code( $source_lang ) ?: substr(get_locale(), 0, 2);
         }
         // Include source lang so the regex covers all known prefixes
-        $all_codes     = array_unique(array_merge([$source_lang], $lang_codes));
+        $all_codes     = array_values(array_unique(array_merge([$source_lang], $lang_codes)));
 
         wp_localize_script('gml-language-switcher', 'gmlData', [
             'currentLang' => $this->get_current_language(),
@@ -234,6 +234,9 @@ class GML_Language_Switcher {
             'languages'   => $all_codes,
             'homeUrl'     => home_url('/'),
             'homePath'    => class_exists( 'GML_URL_Helper' ) ? GML_URL_Helper::get_home_path() : '',
+            'knownLanguages' => GML_Language_Utils::local_configured_codes( true, false ),
+            'excludedPaths' => GML_URL_Helper::navigation_excluded_paths(),
+            'filePattern' => GML_URL_Helper::navigation_file_pattern(),
         ]);
     }
     

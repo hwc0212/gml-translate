@@ -1,10 +1,10 @@
 {
     "schemaVersion": 1,
     "package": "gml-translation-core",
-    "version": "0.9.16",
+    "version": "0.9.17",
     "source": {
         "repository": "https://github.com/hwc0212/gml-translation-core",
-        "commit": "a09293fe732613106098ed196ba13ccd1e31ef3e"
+        "commit": "517f5deb416a3e9ef363865e95608829c99dab7f"
     },
     "vendorRoot": "includes/vendor/gml-translation-core",
     "files": {
@@ -19,7 +19,7 @@
         "src/class-item-resolution.php": "93dfda948fc06001524b1b5fe38cd41399bce48bbe3799468620d4eab7e591eb",
         "src/class-language-utils.php": "686c593e130abe1d2fc75abdeed439c888b7113990fc353f5e9cb1caf9a4cdab",
         "src/class-manual-translation.php": "38529d044dc816218f1898dcd9a9f5135bfe01cdeab3f3a1ee311057bf9e18bc",
-        "src/class-output-buffer.php": "cd563a03fba034767e7dff931dd37b5d89dcfd00e44b5aeb07e138cf6cf81ed3",
+        "src/class-output-buffer.php": "e3ad0a841f708b024999a71fcc22f1f9eed133ce9fdb0830bfb4c0f5b611e0bd",
         "src/class-page-cache.php": "eb3cf06557ad7bbe7a3ca942a3977c661e112c002105e2d71e285a0e66ad0e6b",
         "src/class-page-demand.php": "c16f431476b29e263646d872bd347f55f9aad02595df853b56e2fa3b6a7e4c20",
         "src/class-page-readiness-policy.php": "325961e53761520256fcf86b17d3ed1a4b8ac8a25e32e6ef9644517c421a957b",
@@ -51,7 +51,7 @@
         "src/class-translation-text.php": "eee60aca7a9020ad33d89965af98de1404164f21a914ebcd5a9e7c4ab622120f",
         "src/class-translation-uninstaller.php": "0bd31c59b85709cdf0c32d51cee0232dd245b7655d40371fdf5df012576fc24b",
         "src/class-translator.php": "1b1c723a36c5a9cbfdcd7e92f9b31161a3e4d7595eef471f6f954c368ff87a53",
-        "src/class-url-helper.php": "df53fc077def900f13b81a2231a7e027a3a679ba2205f074bcc8187f1f46772b",
+        "src/class-url-helper.php": "b6714ed0cb552064a02e503e9a00af164429e078c6fd442b583a4badf708f05c",
         "src/interface-ai-provider.php": "7afed51ba778f14300dd5f3812e974e78454a9596fc04a45bf315c64cdf048ab",
         "src/interface-resource-translation-provider.php": "295459ad2e18c9d2f235f5819a15614240063d99211229b72b3ec2f5fd8dd549",
         "src/interface-translation-ai-provider.php": "3269237ce2efd52a405dd75f0e74aa95229975d3fd0fef0bfacac1768c304e2f",

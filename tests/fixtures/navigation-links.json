@@ -1,0 +1,229 @@
+[
+  {
+    "name": "upload",
+    "url": "{base}/wp-content/uploads/original.jpg?key=a%2Bb#photo",
+    "keep": true
+  },
+  {
+    "name": "content",
+    "url": "{base}/wp-content/plugins/tool/config",
+    "keep": true
+  },
+  {
+    "name": "json",
+    "url": "{base}/wp-json/wc/store/v1/cart?x=1",
+    "keep": true
+  },
+  {
+    "name": "includes",
+    "url": "{base}/wp-includes/js/tinymce/plugin.js",
+    "keep": true
+  },
+  {
+    "name": "cron",
+    "url": "{base}/wp-cron.php?doing_wp_cron=1",
+    "keep": true
+  },
+  {
+    "name": "admin",
+    "url": "{base}/wp-admin/admin-ajax.php?action=search",
+    "keep": true
+  },
+  {
+    "name": "login",
+    "url": "{base}/wp-login.php#login",
+    "keep": true
+  },
+  {
+    "name": "custom-content",
+    "url": "{base}/assets/theme/data",
+    "keep": true
+  },
+  {
+    "name": "custom-uploads",
+    "url": "{base}/media/catalog/signed-file?key=1",
+    "keep": true
+  },
+  {
+    "name": "document",
+    "url": "{base}/manuals/specification.pdf?signature=a%2Fb&expires=1#page=2",
+    "keep": true
+  },
+  {
+    "name": "ajax",
+    "url": "{base}/?wc-ajax=get_refreshed_fragments",
+    "keep": true
+  },
+  {
+    "name": "action",
+    "url": "{base}/contact/?token=a&action=submit#form",
+    "keep": true
+  },
+  {
+    "name": "rest-query",
+    "url": "{base}/?rest_route=%2Fwc%2Fstore",
+    "keep": true
+  },
+  {
+    "name": "feed-query",
+    "url": "{base}/?feed=rss2",
+    "keep": true
+  },
+  {
+    "name": "feed-path",
+    "url": "{base}/news/feed/",
+    "keep": true
+  },
+  {
+    "name": "feed-root",
+    "url": "{base}/feed/atom/",
+    "keep": true
+  },
+  {
+    "name": "external",
+    "url": "https://outside.test/product/",
+    "keep": true
+  },
+  {
+    "name": "similar-host",
+    "url": "{origin}.outside.test/product/",
+    "keep": true
+  },
+  {
+    "name": "other-port",
+    "url": "{origin}:8443/product/",
+    "keep": true
+  },
+  {
+    "name": "userinfo",
+    "url": "https://user@example.test{base}/product/",
+    "keep": true
+  },
+  {
+    "name": "protocol-external",
+    "url": "//outside.test/product/",
+    "keep": true
+  },
+  {
+    "name": "relative",
+    "url": "../other/?a=1#part",
+    "keep": true
+  },
+  {
+    "name": "query-only",
+    "url": "?sort=latest",
+    "keep": true
+  },
+  {
+    "name": "hash-only",
+    "url": "#details",
+    "keep": true
+  },
+  {
+    "name": "data",
+    "url": "data:text/plain,hello",
+    "keep": true
+  },
+  {
+    "name": "ftp",
+    "url": "ftp://example.test/catalog.zip",
+    "keep": true
+  },
+  {
+    "name": "whatsapp",
+    "url": "whatsapp://send?text=hello",
+    "keep": true
+  },
+  {
+    "name": "already-translated",
+    "url": "{base}/de#section",
+    "keep": true
+  },
+  {
+    "name": "language-case",
+    "url": "{base}/DE/product/",
+    "keep": true
+  },
+  {
+    "name": "local-page",
+    "url": "{base}/product/sample/?key=a%2Bb&x=1#details",
+    "expected": "{base}/de/product/sample/?key=a%2Bb&x=1#details"
+  },
+  {
+    "name": "absolute-local",
+    "url": "{home}/product/sample/?x=1#details",
+    "expected": "{home}/de/product/sample/?x=1#details"
+  },
+  {
+    "name": "protocol-local",
+    "url": "//example.test{base}/product/sample/?x=1#details",
+    "expected": "https://example.test{base}/de/product/sample/?x=1#details"
+  },
+  {
+    "name": "similar-path",
+    "url": "{base}/wp-content-guide/",
+    "expected": "{base}/de/wp-content-guide/"
+  },
+  {
+    "name": "outside-install",
+    "url": "/other-site/contact/",
+    "expected": "/de/other-site/contact/",
+    "subdirExpected": "/other-site/contact/"
+  },
+  {
+    "name": "encoded-action",
+    "url": "{base}/?%61ction=submit",
+    "keep": true
+  },
+  {
+    "name": "disabled-language",
+    "url": "{base}/fr/about/",
+    "keep": true
+  },
+  {
+    "name": "dot-segment",
+    "url": "{base}/de/../../contact/",
+    "keep": true
+  },
+  {
+    "name": "encoded-upload",
+    "url": "{base}/%77p-content/uploads/image.jpg",
+    "keep": true
+  },
+  {
+    "name": "backslash",
+    "url": "https://example.test\\\\outside.test/contact/",
+    "keep": true
+  },
+  {
+    "name": "encoded-service",
+    "url": "{base}/%77p-json/api",
+    "keep": true
+  },
+  {
+    "name": "download",
+    "url": "{base}/private-export",
+    "expected": "{base}/de/private-export",
+    "download": true
+  },
+  {
+    "name": "zero-query",
+    "url": "{base}/product/?0#0",
+    "expected": "{base}/de/product/?0#0"
+  },
+  {
+    "name": "empty-suffix",
+    "url": "{base}/product/?#",
+    "expected": "{base}/de/product/?#"
+  },
+  {
+    "name": "encoded-product",
+    "url": "{base}/product/caf%C3%A9/?x=%2B#details",
+    "expected": "{base}/de/product/caf%C3%A9/?x=%2B#details"
+  },
+  {
+    "name": "custom-rest-prefix",
+    "url": "{base}/api/wc/store/v1/cart",
+    "keep": true
+  }
+]
