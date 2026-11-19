@@ -2,6 +2,12 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.2-rc.7] - 2026-11-19 (second review candidate)
+
+- Fence per-language readiness writes and readiness-failure invalidation against newer manifest versions.
+- Bind inventory cooldown records to source snapshots, preserving new edits when an older attempt finishes writing its retry.
+- Vendor Core 0.9.19 and add deterministic interleaving regressions for both paths.
+
 ## [2.11.2-rc.6] - 2026-11-19 (review candidate)
 
 - Keep newer completed manifests intact when an older source/global render returns.
