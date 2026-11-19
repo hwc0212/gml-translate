@@ -3,6 +3,7 @@ import json
 import os
 import sys
 from pathlib import Path
+from urllib.parse import unquote
 
 from playwright.sync_api import sync_playwright
 
@@ -26,10 +27,27 @@ def check_page(browser, base):
     page.on('pageerror', lambda error: results['errors'].append(str(error)))
     page.route('**/*', lambda route: route.fulfill(body='<html><body></body></html>', content_type='text/html'))
     page.goto(home + '/de/product/sample/')
+    page.evaluate("""() => {
+        const NativeObserver = window.MutationObserver;
+        window.navigationObserverOverflow = false;
+        window.MutationObserver = class extends NativeObserver {
+            constructor(callback) {
+                let count = 0;
+                super((mutations, observer) => {
+                    if (++count > 12) {
+                        observer.disconnect();
+                        window.navigationObserverOverflow = true;
+                        return;
+                    }
+                    callback(mutations, observer);
+                });
+            }
+        };
+    }""")
     page.evaluate("""config => { window.gmlData = config; }""", {
         'homeUrl': home + '/', 'homePath': base, 'currentLang': 'de', 'sourceLang': 'en',
         'languages': ['en', 'de'], 'knownLanguages': ['en', 'de', 'fr'],
-        'excludedPaths': [base + '/assets', base + '/media', base + '/api'],
+        'excludedPaths': [unquote(base) + '/assets', unquote(base) + '/media', unquote(base) + '/api'],
         'filePattern': r'\.(?:avif|bmp|gif|ico|jpe?g|png|svg|tiff?|webp|pdf|zip|7z|gz|rar|tar|css|m?js|woff2?|ttf|otf|eot|mp[34]|m4a|mov|webm|ogg|wav|csv|xlsx?|docx?|pptx?)$',
     })
 
@@ -62,6 +80,8 @@ def check_page(browser, base):
     for mode in ('container', 'direct', 'changed'):
         insert(mode)
     page.wait_for_timeout(200)
+    if page.evaluate('window.navigationObserverOverflow'):
+        results['errors'].append('Repeated navigation mutations at ' + base)
     observed = page.evaluate("""() => [...document.querySelectorAll('[data-test-name]')].map(el => ({
         name: el.dataset.testName, mode: el.dataset.mode, tag: el.tagName,
         expected: el.dataset.expected, actual: el.getAttribute(el.tagName === 'A' ? 'href' : 'action')
@@ -86,7 +106,7 @@ def check_page(browser, base):
 
 with sync_playwright() as pw:
     browser = pw.chromium.launch(executable_path=os.getenv('CHROMIUM_PATH'))
-    for path in ('', '/staging'):
+    for path in ('', '/staging', '/shop%20one', '/caf%C3%A9'):
         check_page(browser, path)
     browser.close()
 print(json.dumps(results, ensure_ascii=False))

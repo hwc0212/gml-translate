@@ -17,7 +17,7 @@ $cases = json_decode( file_get_contents( __DIR__ . '/../fixtures/navigation-link
 $buffer = new Navigation_Buffer_Test();
 $count = 0;
 $failures = [];
-foreach ( [ '', '/staging' ] as $base ) {
+foreach ( [ '', '/staging', '/shop%20one', '/caf%C3%A9' ] as $base ) {
     $home = 'https://example.test' . $base;
     GML_Translate_Test_State::$home_url = $home;
     GML_Translate_Test_State::$options = [

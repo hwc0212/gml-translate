@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-19",
+  "plugin": "2.11.2-rc.6",
+  "core": "0.9.18",
+  "core_commit": "a1d26a26af800172383bb7cc537b14cd2e3f42e9",
+  "package_sha256": "549373b2313ae110d2beb7f09dfd23124d6e64f7caa3d6ecd0b93a2836f7f4f3",
+  "package_bytes": 421678,
+  "php_checks": 376,
+  "browser_checks": 1508,
+  "inventory_assertions": 95,
+  "inventory_exit": 0,
+  "inventory_guards": [
+    "an older source render preserves the newer complete manifest",
+    "an older global render preserves the newer complete manifest",
+    "a same-resource source edit bypasses its old retry cooldown",
+    "a global source change advances the delayed inventory worker",
+    "a legacy cooldown is invalidated when its manifest global generation is obsolete",
+    "review regressions preserve every stored fixture translation",
+    "review regressions preserve the paid queue"
+  ],
+  "initial_pr_heads": {
+    "plugin": "b70484d72c9c2af872ca21dc335c65c350de9c44",
+    "core": "c1d1344476e44cee7d73cb293facf6260a1ca819"
+  }
+}

@@ -288,14 +288,17 @@
         var sourceLang  = gmlData.sourceLang;
         var languages   = gmlData.languages;
         var homeUrl     = gmlData.homeUrl;
-        var homePath    = (gmlData.homePath || '').replace(/\/$/, '');
 
         if (!currentLang || currentLang === sourceLang) return;
         if (languages.indexOf(currentLang) === -1) return;
 
         var home;
+        var homePath;
+        var decodedHomePath;
         try {
             home = new URL(homeUrl);
+            homePath = home.pathname.replace(/\/$/, '');
+            decodedHomePath = decodeURIComponent(homePath);
         } catch (error) {
             return;
         }
@@ -331,7 +334,7 @@
                 return checkedPath.toLowerCase() === excluded.toLowerCase() || checkedPath.toLowerCase().indexOf(excluded.toLowerCase() + '/') === 0;
             })) return;
 
-            var relative = checkedPath.slice(homePath.length) || '/';
+            var relative = checkedPath.slice(decodedHomePath.length) || '/';
             if (/^\/(wp-admin|wp-login\.php|wp-json|wp-cron(?:\.php)?|wp-content|wp-includes)(\/|$)/i.test(relative)) return;
             if (knownLanguages.indexOf(relative.split('/')[1].toLowerCase()) !== -1) return;
             if (/(?:^|\/)feed(?:\/|$)/i.test(relative) || (filePattern && filePattern.test(relative))) return;

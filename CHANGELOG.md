@@ -2,6 +2,13 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.2-rc.6] - 2026-11-19 (review candidate)
+
+- Keep newer completed manifests intact when an older source/global render returns.
+- Reset inventory retry cooldowns after source changes without resuming paid translation.
+- Handle encoded installation directories without duplicate language prefixes or frontend script errors.
+- Vendor Core 0.9.18 and advance the frontend asset/cache version for this review correction.
+
 ## [2.11.2-rc.5] - 2026-11-19 (local candidate)
 
 - Keep REST, AJAX, cron, feed, file, explicit download and configured upload/content links intact in translated HTML and browser navigation.
