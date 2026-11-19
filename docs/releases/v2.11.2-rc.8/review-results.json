@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-19",
+  "version": "2.11.2-rc.8",
+  "core": "0.9.20",
+  "core_commit": "f4b582bd031d697e1be39741c49478d6effbc891",
+  "bytes": 422481,
+  "sha256": "d1af2261dce1a8b143c52078e88d33b0f327cd10c554aaa14fd6be8459d4f358",
+  "entries": 103,
+  "vendor_lock_files": 48,
+  "crc_ok": true,
+  "source_bytes_identical": true,
+  "wordpress": "7.1.4",
+  "php": "8.3.33",
+  "database_scenarios": 122,
+  "database_assertions": 2331,
+  "inventory_assertions": 146,
+  "database_stderr_empty": true,
+  "concurrent_cases": 4,
+  "concurrent_isolation_levels": [
+    "REPEATABLE READ",
+    "READ COMMITTED"
+  ],
+  "readiness_rows": [
+    "existing",
+    "missing"
+  ],
+  "php_navigation_assertions": 376,
+  "browser_assertions": 1508,
+  "integration_scripts": 29,
+  "php_linted_files": 111,
+  "exact_zip_activation": {
+    "wordpress": "7.1.4",
+    "php": "8.3.33",
+    "version": "2.11.2-rc.8",
+    "active": true,
+    "schema_ready": true,
+    "ai_available": false,
+    "queue_rows": 0,
+    "external_http_attempts": 0,
+    "deactivated_cleanly": true
+  },
+  "reviewed_plugin_head": "ea215793a1a56c010e71e06dd7433e9d773379d5",
+  "reviewed_core_head": "b207d2fb65924f01c12dc89de5efa49b32e3de97",
+  "limitations": [
+    "NAS WordPress/MariaDB fixtures and isolated Chromium, not production acceptance",
+    "Live provider calls disabled",
+    "MySQL server and production load not independently tested in this round"
+  ]
+}

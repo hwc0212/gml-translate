@@ -2,6 +2,59 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.2-rc.8] - 2026-11-19 (readiness concurrency review candidate)
+
+- Calculate readiness counts and translation fingerprints from one transaction after acquiring the source/readiness locks.
+- Prevent earlier readiness work from restoring obsolete completion after Translation Memory changes.
+- Bind inventory backoff to the attempted/committed snapshot returned by discovery, preserving both fresh-source retries and unchanged-failure backoff.
+- Avoid language-index lock inversions between TM invalidation and readiness replacement by using resource-first joins.
+- Vendor Core 0.9.20 and add deterministic plus real two-process database regressions.
+
+## [2.11.2-rc.7] - 2026-11-19 (second review candidate)
+
+- Fence per-language readiness writes and readiness-failure invalidation against newer manifest versions.
+- Bind inventory cooldown records to source snapshots, preserving new edits when an older attempt finishes writing its retry.
+- Vendor Core 0.9.19 and add deterministic interleaving regressions for both paths.
+
+## [2.11.2-rc.6] - 2026-11-19 (review candidate)
+
+- Keep newer completed manifests intact when an older source/global render returns.
+- Reset inventory retry cooldowns after source changes without resuming paid translation.
+- Handle encoded installation directories without duplicate language prefixes or frontend script errors.
+- Vendor Core 0.9.18 and advance the frontend asset/cache version for this review correction.
+
+## [2.11.2-rc.5] - 2026-11-19 (local candidate)
+
+- Keep REST, AJAX, cron, feed, file, explicit download and configured upload/content links intact in translated HTML and browser navigation.
+- Validate full origins and installation boundaries before localizing links, and preserve relative references, existing language prefixes, queries and fragments.
+- Apply the same policy to dynamically inserted anchors/forms and later href/action changes.
+- Vendor Core 0.9.17 for the shared URL and output-buffer corrections.
+- Preserve empty query and fragment delimiters on PHP 7.4.
+
+## [2.11.2-rc.4] - 2026-11-19 (local candidate)
+
+- Preserve links to WordPress content files when localizing navigation in the browser. WooCommerce gallery originals keep their upload URLs on translated product pages.
+
+## [2.11.2-rc.3] - 2026-11-18 (local candidate)
+
+- Reject redirect and render-error writes superseded by a newer resource edit.
+- Sleep until the first retry is due when the inventory queue has only delayed work, and resume promptly when edits add runnable work.
+- Keep markup-shaped component configuration and nested SVG intact and translate only the text inside SEO title tags.
+
+## [2.11.2-rc.2] - 2026-11-18 (local candidate)
+
+- Recover stale manifests across global generations and incomplete language snapshot writes after upgrading.
+- Bound recovery and retries, retire orphaned draft and navigation hints, and keep full scans advancing independently.
+- Reject superseded discovery writes and retain scan checkpoints on database read errors.
+- Preserve plain-permalink identities, form default text, whitespace and technical attributes during translation.
+
+## [2.11.2-rc.1] - 2026-11-17 (local candidate)
+
+- Vendor Core 0.9.14: discover textarea UI attributes and unnamed submit captions while protecting form content and business values.
+- Retain failed inventory work, recover orphaned manifests, preserve concurrent edits, and fence backfill checkpoints against newer pauses or resets. Inventory maintenance never resumes the paid translation queue.
+- Show concrete inventory/readiness diagnostics in the administrator Review detail.
+- Keep manual/held translations, publication thresholds, URL rules and database schema unchanged. No production deployment or automatic full-site translation.
+
 ## [2.11.1] - 2026-09-22
 
 - Promote the accepted rc.35 functional baseline to Stable with version and release documentation only; no runtime, schema, Shared Core, provider, queue or translation-data changes.

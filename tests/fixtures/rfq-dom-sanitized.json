@@ -1,0 +1,683 @@
+{
+  "fields": [
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "_wpcf7",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "hidden",
+      "value": "[redacted]"
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "_wpcf7_version",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "hidden",
+      "value": "[redacted]"
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "_wpcf7_locale",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "hidden",
+      "value": "[redacted]"
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "_wpcf7_unit_tag",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "hidden",
+      "value": "[redacted]"
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "_wpcf7_container_post",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "hidden",
+      "value": "[redacted]"
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "_wpcf7_posted_data_hash",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "hidden",
+      "value": "[redacted]"
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "your-name",
+      "options": null,
+      "placeholder": "Your name",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "your-email",
+      "options": null,
+      "placeholder": "name@company.com",
+      "required": false,
+      "tag": "INPUT",
+      "type": "email",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "company-name",
+      "options": null,
+      "placeholder": "Company or organization",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "product-name",
+      "options": null,
+      "placeholder": "Product, model or equipment application",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "quantity",
+      "options": null,
+      "placeholder": "Sample quantity, production demand, or Not sure",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "input-requirement",
+      "options": null,
+      "placeholder": "e.g. 230 V AC, 24 V DC, or Not sure",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "output-requirement",
+      "options": null,
+      "placeholder": "Voltage / power target, or Not sure",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "your-message",
+      "options": null,
+      "placeholder": "Describe the equipment, intended use, project stage and what you need help with.",
+      "required": false,
+      "tag": "TEXTAREA",
+      "type": "textarea",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "technical-family",
+      "options": [
+        {
+          "text": "—Please choose an option—",
+          "value": ""
+        },
+        {
+          "text": "Ozone Transformers / Power Supplies",
+          "value": "Ozone Transformers / Power Supplies"
+        },
+        {
+          "text": "Ignition Transformers / Ignitors",
+          "value": "Ignition Transformers / Ignitors"
+        },
+        {
+          "text": "ESP / WESP High Voltage Power",
+          "value": "ESP / WESP High Voltage Power"
+        },
+        {
+          "text": "Coating HV Cascades",
+          "value": "Coating HV Cascades"
+        },
+        {
+          "text": "Custom / Specialty High Voltage",
+          "value": "Custom / Specialty High Voltage"
+        }
+      ],
+      "placeholder": null,
+      "required": false,
+      "tag": "SELECT",
+      "type": "select-one",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "unknown-parameters[]",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "checkbox",
+      "value": "I don't know the electrical parameters."
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "old-model-only[]",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "checkbox",
+      "value": "I only have an old model number / nameplate photo."
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "ozone-equipment",
+      "options": null,
+      "placeholder": "Ozone cell, module or equipment",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "ozone-driver",
+      "options": null,
+      "placeholder": "Input supply or existing driver",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "ozone-output-hv",
+      "options": null,
+      "placeholder": "If known; include units",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "ozone-power",
+      "options": null,
+      "placeholder": "Required or existing power",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "ozone-frequency",
+      "options": null,
+      "placeholder": "If known; include units",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "ozone-discharge-load",
+      "options": null,
+      "placeholder": "Capacitance or reactor details",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "ozone-reactor",
+      "options": null,
+      "placeholder": "Model, material and dimensions",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "ozone-gas",
+      "options": null,
+      "placeholder": "Air, oxygen, or Not sure",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "ignition-equipment",
+      "options": null,
+      "placeholder": "Burner, heater or equipment",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "ignition-input",
+      "options": null,
+      "placeholder": "Voltage and AC / DC",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "ignition-type",
+      "options": null,
+      "placeholder": "Arc, pulse, high energy, or Not sure",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "ignition-output",
+      "options": null,
+      "placeholder": "Voltage, gap or energy if known",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "ignition-duty",
+      "options": null,
+      "placeholder": "Continuous or on/off cycle",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "ignition-interface",
+      "options": null,
+      "placeholder": "Size, leads and connectors",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "ignition-existing-model",
+      "options": null,
+      "placeholder": "Brand, model or text visible on the old part",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "esp-application",
+      "options": null,
+      "placeholder": "Dry ESP, wet collector or equipment",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "esp-input",
+      "options": null,
+      "placeholder": "Voltage and phase",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "esp-output",
+      "options": null,
+      "placeholder": "Voltage range; include units",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "esp-polarity",
+      "options": null,
+      "placeholder": "Negative, positive, or Not sure",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "esp-load",
+      "options": null,
+      "placeholder": "Cell size, load or capacitance",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "esp-current-power",
+      "options": null,
+      "placeholder": "If known; include units",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "esp-duty",
+      "options": null,
+      "placeholder": "Continuous or on/off cycle",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "esp-control",
+      "options": null,
+      "placeholder": "Enable, adjustment or communication",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "esp-dimensions",
+      "options": null,
+      "placeholder": "Available installation envelope",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "esp-environment",
+      "options": null,
+      "placeholder": "Temperature, humidity, gas or washdown",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "coating-gun-controller",
+      "options": null,
+      "placeholder": "Brand and model",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "coating-existing-model",
+      "options": null,
+      "placeholder": "Model or nameplate text",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "coating-drive-input",
+      "options": null,
+      "placeholder": "Voltage, frequency or waveform",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "coating-output",
+      "options": null,
+      "placeholder": "Voltage and polarity if known",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "coating-dimensions",
+      "options": null,
+      "placeholder": "Body size and mounting",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "coating-connector",
+      "options": null,
+      "placeholder": "Low-voltage and HV connections",
+      "required": false,
+      "tag": "INPUT",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "your-phone",
+      "options": null,
+      "placeholder": "Optional",
+      "required": false,
+      "tag": "INPUT",
+      "type": "tel",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "project-file",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "file",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "context-product-id",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "hidden",
+      "value": "[redacted]"
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "context-model",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "hidden",
+      "value": "[redacted]"
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "context-family",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "hidden",
+      "value": "[redacted]"
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "context-source-url",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "hidden",
+      "value": "[redacted]"
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "rfq-source-page",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "hidden",
+      "value": "[redacted]"
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "privacy-consent",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "checkbox",
+      "value": "1"
+    },
+    {
+      "checked": false,
+      "disabled": true,
+      "name": "",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "submit",
+      "value": "Send RFQ"
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "_wpcf7_ak_hp_textarea",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "TEXTAREA",
+      "type": "textarea",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "disabled": false,
+      "name": "_wpcf7_ak_js",
+      "options": null,
+      "placeholder": null,
+      "required": false,
+      "tag": "INPUT",
+      "type": "hidden",
+      "value": "[redacted]"
+    }
+  ],
+  "html": "<div class=\"wpcf7 js\" id=\"wpcf7-f9491-p37-o1\" lang=\"zh-CN\" dir=\"ltr\" data-wpcf7-id=\"9491\">\n<div class=\"screen-reader-response\"><p role=\"status\" aria-live=\"polite\" aria-atomic=\"true\"></p> <ul></ul></div>\n<form action=\"/quote/#wpcf7-f9491-p37-o1\" method=\"post\" class=\"wpcf7-form init\" aria-label=\"Contact form\" enctype=\"multipart/form-data\" novalidate=\"novalidate\" data-status=\"init\">\n<fieldset class=\"hidden-fields-container\"><input type=\"hidden\" name=\"_wpcf7\"><input type=\"hidden\" name=\"_wpcf7_version\"><input type=\"hidden\" name=\"_wpcf7_locale\"><input type=\"hidden\" name=\"_wpcf7_unit_tag\"><input type=\"hidden\" name=\"_wpcf7_container_post\"><input type=\"hidden\" name=\"_wpcf7_posted_data_hash\">\n</fieldset>\n<div class=\"sh-rfq-grid\">\n\t<p><label>Name *<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"your-name\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text wpcf7-validates-as-required\" autocomplete=\"name\" aria-required=\"true\" aria-invalid=\"false\" placeholder=\"Your name\" value=\"\" type=\"text\" name=\"your-name\"></span></label><br>\n<label>Business Email *<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"your-email\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-email wpcf7-validates-as-required wpcf7-text wpcf7-validates-as-email\" autocomplete=\"email\" aria-required=\"true\" aria-invalid=\"false\" placeholder=\"name@company.com\" type=\"email\" name=\"your-email\"></span></label><br>\n<label>Company<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"company-name\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" autocomplete=\"organization\" aria-invalid=\"false\" placeholder=\"Company or organization\" value=\"\" type=\"text\" name=\"company-name\"></span></label><br>\n<label>Product / Application *<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"product-name\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text wpcf7-validates-as-required\" aria-required=\"true\" aria-invalid=\"false\" placeholder=\"Product, model or equipment application\" value=\"\" type=\"text\" name=\"product-name\"></span></label><br>\n<label>Quantity<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"quantity\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Sample quantity, production demand, or Not sure\" value=\"\" type=\"text\" name=\"quantity\"></span></label><br>\n<label>Input Supply<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"input-requirement\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"e.g. 230 V AC, 24 V DC, or Not sure\" value=\"\" type=\"text\" name=\"input-requirement\"></span></label><br>\n<label>Target Output / Power<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"output-requirement\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Voltage / power target, or Not sure\" value=\"\" type=\"text\" name=\"output-requirement\"></span></label><br>\n<label class=\"full\">Message *<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"your-message\"><textarea cols=\"40\" rows=\"5\" maxlength=\"2000\" class=\"wpcf7-form-control wpcf7-textarea wpcf7-validates-as-required\" aria-required=\"true\" aria-invalid=\"false\" placeholder=\"Describe the equipment, intended use, project stage and what you need help with.\" name=\"your-message\"></textarea></span></label>\n\t</p>\n</div>\n<details class=\"sh-rfq-advanced\">\n\t<summary>Add technical details (optional)\n\t</summary>\n\t<div class=\"sh-rfq-grid\">\n\t\t<p><label class=\"full\">Technical family<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"technical-family\"><select class=\"wpcf7-form-control wpcf7-select\" aria-invalid=\"false\" name=\"technical-family\"><option value=\"\">—Please choose an option—</option><option value=\"\">Ozone Transformers / Power Supplies</option><option value=\"\">Ignition Transformers / Ignitors</option><option value=\"\">ESP / WESP High Voltage Power</option><option value=\"\">Coating HV Cascades</option><option value=\"\">Custom / Specialty High Voltage</option></select></span></label>\n\t\t</p>\n\t\t<div class=\"sh-rfq-choice\">\n\t\t\t<p><span class=\"wpcf7-form-control-wrap\" data-name=\"unknown-parameters\"><span class=\"wpcf7-form-control wpcf7-checkbox\"><span class=\"wpcf7-list-item first last\"><label><input type=\"checkbox\" name=\"unknown-parameters[]\" value=\"\"><span class=\"wpcf7-list-item-label\">I don't know the electrical parameters.</span></label></span></span></span><br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"old-model-only\"><span class=\"wpcf7-form-control wpcf7-checkbox\"><span class=\"wpcf7-list-item first last\"><label><input type=\"checkbox\" name=\"old-model-only[]\" value=\"\"><span class=\"wpcf7-list-item-label\">I only have an old model number / nameplate photo.</span></label></span></span></span>\n\t\t\t</p>\n\t\t</div>\n\t\t<fieldset class=\"sh-rfq-family\" data-rfq-family=\"ozone\" hidden=\"\">\n\t\t\t<legend>Ozone transformer / power details\n\t\t\t</legend>\n\t\t\t<div class=\"sh-rfq-grid\">\n\t\t\t\t<p><label>Equipment / Application<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"ozone-equipment\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Ozone cell, module or equipment\" value=\"\" type=\"text\" name=\"ozone-equipment\" disabled=\"\"></span></label><br>\n<label>Driver / Input<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"ozone-driver\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Input supply or existing driver\" value=\"\" type=\"text\" name=\"ozone-driver\" disabled=\"\"></span></label><br>\n<label>Required HV<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"ozone-output-hv\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"If known; include units\" value=\"\" type=\"text\" name=\"ozone-output-hv\" disabled=\"\"></span></label><br>\n<label>Power<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"ozone-power\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Required or existing power\" value=\"\" type=\"text\" name=\"ozone-power\" disabled=\"\"></span></label><br>\n<label>Frequency<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"ozone-frequency\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"If known; include units\" value=\"\" type=\"text\" name=\"ozone-frequency\" disabled=\"\"></span></label><br>\n<label>Discharge Load<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"ozone-discharge-load\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Capacitance or reactor details\" value=\"\" type=\"text\" name=\"ozone-discharge-load\" disabled=\"\"></span></label><br>\n<label>Tube / Plate / Reactor<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"ozone-reactor\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Model, material and dimensions\" value=\"\" type=\"text\" name=\"ozone-reactor\" disabled=\"\"></span></label><br>\n<label>Gas Source<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"ozone-gas\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Air, oxygen, or Not sure\" value=\"\" type=\"text\" name=\"ozone-gas\" disabled=\"\"></span></label>\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</fieldset>\n\t\t<fieldset class=\"sh-rfq-family\" data-rfq-family=\"ignition\" hidden=\"\">\n\t\t\t<legend>Ignition transformer / ignitor details\n\t\t\t</legend>\n\t\t\t<div class=\"sh-rfq-grid\">\n\t\t\t\t<p><label>Equipment / Burner<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"ignition-equipment\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Burner, heater or equipment\" value=\"\" type=\"text\" name=\"ignition-equipment\" disabled=\"\"></span></label><br>\n<label>Input Supply<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"ignition-input\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Voltage and AC / DC\" value=\"\" type=\"text\" name=\"ignition-input\" disabled=\"\"></span></label><br>\n<label>Ignition Type<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"ignition-type\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Arc, pulse, high energy, or Not sure\" value=\"\" type=\"text\" name=\"ignition-type\" disabled=\"\"></span></label><br>\n<label>Output Requirement<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"ignition-output\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Voltage, gap or energy if known\" value=\"\" type=\"text\" name=\"ignition-output\" disabled=\"\"></span></label><br>\n<label>Operating Duty<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"ignition-duty\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Continuous or on/off cycle\" value=\"\" type=\"text\" name=\"ignition-duty\" disabled=\"\"></span></label><br>\n<label>Mounting / Interface<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"ignition-interface\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Size, leads and connectors\" value=\"\" type=\"text\" name=\"ignition-interface\" disabled=\"\"></span></label><br>\n<label class=\"full\">Existing Model / Nameplate<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"ignition-existing-model\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Brand, model or text visible on the old part\" value=\"\" type=\"text\" name=\"ignition-existing-model\" disabled=\"\"></span></label>\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</fieldset>\n\t\t<fieldset class=\"sh-rfq-family\" data-rfq-family=\"esp-wesp\" hidden=\"\">\n\t\t\t<legend>ESP / WESP high-voltage power details\n\t\t\t</legend>\n\t\t\t<div class=\"sh-rfq-grid\">\n\t\t\t\t<p><label>Application<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"esp-application\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Dry ESP, wet collector or equipment\" value=\"\" type=\"text\" name=\"esp-application\" disabled=\"\"></span></label><br>\n<label>Input Supply<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"esp-input\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Voltage and phase\" value=\"\" type=\"text\" name=\"esp-input\" disabled=\"\"></span></label><br>\n<label>Required Output<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"esp-output\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Voltage range; include units\" value=\"\" type=\"text\" name=\"esp-output\" disabled=\"\"></span></label><br>\n<label>Polarity<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"esp-polarity\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Negative, positive, or Not sure\" value=\"\" type=\"text\" name=\"esp-polarity\" disabled=\"\"></span></label><br>\n<label>Collector / Load<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"esp-load\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Cell size, load or capacitance\" value=\"\" type=\"text\" name=\"esp-load\" disabled=\"\"></span></label><br>\n<label>Current / Power<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"esp-current-power\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"If known; include units\" value=\"\" type=\"text\" name=\"esp-current-power\" disabled=\"\"></span></label><br>\n<label>Operating Duty<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"esp-duty\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Continuous or on/off cycle\" value=\"\" type=\"text\" name=\"esp-duty\" disabled=\"\"></span></label><br>\n<label>Control / Feedback<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"esp-control\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Enable, adjustment or communication\" value=\"\" type=\"text\" name=\"esp-control\" disabled=\"\"></span></label><br>\n<label>Dimensions<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"esp-dimensions\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Available installation envelope\" value=\"\" type=\"text\" name=\"esp-dimensions\" disabled=\"\"></span></label><br>\n<label>Environment<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"esp-environment\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Temperature, humidity, gas or washdown\" value=\"\" type=\"text\" name=\"esp-environment\" disabled=\"\"></span></label>\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</fieldset>\n\t\t<fieldset class=\"sh-rfq-family\" data-rfq-family=\"coating\" hidden=\"\">\n\t\t\t<legend>Electrostatic coating cascade details\n\t\t\t</legend>\n\t\t\t<div class=\"sh-rfq-grid\">\n\t\t\t\t<p><label>Gun / Controller<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"coating-gun-controller\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Brand and model\" value=\"\" type=\"text\" name=\"coating-gun-controller\" disabled=\"\"></span></label><br>\n<label>Existing Cascade Model<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"coating-existing-model\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Model or nameplate text\" value=\"\" type=\"text\" name=\"coating-existing-model\" disabled=\"\"></span></label><br>\n<label>Drive Input<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"coating-drive-input\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Voltage, frequency or waveform\" value=\"\" type=\"text\" name=\"coating-drive-input\" disabled=\"\"></span></label><br>\n<label>Output Requirement<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"coating-output\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Voltage and polarity if known\" value=\"\" type=\"text\" name=\"coating-output\" disabled=\"\"></span></label><br>\n<label>Dimensions / Interface<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"coating-dimensions\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Body size and mounting\" value=\"\" type=\"text\" name=\"coating-dimensions\" disabled=\"\"></span></label><br>\n<label>Connector / Leads<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"coating-connector\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-text\" aria-invalid=\"false\" placeholder=\"Low-voltage and HV connections\" value=\"\" type=\"text\" name=\"coating-connector\" disabled=\"\"></span></label>\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</fieldset>\n\t\t<p><label>Phone / WhatsApp<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"your-phone\"><input size=\"40\" maxlength=\"400\" class=\"wpcf7-form-control wpcf7-tel wpcf7-text wpcf7-validates-as-tel\" autocomplete=\"tel\" aria-invalid=\"false\" placeholder=\"Optional\" type=\"tel\" name=\"your-phone\"></span></label><br>\n<label class=\"full\">Drawing / Nameplate Photo<br>\n<span class=\"wpcf7-form-control-wrap\" data-name=\"project-file\"><input size=\"40\" class=\"wpcf7-form-control wpcf7-file\" accept=\".pdf,.jpg,.jpeg,.png,.webp\" aria-invalid=\"false\" type=\"file\" name=\"project-file\"></span><br>\n<span class=\"sh-helper\">PDF, JPG, PNG or WebP. Maximum 10 MB. Non-confidential information only.</span></label>\n\t\t</p>\n\t</div>\n</details>\n<div class=\"sh-rfq-context\">\n<input class=\"wpcf7-form-control wpcf7-hidden\" type=\"hidden\" name=\"context-product-id\">\n<input class=\"wpcf7-form-control wpcf7-hidden\" type=\"hidden\" name=\"context-model\">\n<input class=\"wpcf7-form-control wpcf7-hidden\" type=\"hidden\" name=\"context-family\">\n<input class=\"wpcf7-form-control wpcf7-hidden\" type=\"hidden\" name=\"context-source-url\">\n<input class=\"wpcf7-form-control wpcf7-hidden\" type=\"hidden\" name=\"rfq-source-page\">\n</div>\n<p class=\"sh-rfq-consent\"><span class=\"wpcf7-form-control-wrap\" data-name=\"privacy-consent\"><span class=\"wpcf7-form-control wpcf7-acceptance\"><span class=\"wpcf7-list-item\"><label><input type=\"checkbox\" name=\"privacy-consent\" value=\"\" aria-invalid=\"false\"><span class=\"wpcf7-list-item-label\">I agree to the <a href=\"https://forms.example.test/privacy-policy/\">Privacy Policy</a> and the use of my information to respond to this inquiry.</span></label></span></span></span>\n</p>\n<p><input class=\"wpcf7-form-control wpcf7-submit has-spinner\" type=\"submit\" value=\"\" disabled=\"\"><span class=\"wpcf7-spinner\"></span>\n</p><p style=\"display: none !important;\" class=\"akismet-fields-container\" data-prefix=\"_wpcf7_ak_\"><label>Δ<textarea name=\"_wpcf7_ak_hp_textarea\" cols=\"45\" rows=\"8\" maxlength=\"100\"></textarea></label><input type=\"hidden\" id=\"ak_js_1\" name=\"_wpcf7_ak_js\"><script>\ndocument.getElementById( \"ak_js_1\" ).setAttribute( \"value\", ( new Date() ).getTime() );\n</script>\n</p><div class=\"wpcf7-response-output\" aria-hidden=\"true\"></div>\n</form>\n</div>",
+  "lang": "en-US",
+  "scripts": [],
+  "url": "https://forms.example.test/quote/",
+  "wrapper": "wpcf7-f9491-p37-o1"
+}

@@ -163,8 +163,8 @@ msgstr "外观"
 msgid "Appearance → Widgets"
 msgstr "Appearance → Widgets"
 
-msgid "Approval is bound to this exact snapshot. Current publication reason: %s. Administrators may preview private translations; anonymous visitors are redirected to the source URL."
-msgstr "Approval is bound to this exact snapshot. Current publication reason: %s. Administrators may preview private translations; anonymous visitors are redirected to the source URL."
+msgid "Approval is bound to this exact snapshot. Current publication reason: %s. Eligible content can remain accessible while its language page is marked noindex."
+msgstr "审核决定仅适用于当前快照。当前发布原因：%s。有效的语言页面在标记为 noindex 时仍可访问。"
 
 msgid "Approval note (optional)"
 msgstr "批准备注（可选）"
@@ -597,6 +597,9 @@ msgstr "服务商请求无效（HTTP 400）"
 
 msgid "Invalid provider response"
 msgstr "服务商响应无效"
+
+msgid "Inventory and readiness diagnostics"
+msgstr "Inventory and readiness diagnostics"
 
 msgid "Is Dropdown"
 msgstr "Is Dropdown"
@@ -1089,6 +1092,9 @@ msgstr "资源"
 
 msgid "Resource ID"
 msgstr "资源 ID"
+
+msgid "Resource pending shows whether this resource is waiting in the incremental queue. It clears when a worker claims the resource. Check the manifest and machine reasons for snapshot validity."
+msgstr "resource_pending 表示此资源是否正在增量队列中等待。后台任务领取后，此值就会变为 false。请结合清单状态和机器就绪原因判断快照是否有效。"
 
 msgid "Resume Sample"
 msgstr "继续小样本"

@@ -163,7 +163,7 @@ msgstr ""
 msgid "Appearance → Widgets"
 msgstr ""
 
-msgid "Approval is bound to this exact snapshot. Current publication reason: %s. Administrators may preview private translations; anonymous visitors are redirected to the source URL."
+msgid "Approval is bound to this exact snapshot. Current publication reason: %s. Eligible content can remain accessible while its language page is marked noindex."
 msgstr ""
 
 msgid "Approval note (optional)"
@@ -596,6 +596,9 @@ msgid "Invalid provider request (HTTP 400)"
 msgstr ""
 
 msgid "Invalid provider response"
+msgstr ""
+
+msgid "Inventory and readiness diagnostics"
 msgstr ""
 
 msgid "Is Dropdown"
@@ -1088,6 +1091,9 @@ msgid "Resource"
 msgstr ""
 
 msgid "Resource ID"
+msgstr ""
+
+msgid "Resource pending shows whether this resource is waiting in the incremental queue. It clears when a worker claims the resource. Check the manifest and machine reasons for snapshot validity."
 msgstr ""
 
 msgid "Resume Sample"

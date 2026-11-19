@@ -187,6 +187,10 @@ final class GML_Resource_Review_Admin {
         $public = class_exists( 'GML_Public_Eligibility' )
             ? GML_Public_Eligibility::get_status( $summary['resource_key'], $summary['target_lang'], [ 'entrypoint' => 'review_detail' ] )
             : [];
+        $inventory_diagnostics = class_exists( 'GML_Resource_Manifest_Manager' )
+            && method_exists( 'GML_Resource_Manifest_Manager', 'diagnostics' )
+            ? GML_Resource_Manifest_Manager::diagnostics( $summary['resource_key'] ) : [];
+        $inventory_diagnostics['machine_reasons'] = $summary['machine_reasons'] ?? [];
         $health = GML_Resource_Approval::transaction_health();
         $reviewable = $summary;
         $reviewable['decision'] = 'unreviewed';
@@ -196,6 +200,11 @@ final class GML_Resource_Review_Admin {
         if(!empty($public['snapshot_matches']) && ($public['review_status']??'')==='approved') $summary['review_status']='approved';
         ?>
         <p><a href="<?php echo esc_url( admin_url( 'admin.php?page=gml-translate&tab=review' ) ); ?>">&larr; <?php esc_html_e( 'Back to review queue', 'gml-translate' ); ?></a></p>
+        <details class="gml-inventory-diagnostics">
+            <summary><?php esc_html_e( 'Inventory and readiness diagnostics', 'gml-translate' ); ?></summary>
+            <p><?php esc_html_e( 'Resource pending shows whether this resource is waiting in the incremental queue. It clears when a worker claims the resource. Check the manifest and machine reasons for snapshot validity.', 'gml-translate' ); ?></p>
+            <pre><?php echo esc_html( wp_json_encode( $inventory_diagnostics, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) ); ?></pre>
+        </details>
         <div class="gml-review-detail-header">
             <div>
                 <h2><?php echo esc_html( $summary['label'] ); ?></h2>
@@ -207,7 +216,7 @@ final class GML_Resource_Review_Admin {
                 <span><?php esc_html_e( 'Public', 'gml-translate' ); ?>: <?php $this->status_badge( ! empty( $public['public_eligible'] ) ? 'public' : 'private' ); ?></span>
             </div>
         </div>
-        <div class="notice notice-info inline"><p><?php echo esc_html( sprintf( __( 'Approval is bound to this exact snapshot. Current publication reason: %s. Administrators may preview private translations; anonymous visitors are redirected to the source URL.', 'gml-translate' ), $public['reason'] ?? 'unavailable' ) ); ?></p></div>
+        <div class="notice notice-info inline"><p><?php echo esc_html( sprintf( __( 'Approval is bound to this exact snapshot. Current publication reason: %s. Eligible content can remain accessible while its language page is marked noindex.', 'gml-translate' ), $public['reason'] ?? 'unavailable' ) ); ?></p></div>
         <dl class="gml-review-metadata">
             <div><dt><?php esc_html_e( 'Target language', 'gml-translate' ); ?></dt><dd><?php echo esc_html( strtoupper( $summary['target_lang'] ) ); ?></dd></div>
             <div><dt><?php esc_html_e( 'Coverage', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $summary['translated_count'] ) . ' / ' . number_format_i18n( $summary['required_count'] ) ); ?></dd></div>

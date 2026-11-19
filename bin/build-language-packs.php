@@ -82,6 +82,8 @@ $translations = [
 ];
 
 $controls_zh = [
+    'Approval is bound to this exact snapshot. Current publication reason: %s. Eligible content can remain accessible while its language page is marked noindex.' => '审核决定仅适用于当前快照。当前发布原因：%s。有效的语言页面在标记为 noindex 时仍可访问。',
+    'Resource pending shows whether this resource is waiting in the incremental queue. It clears when a worker claims the resource. Check the manifest and machine reasons for snapshot validity.' => 'resource_pending 表示此资源是否正在增量队列中等待。后台任务领取后，此值就会变为 false。请结合清单状态和机器就绪原因判断快照是否有效。',
 	'Uninstall Data Retention' => '卸载数据保留',
 	'Uninstall data behavior' => '卸载数据处理方式',
 	'Uninstall Data' => '卸载数据',
