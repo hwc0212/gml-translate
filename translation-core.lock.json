@@ -1,10 +1,10 @@
 {
     "schemaVersion": 1,
     "package": "gml-translation-core",
-    "version": "0.9.19",
+    "version": "0.9.20",
     "source": {
         "repository": "https://github.com/hwc0212/gml-translation-core",
-        "commit": "b207d2fb65924f01c12dc89de5efa49b32e3de97"
+        "commit": "f4b582bd031d697e1be39741c49478d6effbc891"
     },
     "vendorRoot": "includes/vendor/gml-translation-core",
     "files": {
@@ -29,10 +29,10 @@
         "src/class-resource-backfill.php": "d134881107c18f08b3bfbdb80afa3af6437e03c023431a87dca71e00db030e7f",
         "src/class-resource-cache-worker.php": "c689259bde226c0a7fc84c36f230d732684f50e3f57251b4b7cd268545b695f1",
         "src/class-resource-identity.php": "f134f097741dbbb9690afbbad24ce0f1eae88eaf443fca4465b852a53ce0ad0e",
-        "src/class-resource-manifest-discovery.php": "32edc0702464700750ef80959048ac1728a2f7d06c05f47dbd21db2362596e10",
-        "src/class-resource-manifest-manager.php": "532c4fd54e7b2c84f46aca06936a3b8acb93cdad7260894c8d0f6279c7e85c31",
-        "src/class-resource-manifest-store.php": "586a0a13386a1e692f2ce056e1ccb5ebbffee4991228b0c7865b01f95e6540bf",
-        "src/class-resource-readiness.php": "9d5fd7a0ecbe158bb3512218832eb6f26c4e568f8016436f91f8b97f1576387e",
+        "src/class-resource-manifest-discovery.php": "0fad723559d8ece5a25a1e6b6f76eb3b591c27c9582c09ef8ba241cc3a29e682",
+        "src/class-resource-manifest-manager.php": "c3469bf333ca1108dc4e0216c990d52834625cb44de3aa30a51b8a083168ac38",
+        "src/class-resource-manifest-store.php": "fcb541a0cf11643dd1d1a8939d632e568f8bdee09d367c4ecaeb52232770584c",
+        "src/class-resource-readiness.php": "6702e818b060b74f93d5efd759a16d63539c97c0ccb5b36fe2bdbeb9819c8d30",
         "src/class-translation-activity.php": "437cd283216c63cf6bfe9c68e7b52e7450ab84fda5e328d5e84ef593dcb425ce",
         "src/class-translation-ai-client.php": "34b8f54e38bf8b70a26562bc3fa3008b7d58aa62cbf26f2889d824ca914bf003",
         "src/class-translation-budget.php": "5335d11da98d0afcdc09023272b7b06c19aada8cdc7afb3c4746cf0bdc6c8c8b",

@@ -2,6 +2,14 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.2-rc.8] - 2026-11-19 (readiness concurrency review candidate)
+
+- Calculate readiness counts and translation fingerprints from one transaction after acquiring the source/readiness locks.
+- Prevent earlier readiness work from restoring obsolete completion after Translation Memory changes.
+- Bind inventory backoff to the attempted/committed snapshot returned by discovery, preserving both fresh-source retries and unchanged-failure backoff.
+- Avoid language-index lock inversions between TM invalidation and readiness replacement by using resource-first joins.
+- Vendor Core 0.9.20 and add deterministic plus real two-process database regressions.
+
 ## [2.11.2-rc.7] - 2026-11-19 (second review candidate)
 
 - Fence per-language readiness writes and readiness-failure invalidation against newer manifest versions.
