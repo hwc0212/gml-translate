@@ -340,6 +340,9 @@
         function rewriteLinks(root) {
             root.querySelectorAll('a[href]').forEach(function (a) {
                 if (a.closest('.gml-language-switcher') || a.closest('.gml-dropdown-teleported')) return;
+                // Match the server-side wp-content exclusion, including subdirectory installs.
+                // The browser resolves the path without changing the original URL or its query.
+                if (/^\/wp-content(?:\/|$)/i.test(stripHomePath(a.pathname || ''))) return;
                 var href = a.getAttribute('href');
                 if (shouldRewrite(href)) {
                     a.setAttribute('href', rewriteHref(href));

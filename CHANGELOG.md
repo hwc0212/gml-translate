@@ -2,6 +2,10 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.2-rc.4] - 2026-11-19 (local candidate)
+
+- Preserve links to WordPress content files when localizing navigation in the browser. WooCommerce gallery originals keep their upload URLs on translated product pages.
+
 ## [2.11.2-rc.3] - 2026-11-18 (local candidate)
 
 - Reject redirect and render-error writes superseded by a newer resource edit.
