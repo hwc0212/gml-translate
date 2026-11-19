@@ -32,12 +32,16 @@
 | 原文和全局变更的交错扫描回调 | 旧任务返回后，较新完整 manifest 保持一致 |
 | 同资源、全局版本和旧格式退避 | 恢复及时重算，未修改的失败仍遵守退避 |
 | 译文、付费队列及暂停/重置状态 | 专项回归通过 |
+| 并发测试夹具 | 9 组双进程重复用例通过 |
 | Core 来源与安装包 | 源码、vendor、锁文件和 ZIP 字节核对通过 |
 
 本轮使用 NAS 独立 WordPress 7.1.4/MariaDB 数据库、真实 Chromium 和夹具源页响应。新并发用例使用确定性的交错回调。导航矩阵使用最小 PHP 桩及浏览器页面夹具。先前 WooCommerce 商品图库和实际接口验收保留在 [rc.5 材料](../v2.11.2-rc.5/README.md)，本轮新增覆盖主要针对上述三个缺陷。生产站的完整商品清单和主题组合仍待现场逐项复核。
 
 在本轮审查范围内，三项可复现问题均已修复。GitHub 最终 PHP 7.4、8.3 和数据库回归状态随 PR 检查页提供。
 
+CI 还发现并发测试夹具在新增结果行时偶发死锁。夹具现提前建立结果行，并在 worker 中验证写入成功。原有成功/冲突及审计条数断言继续执行。NAS 上三种决策组合重复三轮，共 9 组双进程用例通过。
+
+
 [插件 PR #3](https://github.com/hwc0212/gml-translate/pull/3) · [Core PR #1](https://github.com/hwc0212/gml-translation-core/pull/1) · [安装包](gml-translate-2.11.2-rc.6.zip) · [校验值](gml-translate-2.11.2-rc.6.zip.sha256) · [验收 JSON](review-results.json)
 
-当前 Core 提交为 a1d26a26af800172383bb7cc537b14cd2e3f42e9。安装包 SHA-256 为 549373b2313ae110d2beb7f09dfd23124d6e64f7caa3d6ecd0b93a2836f7f4f3，共 421678 字节。
+当前 Core 提交为 551df4ecdc5081a5d3606deda6b6f2bcc7c6f1ff。安装包 SHA-256 为 549373b2313ae110d2beb7f09dfd23124d6e64f7caa3d6ecd0b93a2836f7f4f3，共 421678 字节。

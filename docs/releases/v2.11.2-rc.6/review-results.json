@@ -2,7 +2,7 @@
   "date": "2026-11-19",
   "plugin": "2.11.2-rc.6",
   "core": "0.9.18",
-  "core_commit": "a1d26a26af800172383bb7cc537b14cd2e3f42e9",
+  "core_commit": "551df4ecdc5081a5d3606deda6b6f2bcc7c6f1ff",
   "package_sha256": "549373b2313ae110d2beb7f09dfd23124d6e64f7caa3d6ecd0b93a2836f7f4f3",
   "package_bytes": 421678,
   "php_checks": 376,
@@ -21,5 +21,6 @@
   "initial_pr_heads": {
     "plugin": "b70484d72c9c2af872ca21dc335c65c350de9c44",
     "core": "c1d1344476e44cee7d73cb293facf6260a1ca819"
-  }
+  },
+  "concurrent_fixture_cases": 9
 }
