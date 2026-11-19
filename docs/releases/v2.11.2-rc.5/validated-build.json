@@ -1,0 +1,15 @@
+{
+  "version": "2.11.2-rc.5",
+  "core": "0.9.17",
+  "product_commit": "1b480297db29cfd9fb09c5ed771a4e256270f149",
+  "core_commit": "517f5deb416a3e9ef363865e95608829c99dab7f",
+  "sha256": "8795f250e7ae5f907b7513e451b1b2a5b00868e0a78c24a69309a7d82818b352",
+  "bytes": 421410,
+  "php_checks": 180,
+  "browser_checks": 722,
+  "real_endpoint_requests": 18,
+  "localized_products": 75,
+  "gallery_links": 150,
+  "core_file_hashes_verified": true,
+  "zip_crc_verified": true
+}
