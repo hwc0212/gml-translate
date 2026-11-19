@@ -8,6 +8,7 @@ All notable changes to GML Translate will be documented in this file.
 - Validate full origins and installation boundaries before localizing links, and preserve relative references, existing language prefixes, queries and fragments.
 - Apply the same policy to dynamically inserted anchors/forms and later href/action changes.
 - Vendor Core 0.9.17 for the shared URL and output-buffer corrections.
+- Preserve empty query and fragment delimiters on PHP 7.4.
 
 ## [2.11.2-rc.4] - 2026-11-19 (local candidate)
 

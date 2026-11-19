@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-19",
+  "environment": {
+    "wordpress": "7.1.4",
+    "woocommerce": "10.5.3",
+    "chromium": "156.0.8078.79",
+    "anonymous": true,
+    "isolated_database": true,
+    "external_ai_disabled": true
+  },
+  "navigation": {
+    "php": {
+      "checks": 180,
+      "failures": 0,
+      "baseline_failures": 72
+    },
+    "browser": {
+      "checks": 722,
+      "failures": 0,
+      "page_errors": 0,
+      "baseline_failures": 388
+    }
+  },
+  "integration_scripts": 29,
+  "php_linted_files": 111,
+  "endpoints": {
+    "languages": 3,
+    "requests": 18,
+    "redirects": 0,
+    "types": [
+      "WordPress REST",
+      "WordPress AJAX",
+      "WooCommerce AJAX",
+      "feed",
+      "PDF fixture",
+      "explicit download"
+    ]
+  },
+  "gallery": {
+    "localized_pages": 75,
+    "english_controls": 2,
+    "anchors": 150,
+    "translated_original_image_requests": 12,
+    "english_original_image_requests": 4,
+    "lightbox_pages": 8,
+    "rendered_images": 16,
+    "synthetic_products": 23
+  },
+  "real_navigation_clicks": 9,
+  "product_media_and_translation_fingerprints_equal": true,
+  "limitations": [
+    "Twenty-three product fixtures are synthetic.",
+    "The original full production product list was unavailable.",
+    "Subdirectory and custom-path cases use browser/PHP fixtures.",
+    "The PDF is a request fixture."
+  ]
+}

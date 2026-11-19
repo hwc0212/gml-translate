@@ -1,47 +1,41 @@
 # GML Translate 2.11.2-rc.5 审阅附件
 
-2026-11-19 隔离验收完成。插件内置 Core 0.9.17。
+2026-11-19 隔离验收及 PHP 7.4 CI 兼容修复。插件内置 Core 0.9.17。
 
-[安装包](gml-translate-2.11.2-rc.5.zip) · [SHA-256](gml-translate-2.11.2-rc.5.zip.sha256) · [验收结果](acceptance-results.json) · [原验收构建](validated-build.json) · [审阅提交映射](github-review-commits.json)
+[当前安装包](gml-translate-2.11.2-rc.5.zip) · [SHA-256](gml-translate-2.11.2-rc.5.zip.sha256) · [验收结果](acceptance-results.json) · [当前构建](review-build.json)
 
-安装包 SHA-256 为 8795f250e7ae5f907b7513e451b1b2a5b00868e0a78c24a69309a7d82818b352，共 421410 字节。ZIP CRC、内部路径、安装文件及源文件字节检查通过。
+安装包 SHA-256 为 1f4bf6dd75c279616b12c8a6fd6b1e6315dc5f5f89ee82dfadbe3b457c96804d，共 421459 字节。ZIP CRC、内部路径及源文件字节校验通过。
 
 ## 修复范围
 
-相对于已发布 2.11.1，本次累计包含 rc.1–rc.5 的表单 UI、inventory/readiness 恢复、并发保护和链接重写修复。当前浏览器与 PHP 的导航策略覆盖系统服务路径、媒体与静态文件、显式下载、自定义内容目录、完整 origin 和子目录边界，并保留查询串、片段及已有语言前缀。动态锚点、动态表单与后续 href/action 更新采用同一策略。
+相对于已发布 2.11.1，此次累计包含 rc.1–rc.5 的表单 UI、inventory/readiness 恢复、并发保护和链接重写修复。PHP 与浏览器的导航策略覆盖系统服务路径、媒体和静态文件、显式下载、自定义内容目录、完整 origin 与子目录边界，并保留查询串、片段及已有语言前缀。动态节点和后续 href/action 更新采用同一策略。
+
+GitHub 的 PHP 7.4 检查发现空查询串和空片段分隔符会丢失。Core 现按原始后缀保留这些字符，并新增绝对地址及协议相对地址的回归案例。安装包已同步重新构建。
 
 [对应 Core PR](https://github.com/hwc0212/gml-translation-core/pull/1)
 
-## 实际验证
+## 验收结果
 
 | 检查 | 结果 |
 | --- | --- |
-| PHP 导航断言，45 类地址、两种安装路径、锚点及表单 | 180/180 通过，旧版同组 72 项失败 |
-| Chromium 初始 DOM、动态节点及属性更新 | 722/722 通过，旧版同组 388 项失败 |
-| 集成测试 | 29 个脚本通过 |
-| PHP 语法 | 111 个文件通过 |
-| REST、WordPress AJAX、WooCommerce AJAX、feed 和下载 | 西、德、俄三语共 18 次请求通过，直接返回预期内容 |
+| PHP 导航断言，47 类地址、根目录和子目录、锚点及表单 | 188/188 通过 |
+| Chromium 初始 DOM、动态节点及属性更新 | 754/754 通过 |
+| 集成测试及 PHP 语法 | 29 个脚本、111 个文件通过 |
+| 三语 REST、WordPress AJAX、WooCommerce AJAX、feed 及下载 | 18 次实际请求通过，直接返回预期内容 |
 | 商品图库 | 75 个译文页、150 个原图 href 通过 |
-| 原图直接打开 | 两款样例的三语主图及附图共 12 次、英文对照另 4 次通过，返回 200 image/jpeg，无重定向 |
+| 两款样例原图直开 | 三语共 12 次、英文对照另 4 次通过，返回 200 image/jpeg，无重定向 |
 | 图片和灯箱 | 16 张图片成功解码，8 个灯箱打开成功 |
-| 实际导航点击 | 商品、分类、语言切换共 9 次通过 |
-| 数据检查 | 商品、媒体、译文库、语言设置及 AI 开关的前后指纹一致 |
-| Core 来源 | 已提交 Core 源码、vendor 逐文件哈希和 lock 一致，标准 verify 命令通过 |
+| 实际导航点击 | 商品、分类和语言切换共 9 次通过 |
+| 数据检查 | 商品、媒体、译文库、语言设置与 AI 开关指纹一致 |
 
-实际站点使用 WordPress 7.1.4、WooCommerce 10.5.3、Chromium 156.0.8078.79、独立数据库和匿名浏览器。自动翻译关闭。AJAX 表单提交仅进入隔离测试回调。
+实际站点使用独立数据库的 WordPress 7.1.4、WooCommerce 10.5.3 与匿名 Chromium 156.0.8078.79，自动翻译关闭。AJAX 表单提交进入隔离测试回调。子目录和自定义路径由 PHP/浏览器夹具覆盖。PDF 是下载请求夹具。23 款商品为合成样本，原生产商品完整清单仍待逐项验收。
 
-导航回归覆盖根目录及子目录、标准和自定义 REST 前缀、WordPress/WooCommerce 服务查询、自定义上传目录、签名编码、HTML 属性实体、URL 片段、不同端口、相似主机名、协议相对 URL、非 HTTP 协议及显式下载。
+最初 45 类地址的对照测试中，rc.4 有 72/180 项 PHP 失败及 388/722 项浏览器失败。当前测试扩展至 47 类地址。初始构建与验收记录分别保存在 [原始构建](validated-build.json) 和 [初始验收](initial-acceptance.json)，本次当前构建以 review-build.json 和随包 SHA-256 为准。GitHub 的 PHP 7.4、8.3 及数据库回归状态见 PR 检查页。
 
-商品样本中两款采用问题报告中的路径，另 23 款为合成商品。生产站完整的原商品清单和全部原图仍待逐项验收。自定义路径及子目录由 PHP 和 Chromium 夹具覆盖。PDF 是下载请求夹具。这里公开汇总验收结果，原始隔离站记录保存在本地。
+## 审阅基线和追溯
 
-## 审阅基线与构建追溯
+两个 PR 均以承载当前已发布版本的 codex/upgrade-lock-hotfix 为基线，插件对应 2.11.1，Core 对应 0.9.13。
 
-PR 以承载已发布 2.11.1 的 codex/upgrade-lock-hotfix 为基线，对应 Core PR 以已发布 0.9.13 的同名分支为基线。
+GitHub 的私人邮箱保护拒绝了首次推送。审阅分支改用 noreply 身份重建未发布提交，[提交映射](github-review-commits.json) 保留最初元数据调整阶段的对照。其后追加 PHP 7.4 兼容修复。当前 Core 提交为 c1d1344476e44cee7d73cb293facf6260a1ca819，插件锁文件与该提交的源码哈希一致。
 
-GitHub 的私人邮箱保护拒绝了首次推送。审阅分支使用 GitHub noreply 邮箱重建未发布的提交，Core 各源码树与原验收提交一致。插件 Core 锁文件指向新的等价 Core 提交。安装包内容仍与原验收包逐字节一致。
-
-原插件代码验收提交为 1b480297db29cfd9fb09c5ed771a4e256270f149。原 Core 验收提交为 517f5deb416a3e9ef363865e95608829c99dab7f。公开 Core 审阅提交为 b383f1c400870edcd46f5e420d18a4be6db2ac46。完整映射见随附 JSON。
-
-## 复验入口
-
-PHP 回归使用 tests/integration/test-navigation-links.php，浏览器回归使用 tests/browser/navigation-links.py 与 gallery-links.py。完整插件检查入口为 tests/run-all.sh。GitHub 工作流按 translation-core.lock.json 检出对应 Core，并执行标准来源校验。
+PHP 回归入口为 tests/integration/test-navigation-links.php，浏览器入口为 tests/browser/navigation-links.py，整体插件检查入口为 tests/run-all.sh。CI 按锁文件检出 Core 并执行标准来源校验。

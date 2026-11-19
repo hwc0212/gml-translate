@@ -225,5 +225,15 @@
     "name": "custom-rest-prefix",
     "url": "{base}/api/wc/store/v1/cart",
     "keep": true
+  },
+  {
+    "name": "absolute-empty-suffix",
+    "url": "{home}/product/?#",
+    "expected": "{home}/de/product/?#"
+  },
+  {
+    "name": "protocol-empty-suffix",
+    "url": "//example.test{base}/product/?#",
+    "expected": "https://example.test{base}/de/product/?#"
   }
 ]

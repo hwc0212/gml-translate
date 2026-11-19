@@ -10,15 +10,17 @@
   },
   "navigation": {
     "php": {
-      "checks": 180,
+      "checks": 188,
       "failures": 0,
-      "baseline_failures": 72
+      "baseline_failures": 72,
+      "baseline_checks": 180
     },
     "browser": {
-      "checks": 722,
+      "checks": 754,
       "failures": 0,
       "page_errors": 0,
-      "baseline_failures": 388
+      "baseline_failures": 388,
+      "baseline_checks": 722
     }
   },
   "integration_scripts": 29,
@@ -53,5 +55,7 @@
     "The original full production product list was unavailable.",
     "Subdirectory and custom-path cases use browser/PHP fixtures.",
     "The PDF is a request fixture."
-  ]
+  ],
+  "compatibility_note": "Two additional absolute/protocol-relative empty-suffix cases extend the initial 45 URL cases to 47.",
+  "ci_followup": "PHP 7.4 omits empty query/fragment components in parse_url(). The source now preserves raw suffix delimiters."
 }
