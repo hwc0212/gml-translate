@@ -24,3 +24,9 @@ Its optional `tests/database/form-ui-cf7.php` must be run separately against a
 verified CF7 package in a disposable WordPress installation. It exercises native
 form generation, manual TM lookup, manifest discovery and four-language rebuilds;
 it does not submit forms, send mail, or call translation providers.
+
+State-clarity database checks run separately after the Core database suite, using
+a fresh schema in CI. The 12 original scenarios plus two end-to-end checks cover
+current-version readiness, TM changes during admin rendering and exclusions in
+the real output buffer. DISABLE_WP_CRON remains enabled; controlled dispatch and
+fault injection are not production Cron timing acceptance.

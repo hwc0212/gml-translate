@@ -171,7 +171,8 @@ final class GML_Page_Workflow_Admin {
             if(!isset($inventory[$row['resource_key']]))$inventory[$row['resource_key']]=GML_Resource_Manifest_Manager::diagnostics($row['resource_key']);
             $diagnostics=$inventory[$row['resource_key']];
             $current=in_array($status['machine_status']??'',['complete','incomplete'],true)
-                && in_array($record['status']??'',['complete','incomplete'],true)
+                && ($record['status']??'')===($status['machine_status']??'')
+                && hash_equals((string)($row['translation_fingerprint']??''),(string)($record['translation_fingerprint']??''))
                 && (int)($record['manifest_generation']??0)===(int)($status['manifest_generation']??-1)
                 && (int)($record['global_generation']??0)===(int)($status['global_generation']??-1)
                 && (int)($record['current_manifest_generation']??0)===(int)($status['manifest_generation']??-1)
@@ -220,7 +221,7 @@ final class GML_Page_Workflow_Admin {
         if(!$where)return [];
         $table=GML_Resource_Manifest_Store::readiness_table();
         $manifests=GML_Resource_Manifest_Store::manifest_table();
-        $records=$wpdb->get_results($wpdb->prepare("SELECT r.resource_id,r.target_lang,r.manifest_generation,r.global_generation,r.required_count,r.translated_count,r.status,r.calculated_at,m.manifest_generation AS current_manifest_generation,m.global_generation AS current_global_generation,m.discovery_state FROM $table r INNER JOIN $manifests m ON m.id=r.resource_id WHERE ".implode(' OR ',$where),$args),ARRAY_A);
+        $records=$wpdb->get_results($wpdb->prepare("SELECT r.resource_id,r.target_lang,r.manifest_generation,r.global_generation,r.required_count,r.translated_count,r.translation_fingerprint,r.status,r.calculated_at,m.manifest_generation AS current_manifest_generation,m.global_generation AS current_global_generation,m.discovery_state FROM $table r INNER JOIN $manifests m ON m.id=r.resource_id WHERE ".implode(' OR ',$where),$args),ARRAY_A);
         if($wpdb->last_error!=='')return [];
         foreach((array)$records as $record)$result[$record['resource_id']][$record['target_lang']]=$record;
         return $result;

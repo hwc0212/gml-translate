@@ -27,3 +27,20 @@ for scenario in delayed recover text-edit critical failure failure-recover resch
 done
 test "$scenario_count" -eq 12
 echo "MARKER state_clarity_scenarios_ran=$scenario_count"
+
+extra_count=0
+for scenario in admin-snapshot-race parser-exclusions; do
+    if ! output="$(php "$ROOT/$scenario.php" 2>&1)"; then
+        printf '%s\n' "$output" >&2
+        exit 1
+    fi
+    printf '%s\n' "$output"
+    grep -Fq 'MARKER wordpress_bootstrap_loaded' <<<"$output"
+    case "$scenario" in
+        admin-snapshot-race) grep -Fq 'OK admin snapshot race' <<<"$output" ;;
+        parser-exclusions) grep -Fq 'OK parser exclusions' <<<"$output" ;;
+    esac
+    extra_count=$((extra_count + 1))
+done
+test "$extra_count" -eq 2
+echo "MARKER state_clarity_extra_scenarios_ran=$extra_count"

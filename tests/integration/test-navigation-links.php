@@ -26,6 +26,20 @@ foreach ( [ '', '/staging', '/shop%20one', '/caf%C3%A9' ] as $base ) {
     $expand = static function( $value ) use ( $base, $home ) {
         return strtr( $value, [ '{home}' => $home, '{origin}' => 'https://example.test', '{base}' => $base ] );
     };
+
+    $plain = $base . '/contact/';
+    $localized = $base . '/de/contact/';
+    $markup = [
+        [ '<div data-path="C:\\"><a href="'.$plain.'">Contact</a></div>', '<div data-path="C:\\"><a href="'.$localized.'">Contact</a></div>' ],
+        [ "<div data-path='C:\\'><a href=\"".$plain."\">Contact</a></div>", "<div data-path='C:\\'><a href=\"".$localized."\">Contact</a></div>" ],
+        [ '<svg><svg></svg><a href="'.$plain.'"><text>Technical</text></a></svg><a href="'.$plain.'">Contact</a>', '<svg><svg></svg><a href="'.$plain.'"><text>Technical</text></a></svg><a href="'.$localized.'">Contact</a>' ],
+        [ '<svg><g data-example="</svg>"><a href="'.$plain.'">Technical</a></g></svg><a href="'.$plain.'">Contact</a>', '<svg><g data-example="</svg>"><a href="'.$plain.'">Technical</a></g></svg><a href="'.$localized.'">Contact</a>' ],
+    ];
+    foreach ( $markup as $n => $pair ) {
+        $actual = $buffer->rewrite($pair[0]);$count++;
+        if ($actual !== $pair[1]) $failures[] = [$base,'markup-boundary-'.$n,$actual,$pair[1]];
+    }
+
     foreach ( $cases as $case ) {
         $url = $expand( $case['url'] );
         $expected = $expand( ! empty( $case['keep'] ) ? $case['url'] : ( $base ? ( $case['subdirExpected'] ?? $case['expected'] ) : $case['expected'] ) );

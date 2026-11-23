@@ -2,6 +2,15 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## 2.11.2-rc.10 (2026-11-23)
+
+- Consolidated audit of the cumulative Translate/Core candidate, with full lifecycle, concurrency, navigation, form, permissions and SEO regression coverage.
+- Preserve excluded body/title bytes when their text also has a translation elsewhere; reuse the existing scanner and ancestor exclusions. No TM or queue rewrite.
+- Keep nested SVG anchors byte-for-byte intact and recognize HTML attribute endings after literal backslashes in the server-side navigation scanner.
+- Reject mixed admin snapshots when TM changes and readiness is recalculated during page-table rendering, using the existing translation fingerprint and machine status.
+- Add deterministic parser exclusions, real WordPress/TM/output-buffer checks and the admin TM interleaving to the existing CI state-clarity runner.
+- Bundle Core 0.9.22. Index thresholds, source-version checks, locks, retries and scheduler behavior are unchanged.
+
 ## [2.11.2-rc.9] - 2026-11-23 (status clarity review candidate)
 
 - Separate stored translation item coverage, the AI translation queue and current-version SEO readiness in the admin UI.
