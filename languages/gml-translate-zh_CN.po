@@ -25,11 +25,17 @@ msgstr "%s 个资源语言快照"
 msgid "%s stored historical records do not affect current progress or retry quota."
 msgstr "%s 条历史记录不影响当前进度或重试额度。"
 
+msgid "(previous snapshot)"
+msgstr "（先前版本）"
+
 msgid "A limited translation sample is active. Resume that sample before starting other work."
 msgstr "已有受限翻译样本，请先继续并完成该样本，再启动其他任务。"
 
 msgid "A limited translation sample is still running."
 msgstr "小批量翻译测试仍在进行中。"
+
+msgid "A pending-list entry, claimed readiness row or site-wide lock does not confirm this page is currently running. Absence from the list does not prove completion."
+msgstr "待处理记录、已领取的就绪记录或全站锁，均不能单独证明此页面正在执行；不在列表中也不代表已经完成。"
 
 msgid "A quality hold must be reviewed before publication."
 msgstr "存在质量隔离内容，需要审核后才能发布。"
@@ -49,6 +55,12 @@ msgstr "AI 翻译此项"
 msgid "AI Translation"
 msgstr "AI 翻译"
 
+msgid "AI Translation Queue"
+msgstr "AI 翻译队列"
+
+msgid "AI Translation Queue Status"
+msgstr "AI 翻译队列状态"
+
 msgid "AI Translation is currently unavailable, so no new translation jobs will run. Existing multilingual URLs and saved translations remain available while the multilingual site is enabled."
 msgstr "AI Translation is currently unavailable, so no new translation jobs will run. Existing multilingual URLs and saved translations remain available while the multilingual site is enabled."
 
@@ -66,6 +78,9 @@ msgstr "AI 服务商选择保存失败，请先检查数据库写入，再测试
 
 msgid "AI translation is disabled or its key is unavailable."
 msgstr "AI 翻译未启用，或其密钥不可用。"
+
+msgid "AI translation queue:"
+msgstr "AI 翻译队列："
 
 msgid "AI unavailable"
 msgstr "AI 不可用"
@@ -310,6 +325,12 @@ msgstr "当前失败项"
 msgid "Current actionable"
 msgstr "当前可处理项"
 
+msgid "Current-version SEO readiness"
+msgstr "当前版本 SEO 就绪状态"
+
+msgid "Current-version readiness needs evaluation."
+msgstr "当前版本的就绪状态待评估。"
+
 msgid "Custom CSS for the language switcher."
 msgstr "Custom CSS for the language switcher."
 
@@ -553,6 +574,9 @@ msgstr "Header - Left"
 msgid "Header - Right"
 msgstr "Header - Right"
 
+msgid "Held"
+msgstr "已占用"
+
 msgid "Historical or stale source: rescan current content before translating."
 msgstr "这是历史或已失效源文，请扫描当前内容后再翻译。"
 
@@ -586,6 +610,9 @@ msgstr "空闲"
 msgid "Incomplete"
 msgstr "不完整"
 
+msgid "Incomplete measurement: %d source lengths are not recorded."
+msgstr "测量不完整：%d 个条目的原文长度尚未记录。"
+
 msgid "Industry-specific terminology that generic AI might translate incorrectly"
 msgstr "Industry-specific terminology that generic AI might translate incorrectly"
 
@@ -600,6 +627,9 @@ msgstr "服务商响应无效"
 
 msgid "Inventory and readiness diagnostics"
 msgstr "Inventory and readiness diagnostics"
+
+msgid "Inventory and readiness work"
+msgstr "内容清单与就绪任务"
 
 msgid "Is Dropdown"
 msgstr "Is Dropdown"
@@ -655,6 +685,9 @@ msgstr "Language switcher settings saved!"
 msgid "Languages to translate into."
 msgstr "Languages to translate into."
 
+msgid "Last AI Worker Activity"
+msgstr "最近 AI worker 活动"
+
 msgid "Last Worker Activity"
 msgstr "最近任务活动时间"
 
@@ -697,6 +730,9 @@ msgstr "Manifest fingerprint"
 msgid "Manifest generation"
 msgstr "清单版本"
 
+msgid "Manifest state:"
+msgstr "内容清单状态："
+
 msgid "Manual"
 msgstr "手动翻译"
 
@@ -724,6 +760,9 @@ msgstr "缺少保护项"
 msgid "Model or API resource not found"
 msgstr "找不到模型或 API 资源"
 
+msgid "Most recent recorded inventory failure (may be historical):"
+msgstr "最近登记的清单失败记录（可能是历史记录）："
+
 msgid "Multilingual Site"
 msgstr "多语言站点"
 
@@ -739,8 +778,14 @@ msgstr "网络错误"
 msgid "Next"
 msgstr "下一页"
 
+msgid "Next recorded site-wide inventory event:"
+msgstr "全站下一条已登记清单事件："
+
 msgid "Next →"
 msgstr "Next →"
+
+msgid "No"
+msgstr "否"
 
 msgid "No API key provided"
 msgstr "No API key provided"
@@ -784,11 +829,20 @@ msgstr "None (Use shortcode/widget/function)"
 msgid "Not configured"
 msgstr "Not configured"
 
+msgid "Not evaluated for this version"
+msgstr "当前版本尚未评估"
+
+msgid "Not held"
+msgstr "未占用"
+
 msgid "Not measured"
 msgstr "尚未测量"
 
 msgid "Not ready on this page"
 msgstr "Not ready on this page"
+
+msgid "Not recorded"
+msgstr "Not recorded"
 
 msgid "Not recorded yet"
 msgstr "尚无记录"
@@ -886,11 +940,17 @@ msgstr "Page Progress"
 msgid "Page Translation Progress"
 msgstr "页面翻译进度"
 
+msgid "Page Translation and SEO Status"
+msgstr "页面译文与 SEO 状态"
+
 msgid "Page cache refreshed. Saved translations and queue items were preserved."
 msgstr "页面缓存已刷新，已保存的译文和队列任务均已保留。"
 
 msgid "Page decision saved. Translation assets and background pause are unchanged."
 msgstr "页面决定已保存，翻译资产和后台暂停状态保持不变。"
+
+msgid "Page in inventory pending list:"
+msgstr "此页面位于清单待处理列表："
 
 msgid "Page workflow settings saved."
 msgstr "Page workflow settings saved."
@@ -918,6 +978,9 @@ msgstr "当前批次结束后暂停"
 
 msgid "Pending Segments"
 msgstr "待处理文本段"
+
+msgid "Pending current-version evaluation"
+msgstr "待评估当前版本"
 
 msgid "Permanently delete all plugin data"
 msgstr "永久删除全部插件数据"
@@ -1033,6 +1096,12 @@ msgstr "Qwen 模型"
 msgid "Rate limit or quota exceeded"
 msgstr "达到速率限制或额度上限"
 
+msgid "Readiness row:"
+msgstr "就绪记录状态："
+
+msgid "Readiness state recorded:"
+msgstr "就绪状态记录时间："
+
 msgid "Reason: %1$s (%2$s)."
 msgstr "原因：%1$s（%2$s）。"
 
@@ -1044,6 +1113,12 @@ msgstr "记录审核决定"
 
 msgid "Recorded at"
 msgstr "记录时间"
+
+msgid "Recorded event and retry times are scheduling data, not completion estimates or proof that a task executed."
+msgstr "事件和重试时间是调度记录，不能作为预计完成时间，也不能证明任务已执行。"
+
+msgid "Recorded page retry time:"
+msgstr "此页面已登记的重试时间："
 
 msgid "Rectangle"
 msgstr "Rectangle"
@@ -1276,6 +1351,9 @@ msgstr "Show flag icons"
 msgid "Show language names"
 msgstr "Show language names"
 
+msgid "Site-wide inventory worker lock:"
+msgstr "全站清单 worker 锁："
+
 msgid "Solid"
 msgstr "实色"
 
@@ -1342,6 +1420,15 @@ msgstr "历史记录"
 msgid "Stored and readable. This is not a connection check."
 msgstr "已保存且可读取，不代表连接验证通过。"
 
+msgid "Stored inventory figures are not a measurement of the edited version. Current counts, missing fields and length coverage await evaluation."
+msgstr "已保存清单的统计不代表修改后的版本。当前条目、缺失字段和长度覆盖率仍待评估。"
+
+msgid "Stored inventory version:"
+msgstr "已保存的清单版本："
+
+msgid "Stored readiness evaluation:"
+msgstr "已保存的就绪评估时间："
+
 msgid "Style:"
 msgstr "Style:"
 
@@ -1404,6 +1491,9 @@ msgstr "当前队列为空，仍有 %d 个当前文本段尚未入队。请在�
 
 msgid "The current resource manifest is unavailable."
 msgstr "当前资源清单不可用。"
+
+msgid "The current source or translation snapshot needs readiness evaluation."
+msgstr "当前源文或译文版本需要重新评估就绪状态。"
 
 msgid "The current translation batch is still finishing. Try again after it stops."
 msgstr "当前翻译批次尚未结束，请在该批次停止后再继续。"
@@ -1486,6 +1576,9 @@ msgstr "This is useful for:"
 msgid "This local language is disabled."
 msgstr "此本地语言已停用。"
 
+msgid "This queue processes AI translation text only. Inventory discovery and SEO readiness use separate background work. Idle does not mean all background work is complete."
+msgstr "此队列仅处理 AI 译文。内容清单发现和 SEO 就绪计算使用独立的后台任务。idle（空闲）不代表全部后台工作已完成。"
+
 msgid "This rejected candidate was not written to Translation Memory. Sensitive URL parts are replaced with identity digests. Review before editing."
 msgstr "此候选未写入翻译库。网址中的敏感部分已替换为摘要标识，请审核后再编辑。"
 
@@ -1497,6 +1590,9 @@ msgstr "This resource or its Review decision changed after the page was loaded. 
 
 msgid "This snapshot is not machine-complete. Approval and rejection remain disabled until its current manifest is complete."
 msgstr "此快照尚未达到机器完整状态。在当前清单完整前，批准和拒绝操作保持禁用。"
+
+msgid "This state has no separately recorded completion time; the state timestamp is not proof of a finished evaluation."
+msgstr "此状态没有单独记录评估完成时间；状态时间不能证明评估已完成。"
 
 msgid "This test does not start or resume translation."
 msgstr "本次测试不会启动或恢复翻译。"
@@ -1566,6 +1662,15 @@ msgstr "Translation incomplete. Untranslated content is shown in the original la
 
 msgid "Translation is safety-paused. Test the saved AI connection and retry a limited language sample first."
 msgstr "翻译处于安全暂停。请先测试已保存的 AI 连接，再重试一个语言的小批量样本。"
+
+msgid "Translation item coverage"
+msgstr "译文条目完整度"
+
+msgid "Translation item coverage describes a stored content inventory. Current-version SEO readiness is evaluated separately; 100% does not by itself establish index readiness."
+msgstr "译文条目完整度对应已保存的内容清单。当前版本的 SEO 就绪状态单独评估；100% 不代表已经具备索引条件。"
+
+msgid "Translation items"
+msgstr "译文条目"
 
 msgid "Translation request could not be encoded"
 msgstr "无法编码翻译请求"
@@ -1695,6 +1800,9 @@ msgstr "任务正在执行，请稍后重试。"
 
 msgid "Writable"
 msgstr "Writable"
+
+msgid "Yes"
+msgstr "是"
 
 msgid "You are not allowed to change uninstall data retention."
 msgstr "你没有权限修改卸载数据保留设置。"

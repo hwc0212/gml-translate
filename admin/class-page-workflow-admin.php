@@ -139,7 +139,8 @@ final class GML_Page_Workflow_Admin {
     }
     private function pages() {
         global $wpdb;
-        echo '<h2>'.esc_html__('Page Translation Progress','gml-translate').'</h2>';
+        echo '<h2>'.esc_html__('Page Translation and SEO Status','gml-translate').'</h2>';
+        echo '<p>'.esc_html__('Translation item coverage describes a stored content inventory. Current-version SEO readiness is evaluated separately; 100% does not by itself establish index readiness.','gml-translate').'</p>';
         $cache=(array)get_option('gml_resource_cache_worker_status',[]);
         if(($cache['state']??'adapter_required')==='adapter_required') echo '<p>'.esc_html__('GML page cache updates are active. External server/CDN cache needs an exact-URL adapter; external purge is not yet confirmed.','gml-translate').'</p>';
         $this->form_start('settings');
@@ -155,7 +156,9 @@ final class GML_Page_Workflow_Admin {
         foreach($result['rows'] as $row) $resources[]=$row['resource_key'];
         $clusters=GML_Public_Eligibility::get_clusters_bulk($resources);
         $schedules=[];
-        echo '<table class="widefat striped"><thead><tr><th>'.esc_html__('Page / Language','gml-translate').'</th><th>'.esc_html__('Translated / Required','gml-translate').'</th><th>'.esc_html__('SEO readiness','gml-translate').'</th><th>'.esc_html__('Actions','gml-translate').'</th></tr></thead><tbody>';
+        $inventory=[];
+        $records=$this->readiness_records($result['rows']);
+        echo '<table class="widefat striped"><thead><tr><th>'.esc_html__('Page / Language','gml-translate').'</th><th>'.esc_html__('Translation items','gml-translate').'</th><th>'.esc_html__('Current-version SEO readiness','gml-translate').'</th><th>'.esc_html__('Actions','gml-translate').'</th></tr></thead><tbody>';
         foreach($result['rows'] as $row) {
             $status=$clusters[$row['resource_key']]['languages'][$row['target_lang']]??[];
             $policy=$status['page_readiness']??[];
@@ -164,21 +167,90 @@ final class GML_Page_Workflow_Admin {
             $length=$bytes?floor((int)($policy['translated_bytes']??0)*1000/$bytes)/10:null;
             if(!isset($schedules[$row['target_lang']])) $schedules[$row['target_lang']]=GML_Translation_Controls::queue_status($row['target_lang']);
             $schedule=$schedules[$row['target_lang']];
-            $detail=__('Length coverage:','gml-translate').' '.($length===null?__('Not measured','gml-translate'):$length.'%')
-                .' / '.__('Missing fields:','gml-translate').' '.($critical?implode(', ',$critical):__('None','gml-translate'))
-                .' / '.__('Queue:','gml-translate').' '.($schedule['state']??'unknown');
+            $record=$records[$row['resource_id']][$row['target_lang']]??[];
+            if(!isset($inventory[$row['resource_key']]))$inventory[$row['resource_key']]=GML_Resource_Manifest_Manager::diagnostics($row['resource_key']);
+            $diagnostics=$inventory[$row['resource_key']];
+            $current=in_array($status['machine_status']??'',['complete','incomplete'],true)
+                && in_array($record['status']??'',['complete','incomplete'],true)
+                && (int)($record['manifest_generation']??0)===(int)($status['manifest_generation']??-1)
+                && (int)($record['global_generation']??0)===(int)($status['global_generation']??-1)
+                && (int)($record['current_manifest_generation']??0)===(int)($status['manifest_generation']??-1)
+                && (int)($record['current_global_generation']??0)===(int)($status['global_generation']??-1)
+                && ($record['discovery_state']??'')==='complete'
+                && ($diagnostics['manifest_state']??'')==='complete'
+                && (int)($diagnostics['current_global_generation']??0)===(int)($status['global_generation']??-1);
+            $required=$current?(int)($policy['required_count']??0):(int)($record['required_count']??0);
+            $translated=$current?(int)($policy['translated_count']??0):(int)($record['translated_count']??0);
+            $percent=$required?floor($translated*1000/$required)/10:0;
             echo '<tr><td><code>'.esc_html($row['resource_key']).'</code><br>'.esc_html(strtoupper($row['target_lang'])).'</td><td>';
-            echo esc_html__('Translation coverage','gml-translate').': '.esc_html(($policy['percent']??0).'%').' ('.esc_html(($policy['translated_count']??0).' / '.$row['required_count']).')<br>';
-            echo esc_html__('Resolved coverage','gml-translate').': '.esc_html(($policy['resolved_percent']??0).'%').'<br>';
-            foreach(['auto_count'=>__('Auto','gml-translate'),'manual_count'=>__('Manual','gml-translate'),'keep_source_count'=>__('Keep source','gml-translate'),'unresolved_count'=>__('Unresolved','gml-translate')] as $key=>$label) echo esc_html($label).': '.esc_html($policy[$key]??0).' ';
-            echo '</td><td>'.esc_html(self::reason_label($status['reason']??'unknown')).'<br>'.esc_html__('Critical unresolved:','gml-translate').' '.esc_html($policy['critical_unresolved_count']??$row['critical_missing_count']).'</td><td>';
+            echo esc_html__('Translation item coverage','gml-translate').': '.esc_html($record?$percent.'% ('.$translated.' / '.$required.')':__('Not recorded','gml-translate')).'<br>';
+            echo esc_html__('Stored inventory version:','gml-translate').' '.esc_html($record['manifest_generation']??__('Not recorded','gml-translate')).'<br>';
+            if($current){
+                echo esc_html__('Resolved coverage','gml-translate').': '.esc_html(($policy['resolved_percent']??0).'%').'<br>';
+                foreach(['auto_count'=>__('Auto','gml-translate'),'manual_count'=>__('Manual','gml-translate'),'keep_source_count'=>__('Keep source','gml-translate'),'unresolved_count'=>__('Unresolved','gml-translate')] as $key=>$label)echo esc_html($label).': '.esc_html($policy[$key]??0).' ';
+            }else{
+                echo '<p>'.esc_html__('Stored inventory figures are not a measurement of the edited version. Current counts, missing fields and length coverage await evaluation.','gml-translate').'</p>';
+            }
+            echo '<p>'.esc_html__('AI translation queue:','gml-translate').' '.esc_html($schedule['state']??'unknown').'</p></td><td>';
+            $reason=self::reason_label($status['reason']??'unknown');
+            if(!$current && in_array($status['reason']??'unknown',['ready','eligible','eligible_partial','stale','unknown','rebuilding','render_error'],true))$reason=__('Current-version readiness needs evaluation.','gml-translate');
+            echo '<strong>'.esc_html($reason).'</strong><br>';
+            $length_label=!$current?__('Pending current-version evaluation','gml-translate'):(!empty($policy['unknown_source_count'])?sprintf(__('Incomplete measurement: %d source lengths are not recorded.','gml-translate'),(int)$policy['unknown_source_count']):($length===null?__('Not measured','gml-translate'):$length.'%'));
+            echo esc_html__('Length coverage:','gml-translate').' '.esc_html($length_label).'<br>';
+            echo esc_html__('Missing fields:','gml-translate').' '.esc_html($current?($critical?implode(', ',$critical):__('None','gml-translate')):__('Not evaluated for this version','gml-translate')).'<br>';
+            echo esc_html__('Critical unresolved:','gml-translate').' '.esc_html($current?($policy['critical_unresolved_count']??$row['critical_missing_count']):__('Not evaluated for this version','gml-translate'));
+            $this->readiness_work($diagnostics,$record,$current);
+            echo '</td><td>';
             $this->form_start('priority',['resource'=>$row['resource_key'],'language'=>$row['target_lang']]);
-            echo '<p>'.esc_html($detail).'</p>';
+
             echo '<button type="submit" class="button">'.esc_html__('Queue Missing Text and Prioritize','gml-translate').'</button></form> ';
             echo '<a href="'.esc_url(add_query_arg(['page'=>'gml-translate','tab'=>'failures','resource'=>$row['resource_id'],'language'=>$row['target_lang']],admin_url('admin.php'))).'">'.esc_html__('Review Items','gml-translate').'</a></td></tr>';
         }
         echo '</tbody></table>';
         $this->pagination($page,$result['pages']);
+    }
+    /** One bounded read for displayed resource/language pairs, never a rescan. */
+    private function readiness_records(array $rows) {
+        global $wpdb;
+        $where=[];$args=[];$result=[];
+        foreach(array_slice($rows,0,25) as $row){
+            $where[]='(r.resource_id=%d AND r.target_lang=%s)';
+            array_push($args,(int)$row['resource_id'],(string)$row['target_lang']);
+        }
+        if(!$where)return [];
+        $table=GML_Resource_Manifest_Store::readiness_table();
+        $manifests=GML_Resource_Manifest_Store::manifest_table();
+        $records=$wpdb->get_results($wpdb->prepare("SELECT r.resource_id,r.target_lang,r.manifest_generation,r.global_generation,r.required_count,r.translated_count,r.status,r.calculated_at,m.manifest_generation AS current_manifest_generation,m.global_generation AS current_global_generation,m.discovery_state FROM $table r INNER JOIN $manifests m ON m.id=r.resource_id WHERE ".implode(' OR ',$where),$args),ARRAY_A);
+        if($wpdb->last_error!=='')return [];
+        foreach((array)$records as $record)$result[$record['resource_id']][$record['target_lang']]=$record;
+        return $result;
+    }
+    private function recorded_time($value,$mysql=false) {
+        if(!$value)return __('Not recorded','gml-translate');
+        if($mysql){
+            try{$value=(new DateTimeImmutable((string)$value,wp_timezone()))->getTimestamp();}
+            catch(Exception $error){return __('Not recorded','gml-translate');}
+        }
+        return wp_date('Y-m-d H:i:s T',(int)$value);
+    }
+    /** Show only existing evidence. A global lock is not per-page liveness. */
+    private function readiness_work(array $diagnostics,array $record,$current) {
+        $evaluated=in_array($record['status']??'',['complete','incomplete'],true);
+        echo '<details class="gml-readiness-work"><summary>'.esc_html__('Inventory and readiness work','gml-translate').'</summary>';
+        echo '<p>'.esc_html($evaluated?__('Stored readiness evaluation:','gml-translate'):__('Readiness state recorded:','gml-translate')).' '.esc_html($this->recorded_time($record['calculated_at']??'',true));
+        if($evaluated && !$current)echo ' '.esc_html__('(previous snapshot)','gml-translate');
+        echo '</p>';
+        if(!$evaluated)echo '<p>'.esc_html__('This state has no separately recorded completion time; the state timestamp is not proof of a finished evaluation.','gml-translate').'</p>';
+        echo '<p>'.esc_html__('Manifest state:','gml-translate').' '.esc_html($diagnostics['manifest_state']??'unknown').' / '.esc_html__('Readiness row:','gml-translate').' '.esc_html($record['status']??'missing').'</p>';
+        echo '<p>'.esc_html__('Page in inventory pending list:','gml-translate').' '.esc_html(!empty($diagnostics['resource_pending'])?__('Yes','gml-translate'):__('No','gml-translate')).'</p>';
+        echo '<p>'.esc_html__('Site-wide inventory worker lock:','gml-translate').' '.esc_html(!empty($diagnostics['lock_active'])?__('Held','gml-translate'):__('Not held','gml-translate')).'</p>';
+        echo '<p>'.esc_html__('A pending-list entry, claimed readiness row or site-wide lock does not confirm this page is currently running. Absence from the list does not prove completion.','gml-translate').'</p>';
+        $events=array_filter(array_map('intval',array_intersect_key($diagnostics,array_flip(['next_dirty_run','next_inventory_recovery','next_inventory_page','next_backfill_run']))));
+        echo '<p>'.esc_html__('Next recorded site-wide inventory event:','gml-translate').' '.esc_html($this->recorded_time($events?min($events):0)).'</p>';
+        if(!empty($diagnostics['resource_retry_after']))echo '<p>'.esc_html__('Recorded page retry time:','gml-translate').' '.esc_html($this->recorded_time($diagnostics['resource_retry_after'])).'</p>';
+        $failure=$diagnostics['last_failure']??[];
+        if($failure)echo '<p>'.esc_html__('Most recent recorded inventory failure (may be historical):','gml-translate').' '.esc_html($failure['error_code']??'unknown').' / '.esc_html($failure['phase']??'unknown').' / '.esc_html($this->recorded_time($failure['updated_at']??0)).'</p>';
+        echo '<p>'.esc_html__('Recorded event and retry times are scheduling data, not completion estimates or proof that a task executed.','gml-translate').'</p></details>';
     }
     private function failures() {
         global $wpdb;
@@ -287,7 +359,7 @@ final class GML_Page_Workflow_Admin {
             'critical_missing'=>__('Critical items still need a translation or an explicit source decision.','gml-translate'),
             'below_page_threshold'=>__('Resolved count or length coverage is below the page threshold.','gml-translate'),
             'quality_hold'=>__('A quality hold must be reviewed before publication.','gml-translate'),'rejected'=>__('The current page review is rejected.','gml-translate'),
-            'stale'=>__('The source or translation changed; readiness is being refreshed.','gml-translate'),'resource_noindex'=>__('The source page is noindex or excluded.','gml-translate'),
+            'stale'=>__('The current source or translation snapshot needs readiness evaluation.','gml-translate'),'resource_noindex'=>__('The source page is noindex or excluded.','gml-translate'),
             'unknown'=>__('The current page has not been measured.','gml-translate')];
         return $labels[$reason]??$reason;
     }

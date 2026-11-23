@@ -25,11 +25,17 @@ msgstr "%s resource-language snapshots"
 msgid "%s stored historical records do not affect current progress or retry quota."
 msgstr "%s stored historical records do not affect current progress or retry quota."
 
+msgid "(previous snapshot)"
+msgstr "(previous snapshot)"
+
 msgid "A limited translation sample is active. Resume that sample before starting other work."
 msgstr "A limited translation sample is active. Resume that sample before starting other work."
 
 msgid "A limited translation sample is still running."
 msgstr "A limited translation sample is still running."
+
+msgid "A pending-list entry, claimed readiness row or site-wide lock does not confirm this page is currently running. Absence from the list does not prove completion."
+msgstr "A pending-list entry, claimed readiness row or site-wide lock does not confirm this page is currently running. Absence from the list does not prove completion."
 
 msgid "A quality hold must be reviewed before publication."
 msgstr "A quality hold must be reviewed before publication."
@@ -49,6 +55,12 @@ msgstr "AI Translate This Item"
 msgid "AI Translation"
 msgstr "AI 翻譯"
 
+msgid "AI Translation Queue"
+msgstr "AI Translation Queue"
+
+msgid "AI Translation Queue Status"
+msgstr "AI Translation Queue Status"
+
 msgid "AI Translation is currently unavailable, so no new translation jobs will run. Existing multilingual URLs and saved translations remain available while the multilingual site is enabled."
 msgstr "AI Translation is currently unavailable, so no new translation jobs will run. Existing multilingual URLs and saved translations remain available while the multilingual site is enabled."
 
@@ -66,6 +78,9 @@ msgstr "AI provider selection could not be saved. Check database writes before t
 
 msgid "AI translation is disabled or its key is unavailable."
 msgstr "AI translation is disabled or its key is unavailable."
+
+msgid "AI translation queue:"
+msgstr "AI translation queue:"
 
 msgid "AI unavailable"
 msgstr "AI unavailable"
@@ -310,6 +325,12 @@ msgstr "Current Failed Items"
 msgid "Current actionable"
 msgstr "Current actionable"
 
+msgid "Current-version SEO readiness"
+msgstr "Current-version SEO readiness"
+
+msgid "Current-version readiness needs evaluation."
+msgstr "Current-version readiness needs evaluation."
+
 msgid "Custom CSS for the language switcher."
 msgstr "Custom CSS for the language switcher."
 
@@ -553,6 +574,9 @@ msgstr "Header - Left"
 msgid "Header - Right"
 msgstr "Header - Right"
 
+msgid "Held"
+msgstr "Held"
+
 msgid "Historical or stale source: rescan current content before translating."
 msgstr "Historical or stale source: rescan current content before translating."
 
@@ -586,6 +610,9 @@ msgstr "Idle"
 msgid "Incomplete"
 msgstr "Incomplete"
 
+msgid "Incomplete measurement: %d source lengths are not recorded."
+msgstr "Incomplete measurement: %d source lengths are not recorded."
+
 msgid "Industry-specific terminology that generic AI might translate incorrectly"
 msgstr "Industry-specific terminology that generic AI might translate incorrectly"
 
@@ -600,6 +627,9 @@ msgstr "Invalid provider response"
 
 msgid "Inventory and readiness diagnostics"
 msgstr "Inventory and readiness diagnostics"
+
+msgid "Inventory and readiness work"
+msgstr "Inventory and readiness work"
 
 msgid "Is Dropdown"
 msgstr "Is Dropdown"
@@ -655,6 +685,9 @@ msgstr "Language switcher settings saved!"
 msgid "Languages to translate into."
 msgstr "Languages to translate into."
 
+msgid "Last AI Worker Activity"
+msgstr "Last AI Worker Activity"
+
 msgid "Last Worker Activity"
 msgstr "Last Worker Activity"
 
@@ -697,6 +730,9 @@ msgstr "Manifest fingerprint"
 msgid "Manifest generation"
 msgstr "Manifest generation"
 
+msgid "Manifest state:"
+msgstr "Manifest state:"
+
 msgid "Manual"
 msgstr "Manual"
 
@@ -724,6 +760,9 @@ msgstr "Missing token"
 msgid "Model or API resource not found"
 msgstr "Model or API resource not found"
 
+msgid "Most recent recorded inventory failure (may be historical):"
+msgstr "Most recent recorded inventory failure (may be historical):"
+
 msgid "Multilingual Site"
 msgstr "多語言網站"
 
@@ -739,8 +778,14 @@ msgstr "Network error"
 msgid "Next"
 msgstr "Next"
 
+msgid "Next recorded site-wide inventory event:"
+msgstr "Next recorded site-wide inventory event:"
+
 msgid "Next →"
 msgstr "Next →"
+
+msgid "No"
+msgstr "No"
 
 msgid "No API key provided"
 msgstr "No API key provided"
@@ -784,11 +829,20 @@ msgstr "None (Use shortcode/widget/function)"
 msgid "Not configured"
 msgstr "Not configured"
 
+msgid "Not evaluated for this version"
+msgstr "Not evaluated for this version"
+
+msgid "Not held"
+msgstr "Not held"
+
 msgid "Not measured"
 msgstr "Not measured"
 
 msgid "Not ready on this page"
 msgstr "Not ready on this page"
+
+msgid "Not recorded"
+msgstr "Not recorded"
 
 msgid "Not recorded yet"
 msgstr "Not recorded yet"
@@ -886,11 +940,17 @@ msgstr "Page Progress"
 msgid "Page Translation Progress"
 msgstr "Page Translation Progress"
 
+msgid "Page Translation and SEO Status"
+msgstr "Page Translation and SEO Status"
+
 msgid "Page cache refreshed. Saved translations and queue items were preserved."
 msgstr "Page cache refreshed. Saved translations and queue items were preserved."
 
 msgid "Page decision saved. Translation assets and background pause are unchanged."
 msgstr "Page decision saved. Translation assets and background pause are unchanged."
+
+msgid "Page in inventory pending list:"
+msgstr "Page in inventory pending list:"
 
 msgid "Page workflow settings saved."
 msgstr "Page workflow settings saved."
@@ -918,6 +978,9 @@ msgstr "Pausing after current batch"
 
 msgid "Pending Segments"
 msgstr "Pending Segments"
+
+msgid "Pending current-version evaluation"
+msgstr "Pending current-version evaluation"
 
 msgid "Permanently delete all plugin data"
 msgstr "Permanently delete all plugin data"
@@ -1033,6 +1096,12 @@ msgstr "Qwen Model"
 msgid "Rate limit or quota exceeded"
 msgstr "Rate limit or quota exceeded"
 
+msgid "Readiness row:"
+msgstr "Readiness row:"
+
+msgid "Readiness state recorded:"
+msgstr "Readiness state recorded:"
+
 msgid "Reason: %1$s (%2$s)."
 msgstr "Reason: %1$s (%2$s)."
 
@@ -1044,6 +1113,12 @@ msgstr "Record Review Decision"
 
 msgid "Recorded at"
 msgstr "Recorded at"
+
+msgid "Recorded event and retry times are scheduling data, not completion estimates or proof that a task executed."
+msgstr "Recorded event and retry times are scheduling data, not completion estimates or proof that a task executed."
+
+msgid "Recorded page retry time:"
+msgstr "Recorded page retry time:"
 
 msgid "Rectangle"
 msgstr "Rectangle"
@@ -1276,6 +1351,9 @@ msgstr "Show flag icons"
 msgid "Show language names"
 msgstr "Show language names"
 
+msgid "Site-wide inventory worker lock:"
+msgstr "Site-wide inventory worker lock:"
+
 msgid "Solid"
 msgstr "Solid"
 
@@ -1342,6 +1420,15 @@ msgstr "Stored History"
 msgid "Stored and readable. This is not a connection check."
 msgstr "Stored and readable. This is not a connection check."
 
+msgid "Stored inventory figures are not a measurement of the edited version. Current counts, missing fields and length coverage await evaluation."
+msgstr "Stored inventory figures are not a measurement of the edited version. Current counts, missing fields and length coverage await evaluation."
+
+msgid "Stored inventory version:"
+msgstr "Stored inventory version:"
+
+msgid "Stored readiness evaluation:"
+msgstr "Stored readiness evaluation:"
+
 msgid "Style:"
 msgstr "Style:"
 
@@ -1404,6 +1491,9 @@ msgstr "The current queue is empty; %d current text segments are not queued. Rev
 
 msgid "The current resource manifest is unavailable."
 msgstr "The current resource manifest is unavailable."
+
+msgid "The current source or translation snapshot needs readiness evaluation."
+msgstr "The current source or translation snapshot needs readiness evaluation."
 
 msgid "The current translation batch is still finishing. Try again after it stops."
 msgstr "The current translation batch is still finishing. Try again after it stops."
@@ -1486,6 +1576,9 @@ msgstr "This is useful for:"
 msgid "This local language is disabled."
 msgstr "This local language is disabled."
 
+msgid "This queue processes AI translation text only. Inventory discovery and SEO readiness use separate background work. Idle does not mean all background work is complete."
+msgstr "This queue processes AI translation text only. Inventory discovery and SEO readiness use separate background work. Idle does not mean all background work is complete."
+
 msgid "This rejected candidate was not written to Translation Memory. Sensitive URL parts are replaced with identity digests. Review before editing."
 msgstr "This rejected candidate was not written to Translation Memory. Sensitive URL parts are replaced with identity digests. Review before editing."
 
@@ -1497,6 +1590,9 @@ msgstr "This resource or its Review decision changed after the page was loaded. 
 
 msgid "This snapshot is not machine-complete. Approval and rejection remain disabled until its current manifest is complete."
 msgstr "This snapshot is not machine-complete. Approval and rejection remain disabled until its current manifest is complete."
+
+msgid "This state has no separately recorded completion time; the state timestamp is not proof of a finished evaluation."
+msgstr "This state has no separately recorded completion time; the state timestamp is not proof of a finished evaluation."
 
 msgid "This test does not start or resume translation."
 msgstr "This test does not start or resume translation."
@@ -1566,6 +1662,15 @@ msgstr "Translation incomplete. Untranslated content is shown in the original la
 
 msgid "Translation is safety-paused. Test the saved AI connection and retry a limited language sample first."
 msgstr "Translation is safety-paused. Test the saved AI connection and retry a limited language sample first."
+
+msgid "Translation item coverage"
+msgstr "Translation item coverage"
+
+msgid "Translation item coverage describes a stored content inventory. Current-version SEO readiness is evaluated separately; 100% does not by itself establish index readiness."
+msgstr "Translation item coverage describes a stored content inventory. Current-version SEO readiness is evaluated separately; 100% does not by itself establish index readiness."
+
+msgid "Translation items"
+msgstr "Translation items"
 
 msgid "Translation request could not be encoded"
 msgstr "Translation request could not be encoded"
@@ -1695,6 +1800,9 @@ msgstr "Worker busy. Try again after the current request."
 
 msgid "Writable"
 msgstr "Writable"
+
+msgid "Yes"
+msgstr "Yes"
 
 msgid "You are not allowed to change uninstall data retention."
 msgstr "You are not allowed to change uninstall data retention."

@@ -25,10 +25,16 @@ msgstr ""
 msgid "%s stored historical records do not affect current progress or retry quota."
 msgstr ""
 
+msgid "(previous snapshot)"
+msgstr ""
+
 msgid "A limited translation sample is active. Resume that sample before starting other work."
 msgstr ""
 
 msgid "A limited translation sample is still running."
+msgstr ""
+
+msgid "A pending-list entry, claimed readiness row or site-wide lock does not confirm this page is currently running. Absence from the list does not prove completion."
 msgstr ""
 
 msgid "A quality hold must be reviewed before publication."
@@ -49,6 +55,12 @@ msgstr ""
 msgid "AI Translation"
 msgstr ""
 
+msgid "AI Translation Queue"
+msgstr ""
+
+msgid "AI Translation Queue Status"
+msgstr ""
+
 msgid "AI Translation is currently unavailable, so no new translation jobs will run. Existing multilingual URLs and saved translations remain available while the multilingual site is enabled."
 msgstr ""
 
@@ -65,6 +77,9 @@ msgid "AI provider selection could not be saved. Check database writes before te
 msgstr ""
 
 msgid "AI translation is disabled or its key is unavailable."
+msgstr ""
+
+msgid "AI translation queue:"
 msgstr ""
 
 msgid "AI unavailable"
@@ -310,6 +325,12 @@ msgstr ""
 msgid "Current actionable"
 msgstr ""
 
+msgid "Current-version SEO readiness"
+msgstr ""
+
+msgid "Current-version readiness needs evaluation."
+msgstr ""
+
 msgid "Custom CSS for the language switcher."
 msgstr ""
 
@@ -553,6 +574,9 @@ msgstr ""
 msgid "Header - Right"
 msgstr ""
 
+msgid "Held"
+msgstr ""
+
 msgid "Historical or stale source: rescan current content before translating."
 msgstr ""
 
@@ -586,6 +610,9 @@ msgstr ""
 msgid "Incomplete"
 msgstr ""
 
+msgid "Incomplete measurement: %d source lengths are not recorded."
+msgstr ""
+
 msgid "Industry-specific terminology that generic AI might translate incorrectly"
 msgstr ""
 
@@ -599,6 +626,9 @@ msgid "Invalid provider response"
 msgstr ""
 
 msgid "Inventory and readiness diagnostics"
+msgstr ""
+
+msgid "Inventory and readiness work"
 msgstr ""
 
 msgid "Is Dropdown"
@@ -655,6 +685,9 @@ msgstr ""
 msgid "Languages to translate into."
 msgstr ""
 
+msgid "Last AI Worker Activity"
+msgstr ""
+
 msgid "Last Worker Activity"
 msgstr ""
 
@@ -697,6 +730,9 @@ msgstr ""
 msgid "Manifest generation"
 msgstr ""
 
+msgid "Manifest state:"
+msgstr ""
+
 msgid "Manual"
 msgstr ""
 
@@ -724,6 +760,9 @@ msgstr ""
 msgid "Model or API resource not found"
 msgstr ""
 
+msgid "Most recent recorded inventory failure (may be historical):"
+msgstr ""
+
 msgid "Multilingual Site"
 msgstr ""
 
@@ -739,7 +778,13 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
+msgid "Next recorded site-wide inventory event:"
+msgstr ""
+
 msgid "Next →"
+msgstr ""
+
+msgid "No"
 msgstr ""
 
 msgid "No API key provided"
@@ -784,10 +829,19 @@ msgstr ""
 msgid "Not configured"
 msgstr ""
 
+msgid "Not evaluated for this version"
+msgstr ""
+
+msgid "Not held"
+msgstr ""
+
 msgid "Not measured"
 msgstr ""
 
 msgid "Not ready on this page"
+msgstr ""
+
+msgid "Not recorded"
 msgstr ""
 
 msgid "Not recorded yet"
@@ -886,10 +940,16 @@ msgstr ""
 msgid "Page Translation Progress"
 msgstr ""
 
+msgid "Page Translation and SEO Status"
+msgstr ""
+
 msgid "Page cache refreshed. Saved translations and queue items were preserved."
 msgstr ""
 
 msgid "Page decision saved. Translation assets and background pause are unchanged."
+msgstr ""
+
+msgid "Page in inventory pending list:"
 msgstr ""
 
 msgid "Page workflow settings saved."
@@ -917,6 +977,9 @@ msgid "Pausing after current batch"
 msgstr ""
 
 msgid "Pending Segments"
+msgstr ""
+
+msgid "Pending current-version evaluation"
 msgstr ""
 
 msgid "Permanently delete all plugin data"
@@ -1033,6 +1096,12 @@ msgstr ""
 msgid "Rate limit or quota exceeded"
 msgstr ""
 
+msgid "Readiness row:"
+msgstr ""
+
+msgid "Readiness state recorded:"
+msgstr ""
+
 msgid "Reason: %1$s (%2$s)."
 msgstr ""
 
@@ -1043,6 +1112,12 @@ msgid "Record Review Decision"
 msgstr ""
 
 msgid "Recorded at"
+msgstr ""
+
+msgid "Recorded event and retry times are scheduling data, not completion estimates or proof that a task executed."
+msgstr ""
+
+msgid "Recorded page retry time:"
 msgstr ""
 
 msgid "Rectangle"
@@ -1276,6 +1351,9 @@ msgstr ""
 msgid "Show language names"
 msgstr ""
 
+msgid "Site-wide inventory worker lock:"
+msgstr ""
+
 msgid "Solid"
 msgstr ""
 
@@ -1342,6 +1420,15 @@ msgstr ""
 msgid "Stored and readable. This is not a connection check."
 msgstr ""
 
+msgid "Stored inventory figures are not a measurement of the edited version. Current counts, missing fields and length coverage await evaluation."
+msgstr ""
+
+msgid "Stored inventory version:"
+msgstr ""
+
+msgid "Stored readiness evaluation:"
+msgstr ""
+
 msgid "Style:"
 msgstr ""
 
@@ -1403,6 +1490,9 @@ msgid "The current queue is empty; %d current text segments are not queued. Revi
 msgstr ""
 
 msgid "The current resource manifest is unavailable."
+msgstr ""
+
+msgid "The current source or translation snapshot needs readiness evaluation."
 msgstr ""
 
 msgid "The current translation batch is still finishing. Try again after it stops."
@@ -1486,6 +1576,9 @@ msgstr ""
 msgid "This local language is disabled."
 msgstr ""
 
+msgid "This queue processes AI translation text only. Inventory discovery and SEO readiness use separate background work. Idle does not mean all background work is complete."
+msgstr ""
+
 msgid "This rejected candidate was not written to Translation Memory. Sensitive URL parts are replaced with identity digests. Review before editing."
 msgstr ""
 
@@ -1496,6 +1589,9 @@ msgid "This resource or its Review decision changed after the page was loaded. R
 msgstr ""
 
 msgid "This snapshot is not machine-complete. Approval and rejection remain disabled until its current manifest is complete."
+msgstr ""
+
+msgid "This state has no separately recorded completion time; the state timestamp is not proof of a finished evaluation."
 msgstr ""
 
 msgid "This test does not start or resume translation."
@@ -1565,6 +1661,15 @@ msgid "Translation incomplete. Untranslated content is shown in the original lan
 msgstr ""
 
 msgid "Translation is safety-paused. Test the saved AI connection and retry a limited language sample first."
+msgstr ""
+
+msgid "Translation item coverage"
+msgstr ""
+
+msgid "Translation item coverage describes a stored content inventory. Current-version SEO readiness is evaluated separately; 100% does not by itself establish index readiness."
+msgstr ""
+
+msgid "Translation items"
 msgstr ""
 
 msgid "Translation request could not be encoded"
@@ -1694,6 +1799,9 @@ msgid "Worker busy. Try again after the current request."
 msgstr ""
 
 msgid "Writable"
+msgstr ""
+
+msgid "Yes"
 msgstr ""
 
 msgid "You are not allowed to change uninstall data retention."

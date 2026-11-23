@@ -2,6 +2,15 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## [2.11.2-rc.9] - 2026-11-23 (status clarity review candidate)
+
+- Separate stored translation item coverage, the AI translation queue and current-version SEO readiness in the admin UI.
+- Identify prior inventory versions and pending measurements instead of presenting stale counts and missing-field zeros as current results.
+- Show existing pending-list, lock, schedule, retry and recorded-failure evidence with explicit scope and timestamp limits.
+- Show incomplete source-length measurement instead of 100% of recorded bytes when lengths are unknown.
+- Vendor Core 0.9.21 and add the synthetic state-separation regression suite to database CI.
+- Keep frontend index gates, thresholds, content fingerprints, translation assets and recovery behavior unchanged.
+
 ## [2.11.2-rc.8] - 2026-11-19 (readiness concurrency review candidate)
 
 - Calculate readiness counts and translation fingerprints from one transaction after acquiring the source/readiness locks.

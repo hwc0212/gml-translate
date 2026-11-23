@@ -1,0 +1,454 @@
+{
+  "date": "2026-11-23",
+  "scope": "Candidate acceptance; not production deployment",
+  "plugin_version": "2.11.2-rc.9",
+  "plugin_parent": "d4133f576790bd1413b1e419cc0fb4be6b9069ff",
+  "core_version": "0.9.21",
+  "core_commit": "2ceb8b400423284b715197ce3a8e6ae964527b49",
+  "package": {
+    "date": "2026-11-23",
+    "plugin": "2.11.2-rc.9",
+    "core": "0.9.21",
+    "core_commit": "2ceb8b400423284b715197ce3a8e6ae964527b49",
+    "bytes": 433477,
+    "sha256": "931f1d339d0b006306c453703721c24df98cde21e2364dfb4948c3ffc0e063e1",
+    "entries": 103,
+    "core_files": 48,
+    "crc_ok": true,
+    "source_bytes_identical": true
+  },
+  "current_candidate_checks": {
+    "policy_passes": 18,
+    "integration_scripts": 29,
+    "php_syntax_checks": 116,
+    "state_scenarios": 12,
+    "state_assertions": 86,
+    "runner_terminal_marker_verified": true,
+    "all_exit_zero": true,
+    "stderr_empty": true,
+    "exact_zip_load": {
+      "wordpress": "7.1.4",
+      "php": "8.3.33",
+      "plugin": "2.11.2-rc.9",
+      "unknown_source_count": 1,
+      "unknown_length_blocks": true,
+      "stale_message": "The current source or translation snapshot needs readiness evaluation.",
+      "http_attempts": 0,
+      "not_installed": true,
+      "tm_preserved": true,
+      "queue_preserved": true
+    }
+  },
+  "same_runtime_local_audit_before_version_bump": {
+    "new_assertions": 86,
+    "existing_assertions": 313,
+    "existing_regressions": [
+      {
+        "case": "inventory-recovery",
+        "assertions": 146
+      },
+      {
+        "case": "resource-readiness",
+        "assertions": 80
+      },
+      {
+        "case": "readiness-durable",
+        "assertions": 33
+      },
+      {
+        "case": "public-eligibility",
+        "assertions": 54
+      }
+    ],
+    "browser_http_cases": 20,
+    "browser_states": [
+      "stale",
+      "ready",
+      "missing",
+      "failure"
+    ],
+    "admin_locales": [
+      "en",
+      "zh_CN"
+    ],
+    "viewports": [
+      1440,
+      390
+    ],
+    "page_errors": [],
+    "mobile_overflow": false,
+    "browser_fixture": "GET-only wrappers invoking real publication gate, SEO adapter and output protection; not a full theme or real CF7",
+    "test_source_activation": false,
+    "admin_entire_render_queries": [
+      23,
+      26
+    ],
+    "admin_entire_render_ms": [
+      42,
+      77
+    ],
+    "load_test": false
+  },
+  "environment": {
+    "wordpress": "7.1.4",
+    "php": "8.3.33",
+    "database": "MariaDB 10.6",
+    "test_data": "synthetic",
+    "network_internal": true,
+    "published_ports": [],
+    "cron": "DISABLE_WP_CRON=true; controlled dispatch with deliberate 32-second hold",
+    "fault_injection": "early dispatch/retry due-time injection in selected scenarios, not autonomous cron acceptance"
+  },
+  "candidate_state_timeline": [
+    {
+      "stage": "01-ready",
+      "elapsed_ms": 64,
+      "manifest": "complete",
+      "fr": {
+        "machine": "complete",
+        "reason": "eligible",
+        "seo_ready": true,
+        "translation_percent": 100,
+        "translated": 163,
+        "required": 163,
+        "unresolved": 0,
+        "critical_unresolved": 0,
+        "unknown_source_count": 0,
+        "length_percent": 100
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "02-saved-stale",
+      "elapsed_ms": 177,
+      "manifest": "stale",
+      "fr": {
+        "machine": "stale",
+        "reason": "stale",
+        "seo_ready": false,
+        "translation_percent": 100,
+        "translated": 163,
+        "required": 163,
+        "unresolved": 0,
+        "critical_unresolved": 0,
+        "unknown_source_count": null,
+        "length_percent": null
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "03-due-dispatcher-held",
+      "elapsed_ms": 33032,
+      "manifest": "stale",
+      "fr": {
+        "machine": "stale",
+        "reason": "stale",
+        "seo_ready": false,
+        "translation_percent": 100,
+        "translated": 163,
+        "required": 163,
+        "unresolved": 0,
+        "critical_unresolved": 0,
+        "unknown_source_count": null,
+        "length_percent": null
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "04-worker-rendering",
+      "elapsed_ms": 33923,
+      "manifest": "stale",
+      "fr": {
+        "machine": "stale",
+        "reason": "stale",
+        "seo_ready": false,
+        "translation_percent": 100,
+        "translated": 163,
+        "required": 163,
+        "unresolved": 0,
+        "critical_unresolved": 0,
+        "unknown_source_count": null,
+        "length_percent": null
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "05-recovered",
+      "elapsed_ms": 34412,
+      "manifest": "complete",
+      "fr": {
+        "machine": "complete",
+        "reason": "eligible",
+        "seo_ready": true,
+        "translation_percent": 100,
+        "translated": 163,
+        "required": 163,
+        "unresolved": 0,
+        "critical_unresolved": 0,
+        "unknown_source_count": 0,
+        "length_percent": 100
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "06-real-text-stale",
+      "elapsed_ms": 35709,
+      "manifest": "stale",
+      "fr": {
+        "machine": "stale",
+        "reason": "stale",
+        "seo_ready": false,
+        "translation_percent": 100,
+        "translated": 163,
+        "required": 163,
+        "unresolved": 0,
+        "critical_unresolved": 0,
+        "unknown_source_count": null,
+        "length_percent": null
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "07-real-text-missing",
+      "elapsed_ms": 36231,
+      "manifest": "complete",
+      "fr": {
+        "machine": "incomplete",
+        "reason": "below_page_threshold",
+        "seo_ready": false,
+        "translation_percent": 99.3,
+        "translated": 162,
+        "required": 163,
+        "unresolved": 1,
+        "critical_unresolved": 0,
+        "unknown_source_count": 1,
+        "length_percent": 100
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "07b-critical-missing",
+      "elapsed_ms": 37709,
+      "manifest": "complete",
+      "fr": {
+        "machine": "incomplete",
+        "reason": "critical_missing",
+        "seo_ready": false,
+        "translation_percent": 99.3,
+        "translated": 162,
+        "required": 163,
+        "unresolved": 1,
+        "critical_unresolved": 1,
+        "unknown_source_count": 1,
+        "length_percent": 100
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "08-render-failed",
+      "elapsed_ms": 39028,
+      "manifest": "render_error",
+      "fr": {
+        "machine": "render_error",
+        "reason": "render_error",
+        "seo_ready": false,
+        "translation_percent": 99.3,
+        "translated": 162,
+        "required": 163,
+        "unresolved": 1,
+        "critical_unresolved": 1,
+        "unknown_source_count": null,
+        "length_percent": null
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "09-retry-wait",
+      "elapsed_ms": 39266,
+      "manifest": "render_error",
+      "fr": {
+        "machine": "render_error",
+        "reason": "render_error",
+        "seo_ready": false,
+        "translation_percent": 99.3,
+        "translated": 162,
+        "required": 163,
+        "unresolved": 1,
+        "critical_unresolved": 1,
+        "unknown_source_count": null,
+        "length_percent": null
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "10-failure-recovered",
+      "elapsed_ms": 40582,
+      "manifest": "complete",
+      "fr": {
+        "machine": "complete",
+        "reason": "eligible",
+        "seo_ready": true,
+        "translation_percent": 100,
+        "translated": 163,
+        "required": 163,
+        "unresolved": 0,
+        "critical_unresolved": 0,
+        "unknown_source_count": 0,
+        "length_percent": 100
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "11-event-restored",
+      "elapsed_ms": 42020,
+      "manifest": "stale",
+      "fr": {
+        "machine": "stale",
+        "reason": "stale",
+        "seo_ready": false,
+        "translation_percent": 100,
+        "translated": 163,
+        "required": 163,
+        "unresolved": 0,
+        "critical_unresolved": 0,
+        "unknown_source_count": null,
+        "length_percent": null
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "12-event-recovered",
+      "elapsed_ms": 42473,
+      "manifest": "complete",
+      "fr": {
+        "machine": "complete",
+        "reason": "eligible",
+        "seo_ready": true,
+        "translation_percent": 100,
+        "translated": 163,
+        "required": 163,
+        "unresolved": 0,
+        "critical_unresolved": 0,
+        "unknown_source_count": 0,
+        "length_percent": 100
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "13-ui-race-pending",
+      "elapsed_ms": 43650,
+      "manifest": "stale",
+      "fr": {
+        "machine": "stale",
+        "reason": "stale",
+        "seo_ready": false,
+        "translation_percent": 100,
+        "translated": 163,
+        "required": 163,
+        "unresolved": 0,
+        "critical_unresolved": 0,
+        "unknown_source_count": null,
+        "length_percent": null
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "14-ui-race-recovered",
+      "elapsed_ms": 44119,
+      "manifest": "complete",
+      "fr": {
+        "machine": "complete",
+        "reason": "eligible",
+        "seo_ready": true,
+        "translation_percent": 100,
+        "translated": 163,
+        "required": 163,
+        "unresolved": 0,
+        "critical_unresolved": 0,
+        "unknown_source_count": 0,
+        "length_percent": 100
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "15-tm-invalidated",
+      "elapsed_ms": 45203,
+      "manifest": "complete",
+      "fr": {
+        "machine": "stale",
+        "reason": "stale",
+        "seo_ready": false,
+        "translation_percent": 100,
+        "translated": 163,
+        "required": 163,
+        "unresolved": 0,
+        "critical_unresolved": 0,
+        "unknown_source_count": null,
+        "length_percent": null
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "16-readiness-claimed",
+      "elapsed_ms": 45622,
+      "manifest": "complete",
+      "fr": {
+        "machine": "rebuilding",
+        "reason": "rebuilding",
+        "seo_ready": false,
+        "translation_percent": 100,
+        "translated": 163,
+        "required": 163,
+        "unresolved": 0,
+        "critical_unresolved": 0,
+        "unknown_source_count": null,
+        "length_percent": null
+      },
+      "queue": "idle"
+    },
+    {
+      "stage": "17-tm-ready",
+      "elapsed_ms": 46019,
+      "manifest": "complete",
+      "fr": {
+        "machine": "complete",
+        "reason": "eligible",
+        "seo_ready": true,
+        "translation_percent": 100,
+        "translated": 163,
+        "required": 163,
+        "unresolved": 0,
+        "critical_unresolved": 0,
+        "unknown_source_count": 0,
+        "length_percent": 100
+      },
+      "queue": "idle"
+    }
+  ],
+  "preserved": {
+    "all_tm_fields": true,
+    "all_translation_queue_rows": true,
+    "unrelated_manifest_and_readiness": true,
+    "other_languages_on_single_target_invalidation": true,
+    "publication_gate_logic": true,
+    "source_fingerprint_algorithm": true
+  },
+  "github_ci": "This committed report records local results before push. Exact revision and live CI results are recorded in the two linked PRs and their Checks.",
+  "production": {
+    "reported_incident_recovered": "User-provided observations only; not independently accessed",
+    "root_cause_of_delay": "Unknown; no task-by-task production logs",
+    "reads": false,
+    "changes": false,
+    "plugin_installed": false,
+    "plugin_activated": false,
+    "paid_ai": false,
+    "real_mail": false,
+    "real_inquiry": false,
+    "merged": false,
+    "deployed": false
+  },
+  "references": {
+    "translate_pr": "https://github.com/hwc0212/gml-translate/pull/3",
+    "core_pr": "https://github.com/hwc0212/gml-translation-core/pull/1"
+  }
+}

@@ -1,10 +1,10 @@
 {
     "schemaVersion": 1,
     "package": "gml-translation-core",
-    "version": "0.9.20",
+    "version": "0.9.21",
     "source": {
         "repository": "https://github.com/hwc0212/gml-translation-core",
-        "commit": "f4b582bd031d697e1be39741c49478d6effbc891"
+        "commit": "2ceb8b400423284b715197ce3a8e6ae964527b49"
     },
     "vendorRoot": "includes/vendor/gml-translation-core",
     "files": {
@@ -22,7 +22,7 @@
         "src/class-output-buffer.php": "0f65f0d1bed2181cafbc754204126177e96b5b6946b6ddd6ef8978f30e22f6f5",
         "src/class-page-cache.php": "eb3cf06557ad7bbe7a3ca942a3977c661e112c002105e2d71e285a0e66ad0e6b",
         "src/class-page-demand.php": "c16f431476b29e263646d872bd347f55f9aad02595df853b56e2fa3b6a7e4c20",
-        "src/class-page-readiness-policy.php": "325961e53761520256fcf86b17d3ed1a4b8ac8a25e32e6ef9644517c421a957b",
+        "src/class-page-readiness-policy.php": "71152663f90fb7bdfa35192ce19e482105d8315784d49aae2656dc5d2cabd799",
         "src/class-page-work-scheduler.php": "e551d941fc3942218a5a7f0969a59438230f39d8078dd32c95ee5922051ef353",
         "src/class-public-eligibility.php": "ab21a731eac7bd85c1e99d69637e4fedd2666daa65a27aa8e888f605ef501b5e",
         "src/class-resource-approval.php": "db9b529822c425f28a86c9019876addd854ff0c39ea11ee62abed8500ba73218",

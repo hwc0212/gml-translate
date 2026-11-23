@@ -455,6 +455,45 @@ $controls_zh += [
     'Diagnostic candidate was truncated at the storage limit.'=>'候选诊断因存储上限已截断。',
     'No candidate diagnostic was retained for this attempt. The old message alone cannot prove what the provider changed.'=>'本次尝试未保留候选诊断，仅凭旧错误消息无法确认模型具体改动了什么。',
 ];
+
+// Translation coverage, queue scope and readiness evidence.
+$controls_zh['Yes'] = '是';
+$controls_zh['No'] = '否';
+$controls_zh = array_replace( $controls_zh, [
+    'Page Translation and SEO Status' => '页面译文与 SEO 状态',
+    'Translation item coverage describes a stored content inventory. Current-version SEO readiness is evaluated separately; 100% does not by itself establish index readiness.' => '译文条目完整度对应已保存的内容清单。当前版本的 SEO 就绪状态单独评估；100% 不代表已经具备索引条件。',
+    'Translation items' => '译文条目',
+    'Current-version SEO readiness' => '当前版本 SEO 就绪状态',
+    'Translation item coverage' => '译文条目完整度',
+    'Stored inventory version:' => '已保存的清单版本：',
+    'Stored inventory figures are not a measurement of the edited version. Current counts, missing fields and length coverage await evaluation.' => '已保存清单的统计不代表修改后的版本。当前条目、缺失字段和长度覆盖率仍待评估。',
+    'AI translation queue:' => 'AI 翻译队列：',
+    'Current-version readiness needs evaluation.' => '当前版本的就绪状态待评估。',
+    'Pending current-version evaluation' => '待评估当前版本',
+    'Not evaluated for this version' => '当前版本尚未评估',
+    'Inventory and readiness work' => '内容清单与就绪任务',
+    'Stored readiness evaluation:' => '已保存的就绪评估时间：',
+    'Readiness state recorded:' => '就绪状态记录时间：',
+    '(previous snapshot)' => '（先前版本）',
+    'This state has no separately recorded completion time; the state timestamp is not proof of a finished evaluation.' => '此状态没有单独记录评估完成时间；状态时间不能证明评估已完成。',
+    'Manifest state:' => '内容清单状态：',
+    'Readiness row:' => '就绪记录状态：',
+    'Page in inventory pending list:' => '此页面位于清单待处理列表：',
+    'Site-wide inventory worker lock:' => '全站清单 worker 锁：',
+    'Held' => '已占用',
+    'Not held' => '未占用',
+    'A pending-list entry, claimed readiness row or site-wide lock does not confirm this page is currently running. Absence from the list does not prove completion.' => '待处理记录、已领取的就绪记录或全站锁，均不能单独证明此页面正在执行；不在列表中也不代表已经完成。',
+    'Next recorded site-wide inventory event:' => '全站下一条已登记清单事件：',
+    'Recorded page retry time:' => '此页面已登记的重试时间：',
+    'Most recent recorded inventory failure (may be historical):' => '最近登记的清单失败记录（可能是历史记录）：',
+    'Recorded event and retry times are scheduling data, not completion estimates or proof that a task executed.' => '事件和重试时间是调度记录，不能作为预计完成时间，也不能证明任务已执行。',
+    'The current source or translation snapshot needs readiness evaluation.' => '当前源文或译文版本需要重新评估就绪状态。',
+    'AI Translation Queue' => 'AI 翻译队列',
+    'AI Translation Queue Status' => 'AI 翻译队列状态',
+    'Last AI Worker Activity' => '最近 AI worker 活动',
+    'This queue processes AI translation text only. Inventory discovery and SEO readiness use separate background work. Idle does not mean all background work is complete.' => '此队列仅处理 AI 译文。内容清单发现和 SEO 就绪计算使用独立的后台任务。idle（空闲）不代表全部后台工作已完成。',
+    'Incomplete measurement: %d source lengths are not recorded.' => '测量不完整：%d 个条目的原文长度尚未记录。',
+]);
 $translations['zh_CN'] = array_replace( $translations['zh_CN'], $controls_zh );
 $strings = array_values( array_unique( array_merge( $strings, array_keys( $controls_zh ) ) ) );
 sort( $strings, SORT_STRING );
