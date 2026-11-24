@@ -1,0 +1,59 @@
+{
+  "date": "2026-11-24",
+  "timezone": "Asia/Shanghai",
+  "candidate": "2.11.2-rc.11",
+  "baseline_commit": "3d2d2c42a3a60b39eb0305f2b1a5323f752e8dee",
+  "core_changed": false,
+  "package": {
+    "date": "2026-11-24",
+    "plugin": "2.11.2-rc.11",
+    "core": "0.9.22",
+    "core_commit": "f0e86e26fe1c82615d4945a9cb77c41459f1cc9d",
+    "bytes": 434920,
+    "sha256": "8b29584999fb63db9b8c89060a4db2e02f030430b47699371b9e85c4bc92344c",
+    "entries": 103,
+    "core_files": 48,
+    "crc_ok": true,
+    "source_bytes_identical": true
+  },
+  "native_matrices": {
+    "noindex": {
+      "cases": 40,
+      "assertions": 397,
+      "passed": true
+    },
+    "index": {
+      "cases": 40,
+      "assertions": 581,
+      "passed": true
+    },
+    "index-variant": {
+      "cases": 40,
+      "assertions": 581,
+      "passed": true
+    }
+  },
+  "language_transitions": {
+    "total": 16,
+    "correct": 16
+  },
+  "integration_scripts": 31,
+  "pagination_context_checks": 869,
+  "php_lint_files": 127,
+  "full_regression_scenarios": 122,
+  "full_regression_assertions": 2331,
+  "data_preservation": {
+    "all_tm_fields_preserved": true,
+    "queue_preserved": true,
+    "manifests_and_readiness_preserved": true,
+    "resource_keys_unchanged": true
+  },
+  "cache_responses": 6,
+  "exact_package_execution_passed": true,
+  "committed": false,
+  "pushed": false,
+  "pr_updated": false,
+  "production_accessed": false,
+  "deployed": false,
+  "snapshot_scope": "Local acceptance completed before commit and push; GitHub delivery state is recorded in README and PR #3."
+}

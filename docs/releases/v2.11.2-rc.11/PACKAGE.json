@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-24",
+  "plugin": "2.11.2-rc.11",
+  "core": "0.9.22",
+  "core_commit": "f0e86e26fe1c82615d4945a9cb77c41459f1cc9d",
+  "bytes": 434920,
+  "sha256": "8b29584999fb63db9b8c89060a4db2e02f030430b47699371b9e85c4bc92344c",
+  "entries": 103,
+  "core_files": 48,
+  "crc_ok": true,
+  "source_bytes_identical": true
+}

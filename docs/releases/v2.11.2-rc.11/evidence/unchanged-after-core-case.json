@@ -1,0 +1,6 @@
+{
+  "all_tm_fields_preserved": true,
+  "queue_preserved": true,
+  "manifests_and_readiness_preserved": true,
+  "resource_keys_unchanged": true
+}

@@ -2,6 +2,14 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## 2.11.2-rc.11 (2026-11-24)
+
+- Keep the current archive page number in local language navigation and canonical URL adaptation, using the existing resource URL and WordPress pagination context.
+- Map eligible hreflang members to the same current archive page; observe SEO-owner robots output and omit alternates consistently on explicitly noindex pagination.
+- Preserve empty SEOPress canonical output. Do not change pagination index policy, term/resource identities, readiness data or queues.
+- Add real WordPress/WooCommerce/SEOPress native pagination, login, cache, subdirectory and source-language regressions, plus deterministic context tests.
+- Core remains pinned to 0.9.22; no schema or translation migration.
+
 ## 2.11.2-rc.10 (2026-11-23)
 
 - Consolidated audit of the cumulative Translate/Core candidate, with full lifecycle, concurrency, navigation, form, permissions and SEO regression coverage.
