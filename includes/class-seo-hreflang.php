@@ -89,6 +89,8 @@ class GML_SEO_Hreflang {
 
     public function filter_canonical_url( $canonical_url, $post = null ) {
         unset( $post );
+        // SEO owners use false/empty to deliberately suppress the canonical.
+        if ( ! is_string($canonical_url) || trim($canonical_url) === '' ) return $canonical_url;
         if ( $this->is_not_found_request() ) {
             return $canonical_url;
         }

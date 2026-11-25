@@ -64,6 +64,9 @@ foreach(['','/staging','/caf%C3%A9'] as $base){
    }
    page_check(count(GML_SEO_Router::get_language_urls())===4,'noindex does not suppress navigation');
    page_check($seo->filter_seopress_canonical('')==='','disabled canonical stays disabled');
+   foreach([false,null,'','   '] as $disabled){
+    page_check($seo->filter_canonical_url($disabled)===$disabled,'SEO owner canonical suppression survives every page/language/install context');
+   }
   }
  }
 }

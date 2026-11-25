@@ -116,4 +116,84 @@ foreach(['title','p'] as $tag){
  $out=$p->rebuild(['html'=>$html,'replacements'=>[$source=>'Bedingung <500 µS/cm']]);
  bc_check(strpos($out,'Bedingung &lt;500 µS/cm')!==false,'title and body preserve raw technical sign');
 }
+
+// Context scope must be established at every allowlisted object, not by an
+// unrelated schema prefix or a parent whose context was explicitly reset.
+GML_Translate_Test_State::$options['gml_source_lang']='en';
+$base=['@context'=>'https://schema.org','@type'=>'BreadcrumbList','itemListElement'=>[
+ ['@type'=>'ListItem','name'=>'Home','item'=>['name'=>'Equipment','@id'=>'https://example.com/category/']]
+]];
+$foreign_contexts=[
+ null, 'https://foreign.test/vocab',
+ (object)['@vocab'=>'https://foreign.test/','schema'=>'https://schema.org/'],
+ (object)['@vocab'=>'https://schema.org/','name'=>'https://foreign.test/name'],
+ (object)['@base'=>'https://foreign.test/'],
+ ['https://schema.org',(object)['item'=>null]],
+ [(object)['name'=>'https://foreign.test/name'],'https://schema.org'],
+];
+foreach($foreign_contexts as $context){
+ $v=$base;$v['@context']=$context;$json=json_encode($v);
+ bc_check(GML_Breadcrumb_JSONLD::texts($json)===[],'foreign or ambiguous root context never becomes translation input');
+ bc_check(GML_Breadcrumb_JSONLD::map($json,static function($s){return 'changed';},static function($s){return '/changed/';})===$json,'foreign or ambiguous root context stays byte-identical');
+ $v=$base;unset($v['@context']);$v['@context']=$context;
+ $json=json_encode(['@context'=>'https://schema.org','@graph'=>[$v]]);
+ bc_check(GML_Breadcrumb_JSONLD::texts($json)===[],'child root context overrides inherited schema context');
+ foreach(['list','item'] as $level){
+  $v=$base;
+  if($level==='list')$v['itemListElement'][0]['@context']=$context;
+  else $v['itemListElement'][0]['item']['@context']=$context;
+  $json=json_encode($v);$before=json_encode($level==='list'?$v['itemListElement'][0]:$v['itemListElement'][0]['item']);
+  $out=GML_Breadcrumb_JSONLD::map($json,static function($s){return 'changed';},static function($s){return '/changed/';});
+  bc_check(strpos($out,$before)!==false,'local foreign/null context protects its complete subtree');
+  bc_check(GML_Breadcrumb_JSONLD::texts($json)===($level==='list'?[]:['Home']),'only still-in-scope names are extracted');
+ }
+}
+foreach(['https://schema.org','http://schema.org/',(object)['@vocab'=>'https://schema.org/'],['https://schema.org',(object)['@language'=>'de','@version'=>1.1]],[null,'https://schema.org']] as $context){
+ $v=$base;$v['@context']=$context;$json=json_encode($v);
+ bc_check(GML_Breadcrumb_JSONLD::texts($json)===['Home','Equipment'],'supported schema contexts keep breadcrumb extraction');
+ bc_check(strpos(GML_Breadcrumb_JSONLD::map($json,static function($s){return 'changed';}),'"changed"')!==false,'supported schema contexts keep translation');
+}
+
+foreach([(object)['@vocab'=>'https://schema.org/'],['https://schema.org',(object)['@language'=>'de']]] as $context){
+ $v=$base;$v['@context']=$context;
+ $wrapped=json_encode(['@context'=>(object)['name'=>'https://foreign.test/name'],'@graph'=>[$v]]);
+ bc_check(GML_Breadcrumb_JSONLD::texts($wrapped)===[],'unresolved inherited term overrides cannot be cleared by vocabulary-only context');
+ bc_check(GML_Breadcrumb_JSONLD::map($wrapped,static function($s){return 'changed';},static function($s){return '/changed/';})===$wrapped,'ambiguous inherited vocabulary stays byte-identical');
+ $v['@context']=[null,'https://schema.org'];
+ $reset=json_encode(['@context'=>(object)['name'=>'https://foreign.test/name'],'@graph'=>[$v]]);
+ bc_check(GML_Breadcrumb_JSONLD::texts($reset)===['Home','Equipment'],'explicit null resets inherited ambiguity before known schema context');
+}
+foreach(['code','pre'] as $tag){
+ foreach([
+  '<'.$tag.'>Inner</'.$tag.'> Secret text <a href="/technical/">Technical link</a>',
+  '<'.$tag.' data-note="</'.$tag.'>">Inner</'.$tag.'><!-- </'.$tag.'> --> Secret text <a href="/technical/">Technical link</a>',
+  '<script>var sample="</'.$tag.'>";</script><'.$tag.'>Inner</'.$tag.'> Secret text <a href="/technical/">Technical link</a>',
+  '<textarea></'.$tag.'></textarea> Secret text <a href="/technical/">Technical link</a>',
+  '<'.$tag.'/>Inner</'.$tag.'> Secret text <a href="/technical/">Technical link</a>',
+ ] as $inside){
+  $protected='<'.$tag.'>'.$inside.'</'.$tag.'>';
+  $html=$protected.'<p>Secret text</p><a href="/after/">Technical link</a>';
+  $out=$b->links($p->rebuild(['html'=>$html,'replacements'=>['Secret text'=>'Geheimer Text','Technical link'=>'Technischer Link']]));
+  bc_check(strpos($out,$protected)===0,'complete nested technical block preserves exact bytes');
+  bc_check(strpos($out,'<p>Geheimer Text</p>')!==false,'same text outside technical block still translates');
+  bc_check(strpos($out,'href="/de/after/"')!==false,'normal link after balanced technical block still localizes');
+ }
+ foreach(['<'.$tag.'>Inner</'.$tag.'> Secret text <a href="/technical/">Technical link</a>','<script>var sample="</'.$tag.'>"; Secret text <a href="/technical/">Technical link</a>'] as $inside){
+  $html='<'.$tag.'>'.$inside;
+  bc_check($b->links($p->rebuild(['html'=>$html,'replacements'=>['Secret text'=>'changed','Technical link'=>'changed']]))===$html,'unterminated technical block fails closed');
+ }
+}
+
+
+foreach(['code','pre','svg'] as $tag){
+ foreach(['<!-- no closing comment </'.$tag.'>','<![CDATA[ no closing CDATA </'.$tag.'>'] as $inside){
+  $html='<'.$tag.'>'.$inside.'<a href="/technical/">Secret text</a>';
+  bc_check($b->links($p->rebuild(['html'=>$html,'replacements'=>['Secret text'=>'changed']]))===$html,'unclosed comment/CDATA inside protected element fails closed');
+ }
+}
+foreach(['script','style','noscript','textarea','iframe'] as $tag){
+ $html='<'.$tag.'>"<a href=\"/technical/\">Technical link</a>"';
+ bc_check($b->links($html)===$html,'unterminated raw-text element does not expose apparent navigation');
+}
+
 echo "OK test-breadcrumb-and-comparison ($checks checks)\n";

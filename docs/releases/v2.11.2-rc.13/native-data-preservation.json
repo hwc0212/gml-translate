@@ -1,0 +1,10 @@
+{
+  "all_fields_preserved": true,
+  "tables": {
+    "gml_resource_manifests": true,
+    "gml_resource_readiness": true,
+    "gml_index": true,
+    "gml_queue": true
+  },
+  "phase": "final rc.13 native browser matrix"
+}

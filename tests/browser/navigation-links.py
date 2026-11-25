@@ -66,11 +66,31 @@ def check_page(browser, base):
                     else container.append(el);
                 }
             }
+
+            // Technical/opt-out ancestors must stay protected after the JS pass,
+            // including nodes inserted after the server rendered the page.
+            for (const kind of ['code', 'pre', 'svg', 'notranslate', 'translate-no']) {
+                const tag = ['notranslate', 'translate-no'].includes(kind) ? 'div' : kind;
+                const wrapper = tag === 'svg'
+                    ? document.createElementNS('http://www.w3.org/2000/svg', tag) : document.createElement(tag);
+                if (kind === 'notranslate') wrapper.className = 'notranslate';
+                if (kind === 'translate-no') wrapper.setAttribute('translate', 'NO');
+                const el = tag === 'svg'
+                    ? document.createElementNS('http://www.w3.org/2000/svg', 'a') : document.createElement('a');
+                el.dataset.testName = 'protected-' + kind;
+                el.dataset.mode = mode;
+                el.dataset.expected = values.find(v => v.name === 'local-page').url;
+                el.setAttribute('href', mode === 'changed' ? '#initial' : el.dataset.expected);
+                wrapper.append(el);
+                document.body.append(wrapper);
+                if (mode === 'changed') el.setAttribute('href', el.dataset.expected);
+            }
+
             if (mode !== 'direct') document.body.append(container);
             if (mode === 'changed') {
                 for (const el of container.children) {
                     const value = values.find(v => v.name === el.dataset.testName);
-                    el.setAttribute(el.tagName === 'A' ? 'href' : 'action', value.url);
+                    el.setAttribute(el.tagName.toLowerCase() === 'a' ? 'href' : 'action', value.url);
                 }
             }
         }""", dict(values=values, mode=mode))
@@ -84,7 +104,7 @@ def check_page(browser, base):
         results['errors'].append('Repeated navigation mutations at ' + base)
     observed = page.evaluate("""() => [...document.querySelectorAll('[data-test-name]')].map(el => ({
         name: el.dataset.testName, mode: el.dataset.mode, tag: el.tagName,
-        expected: el.dataset.expected, actual: el.getAttribute(el.tagName === 'A' ? 'href' : 'action')
+        expected: el.dataset.expected, actual: el.getAttribute(el.tagName.toLowerCase() === 'a' ? 'href' : 'action')
     }))""")
     for row in observed:
         results['checks'] += 1

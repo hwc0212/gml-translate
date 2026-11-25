@@ -2,6 +2,13 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## 2.11.2-rc.13 (2026-11-25)
+
+- Respect local JSON-LD context resets and skip ambiguous vocabularies or term overrides rather than rewriting foreign data.
+- Preserve nested code/pre blocks and unterminated raw-text elements during text replacement and URL rewriting; keep technical/opt-out ancestors protected during browser DOM rewrites.
+- Preserve SEO owners' false/null/empty canonical suppression values, extending the existing SEOPress behavior.
+- Bundle Core 0.9.24 without database/TM migration or changes to readiness, retry, indexing thresholds or queue behavior.
+
 ## 2.11.2-rc.12 (2026-11-25)
 
 - Rebuild whole text nodes containing literal comparison signs without changing technical limits, units or protected markup.

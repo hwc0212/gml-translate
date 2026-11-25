@@ -1,0 +1,17 @@
+[
+  {
+    "file": "GML-JSONLD-breadcrumb-bug-and-rc12-retest-20261125.txt",
+    "sha256": "cf27b224657e0654cdb9df02977081d13388049f6648e4a4fc8a3a65601a929d",
+    "bytes": 8497
+  },
+  {
+    "file": "GML-rc12-remaining66-readonly-completion-20261125.txt",
+    "sha256": "eec3a9c96e60dfd7e79973ade6228b89beb215768fae89155518b03de4d5cc48",
+    "bytes": 16054
+  },
+  {
+    "file": "GML-spec-500uscm-readonly-record-check-20261125.txt",
+    "sha256": "2b66b155bb7a1ce532b8621d5d5973fc36f4c2baf174d6c6ec54f02201e8111c",
+    "bytes": 4855
+  }
+]

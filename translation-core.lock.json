@@ -1,26 +1,26 @@
 {
     "schemaVersion": 1,
     "package": "gml-translation-core",
-    "version": "0.9.23",
+    "version": "0.9.24",
     "source": {
         "repository": "https://github.com/hwc0212/gml-translation-core",
-        "commit": "83e5d9fda37113cf4249313e467452f6a420506a"
+        "commit": "9891513070d3e215e712dc19030b827169cc0b8d"
     },
     "vendorRoot": "includes/vendor/gml-translation-core",
     "files": {
         "src/class-ai-http-transport.php": "2a3e0177a437682d27c4c59a3eebb8266a962deeb1741e85d371eb92c4925296",
         "src/class-atomic-option-lock.php": "e7a4ea61a3190eb01e4383f01010d48c4990ef715e8b74a154fe8be2da4891f3",
         "src/class-authoritative-renderer.php": "a1cea914858137fe02420252faaa067019a932ecd54cc6e7e2468d8d27935b2f",
-        "src/class-breadcrumb-jsonld.php": "1c48fcd58e39d70aab459b57874943c3221f3536bce350a5a8e736ec8accfda4",
+        "src/class-breadcrumb-jsonld.php": "bbaefabe9d3d448e1db1524b6692c858621cc958b1d54c23e1512e3a487d2046",
         "src/class-exclusion-rules.php": "efed3399e6da52c8b4321f0da8491eac045b905234c8925e5d99df8cf06bbbdb",
         "src/class-gemini-response.php": "40e0c208831ad0aa31f2c2cc309138d6e64db43b9632a876cf6230ccb8fca3af",
         "src/class-glossary.php": "e7eb427ec70b21777dc918d04717235da56423f1390630df167e9cb933eeab34",
-        "src/class-html-parser.php": "11c861406ed9c3b463597ec733f5689f4ba975b2abf2d8176d4ca3c7819929de",
+        "src/class-html-parser.php": "3a8378d4f58ad8cb6e3f49a1600f7cdf2df51ff11121b604e557ba5cf1371895",
         "src/class-installer.php": "8feaa1838f7493a5d351b5246e4c35f56bf918dfdb7a4fb64155b4bb3efc47f3",
         "src/class-item-resolution.php": "93dfda948fc06001524b1b5fe38cd41399bce48bbe3799468620d4eab7e591eb",
         "src/class-language-utils.php": "686c593e130abe1d2fc75abdeed439c888b7113990fc353f5e9cb1caf9a4cdab",
         "src/class-manual-translation.php": "38529d044dc816218f1898dcd9a9f5135bfe01cdeab3f3a1ee311057bf9e18bc",
-        "src/class-output-buffer.php": "93bc00ac4b2d444d755ec40113d211b19a2db42519ae5dba427607c1f2fa5d6f",
+        "src/class-output-buffer.php": "dddcfbc509b4bdde6aed67e758814198fa6ba4f3f5f62947d8e5d8144dd65096",
         "src/class-page-cache.php": "eb3cf06557ad7bbe7a3ca942a3977c661e112c002105e2d71e285a0e66ad0e6b",
         "src/class-page-demand.php": "c16f431476b29e263646d872bd347f55f9aad02595df853b56e2fa3b6a7e4c20",
         "src/class-page-readiness-policy.php": "71152663f90fb7bdfa35192ce19e482105d8315784d49aae2656dc5d2cabd799",

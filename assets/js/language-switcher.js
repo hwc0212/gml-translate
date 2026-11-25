@@ -313,7 +313,7 @@
             if (!href || !/^(https?:\/\/|\/)/i.test(href)) return;
             if (/[\x00-\x20\x7f\\]/.test(href) || /\/(?:\.|%2e){1,2}(?:\/|[?#]|$)/i.test(href)) return;
             if (element.matches('a[download]')) return;
-            if (element.closest('.gml-language-switcher, .gml-dropdown-teleported, [translate="no"]')) return;
+            if (element.closest('.gml-language-switcher, .gml-dropdown-teleported, [translate="no" i], .notranslate, code, pre, svg, script, style, noscript, textarea, iframe')) return;
 
             var url;
             try {
