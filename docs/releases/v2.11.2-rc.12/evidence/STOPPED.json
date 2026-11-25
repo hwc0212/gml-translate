@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-25",
+  "native_test_containers_stopped": [
+    "gmlpage1124-db",
+    "gmlpage1124-php"
+  ],
+  "regression_containers_stopped": [
+    "gmlstate1123-db",
+    "gmlstate1123-php"
+  ],
+  "production_accessed": false
+}

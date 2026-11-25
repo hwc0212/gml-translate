@@ -2,6 +2,14 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## 2.11.2-rc.12 (2026-11-25)
+
+- Rebuild whole text nodes containing literal comparison signs without changing technical limits, units or protected markup.
+- Translate only BreadcrumbList item names from schema.org JSON-LD through existing TM lookup and discovery; localize item page URLs using existing navigation rules.
+- Patch only allowlisted JSON string spans. Preserve other schema nodes, graph identifiers, number precision, ordinary scripts, malformed/ambiguous JSON and opt-out blocks.
+- Bundle Core 0.9.23 with no schema/TM migration or changes to publication thresholds, queue scheduling or AI transport.
+- Retain rc.11 pagination navigation and SEO-owner noindex/canonical behavior.
+
 ## 2.11.2-rc.11 (2026-11-24)
 
 - Keep the current archive page number in local language navigation and canonical URL adaptation, using the existing resource URL and WordPress pagination context.

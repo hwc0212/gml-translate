@@ -1,0 +1,5 @@
+{
+  "exit": 0,
+  "stdout": "{\"mode\": \"restore\", \"rows\": [{\"repeat\": 0, \"status\": 200, \"h1\": \"Manuell geprüfter Gerätetitel\", \"condition\": \"5–8 ppm bei Zulaufwasser 15°C, Umgebung 20°C und Zulaufleitfähigkeit <500 µS/cm; Messverfahren und Messstelle bestätigen\", \"schema_names\": [\"Startseite\", \"Ausrüstung & Teile\", \"Manuell geprüfter Gerätetitel\"], \"robots\": [\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\"], \"hreflang\": 5}, {\"repeat\": 1, \"status\": 200, \"h1\": \"Manuell geprüfter Gerätetitel\", \"condition\": \"5–8 ppm bei Zulaufwasser 15°C, Umgebung 20°C und Zulaufleitfähigkeit <500 µS/cm; Messverfahren und Messstelle bestätigen\", \"schema_names\": [\"Startseite\", \"Ausrüstung & Teile\", \"Manuell geprüfter Gerätetitel\"], \"robots\": [\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\"], \"hreflang\": 5}], \"errors\": []}",
+  "stderr": ""
+}

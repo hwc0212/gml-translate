@@ -1,0 +1,7 @@
+{
+  "exit": 0,
+  "stdout": "OK test-breadcrumb-and-comparison (250 checks)\nOK test-pagination-language-context (869 checks)\n",
+  "stderr": "",
+  "package_sha256": "b3208778cf010c260133ad366c6ba71494b816c1f4ed451025d491121a275609",
+  "all_package_bytes_equal_tested_stage": true
+}

@@ -1,0 +1,58 @@
+{
+  "date": "2026-11-25",
+  "candidate": "2.11.2-rc.12",
+  "core": "0.9.23",
+  "package": {
+    "date": "2026-11-25",
+    "plugin": "2.11.2-rc.12",
+    "core": "0.9.23",
+    "core_commit": "83e5d9fda37113cf4249313e467452f6a420506a",
+    "bytes": 438149,
+    "sha256": "b3208778cf010c260133ad366c6ba71494b816c1f4ed451025d491121a275609",
+    "entries": 104,
+    "core_files": 49,
+    "crc_ok": true,
+    "source_bytes_identical": true
+  },
+  "native": {
+    "anonymous_pages": 12,
+    "authenticated_pages": 3,
+    "checks": 360,
+    "errors": []
+  },
+  "navigation_transitions": 16,
+  "core_database_scenarios": 122,
+  "core_database_assertions": 2342,
+  "state_scenarios": 14,
+  "state_assertions": 106,
+  "integration_scripts": 32,
+  "php_lint_files": 133,
+  "new_targeted_checks": 250,
+  "existing_pagination_checks": 869,
+  "exact_package_loaded": true,
+  "data_preservation": {
+    "tm_all_fields_unchanged": true,
+    "queue_unchanged": true,
+    "manifests_readiness_unchanged": true,
+    "resource_keys_unchanged": true,
+    "phase": "final 360-check native browser matrix"
+  },
+  "paid_ai_called": false,
+  "production_accessed": false,
+  "pushed": false,
+  "merged": false,
+  "deployed": false,
+  "native_missing": {
+    "reads": 2,
+    "passed": true
+  },
+  "native_restore": {
+    "reads": 2,
+    "passed": true
+  },
+  "native_manual": {
+    "reads": 2,
+    "passed": true
+  },
+  "snapshot_scope": "Local acceptance snapshot before GitHub delivery; push and PR delivery status is recorded in README and the PR descriptions."
+}
