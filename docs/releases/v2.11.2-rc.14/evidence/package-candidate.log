@@ -1,0 +1,57 @@
+[26-Nov-2026 06:36:39 UTC] PHP Deprecated:  File Theme without comments.php is <strong>deprecated</strong> since version 3.0.0 with no alternative available. Please include a comments.php template in your theme. in /var/www/html/wp-includes/functions.php on line 6260
+[26-Nov-2026 06:36:43 UTC] WordPress database error You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'GML_SYNTHETIC_READINESS_WRITE_FAILURE' at line 1 for query GML_SYNTHETIC_READINESS_WRITE_FAILURE made by gml_inventory_refresh, GML_Resource_Manifest_Discovery->refresh_inventory, GML_Resource_Manifest_Discovery->discover_resource, GML_Resource_Manifest_Store::save_complete, GML_Resource_Manifest_Store::refresh_readiness, GML_Resource_Readiness::refresh_manifest_snapshot, GML_Resource_Readiness::recalculate_resources
+[26-Nov-2026 06:36:44 UTC] WordPress database error You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'GML_SYNTHETIC_RELATION_WRITE_FAILURE' at line 1 for query GML_SYNTHETIC_RELATION_WRITE_FAILURE made by gml_inventory_refresh, GML_Resource_Manifest_Discovery->refresh_inventory, GML_Resource_Manifest_Discovery->discover_resource, GML_Resource_Manifest_Store::save_complete
+MARKER wordpress_bootstrap_loaded
+PASS: isolated additive schema installed
+PASS: native WooCommerce product_page renders short description
+PASS: baseline manifest discovered with existing TM
+PASS: baseline manifest discovered with existing TM
+PASS: product save does not change aggregate manifest version
+PASS: product save does not add aggregate to dirty hints
+RENDER_CHECK {"db_excerpt":"<p>New neutral synthetic summary.<\/p>","old_present":false,"new_present":true,"global_post":68,"global_product":68}
+PASS: authoritative fixture renders current product excerpt
+PASS: aggregate manifest retains removed summary before an explicit scan
+OBSERVATION {"event":"product_excerpt_saved","elapsed_ms":186,"aggregate_key":"post:page:69","aggregate_id":"6782","diagnostics":{"backfill":{"status":"complete","phase":"complete","cursor":0,"updated_at":1795674998},"dirty_count":1,"resource_pending":false,"manifest_state":"complete","manifest_global_generation":2,"current_global_generation":2,"manifest_updated_at":"2026-11-26 06:36:40","manifest_discovered_at":"2026-11-26 06:36:40","lock_active":false,"lock_expires_at":0,"next_inventory_recovery":1795674721,"next_inventory_page":1795673904,"resource_retry_after":0,"next_dirty_run":1795675030,"next_backfill_run":false,"last_failure":[]}}
+PASS: candidate single-resource inventory refresh succeeds
+PASS: old summary exits and current summary enters exact manifest
+PASS: genuinely missing current text enters inventory
+PASS: all manual and auto translation rows remain byte-for-byte unchanged
+PASS: no queue priority retries scheduling controls or backfill changes
+PASS: existing translations reused and true missing text stays behind SEO gate: de
+PASS: existing translations reused and true missing text stays behind SEO gate: es
+PASS: existing translations reused and true missing text stays behind SEO gate: fr
+PASS: existing translations reused and true missing text stays behind SEO gate: ru
+PASS: unrelated manifest membership and all readiness rows unchanged
+PASS: outbox contains only this resource source plus four local target URLs
+PASS: global internal page cache generation really advances
+CACHE_EFFECT {"before":1200632043,"after":1200632049,"outbox":[{"name":"gml_cache_cluster_dirty_6782","token":"1770d753-f7ec-48be-b75b-bd204e35e51c","resource_id":6782,"resource_key":"post:page:69","urls":["http:\/\/gml-inventory.test\/synthetic-aggregate-13\/","http:\/\/gml-inventory.test\/de\/synthetic-aggregate-13\/","http:\/\/gml-inventory.test\/es\/synthetic-aggregate-13\/","http:\/\/gml-inventory.test\/fr\/synthetic-aggregate-13\/","http:\/\/gml-inventory.test\/ru\/synthetic-aggregate-13\/"],"blocked":false}],"elapsed_ms":349}
+PASS: repeated explicit refresh succeeds
+PASS: identical refresh preserves manifest version and cache generation
+PASS: stale starting snapshot rejected before rendering
+PASS: concurrent manifest invalidation cannot commit old members
+PASS: manual repeat recovers from conflict without starting a retry
+PASS: cache epoch change during render rejects potentially changed embedded content
+PASS: manual repeat recovers after embedded-change fence
+PASS: late parser invalidation cannot commit a superseded inventory
+PASS: explicit retry recovers a late parser conflict
+PASS: render failure is surfaced
+PASS: render failure retains historical members but fails closed
+PASS: render failure starts no new task or retry
+PASS: manual retry repairs render failure
+PASS: third language write failure is explicitly returned after earlier language commits
+PASS: partial readiness failure leaves whole resource fail closed
+PASS: partial readiness failure preserves translations and creates no retries
+PARTIAL_FAILURE {"manifest":{"id":"6782","resource_key":"post:page:69","resource_type":"post","object_id":"69","taxonomy":"","variant":"page","source_url_hash":"687e596d18713186ff70ca1a0b16822ebc5bd318e46edcffa33ac443aef567c0","source_revision":"ee0f007b9ad33288a6297166c31fd5b53fa6a55526495042168e3004a801a696","manifest_generation":"7","manifest_fingerprint":"0eb7f21aa50ebea976feb596a33b3dc18756f532e4a1ad78ec9301395fa47a4a","global_generation":"2","required_count":"22","critical_count":"1","discovery_state":"stale","redirect_destination":null,"redirect_chain":null,"created_at":"2026-11-26 06:36:39","updated_at":"2026-11-26 06:36:43","discovered_at":"2026-11-26 06:36:43"},"rows":[{"id":"9387","resource_id":"6782","target_lang":"de","manifest_generation":"7","global_generation":"2","required_count":"22","translated_count":"20","critical_missing_count":"0","translation_fingerprint":"3be39fe3ff365f7b8f10bfd4e953e292fc0e4df12c34ecbb22083f3efa55d463","status":"incomplete","calculated_at":"2026-11-26 06:36:43"},{"id":"9386","resource_id":"6782","target_lang":"en","manifest_generation":"7","global_generation":"2","required_count":"22","translated_count":"22","critical_missing_count":"0","translation_fingerprint":"d85148e881b7d09ef7a4a3ebec70a40f3cff5dd89ce7afdf52d66875ebebd395","status":"complete","calculated_at":"2026-11-26 06:36:43"},{"id":"9388","resource_id":"6782","target_lang":"es","manifest_generation":"7","global_generation":"2","required_count":"22","translated_count":"20","critical_missing_count":"0","translation_fingerprint":"781d13d6bff433e54d2e9f374ece0c612278b004fc8b6de3932274c729944f02","status":"incomplete","calculated_at":"2026-11-26 06:36:43"},{"id":"9384","resource_id":"6782","target_lang":"fr","manifest_generation":"6","global_generation":"2","required_count":"21","translated_count":"20","critical_missing_count":"0","translation_fingerprint":"667657999990b9857a7f2dd073b2a049f3ca21bab44b19524b07404d571a2dc2","status":"incomplete","calculated_at":"2026-11-26 06:36:42"},{"id":"9385","resource_id":"6782","target_lang":"ru","manifest_generation":"6","global_generation":"2","required_count":"21","translated_count":"20","critical_missing_count":"0","translation_fingerprint":"67bc01e1e2b9fe9ba89c1734f05610ded6473cf896594d77f2872689d99f28d7","status":"incomplete","calculated_at":"2026-11-26 06:36:42"}]}
+PASS: explicit repeat rebuilds all language rows after partial failure
+PASS: failed relation replacement rolls back old membership
+PASS: manifest write failure starts no retry or AI work
+PASS: manual repeat recovers failed relation write
+PASS: invalid nonce prevents rendering or writes
+PASS: valid nonce never bypasses anonymous capability denial
+PASS: ordinary logged-in account cannot refresh inventory
+PASS: cache acknowledgment required before any render
+PASS: tampered snapshot rejected before render
+PASS: authorized nonce-protected administrator endpoint succeeds
+PASS: AJAX entry preserves all queues controls schedules and TM
+PASS: no model provider or other outbound request attempted
+OK inventory refresh candidate

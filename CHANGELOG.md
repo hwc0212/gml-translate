@@ -2,6 +2,15 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## 2.11.2-rc.14 (2026-11-26)
+
+- Add a capability/nonce/snapshot-protected inventory-only action, separate from missing-text enqueue/priority, for one resource and its configured languages.
+- Reuse existing translations, manifest transactions/CAS and readiness policy; report genuine missing text without calling providers or changing translation tasks, priorities or controls.
+- Avoid GML schedule repair and automatic rewrite repair within the explicit action and its signed source render; do not automatically reload the ordinary admin page afterward.
+- Require acknowledgement of existing internal global HTML cache generation and exact current/historical resource URL outbox side effects. Keep consistency invalidation enabled.
+- Bundle Core 0.9.25. Explicit partial-readiness failures do not add new dirty retries; normal discovery retains recovery. Manifest/per-language commits are not atomic rollback, and embedded-product dependency auto-notification remains outside this change.
+- Retain rc.13 fixes. Isolated/package acceptance is attached; no production page processing, merge, release publication or deployment.
+
 ## 2.11.2-rc.13 (2026-11-25)
 
 - Respect local JSON-LD context resets and skip ambiguous vocabularies or term overrides rather than rewriting foreign data.

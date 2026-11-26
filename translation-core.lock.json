@@ -1,16 +1,16 @@
 {
     "schemaVersion": 1,
     "package": "gml-translation-core",
-    "version": "0.9.24",
+    "version": "0.9.25",
     "source": {
         "repository": "https://github.com/hwc0212/gml-translation-core",
-        "commit": "9891513070d3e215e712dc19030b827169cc0b8d"
+        "commit": "c439cb7f9a38d0e6eb30a953297e86b3319ec006"
     },
     "vendorRoot": "includes/vendor/gml-translation-core",
     "files": {
         "src/class-ai-http-transport.php": "2a3e0177a437682d27c4c59a3eebb8266a962deeb1741e85d371eb92c4925296",
         "src/class-atomic-option-lock.php": "e7a4ea61a3190eb01e4383f01010d48c4990ef715e8b74a154fe8be2da4891f3",
-        "src/class-authoritative-renderer.php": "a1cea914858137fe02420252faaa067019a932ecd54cc6e7e2468d8d27935b2f",
+        "src/class-authoritative-renderer.php": "35a828a0132e9db1510dc1a8973aa8aecaabd04c7b4234ccddb9fc00cee8366e",
         "src/class-breadcrumb-jsonld.php": "bbaefabe9d3d448e1db1524b6692c858621cc958b1d54c23e1512e3a487d2046",
         "src/class-exclusion-rules.php": "efed3399e6da52c8b4321f0da8491eac045b905234c8925e5d99df8cf06bbbdb",
         "src/class-gemini-response.php": "40e0c208831ad0aa31f2c2cc309138d6e64db43b9632a876cf6230ccb8fca3af",
@@ -30,9 +30,9 @@
         "src/class-resource-backfill.php": "d134881107c18f08b3bfbdb80afa3af6437e03c023431a87dca71e00db030e7f",
         "src/class-resource-cache-worker.php": "c689259bde226c0a7fc84c36f230d732684f50e3f57251b4b7cd268545b695f1",
         "src/class-resource-identity.php": "f134f097741dbbb9690afbbad24ce0f1eae88eaf443fca4465b852a53ce0ad0e",
-        "src/class-resource-manifest-discovery.php": "0fad723559d8ece5a25a1e6b6f76eb3b591c27c9582c09ef8ba241cc3a29e682",
+        "src/class-resource-manifest-discovery.php": "048b77856097034e95434b89a350a1dd270ea443b7ff4e9f543afb3a8ad96178",
         "src/class-resource-manifest-manager.php": "c3469bf333ca1108dc4e0216c990d52834625cb44de3aa30a51b8a083168ac38",
-        "src/class-resource-manifest-store.php": "fcb541a0cf11643dd1d1a8939d632e568f8bdee09d367c4ecaeb52232770584c",
+        "src/class-resource-manifest-store.php": "e08950b24aa673dbabcee743eb40be4c5889dbdc397e2423fc678ca67d8bfffe",
         "src/class-resource-readiness.php": "6702e818b060b74f93d5efd759a16d63539c97c0ccb5b36fe2bdbeb9819c8d30",
         "src/class-translation-activity.php": "437cd283216c63cf6bfe9c68e7b52e7450ab84fda5e328d5e84ef593dcb425ce",
         "src/class-translation-ai-client.php": "34b8f54e38bf8b70a26562bc3fa3008b7d58aa62cbf26f2889d824ca914bf003",

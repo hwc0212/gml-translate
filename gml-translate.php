@@ -3,7 +3,7 @@
  * Plugin Name: GML Translate
  * Plugin URI: https://huwencai.com/gml-translate
  * Description: AI multilingual translation for WordPress with stable language URLs, editable translations, glossary, queue controls, hreflang, and sitemap integration.
- * Version: 2.11.2-rc.13
+ * Version: 2.11.2-rc.14
  * Author: huwencai.com
  * Author URI: https://huwencai.com
  * License: GPL v2 or later
@@ -32,7 +32,7 @@ if ( defined( 'GML_TRANSLATION_HOST' ) && GML_TRANSLATION_HOST !== 'standalone' 
 }
 
 // Define plugin constants
-define('GML_VERSION', '2.11.2-rc.13');
+define('GML_VERSION', '2.11.2-rc.14');
 define('GML_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GML_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GML_PLUGIN_FILE', __FILE__);
@@ -134,6 +134,18 @@ class GML_Translate {
      * Initialize components
      */
     public function init_components() {
+        // Explicit inventory maintenance must not repair/start unrelated GML
+        // schedules during either the AJAX bootstrap or its signed source render.
+        $inventory_ajax = wp_doing_ajax()
+            && ( $_POST['action'] ?? '' ) === 'gml_page_workflow'
+            && ( $_POST['operation'] ?? '' ) === 'inventory';
+        $inventory_render = ( $_GET['gml_crawl'] ?? '' ) === '1'
+            && ( $_SERVER['HTTP_X_GML_INVENTORY_ONLY'] ?? '' ) === '1'
+            && GML_Content_Crawler::is_internal_request();
+        if ( $inventory_ajax || $inventory_render ) {
+            if ( $inventory_ajax ) new GML_Page_Workflow_Admin();
+            return; // The handler still enforces the normal capability and nonce.
+        }
         // Only a permitted admin request may perform bounded database setup.
         GML_Installer::register_hooks();
         GML_Resource_Cache_Worker::register_hooks();
@@ -229,6 +241,8 @@ class GML_Translate {
     }
 
     public function maybe_flush_rewrite_rules() {
+        if ( wp_doing_ajax() && ( $_POST['action'] ?? '' ) === 'gml_page_workflow'
+            && ( $_POST['operation'] ?? '' ) === 'inventory' ) return;
         GML_Translation_Rewrite::maybe_repair();
     }
     

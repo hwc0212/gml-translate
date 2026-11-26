@@ -104,6 +104,18 @@ final class GML_Page_Workflow_Admin {
             }
             wp_send_json_success(['state'=>'saved','message'=>__('Page workflow settings saved.','gml-translate')]);
         }
+        if($operation==='inventory'){
+            $key=sanitize_text_field(wp_unslash($_POST['resource']??''));
+            $resource=GML_Resource_Identity::resolve($key);
+            if(!$resource || !$resource->is_eligible()) wp_send_json_error(['message'=>'Resource is unavailable.'],404);
+            $manifest=GML_Resource_Manifest_Store::get_by_key($resource->get_key());
+            $token=sanitize_text_field(wp_unslash($_POST['snapshot']??''));
+            if(!$manifest || !hash_equals($this->inventory_token($resource,$manifest),$token)) wp_send_json_error(['message'=>'Resource changed. Reload before refreshing inventory.'],409);
+            if(($_POST['cache_effects']??'')!=='1') wp_send_json_error(['message'=>'Acknowledge the internal cache generation change and external cache outbox first.'],400);
+            $result=(new GML_Resource_Manifest_Discovery())->refresh_inventory($resource,GML_Resource_Manifest_Store::snapshot_version($manifest),$resource->get_source_revision());
+            if(is_wp_error($result)) wp_send_json_error(['message'=>$result->get_error_message().' The manifest or some language snapshots may already have changed; review current state before retrying.','code'=>$result->get_error_code()],409);
+            wp_send_json_success(['message'=>'Inventory refreshed for this resource and configured languages using stored translations. No AI translation was requested. Internal cache invalidation and an external cache outbox may have been recorded. The displayed rows still describe the snapshot loaded before this operation.','reload'=>false]);
+        }
         if($operation==='priority') {
             $key=sanitize_text_field(wp_unslash($_POST['resource']??''));
             $lang=sanitize_key($_POST['language']??'');
@@ -158,6 +170,7 @@ final class GML_Page_Workflow_Admin {
         $schedules=[];
         $inventory=[];
         $records=$this->readiness_records($result['rows']);
+        $inventory_forms=[];
         echo '<table class="widefat striped"><thead><tr><th>'.esc_html__('Page / Language','gml-translate').'</th><th>'.esc_html__('Translation items','gml-translate').'</th><th>'.esc_html__('Current-version SEO readiness','gml-translate').'</th><th>'.esc_html__('Actions','gml-translate').'</th></tr></thead><tbody>';
         foreach($result['rows'] as $row) {
             $status=$clusters[$row['resource_key']]['languages'][$row['target_lang']]??[];
@@ -202,6 +215,14 @@ final class GML_Page_Workflow_Admin {
             echo esc_html__('Critical unresolved:','gml-translate').' '.esc_html($current?($policy['critical_unresolved_count']??$row['critical_missing_count']):__('Not evaluated for this version','gml-translate'));
             $this->readiness_work($diagnostics,$record,$current);
             echo '</td><td>';
+            $resource=empty($inventory_forms[$row['resource_key']])?GML_Resource_Identity::resolve($row['resource_key']):null;
+            $manifest=$resource?GML_Resource_Manifest_Store::get_by_key($resource->get_key()):null;
+            if($resource && $manifest){
+                $inventory_forms[$row['resource_key']]=true;
+                $this->form_start('inventory',['resource'=>$row['resource_key'],'snapshot'=>$this->inventory_token($resource,$manifest)]);
+                echo '<p><label><input type="checkbox" name="cache_effects" value="1" required> '.esc_html__('Allow internal GML page-cache generation changes and resource URL cache outbox entries. Configured adapters may later purge current and historical URLs.','gml-translate').'</label></p>';
+                echo '<button type="submit" class="button">'.esc_html__('Refresh inventory only — all configured languages','gml-translate').'</button><p>'.esc_html__('Reuses stored translations; does not queue missing translations or start retries. A failed refresh may need manual follow-up.','gml-translate').'</p></form>';
+            }
             $this->form_start('priority',['resource'=>$row['resource_key'],'language'=>$row['target_lang']]);
 
             echo '<button type="submit" class="button">'.esc_html__('Queue Missing Text and Prioritize','gml-translate').'</button></form> ';
@@ -209,6 +230,9 @@ final class GML_Page_Workflow_Admin {
         }
         echo '</tbody></table>';
         $this->pagination($page,$result['pages']);
+    }
+    private function inventory_token($resource,$manifest) {
+        return hash_hmac('sha256',wp_json_encode([$resource->get_key(),GML_Resource_Manifest_Store::snapshot_version($manifest),$resource->get_source_revision()]),wp_salt('nonce'));
     }
     /** One bounded read for displayed resource/language pairs, never a rescan. */
     private function readiness_records(array $rows) {
