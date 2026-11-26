@@ -288,69 +288,78 @@
         var sourceLang  = gmlData.sourceLang;
         var languages   = gmlData.languages;
         var homeUrl     = gmlData.homeUrl;
-        var homePath    = (gmlData.homePath || '').replace(/\/$/, '');
 
         if (!currentLang || currentLang === sourceLang) return;
         if (languages.indexOf(currentLang) === -1) return;
 
+        var home;
+        var homePath;
+        var decodedHomePath;
+        try {
+            home = new URL(homeUrl);
+            homePath = home.pathname.replace(/\/$/, '');
+            decodedHomePath = decodeURIComponent(homePath);
+        } catch (error) {
+            return;
+        }
         var prefix = '/' + currentLang + '/';
-        var homeOrigin = homeUrl.replace(/\/$/, '');
+        var excludedPaths = gmlData.excludedPaths || [];
+        var knownLanguages = gmlData.knownLanguages || languages;
+        var filePattern = gmlData.filePattern ? new RegExp(gmlData.filePattern, 'i') : null;
 
-        function stripHomePath(path) {
-            if (homePath && (path === homePath || path.indexOf(homePath + '/') === 0)) {
-                path = path.slice(homePath.length) || '/';
+        function rewriteUrl(element, attribute) {
+            var href = element.getAttribute(attribute);
+            // Relative paths, queries and fragments resolve against the current page.
+            if (!href || !/^(https?:\/\/|\/)/i.test(href)) return;
+            if (/[\x00-\x20\x7f\\]/.test(href) || /\/(?:\.|%2e){1,2}(?:\/|[?#]|$)/i.test(href)) return;
+            if (element.matches('a[download]')) return;
+            if (element.closest('.gml-language-switcher, .gml-dropdown-teleported, [translate="no" i], .notranslate, code, pre, svg, script, style, noscript, textarea, iframe')) return;
+
+            var url;
+            try {
+                url = new URL(href, document.baseURI);
+            } catch (error) {
+                return;
             }
-            return path.charAt(0) === '/' ? path : '/' + path;
+            if (!/^https?:$/.test(url.protocol) || url.origin !== home.origin || url.username || url.password) return;
+            var path = url.pathname;
+            if (homePath && path !== homePath && path.indexOf(homePath + '/') !== 0) return;
+            var checkedPath;
+            try {
+                checkedPath = decodeURIComponent(path);
+            } catch (error) {
+                return;
+            }
+            if (excludedPaths.some(function (excluded) {
+                return checkedPath.toLowerCase() === excluded.toLowerCase() || checkedPath.toLowerCase().indexOf(excluded.toLowerCase() + '/') === 0;
+            })) return;
+
+            var relative = checkedPath.slice(decodedHomePath.length) || '/';
+            if (/^\/(wp-admin|wp-login\.php|wp-json|wp-cron(?:\.php)?|wp-content|wp-includes)(\/|$)/i.test(relative)) return;
+            if (knownLanguages.indexOf(relative.split('/')[1].toLowerCase()) !== -1) return;
+            if (/(?:^|\/)feed(?:\/|$)/i.test(relative) || (filePattern && filePattern.test(relative))) return;
+            var serviceQuery = false;
+            url.searchParams.forEach(function (value, name) {
+                if (/^(wc-ajax|action|rest_route|feed)$/i.test(name)) serviceQuery = true;
+            });
+            if (serviceQuery) return;
+
+            // Preserve the original query and fragment, including signed URL encoding.
+            var suffixIndex = href.search(/[?#]/);
+            var suffix = suffixIndex === -1 ? '' : href.slice(suffixIndex);
+            var destination = homePath + prefix + (path.slice(homePath.length) || '/').replace(/^\//, '') + suffix;
+            if (/^(https?:\/\/|\/\/)/i.test(href)) destination = home.origin + destination;
+            if (destination !== href) element.setAttribute(attribute, destination);
         }
 
-        function shouldRewrite(href) {
-            if (!href) return false;
-            if (/^(mailto:|tel:|javascript:|#)/i.test(href)) return false;
-            if (href.charAt(0) === '#') return false;
-
-            var path;
-            if (/^https?:\/\//i.test(href)) {
-                if (href.indexOf(homeOrigin) !== 0) return false;
-                path = href.slice(homeOrigin.length) || '/';
-            } else if (href.charAt(0) === '/') {
-                path = href;
-            } else {
-                path = '/' + href;
-            }
-
-            path = stripHomePath(path);
-
-            if (/^\/(wp-admin|wp-login\.php)/i.test(path)) return false;
-            var langPattern = new RegExp('^/(' + languages.join('|') + ')(/|$)');
-            if (langPattern.test(path)) return false;
-
-            return true;
-        }
-
-        function rewriteHref(href) {
-            if (/^https?:\/\//i.test(href)) {
-                var path = href.slice(homeOrigin.length) || '/';
-                path = stripHomePath(path);
-                return homeOrigin + prefix + path.replace(/^\//, '');
-            }
-            var p = stripHomePath(href.charAt(0) === '/' ? href : '/' + href);
-            return homePath + prefix + p.replace(/^\//, '');
+        function rewriteElement(element) {
+            if (element.matches('a[href]')) rewriteUrl(element, 'href');
+            if (element.matches('form[action]')) rewriteUrl(element, 'action');
         }
 
         function rewriteLinks(root) {
-            root.querySelectorAll('a[href]').forEach(function (a) {
-                if (a.closest('.gml-language-switcher') || a.closest('.gml-dropdown-teleported')) return;
-                var href = a.getAttribute('href');
-                if (shouldRewrite(href)) {
-                    a.setAttribute('href', rewriteHref(href));
-                }
-            });
-            root.querySelectorAll('form[action]').forEach(function (form) {
-                var action = form.getAttribute('action');
-                if (shouldRewrite(action)) {
-                    form.setAttribute('action', rewriteHref(action));
-                }
-            });
+            if (root.nodeType === 1) rewriteElement(root);
+            root.querySelectorAll('a[href], form[action]').forEach(rewriteElement);
         }
 
         rewriteLinks(document);
@@ -358,12 +367,16 @@
         if (typeof MutationObserver !== 'undefined') {
             var observer = new MutationObserver(function (mutations) {
                 mutations.forEach(function (mutation) {
+                    if (mutation.type === 'attributes') {
+                        rewriteElement(mutation.target);
+                        return;
+                    }
                     mutation.addedNodes.forEach(function (node) {
                         if (node.nodeType === 1) rewriteLinks(node);
                     });
                 });
             });
-            observer.observe(document.body, { childList: true, subtree: true });
+            observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['href', 'action'] });
         }
     }
 

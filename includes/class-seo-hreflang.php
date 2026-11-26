@@ -20,6 +20,9 @@ class GML_SEO_Hreflang {
     /** @var bool */
     private $external_seo_authority;
 
+    /** Explicit noindex observed from the current request's SEO owner. */
+    private $request_noindex = false;
+
     public function __construct( GML_Translation_Provider_Interface $provider = null ) {
         $this->provider               = $provider ?: new GML_Translation_Provider();
         $this->external_seo_authority = $this->has_external_seo_authority();
@@ -30,7 +33,12 @@ class GML_SEO_Hreflang {
 			return;
 		}
 
-        add_action( 'wp_head', [ $this, 'inject_multilingual_meta' ], 1 );
+        // Observe robots as produced by the SEO owner, then render alternates.
+        // Never call that owner's rendering functions twice or change its policy.
+        foreach ( [ 'wp_robots', 'wpseo_robots', 'wpseo_robots_array', 'rank_math/frontend/robots', 'seopress_titles_robots' ] as $hook ) {
+            add_filter( $hook, [ $this, 'observe_robots' ], PHP_INT_MAX );
+        }
+        add_action( 'wp_head', [ $this, 'inject_multilingual_meta' ], PHP_INT_MAX );
         add_filter( 'language_attributes', [ $this->provider, 'filter_language_attributes' ], 10, 2 );
 
         // Keep canonical URLs supplied by common SEO plugins self-referencing
@@ -52,7 +60,9 @@ class GML_SEO_Hreflang {
         }
 
         $canonical = $this->current_canonical_url();
-        $alternates = $this->provider->get_alternate_urls( $canonical );
+        $alternates = GML_SEO_Router::is_paginated_archive()
+            ? $this->pagination_alternates()
+            : $this->provider->get_alternate_urls( $canonical );
         foreach ( $alternates as $hreflang => $url ) {
             echo '<link rel="alternate" hreflang="' . esc_attr( $hreflang ) . '" href="' . esc_url( $url ) . '" />' . "\n";
         }
@@ -79,6 +89,8 @@ class GML_SEO_Hreflang {
 
     public function filter_canonical_url( $canonical_url, $post = null ) {
         unset( $post );
+        // SEO owners use false/empty to deliberately suppress the canonical.
+        if ( ! is_string($canonical_url) || trim($canonical_url) === '' ) return $canonical_url;
         if ( $this->is_not_found_request() ) {
             return $canonical_url;
         }
@@ -91,10 +103,12 @@ class GML_SEO_Hreflang {
             ? $this->provider->get_public_status( $resource, $current, [ 'entrypoint' => 'canonical' ] )
             : [];
         // Progressive 200 pages keep their own identity even while noindex.
-        return ! empty( $status['route_valid'] ) && ! empty( $status['url'] ) ? $status['url'] : $source;
+        return ! empty( $status['route_valid'] ) && ! empty( $status['url'] )
+            ? $this->provider->get_translated_url( $source, $current ) : $source;
     }
 
     public function filter_seopress_canonical( $canonical_tag ) {
+        if ( trim( (string) $canonical_tag ) === '' ) return $canonical_tag;
         $canonical = $this->filter_canonical_url( $this->canonical_from_markup( $canonical_tag ) );
         return $canonical
             ? '<link rel="canonical" href="' . esc_url( $canonical ) . '">'
@@ -110,11 +124,56 @@ class GML_SEO_Hreflang {
             static function($match) use($locale) {return $match[1].'"'.esc_attr($locale).'"';},$markup);
     }
 
+    /** Read-only observation: return the exact robots value to its owner. */
+    public function observe_robots( $robots ) {
+        if ( $this->robots_disallow_index( $robots ) ) $this->request_noindex = true;
+        return $robots;
+    }
+
+    private function robots_disallow_index( $robots ) {
+        foreach ( (array) $robots as $key => $value ) {
+            if ( is_string( $key ) ) {
+                if ( in_array( strtolower( $key ), [ 'noindex', 'none' ], true ) && $value ) return true;
+                if ( ! in_array( $key, [ 'index', 'follow' ], true ) ) continue;
+            }
+            if ( ! is_scalar( $value ) ) continue;
+            $value = (string) $value;
+            if ( preg_match( '~<meta\b[^>]*\bcontent\s*=\s*([\"\'])(.*?)\1~is', $value, $match ) ) $value = $match[2];
+            $tokens = preg_split( '/[,\s]+/', strtolower( $value ) );
+            if ( array_intersect( [ 'noindex', 'none' ], $tokens ) ) return true;
+        }
+        return false;
+    }
+
+    private function pagination_alternates() {
+        if ( $this->request_noindex ) return [];
+        foreach ( headers_list() as $header ) {
+            if ( stripos( $header, 'X-Robots-Tag:' ) === 0 && $this->robots_disallow_index( $header ) ) return [];
+        }
+        $resource = GML_Resource_Identity::current_public();
+        if ( ! $resource instanceof GML_Resource_Identity ) return [];
+        // Core still owns base-resource readiness and review eligibility.
+        // Adapt only eligible local members to the same current archive page.
+        $eligible = $this->provider->get_alternate_urls( $resource->get_source_url() );
+        $urls = GML_SEO_Router::get_language_urls();
+        $result = [];
+        foreach ( $this->provider->get_languages() as $language ) {
+            $code = $this->provider->get_hreflang_code( $language );
+            if ( isset( $eligible[$code], $urls[$language] ) ) $result[$code] = $urls[$language];
+        }
+        $source = $this->provider->get_source_language();
+        if ( isset( $eligible['x-default'], $urls[$source] ) ) $result['x-default'] = $urls[$source];
+        return $result;
+    }
+
     private function current_canonical_url() {
         return $this->filter_canonical_url( $this->current_source_url() );
     }
 
     private function current_source_url() {
+        if ( GML_SEO_Router::is_paginated_archive() ) {
+            return GML_SEO_Router::get_current_source_url( GML_Resource_Identity::current_public() );
+        }
         $request = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/';
         $path    = wp_parse_url( $request, PHP_URL_PATH );
         $path    = $path ?: '/';

@@ -1,0 +1,5 @@
+{
+  "exit": 0,
+  "stdout": "{\"has_set_cookie\":true,\"cache_headers\":[\"HTTP\\/1.1 200 OK\"],\"token_guards\":[],\"nonce_equals\":false}",
+  "stderr": ""
+}

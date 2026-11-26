@@ -2,6 +2,109 @@
 
 All notable changes to GML Translate will be documented in this file.
 
+## 2.11.2-rc.14 (2026-11-26)
+
+- Add a capability/nonce/snapshot-protected inventory-only action, separate from missing-text enqueue/priority, for one resource and its configured languages.
+- Reuse existing translations, manifest transactions/CAS and readiness policy; report genuine missing text without calling providers or changing translation tasks, priorities or controls.
+- Avoid GML schedule repair and automatic rewrite repair within the explicit action and its signed source render; do not automatically reload the ordinary admin page afterward.
+- Require acknowledgement of existing internal global HTML cache generation and exact current/historical resource URL outbox side effects. Keep consistency invalidation enabled.
+- Bundle Core 0.9.25. Explicit partial-readiness failures do not add new dirty retries; normal discovery retains recovery. Manifest/per-language commits are not atomic rollback, and embedded-product dependency auto-notification remains outside this change.
+- Retain rc.13 fixes. Isolated/package acceptance is attached; no production page processing, merge, release publication or deployment.
+
+## 2.11.2-rc.13 (2026-11-25)
+
+- Respect local JSON-LD context resets and skip ambiguous vocabularies or term overrides rather than rewriting foreign data.
+- Preserve nested code/pre blocks and unterminated raw-text elements during text replacement and URL rewriting; keep technical/opt-out ancestors protected during browser DOM rewrites.
+- Preserve SEO owners' false/null/empty canonical suppression values, extending the existing SEOPress behavior.
+- Bundle Core 0.9.24 without database/TM migration or changes to readiness, retry, indexing thresholds or queue behavior.
+
+## 2.11.2-rc.12 (2026-11-25)
+
+- Rebuild whole text nodes containing literal comparison signs without changing technical limits, units or protected markup.
+- Translate only BreadcrumbList item names from schema.org JSON-LD through existing TM lookup and discovery; localize item page URLs using existing navigation rules.
+- Patch only allowlisted JSON string spans. Preserve other schema nodes, graph identifiers, number precision, ordinary scripts, malformed/ambiguous JSON and opt-out blocks.
+- Bundle Core 0.9.23 with no schema/TM migration or changes to publication thresholds, queue scheduling or AI transport.
+- Retain rc.11 pagination navigation and SEO-owner noindex/canonical behavior.
+
+## 2.11.2-rc.11 (2026-11-24)
+
+- Keep the current archive page number in local language navigation and canonical URL adaptation, using the existing resource URL and WordPress pagination context.
+- Map eligible hreflang members to the same current archive page; observe SEO-owner robots output and omit alternates consistently on explicitly noindex pagination.
+- Preserve empty SEOPress canonical output. Do not change pagination index policy, term/resource identities, readiness data or queues.
+- Add real WordPress/WooCommerce/SEOPress native pagination, login, cache, subdirectory and source-language regressions, plus deterministic context tests.
+- Core remains pinned to 0.9.22; no schema or translation migration.
+
+## 2.11.2-rc.10 (2026-11-23)
+
+- Consolidated audit of the cumulative Translate/Core candidate, with full lifecycle, concurrency, navigation, form, permissions and SEO regression coverage.
+- Preserve excluded body/title bytes when their text also has a translation elsewhere; reuse the existing scanner and ancestor exclusions. No TM or queue rewrite.
+- Keep nested SVG anchors byte-for-byte intact and recognize HTML attribute endings after literal backslashes in the server-side navigation scanner.
+- Reject mixed admin snapshots when TM changes and readiness is recalculated during page-table rendering, using the existing translation fingerprint and machine status.
+- Add deterministic parser exclusions, real WordPress/TM/output-buffer checks and the admin TM interleaving to the existing CI state-clarity runner.
+- Bundle Core 0.9.22. Index thresholds, source-version checks, locks, retries and scheduler behavior are unchanged.
+
+## [2.11.2-rc.9] - 2026-11-23 (status clarity review candidate)
+
+- Separate stored translation item coverage, the AI translation queue and current-version SEO readiness in the admin UI.
+- Identify prior inventory versions and pending measurements instead of presenting stale counts and missing-field zeros as current results.
+- Show existing pending-list, lock, schedule, retry and recorded-failure evidence with explicit scope and timestamp limits.
+- Show incomplete source-length measurement instead of 100% of recorded bytes when lengths are unknown.
+- Vendor Core 0.9.21 and add the synthetic state-separation regression suite to database CI.
+- Keep frontend index gates, thresholds, content fingerprints, translation assets and recovery behavior unchanged.
+
+## [2.11.2-rc.8] - 2026-11-19 (readiness concurrency review candidate)
+
+- Calculate readiness counts and translation fingerprints from one transaction after acquiring the source/readiness locks.
+- Prevent earlier readiness work from restoring obsolete completion after Translation Memory changes.
+- Bind inventory backoff to the attempted/committed snapshot returned by discovery, preserving both fresh-source retries and unchanged-failure backoff.
+- Avoid language-index lock inversions between TM invalidation and readiness replacement by using resource-first joins.
+- Vendor Core 0.9.20 and add deterministic plus real two-process database regressions.
+
+## [2.11.2-rc.7] - 2026-11-19 (second review candidate)
+
+- Fence per-language readiness writes and readiness-failure invalidation against newer manifest versions.
+- Bind inventory cooldown records to source snapshots, preserving new edits when an older attempt finishes writing its retry.
+- Vendor Core 0.9.19 and add deterministic interleaving regressions for both paths.
+
+## [2.11.2-rc.6] - 2026-11-19 (review candidate)
+
+- Keep newer completed manifests intact when an older source/global render returns.
+- Reset inventory retry cooldowns after source changes without resuming paid translation.
+- Handle encoded installation directories without duplicate language prefixes or frontend script errors.
+- Vendor Core 0.9.18 and advance the frontend asset/cache version for this review correction.
+
+## [2.11.2-rc.5] - 2026-11-19 (local candidate)
+
+- Keep REST, AJAX, cron, feed, file, explicit download and configured upload/content links intact in translated HTML and browser navigation.
+- Validate full origins and installation boundaries before localizing links, and preserve relative references, existing language prefixes, queries and fragments.
+- Apply the same policy to dynamically inserted anchors/forms and later href/action changes.
+- Vendor Core 0.9.17 for the shared URL and output-buffer corrections.
+- Preserve empty query and fragment delimiters on PHP 7.4.
+
+## [2.11.2-rc.4] - 2026-11-19 (local candidate)
+
+- Preserve links to WordPress content files when localizing navigation in the browser. WooCommerce gallery originals keep their upload URLs on translated product pages.
+
+## [2.11.2-rc.3] - 2026-11-18 (local candidate)
+
+- Reject redirect and render-error writes superseded by a newer resource edit.
+- Sleep until the first retry is due when the inventory queue has only delayed work, and resume promptly when edits add runnable work.
+- Keep markup-shaped component configuration and nested SVG intact and translate only the text inside SEO title tags.
+
+## [2.11.2-rc.2] - 2026-11-18 (local candidate)
+
+- Recover stale manifests across global generations and incomplete language snapshot writes after upgrading.
+- Bound recovery and retries, retire orphaned draft and navigation hints, and keep full scans advancing independently.
+- Reject superseded discovery writes and retain scan checkpoints on database read errors.
+- Preserve plain-permalink identities, form default text, whitespace and technical attributes during translation.
+
+## [2.11.2-rc.1] - 2026-11-17 (local candidate)
+
+- Vendor Core 0.9.14: discover textarea UI attributes and unnamed submit captions while protecting form content and business values.
+- Retain failed inventory work, recover orphaned manifests, preserve concurrent edits, and fence backfill checkpoints against newer pauses or resets. Inventory maintenance never resumes the paid translation queue.
+- Show concrete inventory/readiness diagnostics in the administrator Review detail.
+- Keep manual/held translations, publication thresholds, URL rules and database schema unchanged. No production deployment or automatic full-site translation.
+
 ## [2.11.1] - 2026-09-22
 
 - Promote the accepted rc.35 functional baseline to Stable with version and release documentation only; no runtime, schema, Shared Core, provider, queue or translation-data changes.

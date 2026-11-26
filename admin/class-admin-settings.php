@@ -1110,7 +1110,7 @@ class GML_Admin_Settings {
             </p></div>
         <?php endif; ?>
         <div class="gml-translation-toolbar">
-            <h2><?php esc_html_e( 'Translation Queue', 'gml-translate' ); ?></h2>
+            <h2><?php esc_html_e( 'AI Translation Queue', 'gml-translate' ); ?></h2>
             <div class="gml-translation-actions">
                 <form method="post">
                     <?php wp_nonce_field( 'gml_translation_action', 'gml_translation_nonce' ); ?>
@@ -1167,12 +1167,13 @@ class GML_Admin_Settings {
             });
         }());
         </script>
+        <p><?php esc_html_e( 'This queue processes AI translation text only. Inventory discovery and SEO readiness use separate background work. Idle does not mean all background work is complete.', 'gml-translate' ); ?></p>
         <div class="gml-translation-summary" aria-live="polite">
-            <dl><dt><?php esc_html_e( 'Queue Status', 'gml-translate' ); ?></dt><dd id="gml-queue-state"><?php echo esc_html( $state_labels[$queue_status['state']] ); ?></dd></dl>
+            <dl><dt><?php esc_html_e( 'AI Translation Queue Status', 'gml-translate' ); ?></dt><dd id="gml-queue-state"><?php echo esc_html( $state_labels[$queue_status['state']] ); ?></dd></dl>
             <dl><dt><?php esc_html_e( 'Pending Segments', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $queue_pending ) ); ?></dd></dl>
             <dl><dt><?php echo esc_html( $current_corpus_ready ? __( 'Current Failed Items', 'gml-translate' ) : __( 'Stored Failed Items', 'gml-translate' ) ); ?></dt><dd><?php echo esc_html( number_format_i18n( $current_failed ) ); ?></dd></dl>
             <?php if ( $current_corpus_ready && $stored_history > 0 ): ?><dl><dt><?php esc_html_e( 'Stored History', 'gml-translate' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $stored_history ) ); ?></dd></dl><?php endif; ?>
-            <dl><dt><?php esc_html_e( 'Last Worker Activity', 'gml-translate' ); ?></dt><dd id="gml-queue-last"><?php echo esc_html( $queue_status['last_activity'] ? wp_date( 'Y-m-d H:i:s', $queue_status['last_activity'] ) : __( 'Not recorded yet', 'gml-translate' ) ); ?></dd></dl>
+            <dl><dt><?php esc_html_e( 'Last AI Worker Activity', 'gml-translate' ); ?></dt><dd id="gml-queue-last"><?php echo esc_html( $queue_status['last_activity'] ? wp_date( 'Y-m-d H:i:s', $queue_status['last_activity'] ) : __( 'Not recorded yet', 'gml-translate' ) ); ?></dd></dl>
         </div>
         <?php include __DIR__ . '/views/translation-activity.php'; ?>
         <div class="gml-content-scan">

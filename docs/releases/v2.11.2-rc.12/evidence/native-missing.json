@@ -1,0 +1,5 @@
+{
+  "exit": 0,
+  "stdout": "{\"mode\": \"missing\", \"rows\": [{\"repeat\": 0, \"status\": 200, \"h1\": \"Manuell geprüfter Gerätetitel\", \"condition\": \"5–8 ppm at inlet water 15°C, ambient 20°C and inlet conductivity <500 µS/cm; confirm sampling method and location\", \"schema_names\": [\"Startseite\", \"Ausrüstung & Teile\", \"Manuell geprüfter Gerätetitel\"], \"robots\": [\"noindex, follow\"], \"hreflang\": 0}, {\"repeat\": 1, \"status\": 200, \"h1\": \"Manuell geprüfter Gerätetitel\", \"condition\": \"5–8 ppm at inlet water 15°C, ambient 20°C and inlet conductivity <500 µS/cm; confirm sampling method and location\", \"schema_names\": [\"Startseite\", \"Ausrüstung & Teile\", \"Manuell geprüfter Gerätetitel\"], \"robots\": [\"noindex, follow\"], \"hreflang\": 0}], \"errors\": []}",
+  "stderr": ""
+}

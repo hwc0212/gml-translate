@@ -1,0 +1,332 @@
+{
+  "date": "2026-11-23",
+  "plugin": "2.11.2-rc.10",
+  "plugin_parent": "e51198aca4c274b9ff456148f8ad9af70bd13660",
+  "core": "0.9.22",
+  "core_commit": "f0e86e26fe1c82615d4945a9cb77c41459f1cc9d",
+  "scope": "Complete bounded review of both cumulative PRs and adjacent runtime entrypoints; no claim of absence of every possible defect",
+  "fixed_findings": [
+    {
+      "id": "R1",
+      "area": "parser exclusions",
+      "priority": "P2",
+      "baseline": "8 failures among the initial 9 exact-output probes; a later enlarged 11-case suite passes",
+      "fix": "protect excluded text and titles using the existing ancestor stack; translate=no is case-insensitive"
+    },
+    {
+      "id": "R2",
+      "area": "server HTML/SVG boundaries",
+      "priority": "P2",
+      "baseline": "16 new markup-boundary mismatches among 392 navigation checks; 376 existing cases unchanged",
+      "fix": "HTML quotes close after literal backslashes; share the existing balanced SVG scanner with the output buffer"
+    },
+    {
+      "id": "R3",
+      "area": "admin snapshot consistency",
+      "priority": "P2",
+      "baseline": {
+        "latest_reason": "critical_missing",
+        "latest_eligible": false,
+        "ui_says_ready": true
+      },
+      "fix": "require stored machine status and existing translation fingerprint to agree before presenting current readiness"
+    }
+  ],
+  "review_matrix": [
+    "activation, admin-only upgrade, legacy TM/queue preservation, deactivation and explicit uninstall",
+    "HTML extraction/rebuild, textarea defaults, named submits, attributes, comments, script/style/code/SVG and exclusions",
+    "root/subdirectory/encoded-home navigation, media/download/service/external/signed URL preservation, dynamic DOM",
+    "save invalidation, durable dirty hints, leases, snapshot fencing, failed rendering/backoff, bounded inventory/readiness recovery",
+    "two-process TM/readiness races, REPEATABLE READ/READ COMMITTED, present/missing readiness rows",
+    "public eligibility, critical/length/hold/review gates, stale versions, noindex, canonical/hreflang and sitemap tests",
+    "admin authorization/nonces/escaping, settings registration, translations, local/external language configuration",
+    "generation-based cache lifecycle, source/provider separation, package/lock/source identity"
+  ],
+  "local_validation": {
+    "wordpress": "7.1.4",
+    "php": "8.3.33",
+    "mariadb": "10.6",
+    "full_database_scenarios": 122,
+    "full_database_assertions": 2331,
+    "state_scenarios": 14,
+    "state_assertions": 106,
+    "integration_scripts": 30,
+    "php_syntax_checks": 118,
+    "policy_passes": 18,
+    "php_navigation_checks": 392,
+    "parser_exact_output_checks": 11,
+    "chromium_navigation_checks": 1508,
+    "gallery_initial_dynamic_root_subdirectory": true,
+    "state_http_cases": 20,
+    "state_browser_locales": [
+      "en",
+      "zh_CN"
+    ],
+    "state_browser_widths": [
+      1440,
+      390
+    ],
+    "state_browser_results": {
+      "stale": {
+        "stage": "stale",
+        "frontend": [
+          {
+            "language": "en",
+            "http": 200,
+            "noindex_header": false,
+            "noindex_html": false,
+            "hreflang": 2,
+            "canonical": "http://gml-state.test/synthetic-inquiry/"
+          },
+          {
+            "language": "de",
+            "http": 200,
+            "noindex_header": true,
+            "noindex_html": true,
+            "hreflang": 0,
+            "canonical": "http://gml-state.test/de/synthetic-inquiry/"
+          },
+          {
+            "language": "es",
+            "http": 200,
+            "noindex_header": true,
+            "noindex_html": true,
+            "hreflang": 0,
+            "canonical": "http://gml-state.test/es/synthetic-inquiry/"
+          },
+          {
+            "language": "fr",
+            "http": 200,
+            "noindex_header": true,
+            "noindex_html": true,
+            "hreflang": 0,
+            "canonical": "http://gml-state.test/fr/synthetic-inquiry/"
+          },
+          {
+            "language": "ru",
+            "http": 200,
+            "noindex_header": true,
+            "noindex_html": true,
+            "hreflang": 0,
+            "canonical": "http://gml-state.test/ru/synthetic-inquiry/"
+          }
+        ],
+        "page_errors": [],
+        "admin_locales": [
+          "en",
+          "zh_CN"
+        ],
+        "mobile_overflow": false
+      },
+      "ready": {
+        "stage": "ready",
+        "frontend": [
+          {
+            "language": "en",
+            "http": 200,
+            "noindex_header": false,
+            "noindex_html": false,
+            "hreflang": 6,
+            "canonical": "http://gml-state.test/synthetic-inquiry/"
+          },
+          {
+            "language": "de",
+            "http": 200,
+            "noindex_header": false,
+            "noindex_html": false,
+            "hreflang": 6,
+            "canonical": "http://gml-state.test/de/synthetic-inquiry/"
+          },
+          {
+            "language": "es",
+            "http": 200,
+            "noindex_header": false,
+            "noindex_html": false,
+            "hreflang": 6,
+            "canonical": "http://gml-state.test/es/synthetic-inquiry/"
+          },
+          {
+            "language": "fr",
+            "http": 200,
+            "noindex_header": false,
+            "noindex_html": false,
+            "hreflang": 6,
+            "canonical": "http://gml-state.test/fr/synthetic-inquiry/"
+          },
+          {
+            "language": "ru",
+            "http": 200,
+            "noindex_header": false,
+            "noindex_html": false,
+            "hreflang": 6,
+            "canonical": "http://gml-state.test/ru/synthetic-inquiry/"
+          }
+        ],
+        "page_errors": [],
+        "admin_locales": [
+          "en",
+          "zh_CN"
+        ],
+        "mobile_overflow": false
+      },
+      "missing": {
+        "stage": "missing",
+        "frontend": [
+          {
+            "language": "en",
+            "http": 200,
+            "noindex_header": false,
+            "noindex_html": false,
+            "hreflang": 2,
+            "canonical": "http://gml-state.test/synthetic-inquiry/"
+          },
+          {
+            "language": "de",
+            "http": 200,
+            "noindex_header": true,
+            "noindex_html": true,
+            "hreflang": 0,
+            "canonical": "http://gml-state.test/de/synthetic-inquiry/"
+          },
+          {
+            "language": "es",
+            "http": 200,
+            "noindex_header": true,
+            "noindex_html": true,
+            "hreflang": 0,
+            "canonical": "http://gml-state.test/es/synthetic-inquiry/"
+          },
+          {
+            "language": "fr",
+            "http": 200,
+            "noindex_header": true,
+            "noindex_html": true,
+            "hreflang": 0,
+            "canonical": "http://gml-state.test/fr/synthetic-inquiry/"
+          },
+          {
+            "language": "ru",
+            "http": 200,
+            "noindex_header": true,
+            "noindex_html": true,
+            "hreflang": 0,
+            "canonical": "http://gml-state.test/ru/synthetic-inquiry/"
+          }
+        ],
+        "page_errors": [],
+        "admin_locales": [
+          "en",
+          "zh_CN"
+        ],
+        "mobile_overflow": false
+      },
+      "failure": {
+        "stage": "failure",
+        "frontend": [
+          {
+            "language": "en",
+            "http": 200,
+            "noindex_header": false,
+            "noindex_html": false,
+            "hreflang": 2,
+            "canonical": "http://gml-state.test/synthetic-inquiry/"
+          },
+          {
+            "language": "de",
+            "http": 200,
+            "noindex_header": true,
+            "noindex_html": true,
+            "hreflang": 0,
+            "canonical": "http://gml-state.test/de/synthetic-inquiry/"
+          },
+          {
+            "language": "es",
+            "http": 200,
+            "noindex_header": true,
+            "noindex_html": true,
+            "hreflang": 0,
+            "canonical": "http://gml-state.test/es/synthetic-inquiry/"
+          },
+          {
+            "language": "fr",
+            "http": 200,
+            "noindex_header": true,
+            "noindex_html": true,
+            "hreflang": 0,
+            "canonical": "http://gml-state.test/fr/synthetic-inquiry/"
+          },
+          {
+            "language": "ru",
+            "http": 200,
+            "noindex_header": true,
+            "noindex_html": true,
+            "hreflang": 0,
+            "canonical": "http://gml-state.test/ru/synthetic-inquiry/"
+          }
+        ],
+        "page_errors": [],
+        "admin_locales": [
+          "en",
+          "zh_CN"
+        ],
+        "mobile_overflow": false
+      }
+    },
+    "native_cf7_version": "6.2.5",
+    "native_cf7_assertions": 19,
+    "cf7_submission": false,
+    "real_mail": false,
+    "paid_ai": false,
+    "terminal_markers_checked": true,
+    "all_stderr_empty": true,
+    "coordination_note": "First state/browser attempt discarded after overlap and duplicate synthetic slugs. Accepted results were rerun serially with separate fresh test schemas; initial DB adapter defaults were corrected before the full suite.",
+    "browser_scope": "GET-only state wrappers invoke real gate/SEO/output protection; navigation uses routed synthetic HTML. No production theme or real form submission.",
+    "cron_scope": "DISABLE_WP_CRON=true; controlled dispatch and fault injection do not prove production Cron execution or latency"
+  },
+  "package": {
+    "date": "2026-11-23",
+    "plugin": "2.11.2-rc.10",
+    "core": "0.9.22",
+    "core_commit": "f0e86e26fe1c82615d4945a9cb77c41459f1cc9d",
+    "bytes": 433777,
+    "sha256": "758b45cebf033962fc67338107ff1ed000509e31e6a39169bc8550f84077cbc9",
+    "entries": 103,
+    "core_files": 48,
+    "crc_ok": true,
+    "source_bytes_identical": true
+  },
+  "package_validation": {
+    "wordpress": "7.1.4",
+    "php": "8.3.33",
+    "plugin": "2.11.2-rc.10",
+    "unknown_source_count": 1,
+    "unknown_length_blocks": true,
+    "stale_message": "The current source or translation snapshot needs readiness evaluation.",
+    "http_attempts": 0,
+    "not_installed": true,
+    "tm_preserved": true,
+    "queue_preserved": true
+  },
+  "unchanged": {
+    "readiness_thresholds": true,
+    "source_version_checks": true,
+    "content_fingerprint_algorithm": true,
+    "scheduler": true,
+    "retry_lease_rules": true,
+    "database_schema": true,
+    "existing_tm": true,
+    "queue": true
+  },
+  "github_ci": "Local acceptance recorded before push. Exact revision and the two new CI runs are linked in both PR descriptions after completion.",
+  "limitations": [
+    "Production task logs and incident delay remain unknown",
+    "No production deployment or production traffic/load acceptance",
+    "No separate MySQL-server matrix",
+    "No full production theme/CDN adapter or real CF7 email acceptance",
+    "State wrapper and exact ZIP loading are not native package installation"
+  ],
+  "merged": false,
+  "deployed": false,
+  "production_access": false,
+  "source_data": "synthetic only"
+}

@@ -289,10 +289,32 @@ class GML_SEO_Router {
         $source = GML_Language_Utils::normalize_code( get_option( 'gml_source_lang', 'en' ) );
         $languages = array_unique( array_merge( [ $source ], GML_Language_Utils::enabled_local_target_codes() ) );
         foreach ( $languages as $lang ) {
-            $url = GML_URL_Helper::get_language_url( $resource->get_source_url(), $lang, $source, $languages );
+            $url = GML_URL_Helper::get_language_url( self::get_current_source_url( $resource ), $lang, $source, $languages );
             if ( $url !== '' ) $urls[$lang] = $url;
         }
         return $urls;
+    }
+
+    /** Request pagination is a URL context, not a new translation resource. */
+    public static function is_paginated_archive() {
+        return function_exists( 'is_paged' ) && is_paged()
+            && ( is_archive() || is_home() ) && ! is_404();
+    }
+
+    public static function get_current_source_url( $resource ) {
+        if ( ! $resource instanceof GML_Resource_Identity ) return '';
+        $url = $resource->get_source_url();
+        if ( ! self::is_paginated_archive() ) return $url;
+        $page = (int) get_query_var( 'paged', 1 );
+        if ( $page < 2 || $url === '' ) return $url;
+        // Build only from the resource URL and WordPress's parsed page number.
+        // Do not copy tracking/facet parameters or trust a raw request path.
+        if ( ! get_option( 'permalink_structure' ) || strpos( $url, '?' ) !== false ) {
+            return add_query_arg( 'paged', $page, $url );
+        }
+        global $wp_rewrite;
+        $base = $wp_rewrite->pagination_base ?: 'page';
+        return user_trailingslashit( trailingslashit( $url ) . $base . '/' . $page, 'paged' );
     }
 
     // ── Internal helpers ──────────────────────────────────────────────────────

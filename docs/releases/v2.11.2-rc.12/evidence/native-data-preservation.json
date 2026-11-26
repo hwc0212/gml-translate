@@ -1,0 +1,7 @@
+{
+  "tm_all_fields_unchanged": true,
+  "queue_unchanged": true,
+  "manifests_readiness_unchanged": true,
+  "resource_keys_unchanged": true,
+  "phase": "final 360-check native browser matrix"
+}

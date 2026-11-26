@@ -85,3 +85,17 @@ jobs:
           GML_TEST_DB_HOST: 127.0.0.1:3306
           GML_TEST_PRODUCT_DIR: ${{ github.workspace }}
         run: timeout 120 bash .ci/gml-translation-core/tests/database/run.sh
+
+      - name: Test translation coverage and SEO state separation
+        env:
+          GML_DATABASE_TESTS: '1'
+          GML_TEST_WP_ROOT: ${{ runner.temp }}/wordpress
+          GML_TEST_DB_HOST: 127.0.0.1:3306
+          GML_TEST_DB_NAME: gml_regression_state_clarity
+          GML_TEST_HOME: http://gml-state.test
+          GML_TEST_PRODUCT_DIR: ${{ github.workspace }}
+          GML_TEST_CORE_DIR: ${{ github.workspace }}/.ci/gml-translation-core
+          GML_STATE_RUN: ci
+        run: |
+          php tests/database/prepare-state-clarity.php
+          timeout 180 bash tests/database/run-state-clarity.sh

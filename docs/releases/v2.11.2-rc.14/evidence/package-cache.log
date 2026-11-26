@@ -1,0 +1,10 @@
+MARKER wordpress_bootstrap_loaded
+PASS: cache-effects schema available
+PASS: first manifest records old URLs
+PASS: replacement manifest records current URLs
+PASS: cache outbox retains exact old and new source/target URLs
+PASS: no registered adapter leaves outbox pending rather than claiming a purge
+PASS: adapter exception retains token and schedules existing cache continuation
+PASS: successful adapter receives exact historical/current URLs before acknowledgement
+PASS: mock adapter sends no cache or model network request
+OK inventory cache effects

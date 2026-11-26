@@ -1,5 +1,13 @@
 # GML Translate
 
+## 2.11.2-rc.14 Candidate
+
+Adds an explicit administrator-only **Refresh inventory only** action for one resource and all configured languages. It reuses stored manual/automatic translations and reports missing items without queueing AI work. Snapshot/nonce checks and a narrow signed render context preserve the existing publication gates and avoid repairing unrelated GML schedules inside this operation.
+
+This is **not a zero-cache action**: internal GML HTML cache generation can change globally, and registered adapters may later consume this resource’s current/historical URL outbox. Manifest and per-language readiness writes are not one atomic rollback. Product-to-aggregate dependency tracking remains a separate gap; no production resource is automatically processed by the new action.
+
+Bundles Core 0.9.25 and retains rc.13’s scoped-schema/protected-content fixes. See [rc.14 acceptance and limitations](docs/releases/v2.11.2-rc.14/INVENTORY_REFRESH_REVIEW.md). No merge, release tag or deployment is included in this candidate delivery.
+
 ## 2.11.1 Stable
 
 This release promotes the accepted rc.35 functionality without changing translation

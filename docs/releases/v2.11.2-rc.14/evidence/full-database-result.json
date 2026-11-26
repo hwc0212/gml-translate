@@ -1,0 +1,1 @@
+{"exit": 0, "pass_lines": 2342, "markers": ["MARKER required_scenarios_ran=122"], "tail": ["PASS: translation cleanup preserves GML SEO options", "PASS: translation cleanup preserves the SEO IndexNow key", "MARKER required_scenarios_ran=122", "OK real WordPress / MariaDB regressions for /work/gml-translate"]}

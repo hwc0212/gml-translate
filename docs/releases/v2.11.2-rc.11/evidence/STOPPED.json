@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-24",
+  "native": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "f21e12",
+      "wall_time_seconds": 0.000018088,
+      "exit_code": 0,
+      "original_token_count": 8,
+      "output": "gmlpage1124-db\ngmlpage1124-php\n\n"
+    }
+  },
+  "regression": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "9f9195",
+      "wall_time_seconds": 0.000021581,
+      "exit_code": 0,
+      "original_token_count": 9,
+      "output": "gmlstate1123-db\ngmlstate1123-php\n\n"
+    }
+  },
+  "production_accessed": false
+}

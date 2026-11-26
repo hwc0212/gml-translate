@@ -19,6 +19,6 @@ gml_test_assert( strpos( $review, 'transaction_health' ) !== false && strpos( $r
 gml_test_assert( strpos( $review, 'approve_all' ) === false, 'review UI exposes no bulk approval bypass' );
 gml_test_assert( strpos( $review, 'get_clusters_bulk' ) !== false, 'review list derives public state in one bulk call' );
 gml_test_assert( strpos( $review, 'Public State' ) !== false, 'review list distinguishes Human Review from derived public state' );
-gml_test_assert( strpos( $review, 'anonymous visitors are redirected to the source URL' ) !== false, 'review detail explains the Phase 2D visitor behavior' );
+gml_test_assert( strpos( $review, 'accessible while its language page is marked noindex' ) !== false, 'review detail describes accessible noindex language pages' );
 
 echo "OK test-resource-review-admin\n";
